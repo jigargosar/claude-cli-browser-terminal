@@ -20,4 +20,6 @@
 - [x] Move replies out of `.claude/` into top-level `.cc-web/`.
 - [x] Update references to new `.cc-web`
 - [x] Extend `server.mjs`: left terminal (xterm.js), right last reply rendered as markdown, updates after each reply
-- [ ] Verify: start server from own terminal, chat, last reply shows on the right
+- [x] One claude per server: started at server start with explicit `new` or `resume`, never per browser connection
+- [x] Reload/close tab only detaches; reconnect restores the screen; claude exit stops the server
+- [ ] Verify: start server from own terminal, chat, last reply shows on the right, reload keeps the session

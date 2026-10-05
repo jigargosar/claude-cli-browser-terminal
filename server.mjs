@@ -1,11 +1,18 @@
 import { mkdirSync, readdirSync, readFileSync, statSync } from "node:fs";
 import http from "node:http";
 import { spawn } from "@lydell/node-pty";
+import { SerializeAddon } from "@xterm/addon-serialize";
+import headless from "@xterm/headless";
 import chokidar from "chokidar";
 import { WebSocketServer } from "ws";
 
 const PORT = 7681;
 const REPLIES = `${import.meta.dirname}/.cc-web/replies`;
+
+// Usage: node server.mjs new|resume [claude args], e.g. `node server.mjs new --model haiku`
+const [mode, ...claudeArgs] = process.argv.slice(2);
+const MODES = { new: [], resume: ["--resume"] };
+if (!MODES[mode]) throw new Error("Usage: node server.mjs new|resume [claude args]");
 
 const html = `<!doctype html>
 <html>
@@ -96,30 +103,46 @@ const server = http.createServer((_, res) => {
   res.end(html);
 });
 
+// One claude for the server's lifetime; browser tabs only attach and detach.
+const pty = spawn(process.platform === "win32" ? "claude.exe" : "claude", [...MODES[mode], ...claudeArgs], {
+  name: "xterm-256color",
+  cols: 80,
+  rows: 24,
+  cwd: process.cwd(),
+  env: { ...process.env, TERM: "xterm-256color", COLORTERM: "truecolor" },
+});
+
+// Headless mirror of the screen, serialized to restore it on reconnect.
+const mirror = new headless.Terminal({ cols: 80, rows: 24, scrollback: 1000, allowProposedApi: true });
+const serializer = new SerializeAddon();
+mirror.loadAddon(serializer);
+
+pty.onData((d) => {
+  mirror.write(d);
+  const msg = JSON.stringify({ t: "o", d });
+  for (const ws of clients) ws.send(msg);
+});
+pty.onExit(({ exitCode }) => {
+  console.log(`claude exited (${exitCode}), stopping server`);
+  for (const ws of clients) ws.close();
+  process.exit(exitCode);
+});
+
 new WebSocketServer({ server }).on("connection", (ws) => {
   clients.add(ws);
+  ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
   const latest = latestReply();
   if (latest) ws.send(replyMessage(latest));
 
-  // Extra CLI args go to claude, e.g. `node server.mjs --model haiku`
-  const pty = spawn(process.platform === "win32" ? "claude.exe" : "claude", process.argv.slice(2), {
-    name: "xterm-256color",
-    cols: 80,
-    rows: 24,
-    cwd: process.cwd(),
-    env: { ...process.env, TERM: "xterm-256color", COLORTERM: "truecolor" },
-  });
-  pty.onData((d) => ws.send(JSON.stringify({ t: "o", d })));
-  pty.onExit(() => ws.close());
   ws.on("message", (raw) => {
     const m = JSON.parse(raw.toString());
     if (m.t === "i") pty.write(m.d);
-    else if (m.t === "r") pty.resize(m.cols, m.rows);
+    else if (m.t === "r") {
+      pty.resize(m.cols, m.rows);
+      mirror.resize(m.cols, m.rows);
+    }
   });
-  ws.on("close", () => {
-    clients.delete(ws);
-    pty.kill();
-  });
+  ws.on("close", () => clients.delete(ws));
 });
 
 server.listen(PORT, "127.0.0.1", () => console.log(`http://localhost:${PORT}`));
