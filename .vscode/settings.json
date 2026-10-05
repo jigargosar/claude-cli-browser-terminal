@@ -1,5 +1,0 @@
-{
-  "files.readonlyInclude": {
-    "**/.claude/replies/**": true
-  }
-}
