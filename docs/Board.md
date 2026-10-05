@@ -11,3 +11,9 @@
 - [x] Send a prompt, confirm reply file is created
 - [x] Open reply file in VS Code, Ctrl+K V for side preview
 - [x] Send another prompt, confirm preview updates
+
+# Slice 2: Read-only reply file, auto-open
+- [x] Add `files.readonlyInclude` for `.claude/replies/**` in `.vscode/settings.json`
+- [x] Stop hook opens the reply file in VS Code (`code <file>`) only on the session's first reply
+- [ ] Verify: typing in an opened reply file is blocked
+- [ ] Verify: first reply in a new session opens its file, later replies don't reopen it
