@@ -13,5 +13,5 @@
 - [x] Send another prompt, confirm preview updates
 
 # Slice 2: Auto-open reply file
-- [x] Stop hook opens the reply file in VS Code (`code <file>`) only on the session's first reply
-- [ ] Verify: first reply in a new session opens its file, later replies don't reopen it
+- [x] Stop hook opens the reply file in VS Code (`code <file>`) after every reply
+- [ ] Verify: each reply opens or focuses its session's file
