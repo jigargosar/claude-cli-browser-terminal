@@ -25,4 +25,18 @@
 - [x] Verify: start server from own terminal, chat, last reply shows on the right, reload keeps the session
 
 # Slice 4: Right panel shows only the server's session
-- [x] Comment out VS Code open in the Stop hook
+- [x] Stop hook opens VS Code only when `CC_WEB_SESSION_URL` is not set (skipped for the server's claude)
+- [x] Server: spawns claude with env `CC_WEB_SESSION_URL` = URL unique to that claude (`/session/<claude-instance-id>`)
+- [x] SessionStart hook: if `CC_WEB_SESSION_URL` is set, POST `{ session_id }` to it; server stores it as current session
+- [x] Server: watch only `.cc-web/replies/<current session_id>.md`
+- [x] Toggle VS Code opening: `CC_WEB_OPEN_REPLIES_IN_VSCODE` in `.claude/settings.local.json` `env`
+- [x] Stop hook doesn't wait for VS Code: `open-in-vscode.mjs` runs in the background, failure shows a node-notifier toast
+- [x] `CLAUDE.md`: overall picture of server, hooks and env vars
+- [x] Fixed ports: dev 7681 (`pnpm new`/`resume`), test 7682 (`pnpm test`); port is a required first arg
+- [x] Browser libraries pinned in `package.json`, served from `node_modules` at `/vendor/*` (no CDN)
+- [x] Viewer socket error (tab closed/refreshed mid-send) drops only that viewer, server keeps running
+
+# Slice 5: Verify session tracking
+- [ ] SessionStart hook POST times out after 2s, so a dead server fails loudly instead of hanging startup
+- [ ] Verify: new, resume picker, `/clear` each report the right session ID
+- [ ] Verify: chat in browser and in another terminal, right panel shows only browser replies
