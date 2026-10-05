@@ -14,4 +14,4 @@
 
 # Slice 2: Auto-open reply file
 - [x] Stop hook opens the reply file in VS Code (`code <file>`) after every reply
-- [ ] Verify: each reply opens or focuses its session's file
+- [x] Verify: each reply opens or focuses its session's file
