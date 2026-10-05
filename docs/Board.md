@@ -23,3 +23,6 @@
 - [x] One claude per server: started at server start with explicit `new` or `resume`, never per browser connection
 - [x] Reload/close tab only detaches; reconnect restores the screen; claude exit stops the server
 - [x] Verify: start server from own terminal, chat, last reply shows on the right, reload keeps the session
+
+# Slice 4: Right panel shows only the server's session
+- [x] Comment out VS Code open in the Stop hook
