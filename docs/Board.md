@@ -15,3 +15,8 @@
 # Slice 2: Auto-open reply file
 - [x] Stop hook opens the reply file in VS Code (`code <file>`) after every reply
 - [x] Verify: each reply opens or focuses its session's file
+
+# Slice 3: Reply preview in browser
+- [ ] Move hook script and replies out of `.claude/` into top-level `.cc-web/`; only the hook registration stays in `.claude/settings.local.json`
+- [ ] Extend `server.mjs`: left terminal (xterm.js), right last reply rendered as markdown, updates after each reply
+- [ ] Verify: start server from own terminal, chat, last reply shows on the right
