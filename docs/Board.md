@@ -50,3 +50,7 @@
 - [x] Tried a Windows Terminal look (JetBrains Mono 16px, One Half Dark on `#000B0C`); removed, kept as tag `windows-terminal-look`
 - [x] Tags `prototype-terminal-look`, `slice5-terminal-look`
 - [x] `web/index.html` edits reload open tabs
+
+# Slice 7: Terminal with prototype size and color, Slice 5 padding
+- [x] New default terminal look: Cascadia Mono 15px on black (prototype), padding 14/6/14/18px (Slice 5)
+- [x] Added to the terminal dropdown as Slice 7; Prototype and Slice 5 stay for comparison

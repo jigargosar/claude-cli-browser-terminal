@@ -50,6 +50,8 @@
   /* The first prototype: no padding, terminal on a #1e1e1e page. */
   body[data-terminal="prototype"] { --term-bg: #1e1e1e; }
   body[data-terminal="prototype"] #terminal-pane { padding: 0; }
+  /* Slice 7: the prototype's black, with Slice 5's padding (the default above). */
+  body[data-terminal="slice7"] { --term-bg: #000000; }
 
   /* The page never scrolls; each pane owns its scrolling. */
   html, body { margin: 0; height: 100%; overflow: hidden; background: var(--term-bg); }
@@ -177,6 +179,7 @@
       <select id="terminal-look">
         <option value="prototype">Prototype (62618d0)</option>
         <option value="original">Slice 5 (448568e)</option>
+        <option value="slice7">Slice 7</option>
       </select>
     </label>
     <button type="button" id="reader-button" class="bar-button" popovertarget="reader-settings" aria-label="Reading settings">Aa</button>
@@ -242,11 +245,13 @@ const TERMINAL_LOOKS = {
   original: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 14, fontWeight: "normal", lineHeight: 1, theme: { background: "#16181d" } },
   // First prototype (62618d0): xterm defaults with Cascadia Mono, on a #1e1e1e page.
   prototype: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 15, fontWeight: "normal", lineHeight: 1, theme: {} },
+  // Slice 7: prototype size and black background, Slice 5 padding.
+  slice7: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 15, fontWeight: "normal", lineHeight: 1, theme: {} },
 };
 const TERMINAL_KEY = "cc-web.terminal";
-// A saved look that no longer exists (e.g. the removed Windows Terminal look) falls back to Slice 5.
+// A saved look that no longer exists (e.g. the removed Windows Terminal look) falls back to Slice 7.
 const savedLook = localStorage.getItem(TERMINAL_KEY);
-let terminalLook = savedLook in TERMINAL_LOOKS ? savedLook : "original";
+let terminalLook = savedLook in TERMINAL_LOOKS ? savedLook : "slice7";
 document.body.dataset.terminal = terminalLook;
 
 const term = new Terminal({ allowProposedApi: true, cursorBlink: true, ...TERMINAL_LOOKS[terminalLook] });
