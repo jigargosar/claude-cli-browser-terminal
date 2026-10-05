@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const input = JSON.parse(readFileSync(0, "utf8"));
-const dir = `${process.env.CLAUDE_PROJECT_DIR}/.claude/replies`;
+const dir = `${process.env.CLAUDE_PROJECT_DIR}/.cc-web/replies`;
 const file = `${dir}/${input.session_id}.md`;
 mkdirSync(dir, { recursive: true });
 writeFileSync(file, input.last_assistant_message);
