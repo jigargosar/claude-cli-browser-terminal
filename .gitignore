@@ -1,2 +1,4 @@
 .idea
 node_modules
+.claude/replies
+.claude/settings.local.json
