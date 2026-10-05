@@ -50,6 +50,9 @@
   /* The terminal as it was before the Windows Terminal match. */
   body[data-terminal="original"] { --term-bg: #16181d; }
   body[data-terminal="original"] #terminal-pane { padding: 14px 6px 14px 18px; }
+  /* The first prototype: no padding, terminal on a #1e1e1e page. */
+  body[data-terminal="prototype"] { --term-bg: #1e1e1e; }
+  body[data-terminal="prototype"] #terminal-pane { padding: 0; }
 
   /* The page never scrolls; each pane owns its scrolling. */
   html, body { margin: 0; height: 100%; overflow: hidden; background: var(--term-bg); }
@@ -64,17 +67,27 @@
     background: var(--paper); color: var(--ink);
   }
   #reply-bar {
-    flex: none; display: flex; align-items: center; gap: 4px; padding: 6px 40px 6px 48px;
+    flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 6px 40px 6px 48px;
     font: 13px/1.4 var(--sans); color: var(--ink-muted); border-bottom: 1px solid var(--rule);
   }
-  #reply-status { flex: 1; min-width: 0; }
+  #reply-status { flex: 1 0 auto; white-space: nowrap; }
   .bar-button {
     font: inherit; color: var(--ink-muted); background: none; border: 1px solid transparent; border-radius: 6px;
     padding: 5px 10px; cursor: pointer;
   }
   .bar-button:hover { color: var(--ink); background: var(--tint); }
-  .bar-button[aria-pressed="true"] { color: var(--ink); border-color: var(--rule); }
-  .bar-button:focus-visible, .seg button:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+  .bar-button:focus-visible, .seg button:focus-visible, .pills button:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+
+  /* Terminal look: a pill bar, oldest look first. */
+  .look { display: flex; align-items: center; }
+  .pills-label { margin-right: 6px; }
+  .pills { display: flex; gap: 2px; padding: 2px; margin-right: 8px; border: 1px solid var(--rule); border-radius: 999px; }
+  .pills button {
+    font: inherit; color: var(--ink-muted); background: none; border: 0; border-radius: 999px;
+    padding: 4px 12px; cursor: pointer; white-space: nowrap;
+  }
+  .pills button:hover { color: var(--ink); background: var(--tint); }
+  .pills button[aria-pressed="true"] { color: var(--paper); background: var(--ink); }
   #reader-button { font: 600 15px/1 var(--serif); anchor-name: --reader; }
 
   /* Reading settings panel, anchored under the Aa button. */
@@ -166,7 +179,14 @@
 <aside id="reply-pane" aria-label="Last reply">
   <div id="reply-bar">
     <span id="reply-status">Waiting for the first reply</span>
-    <button type="button" id="terminal-original" class="bar-button" aria-pressed="false">Original terminal</button>
+    <div class="look">
+    <span class="pills-label" id="terminal-look-label">Terminal</span>
+    <div class="pills" role="group" aria-labelledby="terminal-look-label">
+      <button type="button" data-terminal-look="prototype" aria-pressed="false" title="First prototype (62618d0): Cascadia Mono 15px, xterm default colors">Prototype</button>
+      <button type="button" data-terminal-look="original" aria-pressed="false" title="Slice 5 (448568e): Cascadia Mono 14px on #16181d">Slice 5</button>
+      <button type="button" data-terminal-look="windows" aria-pressed="false" title="Current: matches Windows Terminal, JetBrains Mono 16px, One Half Dark on #000B0C">Windows Terminal</button>
+    </div>
+    </div>
     <button type="button" id="reader-button" class="bar-button" popovertarget="reader-settings" aria-label="Reading settings">Aa</button>
   </div>
   <div id="reader-settings" popover aria-label="Reading settings">
@@ -227,12 +247,12 @@ const marked = new Marked(
 
 // Same face as the user's Windows Terminal; load it before xterm measures glyphs.
 const TERM_FONT = '"JetBrainsMono Nerd Font", "JetBrains Mono", "Cascadia Mono", Consolas, monospace';
-await document.fonts.load(`300 16px ${TERM_FONT}`);
+await document.fonts.load(`16px ${TERM_FONT}`);
 await document.fonts.load(`bold 16px ${TERM_FONT}`);
 
 const TERMINAL_LOOKS = {
   // Windows Terminal's One Half Dark scheme on the user's #000B0C background.
-  windows: { fontFamily: TERM_FONT, fontSize: 16, fontWeight: "300", lineHeight: 1.25, theme: {
+  windows: { fontFamily: TERM_FONT, fontSize: 16, fontWeight: "normal", lineHeight: 1, theme: {
     background: "#000b0c",
     foreground: "#dcdfe4",
     cursor: "#ffffff",
@@ -255,8 +275,10 @@ const TERMINAL_LOOKS = {
     brightCyan: "#56b6c2",
     brightWhite: "#dcdfe4",
   } },
-  // The terminal before any styling: xterm defaults on #16181d.
+  // Slice 5 (448568e): xterm defaults on #16181d.
   original: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 14, fontWeight: "normal", lineHeight: 1, theme: { background: "#16181d" } },
+  // First prototype (62618d0): xterm defaults with Cascadia Mono, on a #1e1e1e page.
+  prototype: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 15, fontWeight: "normal", lineHeight: 1, theme: {} },
 };
 const TERMINAL_KEY = "cc-web.terminal";
 let terminalLook = localStorage.getItem(TERMINAL_KEY) ?? "windows";
@@ -273,17 +295,22 @@ fit.fit();
 // Refit whenever the pane changes size (window resize or the narrow-layout switch).
 new ResizeObserver(() => fit.fit()).observe(document.getElementById("term"));
 
-const originalButton = document.getElementById("terminal-original");
-const showTerminalLook = () => originalButton.setAttribute("aria-pressed", String(terminalLook === "original"));
-originalButton.addEventListener("click", () => {
-  terminalLook = terminalLook === "original" ? "windows" : "original";
-  Object.assign(term.options, TERMINAL_LOOKS[terminalLook]);
-  document.body.dataset.terminal = terminalLook;
-  localStorage.setItem(TERMINAL_KEY, terminalLook);
-  showTerminalLook();
-  fit.fit();
-  term.focus();
-});
+// Terminal look pills: exactly one look is selected.
+const lookButtons = document.querySelectorAll("[data-terminal-look]");
+const showTerminalLook = () => {
+  for (const b of lookButtons) b.setAttribute("aria-pressed", String(terminalLook === b.dataset.terminalLook));
+};
+for (const b of lookButtons) {
+  b.addEventListener("click", () => {
+    terminalLook = b.dataset.terminalLook;
+    Object.assign(term.options, TERMINAL_LOOKS[terminalLook]);
+    document.body.dataset.terminal = terminalLook;
+    localStorage.setItem(TERMINAL_KEY, terminalLook);
+    showTerminalLook();
+    fit.fit();
+    term.focus();
+  });
+}
 showTerminalLook();
 
 // Reading settings, like an ebook reader. Saved per browser.
