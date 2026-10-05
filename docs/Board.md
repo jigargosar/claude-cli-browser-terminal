@@ -22,4 +22,4 @@
 - [x] Extend `server.mjs`: left terminal (xterm.js), right last reply rendered as markdown, updates after each reply
 - [x] One claude per server: started at server start with explicit `new` or `resume`, never per browser connection
 - [x] Reload/close tab only detaches; reconnect restores the screen; claude exit stops the server
-- [ ] Verify: start server from own terminal, chat, last reply shows on the right, reload keeps the session
+- [x] Verify: start server from own terminal, chat, last reply shows on the right, reload keeps the session
