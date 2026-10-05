@@ -76,18 +76,15 @@
     padding: 5px 10px; cursor: pointer;
   }
   .bar-button:hover { color: var(--ink); background: var(--tint); }
-  .bar-button:focus-visible, .seg button:focus-visible, .pills button:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+  .bar-button:focus-visible, .seg button:focus-visible, #terminal-look:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
 
-  /* Terminal look: a pill bar, oldest look first. */
-  .look { display: flex; align-items: center; }
-  .pills-label { margin-right: 6px; }
-  .pills { display: flex; gap: 2px; padding: 2px; margin-right: 8px; border: 1px solid var(--rule); border-radius: 999px; }
-  .pills button {
-    font: inherit; color: var(--ink-muted); background: none; border: 0; border-radius: 999px;
-    padding: 4px 12px; cursor: pointer; white-space: nowrap;
+  /* Terminal look dropdown, oldest look first. */
+  .look { display: flex; align-items: center; gap: 6px; margin-right: 4px; white-space: nowrap; }
+  #terminal-look {
+    font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 4px 6px; cursor: pointer;
   }
-  .pills button:hover { color: var(--ink); background: var(--tint); }
-  .pills button[aria-pressed="true"] { color: var(--paper); background: var(--ink); }
+  #terminal-look:hover { background: var(--tint); }
   #reader-button { font: 600 15px/1 var(--serif); anchor-name: --reader; }
 
   /* Reading settings panel, anchored under the Aa button. */
@@ -179,14 +176,13 @@
 <aside id="reply-pane" aria-label="Last reply">
   <div id="reply-bar">
     <span id="reply-status">Waiting for the first reply</span>
-    <div class="look">
-    <span class="pills-label" id="terminal-look-label">Terminal</span>
-    <div class="pills" role="group" aria-labelledby="terminal-look-label">
-      <button type="button" data-terminal-look="prototype" aria-pressed="false" title="First prototype (62618d0): Cascadia Mono 15px, xterm default colors">Prototype</button>
-      <button type="button" data-terminal-look="original" aria-pressed="false" title="Slice 5 (448568e): Cascadia Mono 14px on #16181d">Slice 5</button>
-      <button type="button" data-terminal-look="windows" aria-pressed="false" title="Current: matches Windows Terminal, JetBrains Mono 16px, One Half Dark on #000B0C">Windows Terminal</button>
-    </div>
-    </div>
+    <label class="look">Terminal
+      <select id="terminal-look">
+        <option value="prototype">Prototype (62618d0)</option>
+        <option value="original">Slice 5 (448568e)</option>
+        <option value="windows">Windows Terminal</option>
+      </select>
+    </label>
     <button type="button" id="reader-button" class="bar-button" popovertarget="reader-settings" aria-label="Reading settings">Aa</button>
   </div>
   <div id="reader-settings" popover aria-label="Reading settings">
@@ -295,23 +291,16 @@ fit.fit();
 // Refit whenever the pane changes size (window resize or the narrow-layout switch).
 new ResizeObserver(() => fit.fit()).observe(document.getElementById("term"));
 
-// Terminal look pills: exactly one look is selected.
-const lookButtons = document.querySelectorAll("[data-terminal-look]");
-const showTerminalLook = () => {
-  for (const b of lookButtons) b.setAttribute("aria-pressed", String(terminalLook === b.dataset.terminalLook));
-};
-for (const b of lookButtons) {
-  b.addEventListener("click", () => {
-    terminalLook = b.dataset.terminalLook;
-    Object.assign(term.options, TERMINAL_LOOKS[terminalLook]);
-    document.body.dataset.terminal = terminalLook;
-    localStorage.setItem(TERMINAL_KEY, terminalLook);
-    showTerminalLook();
-    fit.fit();
-    term.focus();
-  });
-}
-showTerminalLook();
+const lookSelect = document.getElementById("terminal-look");
+lookSelect.value = terminalLook;
+lookSelect.addEventListener("change", () => {
+  terminalLook = lookSelect.value;
+  Object.assign(term.options, TERMINAL_LOOKS[terminalLook]);
+  document.body.dataset.terminal = terminalLook;
+  localStorage.setItem(TERMINAL_KEY, terminalLook);
+  fit.fit();
+  term.focus();
+});
 
 // Reading settings, like an ebook reader. Saved per browser.
 const READER_KEY = "cc-web.reader";
