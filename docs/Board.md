@@ -7,7 +7,7 @@
 # Slice 1: Side-by-side reply preview POC
 - [x] Create `.claude/hooks/last-reply.mjs`: Stop hook writes `last_assistant_message` to `.claude/replies/<session_id>.md`
 - [x] Register Stop hook in `.claude/settings.local.json` using `$CLAUDE_PROJECT_DIR`
-- [ ] Start new `claude` session in `xterm-eval` from own terminal (not from inside a Claude session)
-- [ ] Send a prompt, confirm reply file is created
-- [ ] Open reply file in VS Code, Ctrl+K V for side preview
-- [ ] Send another prompt, confirm preview updates
+- [x] Start new `claude` session in `xterm-eval` from own terminal (not from inside a Claude session)
+- [x] Send a prompt, confirm reply file is created
+- [x] Open reply file in VS Code, Ctrl+K V for side preview
+- [x] Send another prompt, confirm preview updates
