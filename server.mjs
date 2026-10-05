@@ -101,7 +101,8 @@ new WebSocketServer({ server }).on("connection", (ws) => {
   const latest = latestReply();
   if (latest) ws.send(replyMessage(latest));
 
-  const pty = spawn(process.platform === "win32" ? "claude.exe" : "claude", [], {
+  // Extra CLI args go to claude, e.g. `node server.mjs --model haiku`
+  const pty = spawn(process.platform === "win32" ? "claude.exe" : "claude", process.argv.slice(2), {
     name: "xterm-256color",
     cols: 80,
     rows: 24,
