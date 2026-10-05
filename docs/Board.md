@@ -36,7 +36,9 @@
 - [x] Browser libraries pinned in `package.json`, served from `node_modules` at `/vendor/*` (no CDN)
 - [x] Viewer socket error (tab closed/refreshed mid-send) drops only that viewer, server keeps running
 
-# Slice 5: Verify session tracking
-- [ ] SessionStart hook POST times out after 2s, so a dead server fails loudly instead of hanging startup
-- [ ] Verify: new, resume picker, `/clear` each report the right session ID
-- [ ] Verify: chat in browser and in another terminal, right panel shows only browser replies
+# Slice 5: Page layout and markdown rendering
+- [x] Padding around the terminal, not touching the window edge
+- [x] Min widths for terminal and reply panel
+- [x] Proper markdown rendering: readable type, tables, syntax-highlighted code
+- [x] No double scrollbars; narrow windows stack the panels
+- [x] Page moved out of `server.mjs` into `web/index.html`

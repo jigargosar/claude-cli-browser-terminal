@@ -19,6 +19,9 @@ const VENDOR = {
   "/vendor/addon-unicode11.mjs": ["@xterm/addon-unicode11/lib/addon-unicode11.mjs", "text/javascript"],
   "/vendor/marked.mjs": ["marked/lib/marked.esm.js", "text/javascript"],
   "/vendor/purify.mjs": ["dompurify/dist/purify.es.mjs", "text/javascript"],
+  "/vendor/marked-highlight.mjs": ["marked-highlight/src/index.js", "text/javascript"],
+  "/vendor/highlight.mjs": ["@highlightjs/cdn-assets/es/highlight.min.js", "text/javascript"],
+  "/vendor/hljs-github-dark.css": ["@highlightjs/cdn-assets/styles/github-dark.min.css", "text/css"],
 };
 
 // Usage: node server.mjs <port> new|resume [claude args]. Fixed ports: dev 7681, test 7682 (see package.json).
@@ -26,72 +29,7 @@ const [portArg, mode, ...claudeArgs] = process.argv.slice(2);
 const MODES = { new: [], resume: ["--resume"] };
 if (!/^\d+$/.test(portArg ?? "") || !MODES[mode]) throw new Error("Usage: node server.mjs <port> new|resume [claude args]");
 
-const html = `<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Claude Code</title>
-<link rel="stylesheet" href="/vendor/xterm.css">
-<style>
-  html, body { margin: 0; height: 100%; background: #1e1e1e; color: #d4d4d4; }
-  body { display: flex; }
-  #t, #reply { flex: 1; min-width: 0; height: 100%; box-sizing: border-box; }
-  #reply { overflow: auto; padding: 16px 24px; border-left: 1px solid #333;
-    font: 16px/1.6 system-ui, sans-serif; }
-  #reply pre { background: #111; padding: 12px; overflow: auto; }
-  #reply code { font-family: Cascadia Mono, Consolas, monospace; font-size: 14px; }
-  #reply a { color: #4fc1ff; }
-</style>
-</head>
-<body>
-<div id="t"></div>
-<div id="reply"></div>
-<script type="module">
-import { Terminal } from "/vendor/xterm.mjs";
-import { FitAddon } from "/vendor/addon-fit.mjs";
-import { WebglAddon } from "/vendor/addon-webgl.mjs";
-import { Unicode11Addon } from "/vendor/addon-unicode11.mjs";
-import { marked } from "/vendor/marked.mjs";
-import DOMPurify from "/vendor/purify.mjs";
-
-const term = new Terminal({ allowProposedApi: true, cursorBlink: true, fontFamily: "Cascadia Mono, Consolas, monospace" });
-const fit = new FitAddon();
-term.loadAddon(fit);
-term.loadAddon(new Unicode11Addon());
-term.unicode.activeVersion = "11";
-term.open(document.getElementById("t"));
-term.loadAddon(new WebglAddon());
-fit.fit();
-
-const reply = document.getElementById("reply");
-const ws = new WebSocket("ws://" + location.host);
-const send = (m) => ws.readyState === 1 && ws.send(JSON.stringify(m));
-ws.onopen = () => send({ t: "r", cols: term.cols, rows: term.rows });
-ws.onmessage = (e) => {
-  const m = JSON.parse(e.data);
-  if (m.t === "o") term.write(m.d);
-  else if (m.t === "reply") {
-    reply.innerHTML = DOMPurify.sanitize(marked.parse(m.md));
-    reply.scrollTop = 0;
-  }
-};
-ws.onclose = () => term.write("\\r\\n[disconnected]\\r\\n");
-
-// Shift+Enter -> newline in Claude Code (same as Alt+Enter)
-term.attachCustomKeyEventHandler((e) => {
-  if (e.type === "keydown" && e.key === "Enter" && e.shiftKey) {
-    send({ t: "i", d: "\\x1b\\r" });
-    return false;
-  }
-  return true;
-});
-term.onData((d) => send({ t: "i", d }));
-term.onResize(({ cols, rows }) => send({ t: "r", cols, rows }));
-addEventListener("resize", () => fit.fit());
-term.focus();
-</script>
-</body>
-</html>`;
+const html = readFileSync(`${import.meta.dirname}/web/index.html`, "utf8");
 
 const clients = new Set();
 const broadcast = (msg) => {

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code</title>
+<link rel="stylesheet" href="/vendor/xterm.css">
+<link rel="stylesheet" href="/vendor/hljs-github-dark.css">
+<style>
+  :root {
+    --term-bg: #16181d;
+    --paper: #1d2027;
+    --ink: #dfe2e8;
+    --ink-muted: #8d95a3;
+    --rule: #2c303a;
+    --code-bg: #14161b;
+    --link: #8ab4f8;
+    --quote: #6f7a8c;
+    --mono: "Cascadia Mono", Consolas, monospace;
+    --sans: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  }
+
+  /* The page never scrolls; each pane owns its scrolling. */
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--term-bg); }
+  body { display: flex; }
+
+  #terminal-pane { flex: 1 1 55%; min-width: 600px; padding: 14px 6px 14px 18px; box-sizing: border-box; }
+  #term { width: 100%; height: 100%; overflow: hidden; }
+
+  #reply-pane {
+    flex: 1 1 45%; min-width: 380px; display: flex; flex-direction: column;
+    background: var(--paper); border-left: 1px solid var(--rule); color: var(--ink);
+  }
+  #reply-status {
+    flex: none; padding: 10px 40px; font: 13px/1.4 var(--sans); color: var(--ink-muted);
+    border-bottom: 1px solid var(--rule);
+  }
+  #reply { flex: 1; overflow-y: auto; padding: 28px 40px 64px; }
+
+  /* Narrow windows: stack, terminal on top. Each pane still scrolls on its own. */
+  @media (max-width: 1000px) {
+    body { flex-direction: column; }
+    #terminal-pane { flex: 1 1 55%; min-width: 0; min-height: 0; }
+    #reply-pane { flex: 1 1 45%; min-width: 0; min-height: 0; border-left: 0; border-top: 1px solid var(--rule); }
+    #reply-status, #reply { padding-left: 20px; padding-right: 20px; }
+  }
+
+  #reply, .xterm-viewport { scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
+
+  /* Rendered markdown */
+  .md { max-width: 72ch; font: 16px/1.65 var(--sans); }
+  .md > :first-child { margin-top: 0; }
+  .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 { line-height: 1.25; margin: 1.8em 0 0.6em; font-weight: 600; }
+  .md h1 { font-size: 1.7em; }
+  .md h2 { font-size: 1.35em; padding-bottom: 0.3em; border-bottom: 1px solid var(--rule); }
+  .md h3 { font-size: 1.15em; }
+  .md h4 { font-size: 1em; }
+  .md h5, .md h6 { font-size: 0.9em; color: var(--ink-muted); }
+  .md p, .md ul, .md ol, .md blockquote, .md pre, .md table { margin: 0 0 1em; }
+  .md ul, .md ol { padding-left: 1.6em; }
+  .md li + li, .md li > ul, .md li > ol { margin-top: 0.25em; }
+  .md li > ul, .md li > ol { margin-bottom: 0; }
+  .md a { color: var(--link); text-underline-offset: 2px; }
+  .md a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px; }
+  .md strong { font-weight: 600; color: #fff; }
+  .md hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }
+  .md blockquote { padding: 0 1em; color: var(--quote); border-left: 3px solid var(--rule); }
+  .md code { font: 0.88em var(--mono); background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 4px; }
+  .md pre { background: var(--code-bg); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; overflow-x: auto; }
+  .md pre code { background: none; padding: 0; font-size: 0.85em; line-height: 1.55; }
+  .md pre code.hljs { background: none; padding: 0; }
+  .md table { border-collapse: collapse; display: block; overflow-x: auto; }
+  .md th, .md td { border: 1px solid var(--rule); padding: 6px 12px; text-align: left; }
+  .md th { background: var(--code-bg); font-weight: 600; }
+  .md tr:nth-child(2n) td { background: #20232b; }
+  .md img { max-width: 100%; }
+  .md input[type="checkbox"] { margin-right: 0.4em; }
+
+  .empty { color: var(--ink-muted); font: 15px/1.6 var(--sans); }
+</style>
+</head>
+<body>
+<main id="terminal-pane"><div id="term"></div></main>
+<aside id="reply-pane" aria-label="Last reply">
+  <div id="reply-status">Waiting for the first reply</div>
+  <article id="reply" class="md"><p class="empty">Replies from this session show up here.</p></article>
+</aside>
+<script type="module">
+import { Terminal } from "/vendor/xterm.mjs";
+import { FitAddon } from "/vendor/addon-fit.mjs";
+import { WebglAddon } from "/vendor/addon-webgl.mjs";
+import { Unicode11Addon } from "/vendor/addon-unicode11.mjs";
+import { Marked } from "/vendor/marked.mjs";
+import { markedHighlight } from "/vendor/marked-highlight.mjs";
+import hljs from "/vendor/highlight.mjs";
+import DOMPurify from "/vendor/purify.mjs";
+
+const marked = new Marked(
+  markedHighlight({
+    langPrefix: "hljs language-",
+    highlight: (code, lang) => hljs.highlight(code, { language: hljs.getLanguage(lang) ? lang : "plaintext" }).value,
+  }),
+);
+
+const term = new Terminal({
+  allowProposedApi: true,
+  cursorBlink: true,
+  fontFamily: "Cascadia Mono, Consolas, monospace",
+  fontSize: 14,
+  theme: { background: "#16181d" },
+});
+const fit = new FitAddon();
+term.loadAddon(fit);
+term.loadAddon(new Unicode11Addon());
+term.unicode.activeVersion = "11";
+term.open(document.getElementById("term"));
+term.loadAddon(new WebglAddon());
+fit.fit();
+// Refit whenever the pane changes size (window resize or the narrow-layout switch).
+new ResizeObserver(() => fit.fit()).observe(document.getElementById("term"));
+
+const reply = document.getElementById("reply");
+const status = document.getElementById("reply-status");
+const timeFormat = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
+
+const ws = new WebSocket("ws://" + location.host);
+const send = (m) => ws.readyState === 1 && ws.send(JSON.stringify(m));
+ws.onopen = () => send({ t: "r", cols: term.cols, rows: term.rows });
+ws.onmessage = (e) => {
+  const m = JSON.parse(e.data);
+  if (m.t === "o") term.write(m.d);
+  else if (m.t === "reply") {
+    if (m.md) {
+      reply.innerHTML = DOMPurify.sanitize(marked.parse(m.md));
+      status.textContent = `Updated ${timeFormat.format(new Date())}`;
+    } else {
+      reply.innerHTML = '<p class="empty">Replies from this session show up here.</p>';
+      status.textContent = "Waiting for the first reply";
+    }
+    reply.scrollTop = 0;
+  }
+};
+ws.onclose = () => {
+  term.write("\r\n[disconnected]\r\n");
+  status.textContent = "Disconnected from the server. Restart it and reload this page.";
+};
+
+// Shift+Enter -> newline in Claude Code (same as Alt+Enter)
+term.attachCustomKeyEventHandler((e) => {
+  if (e.type === "keydown" && e.key === "Enter" && e.shiftKey) {
+    send({ t: "i", d: "\x1b\r" });
+    return false;
+  }
+  return true;
+});
+term.onData((d) => send({ t: "i", d }));
+term.onResize(({ cols, rows }) => send({ t: "r", cols, rows }));
+term.focus();
+</script>
+</body>
+</html>
