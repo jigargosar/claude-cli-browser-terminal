@@ -17,6 +17,7 @@
 - [x] Verify: each reply opens or focuses its session's file
 
 # Slice 3: Reply preview in browser
-- [ ] Move hook script and replies out of `.claude/` into top-level `.cc-web/`; only the hook registration stays in `.claude/settings.local.json`
+- [ ] Move hook script and replies out of `.claude/` into top-level `.cc-web/`.
+- [ ] Update references to new `.cc-web`
 - [ ] Extend `server.mjs`: left terminal (xterm.js), right last reply rendered as markdown, updates after each reply
 - [ ] Verify: start server from own terminal, chat, last reply shows on the right
