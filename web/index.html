@@ -5,84 +5,207 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Claude Code</title>
 <link rel="stylesheet" href="/vendor/xterm.css">
-<link rel="stylesheet" href="/vendor/hljs-github-dark.css">
+<link rel="stylesheet" href="/vendor/hljs-atom-one-dark.css">
 <style>
+  /* Two materials: the dark terminal you type into, the light page you read. */
   :root {
-    --term-bg: #16181d;
-    --paper: #1d2027;
-    --ink: #dfe2e8;
-    --ink-muted: #8d95a3;
-    --rule: #2c303a;
-    --code-bg: #14161b;
-    --link: #8ab4f8;
-    --quote: #6f7a8c;
-    --mono: "Cascadia Mono", Consolas, monospace;
+    /* Terminal: the user's Windows Terminal (One Half Dark on #000B0C, JetBrains Mono). */
+    --term-bg: #000b0c;
+    --term-fg: #dcdfe4;
+    /* Reading page */
+    --paper: #f8fbfb;
+    --ink: #1a2326;
+    --ink-muted: #5b6569;
+    --quote: #454f52;
+    --rule: #dbe1e2;
+    --tint: #ebf1f3;
+    --code-ink: #a94620;
+    --stripe: #f3f6f7;
+    --link: #0064b5;
+    --selection: #bfdeff;
+    --thumb: #b8bfc0;
+    --mono: "JetBrainsMono Nerd Font", "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
     --sans: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+    --display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+    --serif: "Sitka Text", Sitka, Georgia, serif;
+    --serif-display: "Sitka Subheading", Sitka, Georgia, serif;
+    /* Reading settings; the Aa panel overrides these on #reply-pane. */
+    --reader-size: 17px;
+    --reader-leading: 1.6;
+    --reader-measure: 68ch;
+    --reader-font: var(--sans);
+    --reader-heading-font: var(--display);
   }
+
+  /* Reading themes, like an ebook reader. Light is the default above. */
+  #reply-pane[data-theme="sepia"] {
+    --paper: #f4ecd8; --ink: #3b2f22; --ink-muted: #6e5d49; --quote: #57483a; --rule: #ddd0b5;
+    --tint: #ebe0c6; --stripe: #efe6cf; --code-ink: #8a3a12; --link: #1f5a99; --selection: #e3cfa0; --thumb: #c9b994;
+  }
+  #reply-pane[data-theme="dark"] {
+    --paper: #1e2227; --ink: #d6dade; --ink-muted: #9aa2ab; --quote: #b5bcc4; --rule: #343a42;
+    --tint: #272c32; --stripe: #23272c; --code-ink: #f0a57c; --link: #7cb3ff; --selection: #2f4a6b; --thumb: #4a525c;
+  }
+
+  /* The terminal as it was before the Windows Terminal match. */
+  body[data-terminal="original"] { --term-bg: #16181d; }
+  body[data-terminal="original"] #terminal-pane { padding: 14px 6px 14px 18px; }
 
   /* The page never scrolls; each pane owns its scrolling. */
   html, body { margin: 0; height: 100%; overflow: hidden; background: var(--term-bg); }
   body { display: flex; }
 
-  #terminal-pane { flex: 1 1 55%; min-width: 600px; padding: 14px 6px 14px 18px; box-sizing: border-box; }
+  #terminal-pane { flex: 1 1 55%; min-width: 600px; padding: 8px 8px 8px 12px; box-sizing: border-box; }
   #term { width: 100%; height: 100%; overflow: hidden; }
+  .xterm-viewport { scrollbar-width: thin; scrollbar-color: #3a4446 transparent; }
 
   #reply-pane {
     flex: 1 1 45%; min-width: 380px; display: flex; flex-direction: column;
-    background: var(--paper); border-left: 1px solid var(--rule); color: var(--ink);
+    background: var(--paper); color: var(--ink);
   }
-  #reply-status {
-    flex: none; padding: 10px 40px; font: 13px/1.4 var(--sans); color: var(--ink-muted);
-    border-bottom: 1px solid var(--rule);
+  #reply-bar {
+    flex: none; display: flex; align-items: center; gap: 4px; padding: 6px 40px 6px 48px;
+    font: 13px/1.4 var(--sans); color: var(--ink-muted); border-bottom: 1px solid var(--rule);
   }
-  #reply { flex: 1; overflow-y: auto; padding: 28px 40px 64px; }
+  #reply-status { flex: 1; min-width: 0; }
+  .bar-button {
+    font: inherit; color: var(--ink-muted); background: none; border: 1px solid transparent; border-radius: 6px;
+    padding: 5px 10px; cursor: pointer;
+  }
+  .bar-button:hover { color: var(--ink); background: var(--tint); }
+  .bar-button[aria-pressed="true"] { color: var(--ink); border-color: var(--rule); }
+  .bar-button:focus-visible, .seg button:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+  #reader-button { font: 600 15px/1 var(--serif); anchor-name: --reader; }
+
+  /* Reading settings panel, anchored under the Aa button. */
+  #reader-settings {
+    position-anchor: --reader; inset: auto; top: anchor(bottom); right: anchor(right); margin: 6px 0 0;
+    width: 280px; padding: 14px 16px; box-sizing: border-box;
+    background: var(--paper); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.14); font: 13px/1.4 var(--sans);
+  }
+  #reader-settings .row { display: grid; gap: 6px; margin-bottom: 12px; }
+  #reader-settings .label { color: var(--ink-muted); }
+  .seg { display: flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+  .seg button {
+    flex: 1; font: inherit; color: var(--ink); background: none; border: 0; padding: 7px 4px; cursor: pointer;
+  }
+  .seg button + button { border-left: 1px solid var(--rule); }
+  .seg button:hover { background: var(--tint); }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .seg button:disabled { opacity: 0.4; cursor: default; background: none; }
+  .seg output { flex: 1; align-self: center; text-align: center; font-variant-numeric: tabular-nums; }
+  .seg .swatch { font: 600 14px/1 var(--serif); }
+  .seg .swatch[data-theme-value="light"] { background: #f8fbfb; color: #1a2326; }
+  .seg .swatch[data-theme-value="sepia"] { background: #f4ecd8; color: #3b2f22; }
+  .seg .swatch[data-theme-value="dark"] { background: #1e2227; color: #d6dade; }
+  .seg .swatch[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--link); }
+  #reader-reset { width: 100%; margin-top: 2px; }
+  #reply {
+    flex: 1; overflow-y: auto; padding: 32px 48px 72px;
+    scrollbar-width: thin; scrollbar-color: var(--thumb) transparent;
+  }
+  #reply ::selection { background: var(--selection); color: var(--ink); }
 
   /* Narrow windows: stack, terminal on top. Each pane still scrolls on its own. */
   @media (max-width: 1000px) {
     body { flex-direction: column; }
     #terminal-pane { flex: 1 1 55%; min-width: 0; min-height: 0; }
-    #reply-pane { flex: 1 1 45%; min-width: 0; min-height: 0; border-left: 0; border-top: 1px solid var(--rule); }
-    #reply-status, #reply { padding-left: 20px; padding-right: 20px; }
+    #reply-pane { flex: 1 1 45%; min-width: 0; min-height: 0; }
+    #reply-bar, #reply { padding-left: 20px; padding-right: 20px; }
   }
 
-  #reply, .xterm-viewport { scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
-
-  /* Rendered markdown */
-  .md { max-width: 72ch; font: 16px/1.65 var(--sans); }
+  /* Rendered markdown: a calm reading column. */
+  .md {
+    max-width: var(--reader-measure);
+    font-family: var(--reader-font); font-size: var(--reader-size); line-height: var(--reader-leading);
+  }
   .md > :first-child { margin-top: 0; }
-  .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 { line-height: 1.25; margin: 1.8em 0 0.6em; font-weight: 600; }
-  .md h1 { font-size: 1.7em; }
-  .md h2 { font-size: 1.35em; padding-bottom: 0.3em; border-bottom: 1px solid var(--rule); }
-  .md h3 { font-size: 1.15em; }
-  .md h4 { font-size: 1em; }
-  .md h5, .md h6 { font-size: 0.9em; color: var(--ink-muted); }
+  .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
+    font-family: var(--reader-heading-font); font-weight: 600; line-height: 1.25; margin: 1.7em 0 0.5em; text-wrap: balance;
+  }
+  .md h1 { font-size: 1.6em; }
+  .md h2 { font-size: 1.3em; }
+  .md h3 { font-size: 1.1em; }
+  .md h4, .md h5, .md h6 { font-size: 1em; }
+  .md h5, .md h6 { color: var(--ink-muted); }
   .md p, .md ul, .md ol, .md blockquote, .md pre, .md table { margin: 0 0 1em; }
-  .md ul, .md ol { padding-left: 1.6em; }
-  .md li + li, .md li > ul, .md li > ol { margin-top: 0.25em; }
+  .md ul, .md ol { padding-left: 1.5em; }
+  .md li + li, .md li > ul, .md li > ol { margin-top: 0.3em; }
   .md li > ul, .md li > ol { margin-bottom: 0; }
-  .md a { color: var(--link); text-underline-offset: 2px; }
+  .md li::marker { color: var(--ink-muted); }
+  .md a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .md a:hover { text-decoration-thickness: 2px; }
   .md a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px; }
-  .md strong { font-weight: 600; color: #fff; }
+  .md strong { font-weight: 600; }
   .md hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }
-  .md blockquote { padding: 0 1em; color: var(--quote); border-left: 3px solid var(--rule); }
-  .md code { font: 0.88em var(--mono); background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 4px; }
-  .md pre { background: var(--code-bg); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; overflow-x: auto; }
-  .md pre code { background: none; padding: 0; font-size: 0.85em; line-height: 1.55; }
+  .md blockquote { padding: 0 0 0 1em; color: var(--quote); border-left: 2px solid var(--rule); }
+  /* Inline code stays in the reading sans: no box to chop the sentence, just a rust ink. */
+  .md code { font: 1em var(--sans); color: var(--code-ink); }
+  /* Code blocks are pieces of the terminal set into the page. */
+  .md pre {
+    background: var(--term-bg); color: var(--term-fg); border-radius: 6px; padding: 14px 16px; overflow-x: auto;
+    scrollbar-width: thin; scrollbar-color: #3a4446 transparent;
+  }
+  .md pre code { font: 14px/1.55 var(--mono); color: inherit; }
   .md pre code.hljs { background: none; padding: 0; }
-  .md table { border-collapse: collapse; display: block; overflow-x: auto; }
-  .md th, .md td { border: 1px solid var(--rule); padding: 6px 12px; text-align: left; }
-  .md th { background: var(--code-bg); font-weight: 600; }
-  .md tr:nth-child(2n) td { background: #20232b; }
+  .md pre ::selection { background: #ffffff40; color: inherit; }
+  .md table { border-collapse: collapse; display: block; overflow-x: auto; font-size: 0.94em; }
+  .md th, .md td { border: 1px solid var(--rule); padding: 6px 12px; text-align: left; vertical-align: top; }
+  .md th { background: var(--tint); font-weight: 600; }
+  .md tr:nth-child(2n) td { background: var(--stripe); }
+  .md td { font-variant-numeric: tabular-nums; }
   .md img { max-width: 100%; }
-  .md input[type="checkbox"] { margin-right: 0.4em; }
+  .md input[type="checkbox"] { margin-right: 0.4em; accent-color: var(--link); }
 
-  .empty { color: var(--ink-muted); font: 15px/1.6 var(--sans); }
+  .empty { color: var(--ink-muted); }
 </style>
 </head>
 <body>
 <main id="terminal-pane"><div id="term"></div></main>
 <aside id="reply-pane" aria-label="Last reply">
-  <div id="reply-status">Waiting for the first reply</div>
+  <div id="reply-bar">
+    <span id="reply-status">Waiting for the first reply</span>
+    <button type="button" id="terminal-original" class="bar-button" aria-pressed="false">Original terminal</button>
+    <button type="button" id="reader-button" class="bar-button" popovertarget="reader-settings" aria-label="Reading settings">Aa</button>
+  </div>
+  <div id="reader-settings" popover aria-label="Reading settings">
+    <div class="row"><span class="label">Theme</span>
+      <div class="seg" role="group" aria-label="Theme">
+        <button type="button" class="swatch" data-set="theme" data-theme-value="light" data-value="light">Light</button>
+        <button type="button" class="swatch" data-set="theme" data-theme-value="sepia" data-value="sepia">Sepia</button>
+        <button type="button" class="swatch" data-set="theme" data-theme-value="dark" data-value="dark">Dark</button>
+      </div>
+    </div>
+    <div class="row"><span class="label">Font</span>
+      <div class="seg" role="group" aria-label="Font">
+        <button type="button" data-set="font" data-value="sans" style="font-family: var(--sans)">Sans</button>
+        <button type="button" data-set="font" data-value="serif" style="font-family: var(--serif)">Serif</button>
+      </div>
+    </div>
+    <div class="row"><span class="label">Text size</span>
+      <div class="seg" role="group" aria-label="Text size">
+        <button type="button" id="size-down" aria-label="Smaller text">A−</button>
+        <output id="size-value"></output>
+        <button type="button" id="size-up" aria-label="Larger text">A+</button>
+      </div>
+    </div>
+    <div class="row"><span class="label">Line spacing</span>
+      <div class="seg" role="group" aria-label="Line spacing">
+        <button type="button" data-set="leading" data-value="tight">Tight</button>
+        <button type="button" data-set="leading" data-value="normal">Normal</button>
+        <button type="button" data-set="leading" data-value="loose">Loose</button>
+      </div>
+    </div>
+    <div class="row"><span class="label">Width</span>
+      <div class="seg" role="group" aria-label="Width">
+        <button type="button" data-set="width" data-value="narrow">Narrow</button>
+        <button type="button" data-set="width" data-value="normal">Normal</button>
+        <button type="button" data-set="width" data-value="wide">Wide</button>
+      </div>
+    </div>
+    <button type="button" id="reader-reset" class="bar-button">Reset reading settings</button>
+  </div>
   <article id="reply" class="md"><p class="empty">Replies from this session show up here.</p></article>
 </aside>
 <script type="module">
@@ -102,13 +225,44 @@ const marked = new Marked(
   }),
 );
 
-const term = new Terminal({
-  allowProposedApi: true,
-  cursorBlink: true,
-  fontFamily: "Cascadia Mono, Consolas, monospace",
-  fontSize: 14,
-  theme: { background: "#16181d" },
-});
+// Same face as the user's Windows Terminal; load it before xterm measures glyphs.
+const TERM_FONT = '"JetBrainsMono Nerd Font", "JetBrains Mono", "Cascadia Mono", Consolas, monospace';
+await document.fonts.load(`300 16px ${TERM_FONT}`);
+await document.fonts.load(`bold 16px ${TERM_FONT}`);
+
+const TERMINAL_LOOKS = {
+  // Windows Terminal's One Half Dark scheme on the user's #000B0C background.
+  windows: { fontFamily: TERM_FONT, fontSize: 16, fontWeight: "300", lineHeight: 1.25, theme: {
+    background: "#000b0c",
+    foreground: "#dcdfe4",
+    cursor: "#ffffff",
+    cursorAccent: "#000b0c",
+    selectionBackground: "#ffffff40",
+    black: "#282c34",
+    red: "#e06c75",
+    green: "#98c379",
+    yellow: "#e5c07b",
+    blue: "#61afef",
+    magenta: "#c678dd",
+    cyan: "#56b6c2",
+    white: "#dcdfe4",
+    brightBlack: "#5a6374",
+    brightRed: "#e06c75",
+    brightGreen: "#98c379",
+    brightYellow: "#e5c07b",
+    brightBlue: "#61afef",
+    brightMagenta: "#c678dd",
+    brightCyan: "#56b6c2",
+    brightWhite: "#dcdfe4",
+  } },
+  // The terminal before any styling: xterm defaults on #16181d.
+  original: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 14, fontWeight: "normal", lineHeight: 1, theme: { background: "#16181d" } },
+};
+const TERMINAL_KEY = "cc-web.terminal";
+let terminalLook = localStorage.getItem(TERMINAL_KEY) ?? "windows";
+document.body.dataset.terminal = terminalLook;
+
+const term = new Terminal({ allowProposedApi: true, cursorBlink: true, ...TERMINAL_LOOKS[terminalLook] });
 const fit = new FitAddon();
 term.loadAddon(fit);
 term.loadAddon(new Unicode11Addon());
@@ -118,6 +272,52 @@ term.loadAddon(new WebglAddon());
 fit.fit();
 // Refit whenever the pane changes size (window resize or the narrow-layout switch).
 new ResizeObserver(() => fit.fit()).observe(document.getElementById("term"));
+
+const originalButton = document.getElementById("terminal-original");
+const showTerminalLook = () => originalButton.setAttribute("aria-pressed", String(terminalLook === "original"));
+originalButton.addEventListener("click", () => {
+  terminalLook = terminalLook === "original" ? "windows" : "original";
+  Object.assign(term.options, TERMINAL_LOOKS[terminalLook]);
+  document.body.dataset.terminal = terminalLook;
+  localStorage.setItem(TERMINAL_KEY, terminalLook);
+  showTerminalLook();
+  fit.fit();
+  term.focus();
+});
+showTerminalLook();
+
+// Reading settings, like an ebook reader. Saved per browser.
+const READER_KEY = "cc-web.reader";
+const READER_DEFAULTS = { theme: "light", font: "sans", size: 17, leading: "normal", width: "normal" };
+const READER_FONTS = { sans: ["var(--sans)", "var(--display)"], serif: ["var(--serif)", "var(--serif-display)"] };
+const READER_LEADING = { tight: 1.45, normal: 1.6, loose: 1.85 };
+const READER_WIDTH = { narrow: "58ch", normal: "68ch", wide: "82ch" };
+const READER_SIZES = [14, 24];
+const replyPane = document.getElementById("reply-pane");
+let readerSettings = { ...READER_DEFAULTS, ...JSON.parse(localStorage.getItem(READER_KEY) ?? "{}") };
+const applyReader = () => {
+  const { theme, font, size, leading, width } = readerSettings;
+  replyPane.dataset.theme = theme;
+  replyPane.style.setProperty("--reader-font", READER_FONTS[font][0]);
+  replyPane.style.setProperty("--reader-heading-font", READER_FONTS[font][1]);
+  replyPane.style.setProperty("--reader-size", `${size}px`);
+  replyPane.style.setProperty("--reader-leading", READER_LEADING[leading]);
+  replyPane.style.setProperty("--reader-measure", READER_WIDTH[width]);
+  document.getElementById("size-value").textContent = `${size}px`;
+  document.getElementById("size-down").disabled = size <= READER_SIZES[0];
+  document.getElementById("size-up").disabled = size >= READER_SIZES[1];
+  for (const b of document.querySelectorAll("#reader-settings [data-set]")) {
+    b.setAttribute("aria-pressed", String(readerSettings[b.dataset.set] === b.dataset.value));
+  }
+  localStorage.setItem(READER_KEY, JSON.stringify(readerSettings));
+};
+for (const b of document.querySelectorAll("#reader-settings [data-set]")) {
+  b.addEventListener("click", () => { readerSettings[b.dataset.set] = b.dataset.value; applyReader(); });
+}
+document.getElementById("size-down").addEventListener("click", () => { readerSettings.size -= 1; applyReader(); });
+document.getElementById("size-up").addEventListener("click", () => { readerSettings.size += 1; applyReader(); });
+document.getElementById("reader-reset").addEventListener("click", () => { readerSettings = { ...READER_DEFAULTS }; applyReader(); });
+applyReader();
 
 const reply = document.getElementById("reply");
 const status = document.getElementById("reply-status");
@@ -139,6 +339,7 @@ ws.onmessage = (e) => {
     }
     reply.scrollTop = 0;
   }
+  else if (m.t === "reload") location.reload();
 };
 ws.onclose = () => {
   term.write("\r\n[disconnected]\r\n");

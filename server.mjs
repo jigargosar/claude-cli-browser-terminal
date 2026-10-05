@@ -8,6 +8,8 @@ import chokidar from "chokidar";
 import { WebSocketServer } from "ws";
 
 const REPLIES = `${import.meta.dirname}/.cc-web/replies`;
+const WEB_DIR = `${import.meta.dirname}/web`;
+const HTML_PATH = `${WEB_DIR}/index.html`;
 
 // Browser libraries, served from node_modules so versions are pinned by package.json.
 const NODE_MODULES = `${import.meta.dirname}/node_modules`;
@@ -21,7 +23,7 @@ const VENDOR = {
   "/vendor/purify.mjs": ["dompurify/dist/purify.es.mjs", "text/javascript"],
   "/vendor/marked-highlight.mjs": ["marked-highlight/src/index.js", "text/javascript"],
   "/vendor/highlight.mjs": ["@highlightjs/cdn-assets/es/highlight.min.js", "text/javascript"],
-  "/vendor/hljs-github-dark.css": ["@highlightjs/cdn-assets/styles/github-dark.min.css", "text/css"],
+  "/vendor/hljs-atom-one-dark.css": ["@highlightjs/cdn-assets/styles/atom-one-dark.min.css", "text/css"],
 };
 
 // Usage: node server.mjs <port> new|resume [claude args]. Fixed ports: dev 7681, test 7682 (see package.json).
@@ -29,7 +31,7 @@ const [portArg, mode, ...claudeArgs] = process.argv.slice(2);
 const MODES = { new: [], resume: ["--resume"] };
 if (!/^\d+$/.test(portArg ?? "") || !MODES[mode]) throw new Error("Usage: node server.mjs <port> new|resume [claude args]");
 
-const html = readFileSync(`${import.meta.dirname}/web/index.html`, "utf8");
+let html = readFileSync(HTML_PATH, "utf8");
 
 const clients = new Set();
 const broadcast = (msg) => {
@@ -57,6 +59,15 @@ const switchSession = async (id) => {
     .on("add", () => broadcast(replyMessage()))
     .on("change", () => broadcast(replyMessage()));
 };
+
+// Watch index.html for HMR in dev mode
+chokidar
+  .watch(HTML_PATH, { ignoreInitial: true, awaitWriteFinish: { stabilityThreshold: 100 } })
+  .on("change", () => {
+    html = readFileSync(HTML_PATH, "utf8");
+    console.log("HTML changed, reloading clients");
+    broadcast(JSON.stringify({ t: "reload" }));
+  });
 
 const server = http.createServer(async (req, res) => {
   if (req.method === "POST" && req.url === sessionReportPath) {
