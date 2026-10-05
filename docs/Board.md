@@ -19,5 +19,5 @@
 # Slice 3: Reply preview in browser
 - [x] Move replies out of `.claude/` into top-level `.cc-web/`.
 - [x] Update references to new `.cc-web`
-- [ ] Extend `server.mjs`: left terminal (xterm.js), right last reply rendered as markdown, updates after each reply
+- [x] Extend `server.mjs`: left terminal (xterm.js), right last reply rendered as markdown, updates after each reply
 - [ ] Verify: start server from own terminal, chat, last reply shows on the right
