@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Claude Code</title>
 <link rel="stylesheet" href="/vendor/xterm.css">
-<link rel="stylesheet" href="/vendor/hljs-atom-one-dark.css">
+<link rel="stylesheet" href="/vendor/hljs-github-dark.css">
 <style>
-  /* Two materials: the dark terminal you type into, the light page you read. */
+  /* The dark terminal you type into, the light page you read. */
   :root {
-    /* Terminal: the user's Windows Terminal (One Half Dark on #000B0C, JetBrains Mono). */
-    --term-bg: #000b0c;
-    --term-fg: #dcdfe4;
+    /* Terminal and code blocks (Slice 5). */
+    --term-bg: #16181d;
+    --code-fg: #c9d1d9;
     /* Reading page */
     --paper: #f8fbfb;
     --ink: #1a2326;
@@ -24,7 +24,7 @@
     --link: #0064b5;
     --selection: #bfdeff;
     --thumb: #b8bfc0;
-    --mono: "JetBrainsMono Nerd Font", "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+    --mono: "Cascadia Mono", Consolas, monospace;
     --sans: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
     --display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
     --serif: "Sitka Text", Sitka, Georgia, serif;
@@ -47,9 +47,6 @@
     --tint: #272c32; --stripe: #23272c; --code-ink: #f0a57c; --link: #7cb3ff; --selection: #2f4a6b; --thumb: #4a525c;
   }
 
-  /* The terminal as it was before the Windows Terminal match. */
-  body[data-terminal="original"] { --term-bg: #16181d; }
-  body[data-terminal="original"] #terminal-pane { padding: 14px 6px 14px 18px; }
   /* The first prototype: no padding, terminal on a #1e1e1e page. */
   body[data-terminal="prototype"] { --term-bg: #1e1e1e; }
   body[data-terminal="prototype"] #terminal-pane { padding: 0; }
@@ -58,9 +55,9 @@
   html, body { margin: 0; height: 100%; overflow: hidden; background: var(--term-bg); }
   body { display: flex; }
 
-  #terminal-pane { flex: 1 1 55%; min-width: 600px; padding: 8px 8px 8px 12px; box-sizing: border-box; }
+  #terminal-pane { flex: 1 1 55%; min-width: 600px; padding: 14px 6px 14px 18px; box-sizing: border-box; }
   #term { width: 100%; height: 100%; overflow: hidden; }
-  .xterm-viewport { scrollbar-width: thin; scrollbar-color: #3a4446 transparent; }
+  .xterm-viewport { scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
 
   #reply-pane {
     flex: 1 1 45%; min-width: 380px; display: flex; flex-direction: column;
@@ -154,8 +151,8 @@
   .md code { font: 1em var(--sans); color: var(--code-ink); }
   /* Code blocks are pieces of the terminal set into the page. */
   .md pre {
-    background: var(--term-bg); color: var(--term-fg); border-radius: 6px; padding: 14px 16px; overflow-x: auto;
-    scrollbar-width: thin; scrollbar-color: #3a4446 transparent;
+    background: var(--term-bg); color: var(--code-fg); border-radius: 6px; padding: 14px 16px; overflow-x: auto;
+    scrollbar-width: thin; scrollbar-color: #3a3f4b transparent;
   }
   .md pre code { font: 14px/1.55 var(--mono); color: inherit; }
   .md pre code.hljs { background: none; padding: 0; }
@@ -180,7 +177,6 @@
       <select id="terminal-look">
         <option value="prototype">Prototype (62618d0)</option>
         <option value="original">Slice 5 (448568e)</option>
-        <option value="windows">Windows Terminal</option>
       </select>
     </label>
     <button type="button" id="reader-button" class="bar-button" popovertarget="reader-settings" aria-label="Reading settings">Aa</button>
@@ -241,43 +237,16 @@ const marked = new Marked(
   }),
 );
 
-// Same face as the user's Windows Terminal; load it before xterm measures glyphs.
-const TERM_FONT = '"JetBrainsMono Nerd Font", "JetBrains Mono", "Cascadia Mono", Consolas, monospace';
-await document.fonts.load(`16px ${TERM_FONT}`);
-await document.fonts.load(`bold 16px ${TERM_FONT}`);
-
 const TERMINAL_LOOKS = {
-  // Windows Terminal's One Half Dark scheme on the user's #000B0C background.
-  windows: { fontFamily: TERM_FONT, fontSize: 16, fontWeight: "normal", lineHeight: 1, theme: {
-    background: "#000b0c",
-    foreground: "#dcdfe4",
-    cursor: "#ffffff",
-    cursorAccent: "#000b0c",
-    selectionBackground: "#ffffff40",
-    black: "#282c34",
-    red: "#e06c75",
-    green: "#98c379",
-    yellow: "#e5c07b",
-    blue: "#61afef",
-    magenta: "#c678dd",
-    cyan: "#56b6c2",
-    white: "#dcdfe4",
-    brightBlack: "#5a6374",
-    brightRed: "#e06c75",
-    brightGreen: "#98c379",
-    brightYellow: "#e5c07b",
-    brightBlue: "#61afef",
-    brightMagenta: "#c678dd",
-    brightCyan: "#56b6c2",
-    brightWhite: "#dcdfe4",
-  } },
   // Slice 5 (448568e): xterm defaults on #16181d.
   original: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 14, fontWeight: "normal", lineHeight: 1, theme: { background: "#16181d" } },
   // First prototype (62618d0): xterm defaults with Cascadia Mono, on a #1e1e1e page.
   prototype: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 15, fontWeight: "normal", lineHeight: 1, theme: {} },
 };
 const TERMINAL_KEY = "cc-web.terminal";
-let terminalLook = localStorage.getItem(TERMINAL_KEY) ?? "windows";
+// A saved look that no longer exists (e.g. the removed Windows Terminal look) falls back to Slice 5.
+const savedLook = localStorage.getItem(TERMINAL_KEY);
+let terminalLook = savedLook in TERMINAL_LOOKS ? savedLook : "original";
 document.body.dataset.terminal = terminalLook;
 
 const term = new Terminal({ allowProposedApi: true, cursorBlink: true, ...TERMINAL_LOOKS[terminalLook] });

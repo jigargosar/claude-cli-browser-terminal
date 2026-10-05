@@ -23,7 +23,7 @@ const VENDOR = {
   "/vendor/purify.mjs": ["dompurify/dist/purify.es.mjs", "text/javascript"],
   "/vendor/marked-highlight.mjs": ["marked-highlight/src/index.js", "text/javascript"],
   "/vendor/highlight.mjs": ["@highlightjs/cdn-assets/es/highlight.min.js", "text/javascript"],
-  "/vendor/hljs-atom-one-dark.css": ["@highlightjs/cdn-assets/styles/atom-one-dark.min.css", "text/css"],
+  "/vendor/hljs-github-dark.css": ["@highlightjs/cdn-assets/styles/github-dark.min.css", "text/css"],
 };
 
 // Usage: node server.mjs <port> new|resume [claude args]. Fixed ports: dev 7681, test 7682 (see package.json).

@@ -42,3 +42,11 @@
 - [x] Proper markdown rendering: readable type, tables, syntax-highlighted code
 - [x] No double scrollbars; narrow windows stack the panels
 - [x] Page moved out of `server.mjs` into `web/index.html`
+
+# Slice 6: Reading pane and terminal looks
+- [x] Reply pane is a light reading page; inline code in sans, no boxes
+- [x] Aa panel: theme (light, sepia, dark), font, text size, line spacing, width
+- [x] Terminal dropdown to compare looks: Prototype (`62618d0`, 15px, black, no padding) and Slice 5 (`448568e`, 14px on `#16181d`, padded)
+- [x] Tried a Windows Terminal look (JetBrains Mono 16px, One Half Dark on `#000B0C`); removed, kept as tag `windows-terminal-look`
+- [x] Tags `prototype-terminal-look`, `slice5-terminal-look`
+- [x] `web/index.html` edits reload open tabs
