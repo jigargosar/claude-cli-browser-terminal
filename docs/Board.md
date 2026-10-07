@@ -58,7 +58,6 @@
 
 # Slice 8: Chat widget on selected reply text
 - [x] `CLAUDE.md` heading matches repo name
-- [x] Flow rule: work done by mistake goes in the current slice, marked done
 - [ ] How does a chat start?
 - [ ] How does the response come back to the chat?
 - [ ] What happens to the existing reply?
