@@ -61,13 +61,13 @@
 - [ ] How does a chat start?
 - [ ] How does the response come back to the chat?
 - [ ] What happens to the existing reply?
-- [ ] Hooks move to committed `.claude/settings.json`; `settings.local.json` keeps `env` and `permissions`
-- [ ] Where does `CC_WEB_OPEN_REPLIES_IN_VSCODE` live: `"false"` in `settings.json` with local `"true"` override, or local only?
-- [ ] `CLAUDE.md`: settings note and env var line point to the file that owns them
-- [ ] Verify on `pnpm test`: reply shows, hooks run once
-- [ ] `CLAUDE.md`: file map (`server.mjs`, `web/index.html`, `.claude/hooks/`)
-- [ ] `CLAUDE.md`: tab close/reload only detaches; claude exit stops the server
-- [ ] `CLAUDE.md`: `docs/Terminal.md` for terminal sizing and looks
-- [ ] `CLAUDE.md`: follow Flow in `docs/Board.md`
-- [ ] `CLAUDE.md`: browser libraries served from `node_modules` at `/vendor/*`, no CDN
-- [ ] `package.json` name `xterm-eval` → `claude-cli-browser-terminal`?
+- [x] Hooks move to committed `.claude/settings.json`; `settings.local.json` keeps only `permissions`
+- [x] `CC_WEB_OPEN_REPLIES_IN_VSCODE` (`"true"`) moves as is to `settings.json`
+- [x] `CLAUDE.md`: env var line points to `.claude/settings.json`
+- [x] `CLAUDE.md`: file map (`server.mjs`, `web/index.html`, `.claude/hooks/`)
+- [x] `CLAUDE.md`: tab close/reload only detaches; claude exit stops the server
+- [x] `CLAUDE.md`: `docs/Terminal.md` for terminal sizing and looks
+- [x] `CLAUDE.md`: follow Flow in `docs/Board.md`
+- [x] `CLAUDE.md`: browser libraries served from `node_modules` at `/vendor/*`, no CDN
+- [x] `package.json` name `xterm-eval` → `claude-cli-browser-terminal`
+- [ ] Organize `CLAUDE.md`

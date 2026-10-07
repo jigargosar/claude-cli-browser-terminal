@@ -1,5 +1,5 @@
 {
-  "name": "xterm-eval",
+  "name": "claude-cli-browser-terminal",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
