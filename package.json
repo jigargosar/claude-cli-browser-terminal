@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "new": "node server.mjs 7681 new",
+    "new": "node server.mjs 7681 new --model haiku",
     "resume": "node server.mjs 7681 resume",
     "test": "node server.mjs 7682 new --model haiku"
   },
