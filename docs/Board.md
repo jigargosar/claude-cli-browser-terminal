@@ -69,7 +69,12 @@
 - [x] `package.json` name `xterm-eval` → `claude-cli-browser-terminal`
 - [x] Create public GitHub repo with `gh`, add remote, push
 
-# Slice 9: Chat widget on selected reply text
+# Slice 9: CLAUDE.md, terminal width, pane divider, chat widget
+- [x] CLAUDE.md: Done when
+- [x] CLAUDE.md: tree with descriptions
+- [x] CLAUDE.md: config, hooks, session lifecycle
+- [ ] Terminal word-wrap width bug
+- [ ] Draggable pane divider
 - [ ] How does a chat start?
 - [ ] How does the response come back to the chat?
 - [ ] What happens to the existing reply?

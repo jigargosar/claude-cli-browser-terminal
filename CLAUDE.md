@@ -1,14 +1,20 @@
 # claude-cli-browser-terminal
 
-Claude Code in the browser: terminal left, last reply right. Work tracked in `docs/Board.md`; follow its Flow.
+Run Claude Code in a browser tab: the terminal on the left, Claude's last reply on the right as readable markdown.
 
-- `server.mjs`: spawns `claude`, streams the terminal over websocket, watches the session's reply file.
-- `web/index.html`: the page (xterm.js terminal, markdown reply pane); edits reload open tabs.
-- `.claude/hooks/`: `session-start.mjs` (SessionStart), `last-reply.mjs` (Stop), `open-in-vscode.mjs` (background VS Code open).
-- `docs/Terminal.md`: terminal sizing, wrapping and looks.
-- For now single `claude` session per server. Closing or reloading the tab only detaches; `claude` exit stops the server.
-- Browser libraries are pinned in `package.json` and served from `node_modules` at `/vendor/*`; no CDN.
-- Stop hook writes every session's replies to `.cc-web/replies/<session_id>.md`; the server shows only its own.
-- `CC_WEB_SESSION_URL`: set only on the server's `claude`; its SessionStart hook POSTs `session_id` there.
-- `CC_WEB_OPEN_REPLIES_IN_VSCODE` (`"true"`/`"false"`, required, `.claude/settings.json`): terminal sessions open replies in VS Code for readability.
-- Dev: `pnpm new`/`pnpm resume` on port 7681. Test: `pnpm test` on port 7682 (Haiku); never connect tests to 7681.
+## Goal
+
+Done when you can select text in a reply, chat about it, and use this daily instead of the plain terminal.
+Not planned: more than one Claude session per server, login, publishing.
+
+## Files
+
+- `server.mjs`: starts `claude`, sends its terminal to the browser, sends the latest reply.
+- `web/index.html`: the whole page. Saving it reloads open tabs.
+- `.claude/hooks/`: scripts Claude Code runs on its own. One tells the server which session it is, one saves each reply to `.cc-web/replies/`.
+- `docs/Board.md`: the work plan and its status. Follow its Flow.
+
+## Rules
+
+- Testing in a browser: use `pnpm test` (port 7682). Port 7681 is the user's live session; typing there types into their real Claude.
+- Browser libraries come from `node_modules`, not a CDN.
