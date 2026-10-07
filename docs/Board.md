@@ -56,11 +56,8 @@
 - [x] New default terminal look: Cascadia Mono 15px on black (prototype), padding 14/6/14/18px (Slice 5)
 - [x] Added to the terminal dropdown as Slice 7; Prototype and Slice 5 stay for comparison
 
-# Slice 8: Chat widget on selected reply text
+# Slice 8: Project settings, CLAUDE.md and GitHub repo
 - [x] `CLAUDE.md` heading matches repo name
-- [ ] How does a chat start?
-- [ ] How does the response come back to the chat?
-- [ ] What happens to the existing reply?
 - [x] Hooks move to committed `.claude/settings.json`; `settings.local.json` keeps only `permissions`
 - [x] `CC_WEB_OPEN_REPLIES_IN_VSCODE` (`"true"`) moves as is to `settings.json`
 - [x] `CLAUDE.md`: env var line points to `.claude/settings.json`
@@ -70,5 +67,9 @@
 - [x] `CLAUDE.md`: follow Flow in `docs/Board.md`
 - [x] `CLAUDE.md`: browser libraries served from `node_modules` at `/vendor/*`, no CDN
 - [x] `package.json` name `xterm-eval` → `claude-cli-browser-terminal`
-- [ ] Organize `CLAUDE.md`
 - [x] Create public GitHub repo with `gh`, add remote, push
+
+# Slice 9: Chat widget on selected reply text
+- [ ] How does a chat start?
+- [ ] How does the response come back to the chat?
+- [ ] What happens to the existing reply?
