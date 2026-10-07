@@ -73,7 +73,7 @@
 - [x] CLAUDE.md: Done when
 - [x] CLAUDE.md: tree with descriptions
 - [x] CLAUDE.md: config, hooks, session lifecycle
-- [ ] Terminal word-wrap width bug
+- [x] Terminal word-wrap width bug: `claude` starts at the first tab's size
 - [ ] Draggable pane divider
 - [ ] How does a chat start?
 - [ ] How does the response come back to the chat?

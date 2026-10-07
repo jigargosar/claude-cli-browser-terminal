@@ -92,43 +92,50 @@ const port = server.address().port;
 console.log(`http://localhost:${port}`);
 
 // One claude for the server's lifetime; browser tabs only attach and detach.
-const pty = spawn(process.platform === "win32" ? "claude.exe" : "claude", [...MODES[mode], ...claudeArgs], {
-  name: "xterm-256color",
-  cols: 80,
-  rows: 24,
-  cwd: process.cwd(),
-  env: {
-    ...process.env,
-    TERM: "xterm-256color",
-    COLORTERM: "truecolor",
-    CC_WEB_SESSION_URL: `http://localhost:${port}${sessionReportPath}`,
-  },
-});
-
+// Started on the first tab's size, so its first output is formatted at the browser terminal's width.
+let pty = null;
 // Headless mirror of the screen, serialized to restore it on reconnect.
-const mirror = new headless.Terminal({ cols: 80, rows: 24, scrollback: 1000, allowProposedApi: true });
+let mirror = null;
 const serializer = new SerializeAddon();
-mirror.loadAddon(serializer);
 
-pty.onData((d) => {
-  mirror.write(d);
-  const msg = JSON.stringify({ t: "o", d });
-  for (const ws of clients) ws.send(msg);
-});
-pty.onExit(({ exitCode }) => {
-  console.log(`claude exited (${exitCode}), stopping server`);
-  for (const ws of clients) ws.close();
-  process.exit(exitCode);
-});
+const startClaude = (cols, rows) => {
+  pty = spawn(process.platform === "win32" ? "claude.exe" : "claude", [...MODES[mode], ...claudeArgs], {
+    name: "xterm-256color",
+    cols,
+    rows,
+    cwd: process.cwd(),
+    env: {
+      ...process.env,
+      TERM: "xterm-256color",
+      COLORTERM: "truecolor",
+      CC_WEB_SESSION_URL: `http://localhost:${port}${sessionReportPath}`,
+    },
+  });
+  mirror = new headless.Terminal({ cols, rows, scrollback: 1000, allowProposedApi: true });
+  mirror.loadAddon(serializer);
+
+  pty.onData((d) => {
+    mirror.write(d);
+    broadcast(JSON.stringify({ t: "o", d }));
+  });
+  pty.onExit(({ exitCode }) => {
+    console.log(`claude exited (${exitCode}), stopping server`);
+    for (const ws of clients) ws.close();
+    process.exit(exitCode);
+  });
+};
+
+console.log("claude starts when the first tab opens");
 
 new WebSocketServer({ server }).on("connection", (ws) => {
   clients.add(ws);
-  ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
+  if (pty) ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
   if (sessionId) ws.send(replyMessage());
 
   ws.on("message", (raw) => {
     const m = JSON.parse(raw.toString());
     if (m.t === "i") pty.write(m.d);
+    else if (m.t === "r" && !pty) startClaude(m.cols, m.rows);
     else if (m.t === "r") {
       pty.resize(m.cols, m.rows);
       mirror.resize(m.cols, m.rows);

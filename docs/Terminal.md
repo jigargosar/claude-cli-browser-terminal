@@ -1,6 +1,6 @@
 # Terminal sizing
 
-- `claude` starts at 80x24 when the server starts; a resumed conversation is drawn at 80 columns until a tab sends its size.
+- A program formats its output at the terminal width it has at the time of writing. Output already written keeps that width, so the first size a program gets should be the real one.
 - Every tab's resize sets the pty size; the last one wins.
 - On resize or reload, Claude Code re-wraps the whole conversation at the new width.
 - Claude Code indents wrapped lines itself. A continuation at column 0 means the pty was wider than the browser terminal; Ctrl+L redraws.
