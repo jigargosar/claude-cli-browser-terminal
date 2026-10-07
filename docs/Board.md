@@ -3,6 +3,7 @@
 - Never write another slice until a slice is complete
 - Either delete the todo item, or move it to new slice.
 - If a slice is long reorder it. And either finish it, or move to next slice once a part is done.
+- Work done by mistake, without following these rules: add it to the current slice, marked done.
 
 # Slice 1: Side-by-side reply preview POC
 - [x] Create `.claude/hooks/last-reply.mjs`: Stop hook writes `last_assistant_message` to `.claude/replies/<session_id>.md`
@@ -56,6 +57,8 @@
 - [x] Added to the terminal dropdown as Slice 7; Prototype and Slice 5 stay for comparison
 
 # Slice 8: Chat widget on selected reply text
+- [x] `CLAUDE.md` heading matches repo name
+- [x] Flow rule: work done by mistake goes in the current slice, marked done
 - [ ] How does a chat start?
 - [ ] How does the response come back to the chat?
 - [ ] What happens to the existing reply?

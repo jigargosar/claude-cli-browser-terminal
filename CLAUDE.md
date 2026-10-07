@@ -1,4 +1,4 @@
-# xterm-eval
+# claude-cli-browser-terminal
 
 Claude Code in the browser: terminal left, last reply right. Work tracked in `docs/Board.md`.
 
