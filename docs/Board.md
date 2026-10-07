@@ -71,4 +71,4 @@
 - [x] `CLAUDE.md`: browser libraries served from `node_modules` at `/vendor/*`, no CDN
 - [x] `package.json` name `xterm-eval` → `claude-cli-browser-terminal`
 - [ ] Organize `CLAUDE.md`
-- [x] Create private GitHub repo with `gh`, add remote, push
+- [x] Create public GitHub repo with `gh`, add remote, push
