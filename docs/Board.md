@@ -79,5 +79,3 @@
 - [x] How does the response come back to the chat? As Claude's next normal reply; the message asks it to repeat each quote and comment, then answer under it.
 - [x] What happens to the existing reply? Replaced by the next reply, as today; comments clear on Send.
 - [ ] Build: select text, one comment, Send submits quote + comment to claude (bracketed paste + Enter in one write, verified on 7682)
-- [ ] Build: several comments before Send, added ones highlighted in the reply
-- [ ] Build: edit or remove a comment before Send, count on Send
