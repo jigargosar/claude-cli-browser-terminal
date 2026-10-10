@@ -4,7 +4,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 ## Goal
 
-Done when you can select text in a reply, chat about it, and use this daily instead of the plain terminal.
+Done when you can select text in a reply, comment on it, send all comments to Claude at once, and use this daily instead of the plain terminal.
 Not planned: more than one Claude session per server, login, publishing.
 
 ## Files

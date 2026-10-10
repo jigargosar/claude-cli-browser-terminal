@@ -75,6 +75,9 @@
 - [x] CLAUDE.md: config, hooks, session lifecycle
 - [x] Terminal word-wrap width bug: `claude` starts at the first tab's size
 - [x] Draggable pane divider
-- [ ] How does a chat start?
-- [ ] How does the response come back to the chat?
-- [ ] What happens to the existing reply?
+- [x] How does a chat start? Select reply text, type a comment, Add; repeat for as many as needed. Send submits all comments as one message.
+- [x] How does the response come back to the chat? As Claude's next normal reply; the message asks it to repeat each quote and comment, then answer under it.
+- [x] What happens to the existing reply? Replaced by the next reply, as today; comments clear on Send.
+- [ ] Build: select text, one comment, Send submits quote + comment to claude (bracketed paste + Enter in one write, verified on 7682)
+- [ ] Build: several comments before Send, added ones highlighted in the reply
+- [ ] Build: edit or remove a comment before Send, count on Send
