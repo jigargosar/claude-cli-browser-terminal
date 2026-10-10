@@ -13,7 +13,7 @@ if (openSetting !== "true" && openSetting !== "false") {
   throw new Error(`CC_WEB_OPEN_REPLIES_IN_VSCODE must be "true" or "false", got ${openSetting}`);
 }
 // The server's claude shows replies in the browser instead.
-const startedByWebServer = Boolean(process.env.CC_WEB_SESSION_URL);
+const startedByWebServer = Boolean(process.env.CC_WEB_REPLY_URL);
 
 if (openSetting === "true" && !startedByWebServer) {
   const opener = `${import.meta.dirname}/open-in-vscode.mjs`;

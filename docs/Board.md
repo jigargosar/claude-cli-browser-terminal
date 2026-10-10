@@ -88,6 +88,14 @@
 - [x] `pnpm status`: lists records, checks each with `/status`, deletes stale ones (no PIDs, crash-safe)
 - [x] Verify: two servers in this repo at once, both work; stop one, status removes it; resume gets the same port
 - [x] Checked: a killed server takes its claude with it, no orphan claude
-- [ ] `pnpm status` deletes a stale record, so a later `resume` of that session loses its old port. Keep stale records?
+- [x] Simpler, like a terminal: remove session records, port reuse, `/status` and `pnpm status`; every start takes a free port
+- [x] Server args: `[port] [claude args]`, claude args pass through as is
+- [x] Stop hook POSTs the reply to the server, kept in memory; no reply-file watch
+- [x] Verify on 7682 with haiku: reply shows, reload keeps it
+- [x] Tried: server passes its hooks with `--settings` (works in any directory). Dropped: too cryptic; hooks stay in `.claude/settings.json`
+- [ ] Move `hooks/reply.mjs` to `.claude/hooks/`, register it in `.claude/settings.json` for SessionStart and Stop; it acts only when `CC_WEB_REPLY_URL` is set. Remove `--settings`, `hooks/settings.json`, `CC_WEB_DIR`
+- [ ] Panel rule: the last reply of the conversation in the terminal, if the server has it; else the placeholder. No transcript parsing; scroll the terminal for an old reply
+- [ ] Session ID match: Stop sends `{ session_id, md }`, SessionStart sends `{ session_id }` (every source); server shows the stored reply only when the IDs match
+- [ ] Verify on 7682 with haiku: reply, reload keeps it, `/clear` and `/resume` show the placeholder, `/compact` keeps the reply
 - [ ] One view per server: a second tab is refused, the server sends it a rejection; the first tab keeps the session. Verify a refresh still reconnects
-- [ ] `ccw` command: same args as `claude`, passes them through, reuses the port on `--resume <id>`, opens the page; `bin` + `pnpm link --global`
+- [ ] `ccw` command: same args as `claude`, passes them through, opens the page; `bin` + `pnpm link --global`

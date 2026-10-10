@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "new": "node server.mjs new --model haiku",
-    "resume": "node server.mjs resume",
-    "status": "node status.mjs",
-    "test": "node server.mjs 7682 new --model haiku"
+    "new": "node server.mjs --model haiku",
+    "resume": "node server.mjs --resume",
+    "test": "node server.mjs 7682 --model haiku"
   },
   "keywords": [],
   "author": "",

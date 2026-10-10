@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import http from "node:http";
 import { spawn } from "@lydell/node-pty";
 import { SerializeAddon } from "@xterm/addon-serialize";
@@ -8,12 +8,10 @@ import chokidar from "chokidar";
 import getPort from "get-port";
 import { WebSocketServer } from "ws";
 
-const REPLIES = `${import.meta.dirname}/.cc-web/replies`;
-// One record per session: { port, cwd }. The port is where its server listens; /status confirms it is still there.
-const SESSIONS = `${import.meta.dirname}/.cc-web/sessions`;
-const sessionRecord = (id) => `${SESSIONS}/${id}.json`;
 const WEB_DIR = `${import.meta.dirname}/web`;
 const HTML_PATH = `${WEB_DIR}/index.html`;
+// Hooks of our claude, passed with --settings so they run in any directory. See CLAUDE.md.
+const HOOK_SETTINGS = `${import.meta.dirname}/hooks/settings.json`;
 
 // Browser libraries, served from node_modules so versions are pinned by package.json.
 const NODE_MODULES = `${import.meta.dirname}/node_modules`;
@@ -30,19 +28,10 @@ const VENDOR = {
   "/vendor/hljs-github-dark.css": ["@highlightjs/cdn-assets/styles/github-dark.min.css", "text/css"],
 };
 
-// Usage: node server.mjs [port] new|resume [session-id] [claude args].
-// No port: a free one; `resume <session-id>` first tries that session's last port, so its old tabs reconnect.
-const USAGE = "Usage: node server.mjs [port] new|resume [session-id] [claude args]";
+// Usage: node server.mjs [port] [claude args]. No port: a free one. Claude args pass through as is.
 const args = process.argv.slice(2);
 const fixedPort = /^\d+$/.test(args[0] ?? "") ? Number(args.shift()) : null;
-const mode = args.shift();
-if (mode !== "new" && mode !== "resume") throw new Error(USAGE);
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-const resumeId = mode === "resume" && UUID.test(args[0] ?? "") ? args.shift() : null;
-const claudeArgs = [...(mode === "resume" ? ["--resume"] : []), ...(resumeId ? [resumeId] : []), ...args];
-const lastPort = resumeId && existsSync(sessionRecord(resumeId))
-  ? JSON.parse(readFileSync(sessionRecord(resumeId), "utf8")).port
-  : null;
+const claudeArgs = ["--settings", HOOK_SETTINGS, ...args];
 
 let html = readFileSync(HTML_PATH, "utf8");
 
@@ -51,29 +40,10 @@ const broadcast = (msg) => {
   for (const ws of clients) ws.send(msg);
 };
 
-// Our claude's SessionStart hook reports its session ID here. See CLAUDE.md.
-const claudeInstanceId = randomUUID();
-const sessionReportPath = `/session/${claudeInstanceId}`;
-let sessionId = null;
-let replyWatcher = null;
-
-// REPLIES holds every session's replies; only ours is shown.
-const replyFile = () => `${REPLIES}/${sessionId}.md`;
-const replyMessage = () =>
-  JSON.stringify({ t: "reply", md: existsSync(replyFile()) ? readFileSync(replyFile(), "utf8") : "" });
-
-const switchSession = async (id) => {
-  await replyWatcher?.close();
-  sessionId = id;
-  console.log(`session ${sessionId}`);
-  mkdirSync(SESSIONS, { recursive: true });
-  writeFileSync(sessionRecord(sessionId), JSON.stringify({ port, cwd: process.cwd() }));
-  broadcast(replyMessage()); // new session may have no reply yet: clears the panel
-  replyWatcher = chokidar
-    .watch(replyFile(), { ignoreInitial: true, awaitWriteFinish: { stabilityThreshold: 100 } })
-    .on("add", () => broadcast(replyMessage()))
-    .on("change", () => broadcast(replyMessage()));
-};
+// Our claude's hooks POST its last reply here; the path is unique to this server's claude.
+const replyPath = `/reply/${randomUUID()}`;
+let reply = "";
+const replyMessage = () => JSON.stringify({ t: "reply", md: reply });
 
 // Watch index.html for HMR in dev mode
 chokidar
@@ -85,16 +55,12 @@ chokidar
   });
 
 const server = http.createServer(async (req, res) => {
-  if (req.method === "POST" && req.url === sessionReportPath) {
+  if (req.method === "POST" && req.url === replyPath) {
     let body = "";
     for await (const chunk of req) body += chunk;
-    await switchSession(JSON.parse(body).session_id);
+    reply = JSON.parse(body).md;
+    broadcast(replyMessage());
     res.writeHead(204).end();
-    return;
-  }
-  if (req.method === "GET" && req.url === "/status") {
-    res.writeHead(200, { "content-type": "application/json" });
-    res.end(JSON.stringify({ session_id: sessionId, cwd: process.cwd() }));
     return;
   }
   if (VENDOR[req.url]) {
@@ -108,7 +74,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 const HOST = "127.0.0.1";
-const port = fixedPort ?? (await getPort(lastPort ? { port: lastPort, host: HOST } : { host: HOST }));
+const port = fixedPort ?? (await getPort({ host: HOST }));
 await new Promise((resolve) => server.listen(port, HOST, resolve));
 console.log(`http://localhost:${port}`);
 
@@ -129,7 +95,8 @@ const startClaude = (cols, rows) => {
       ...process.env,
       TERM: "xterm-256color",
       COLORTERM: "truecolor",
-      CC_WEB_SESSION_URL: `http://localhost:${port}${sessionReportPath}`,
+      CC_WEB_DIR: import.meta.dirname,
+      CC_WEB_REPLY_URL: `http://localhost:${port}${replyPath}`,
     },
   });
   mirror = new headless.Terminal({ cols, rows, scrollback: 1000, allowProposedApi: true });
@@ -151,7 +118,7 @@ console.log("claude starts when the first tab opens");
 new WebSocketServer({ server }).on("connection", (ws) => {
   clients.add(ws);
   if (pty) ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
-  if (sessionId) ws.send(replyMessage());
+  ws.send(replyMessage());
 
   ws.on("message", (raw) => {
     const m = JSON.parse(raw.toString());

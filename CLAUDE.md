@@ -17,5 +17,5 @@ Principle: it works exactly like `claude` in a terminal; the only addition is a 
 
 ## Rules
 
-- Testing in a browser: use `pnpm test` (port 7682). Port 7681 is the user's live session; typing there types into their real Claude.
+- Testing in a browser: use `pnpm test` (port 7682, Haiku model). Port 7681 is the user's live session; typing there types into their real Claude.
 - Browser libraries come from `node_modules`, not a CDN.

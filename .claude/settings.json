@@ -3,16 +3,6 @@
     "CC_WEB_OPEN_REPLIES_IN_VSCODE": "true"
   },
   "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.mjs\""
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "hooks": [

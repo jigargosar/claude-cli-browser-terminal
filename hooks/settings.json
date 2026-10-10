@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CC_WEB_DIR/hooks/reply.mjs\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CC_WEB_DIR/hooks/reply.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}
