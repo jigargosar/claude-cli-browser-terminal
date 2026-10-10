@@ -1,13 +1,17 @@
 import { randomUUID } from "node:crypto";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import http from "node:http";
 import { spawn } from "@lydell/node-pty";
 import { SerializeAddon } from "@xterm/addon-serialize";
 import headless from "@xterm/headless";
 import chokidar from "chokidar";
+import getPort from "get-port";
 import { WebSocketServer } from "ws";
 
 const REPLIES = `${import.meta.dirname}/.cc-web/replies`;
+// One record per session: { port, cwd }. The port is where its server listens; /status confirms it is still there.
+const SESSIONS = `${import.meta.dirname}/.cc-web/sessions`;
+const sessionRecord = (id) => `${SESSIONS}/${id}.json`;
 const WEB_DIR = `${import.meta.dirname}/web`;
 const HTML_PATH = `${WEB_DIR}/index.html`;
 
@@ -26,10 +30,19 @@ const VENDOR = {
   "/vendor/hljs-github-dark.css": ["@highlightjs/cdn-assets/styles/github-dark.min.css", "text/css"],
 };
 
-// Usage: node server.mjs <port> new|resume [claude args]. Fixed ports: dev 7681, test 7682 (see package.json).
-const [portArg, mode, ...claudeArgs] = process.argv.slice(2);
-const MODES = { new: [], resume: ["--resume"] };
-if (!/^\d+$/.test(portArg ?? "") || !MODES[mode]) throw new Error("Usage: node server.mjs <port> new|resume [claude args]");
+// Usage: node server.mjs [port] new|resume [session-id] [claude args].
+// No port: a free one; `resume <session-id>` first tries that session's last port, so its old tabs reconnect.
+const USAGE = "Usage: node server.mjs [port] new|resume [session-id] [claude args]";
+const args = process.argv.slice(2);
+const fixedPort = /^\d+$/.test(args[0] ?? "") ? Number(args.shift()) : null;
+const mode = args.shift();
+if (mode !== "new" && mode !== "resume") throw new Error(USAGE);
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const resumeId = mode === "resume" && UUID.test(args[0] ?? "") ? args.shift() : null;
+const claudeArgs = [...(mode === "resume" ? ["--resume"] : []), ...(resumeId ? [resumeId] : []), ...args];
+const lastPort = resumeId && existsSync(sessionRecord(resumeId))
+  ? JSON.parse(readFileSync(sessionRecord(resumeId), "utf8")).port
+  : null;
 
 let html = readFileSync(HTML_PATH, "utf8");
 
@@ -53,6 +66,8 @@ const switchSession = async (id) => {
   await replyWatcher?.close();
   sessionId = id;
   console.log(`session ${sessionId}`);
+  mkdirSync(SESSIONS, { recursive: true });
+  writeFileSync(sessionRecord(sessionId), JSON.stringify({ port, cwd: process.cwd() }));
   broadcast(replyMessage()); // new session may have no reply yet: clears the panel
   replyWatcher = chokidar
     .watch(replyFile(), { ignoreInitial: true, awaitWriteFinish: { stabilityThreshold: 100 } })
@@ -77,6 +92,11 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(204).end();
     return;
   }
+  if (req.method === "GET" && req.url === "/status") {
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(JSON.stringify({ session_id: sessionId, cwd: process.cwd() }));
+    return;
+  }
   if (VENDOR[req.url]) {
     const [file, type] = VENDOR[req.url];
     res.writeHead(200, { "content-type": type });
@@ -87,8 +107,9 @@ const server = http.createServer(async (req, res) => {
   res.end(html);
 });
 
-await new Promise((resolve) => server.listen(Number(portArg), "127.0.0.1", resolve));
-const port = server.address().port;
+const HOST = "127.0.0.1";
+const port = fixedPort ?? (await getPort(lastPort ? { port: lastPort, host: HOST } : { host: HOST }));
+await new Promise((resolve) => server.listen(port, HOST, resolve));
 console.log(`http://localhost:${port}`);
 
 // One claude for the server's lifetime; browser tabs only attach and detach.
@@ -99,7 +120,7 @@ let mirror = null;
 const serializer = new SerializeAddon();
 
 const startClaude = (cols, rows) => {
-  pty = spawn(process.platform === "win32" ? "claude.exe" : "claude", [...MODES[mode], ...claudeArgs], {
+  pty = spawn(process.platform === "win32" ? "claude.exe" : "claude", claudeArgs, {
     name: "xterm-256color",
     cols,
     rows,

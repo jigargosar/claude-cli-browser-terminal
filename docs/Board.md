@@ -81,9 +81,13 @@
 - [x] Build: select text, one comment, Send submits quote + comment to claude (bracketed paste + Enter in one write, verified on 7682)
 
 # Slice 10: One server per session, free port
-- [ ] Server takes a free port with `get-port`; an explicit port stays possible (`pnpm test` keeps 7682)
-- [ ] Server writes `.cc-web/sessions/<session_id>.json` with `{ port, cwd }`; the port is the address, the session ID the identity
-- [ ] `resume <session_id>` asks for the stored port first, so old tabs reconnect
-- [ ] `GET /status` answers `{ session_id, cwd }`
-- [ ] `pnpm status`: lists records, checks each with `/status`, deletes stale ones (no PIDs, crash-safe)
-- [ ] Verify: two servers in this repo at once, both work; stop one, status removes it
+- [x] Server takes a free port with `get-port`; an explicit port stays possible (`pnpm test` keeps 7682)
+- [x] Server writes `.cc-web/sessions/<session_id>.json` with `{ port, cwd }`; the port is the address, the session ID the identity
+- [x] `resume <session_id>` asks for the stored port first, so old tabs reconnect
+- [x] `GET /status` answers `{ session_id, cwd }`
+- [x] `pnpm status`: lists records, checks each with `/status`, deletes stale ones (no PIDs, crash-safe)
+- [x] Verify: two servers in this repo at once, both work; stop one, status removes it; resume gets the same port
+- [x] Checked: a killed server takes its claude with it, no orphan claude
+- [ ] `pnpm status` deletes a stale record, so a later `resume` of that session loses its old port. Keep stale records?
+- [ ] One view per server: a second tab is refused, the server sends it a rejection; the first tab keeps the session. Verify a refresh still reconnects
+- [ ] `ccw` command: same args as `claude`, passes them through, reuses the port on `--resume <id>`, opens the page; `bin` + `pnpm link --global`

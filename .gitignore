@@ -1,4 +1,5 @@
 .idea
 node_modules
 .cc-web/replies
+.cc-web/sessions
 .claude/settings.local.json
