@@ -80,12 +80,10 @@
 - [x] What happens to the existing reply? Replaced by the next reply, as today; comments clear on Send.
 - [x] Build: select text, one comment, Send submits quote + comment to claude (bracketed paste + Enter in one write, verified on 7682)
 
-# Slice 10: Plugin in the skills directory
-- [ ] Which folder is the plugin root: the repo root, or a subfolder?
-- [ ] How does `~/.claude/skills/<name>` reach it: a link to this repo, or to a second worktree that updates only when told?
-- [ ] What does a skill do: start, stop, status, open the page?
-- [ ] Hooks move to `hooks/hooks.json` with `${CLAUDE_PLUGIN_ROOT}`; `.claude/settings.json` drops them, or they run twice in this repo
-- [ ] Hooks do nothing unless `CC_WEB_SESSION_URL` is set: plugin hooks run in every session of every project
-- [ ] Stop hook and server use one replies folder; today the hook writes to the project, the server reads its own folder
-- [ ] Server picks a free port, so two projects can run at once
-- [ ] Verify: in another project, start the server, a reply shows on the right
+# Slice 10: One server per session, free port
+- [ ] Server takes a free port with `get-port`; an explicit port stays possible (`pnpm test` keeps 7682)
+- [ ] Server writes `.cc-web/sessions/<session_id>.json` with `{ port, cwd }`; the port is the address, the session ID the identity
+- [ ] `resume <session_id>` asks for the stored port first, so old tabs reconnect
+- [ ] `GET /status` answers `{ session_id, cwd }`
+- [ ] `pnpm status`: lists records, checks each with `/status`, deletes stale ones (no PIDs, crash-safe)
+- [ ] Verify: two servers in this repo at once, both work; stop one, status removes it
