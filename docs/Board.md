@@ -93,7 +93,6 @@
 - [x] Stop hook POSTs the reply to the server, kept in memory; no reply-file watch
 - [x] Verify on 7682 with haiku: reply shows, reload keeps it
 - [x] Tried: server passes its hooks with `--settings` (works in any directory). Dropped: too cryptic; hooks stay in `.claude/settings.json`
-- Open items moved to Slice 11
 
 # Slice 11: Goal 1, daily use without comments
 - [x] Remove the single comment feature; kept as tag `single-comment`
@@ -112,6 +111,10 @@
 - [x] current repo tarballs go in folder: published-versions. Other projects install via `pnpm add -E -D <path>`. Checked in a scratch project
 - [x] `package.json`: version 0.1.0, `bin` `ccw`, `files`, `release` script (`pnpm pack` into `published-versions`). Shebang in `server.mjs`
 - [x] Hook code inlined in the `--settings` command (`node -e`); `hooks/reply.mjs` removed. Checked in bash and cmd against a local server
-- [ ] Browser libraries in an installed copy: bundle `web/` with Vite at release; the server serves the build
-- [ ] `impeccable` and `node-notifier` are runtime dependencies; installed projects get them but do not use them
-- [ ] Run `pnpm ccw` in another project: reply shows
+
+# Slice 13: Goal 1, ccw package without extras
+- [ ] Tag `48e16c6` as `poor-mans-hook`; delete `.claude/hooks/`, its Stop hook and env var in `.claude/settings.json`, and `node-notifier`. Later in another project
+- [ ] `impeccable` moves to `devDependencies`
+- [ ] Browser libraries in an installed copy: bundle `web/` with Vite; the server serves the build
+- [ ] Test in this project with `pnpm test` on the build
+- [ ] Release to `published-versions`
