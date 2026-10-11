@@ -4,9 +4,24 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 ## Goal
 
-Done when you can select text in a reply, comment on it, send all comments to Claude at once, and use this daily instead of the plain terminal.
-Not planned: more than one Claude session per server, login, publishing.
-Principle: it works exactly like `claude` in a terminal; the only addition is a relay server to one browser tab. Browser quirks are fixed in the page (buttons, key remaps), not by new lifecycle rules.
+- Goal 1: done when you use this daily instead of the plain terminal.
+- Goal 2 (later): select text in a reply, comment on it, send the comment to Claude. First try kept as tag `single-comment`.
+- Goal 3 (later): many comments, sent to Claude as one message.
+- Not planned: more than one Claude session per server, login, publishing.
+- Principle: it works exactly like `claude` in a terminal; the only addition is a relay server to one browser tab. Browser quirks are fixed in the page (buttons, key remaps), not by new lifecycle rules.
+
+## Decisions
+
+1. Start works like the terminal.
+   1. The server runs the same `claude` command, with the flags given to the server.
+   2. Claude starts after the first tab sends its columns and rows.
+   3. After that, the session works the same as in a terminal.
+2. One tab per session.
+   1. Each server starts on a random free port.
+   2. A refresh continues the session. The right panel may be blank after a refresh.
+   3. A new tab on the same URL is refused, with a clear message.
+   4. This is the same as not opening one session in two terminals.
+   5. Some cases may slip through. New tabs must be refused.
 
 ## Files
 

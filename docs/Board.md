@@ -93,7 +93,17 @@
 - [x] Stop hook POSTs the reply to the server, kept in memory; no reply-file watch
 - [x] Verify on 7682 with haiku: reply shows, reload keeps it
 - [x] Tried: server passes its hooks with `--settings` (works in any directory). Dropped: too cryptic; hooks stay in `.claude/settings.json`
-- [ ] Move `hooks/reply.mjs` to `.claude/hooks/`, register it in `.claude/settings.json` for SessionStart and Stop; it acts only when `CC_WEB_REPLY_URL` is set. Remove `--settings`, `hooks/settings.json`, `CC_WEB_DIR`
+- Open items moved to Slice 11
+
+# Slice 11: Goal 1, daily use without comments
+- [x] Remove the single comment feature; kept as tag `single-comment`
+- [x] `CLAUDE.md`: staggered goals (1 daily use, 2 one comment, 3 many comments)
+- [ ] Verify on 7682 with haiku: selecting reply text opens no box; terminal and reply still work
+- [ ] Server builds the hook settings JSON at run time and passes it with `--settings`; the command has the full path to `hooks/reply.mjs`. Remove `hooks/settings.json` and `CC_WEB_DIR`
+- [ ] Check Windows quoting of the JSON argument through node-pty; if it breaks, the server writes a temp settings file instead
+- [ ] Verify one session on 7682 with haiku: reply shows, reload keeps it, a plain `claude` in another terminal sends nothing to the server
+- [ ] Verify one session on a random port: same checks
+- [ ] Verify two servers on random ports: each panel shows only its own reply
 - [ ] Panel rule: the last reply of the conversation in the terminal, if the server has it; else the placeholder. No transcript parsing; scroll the terminal for an old reply
 - [ ] Session ID match: Stop sends `{ session_id, md }`, SessionStart sends `{ session_id }` (every source); server shows the stored reply only when the IDs match
 - [ ] Verify on 7682 with haiku: reply, reload keeps it, `/clear` and `/resume` show the placeholder, `/compact` keeps the reply

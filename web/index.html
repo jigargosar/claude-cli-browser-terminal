@@ -122,27 +122,6 @@
   }
   #reply ::selection { background: var(--selection); color: var(--ink); }
 
-  /* Comment box: opens under a selection in the reply. */
-  #comment-box {
-    position: fixed; z-index: 10; width: 360px; padding: 12px; box-sizing: border-box;
-    background: var(--paper); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px;
-    box-shadow: 0 8px 24px rgb(0 0 0 / 0.14); font: 13px/1.4 var(--sans);
-  }
-  #comment-quote {
-    margin: 0 0 8px; padding-left: 10px; border-left: 2px solid var(--rule); color: var(--quote);
-    max-height: 4.2em; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-  }
-  #comment-text {
-    width: 100%; box-sizing: border-box; resize: vertical; font: 14px/1.45 var(--sans); color: var(--ink);
-    background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 8px;
-  }
-  #comment-text:focus-visible { outline: 2px solid var(--link); outline-offset: -1px; }
-  .comment-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
-  .comment-actions .hint { color: var(--ink-muted); }
-  #comment-send { color: var(--paper); background: var(--ink); }
-  #comment-send:hover { color: var(--paper); background: var(--quote); }
-  #comment-send:disabled { opacity: 0.4; cursor: default; }
-
   /* Narrow windows: stack, terminal on top. Each pane still scrolls on its own. */
   @media (max-width: 1000px) {
     body { flex-direction: column; }
@@ -251,14 +230,6 @@
     <button type="button" id="reader-reset" class="bar-button">Reset reading settings</button>
   </div>
   <article id="reply" class="md"><p class="empty">Replies from this session show up here.</p></article>
-  <div id="comment-box" role="dialog" aria-label="Comment on selection" hidden>
-    <blockquote id="comment-quote"></blockquote>
-    <textarea id="comment-text" rows="3" placeholder="Comment for Claude"></textarea>
-    <div class="comment-actions">
-      <span class="hint">Enter sends · Shift+Enter new line · Esc cancels</span>
-      <button type="button" id="comment-send" class="bar-button" disabled>Send</button>
-    </div>
-  </div>
 </aside>
 <script type="module">
 import { Terminal } from "/vendor/xterm.mjs";
@@ -403,53 +374,6 @@ ws.onclose = () => {
   term.write("\r\n[disconnected]\r\n");
   status.textContent = "Disconnected from the server. Restart it and reload this page.";
 };
-
-// Comment on a selection in the reply. Send pastes quote + comment into claude and submits it.
-const commentBox = document.getElementById("comment-box");
-const commentQuote = document.getElementById("comment-quote");
-const commentText = document.getElementById("comment-text");
-const commentSend = document.getElementById("comment-send");
-let commentQuoteText = "";
-const closeComment = () => {
-  commentBox.hidden = true;
-  commentText.value = "";
-  commentSend.disabled = true;
-};
-reply.addEventListener("mouseup", () => {
-  const selection = getSelection();
-  const text = selection.toString().replace(/\r\n/g, "\n").trim();
-  if (!text || !reply.contains(selection.anchorNode)) {
-    if (!commentText.value) closeComment();
-    return;
-  }
-  commentQuoteText = text;
-  commentQuote.textContent = text;
-  commentBox.hidden = false;
-  const rect = selection.getRangeAt(0).getBoundingClientRect();
-  const left = Math.min(rect.left, innerWidth - commentBox.offsetWidth - 12);
-  const below = rect.bottom + 8 + commentBox.offsetHeight < innerHeight;
-  commentBox.style.left = `${Math.max(12, left)}px`;
-  commentBox.style.top = `${below ? rect.bottom + 8 : Math.max(12, rect.top - 8 - commentBox.offsetHeight)}px`;
-  commentText.focus();
-});
-const sendComment = () => {
-  const comment = commentText.value.trim();
-  const quote = commentQuoteText.split("\n").map((line) => `> ${line}`).join("\n");
-  const message = `Answer each comment below. In your reply, repeat each quote and comment, then answer under it.\n\n${quote}\n${comment}`;
-  // Bracketed paste keeps the newlines inside one prompt; the trailing Enter submits it.
-  send({ t: "i", d: `\x1b[200~${message}\x1b[201~\r` });
-  closeComment();
-  getSelection().removeAllRanges();
-};
-commentText.addEventListener("input", () => { commentSend.disabled = !commentText.value.trim(); });
-commentText.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeComment();
-  else if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    if (commentText.value.trim()) sendComment();
-  }
-});
-commentSend.addEventListener("click", sendComment);
 
 // Shift+Enter -> newline in Claude Code (same as Alt+Enter)
 term.attachCustomKeyEventHandler((e) => {
