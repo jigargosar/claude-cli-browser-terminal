@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "cc-web": "node server.mjs",
     "new": "node server.mjs --model haiku",
     "resume": "node server.mjs --resume",
-    "test": "node server.mjs 7682 --model haiku"
+    "test": "cross-env CC_WEB_PORT=7682 node server.mjs --model haiku"
   },
   "keywords": [],
   "author": "",
@@ -36,6 +37,10 @@
     "marked": "18.0.14",
     "marked-highlight": "2.2.4",
     "node-notifier": "10.0.1",
+    "open": "11.0.4",
     "ws": "8.22.0"
+  },
+  "devDependencies": {
+    "cross-env": "10.1.0"
   }
 }

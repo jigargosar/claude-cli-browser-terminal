@@ -6,12 +6,15 @@ import { SerializeAddon } from "@xterm/addon-serialize";
 import headless from "@xterm/headless";
 import chokidar from "chokidar";
 import getPort from "get-port";
+import open from "open";
 import { WebSocketServer } from "ws";
 
 const WEB_DIR = `${import.meta.dirname}/web`;
 const HTML_PATH = `${WEB_DIR}/index.html`;
-// Hooks of our claude, passed with --settings so they run in any directory. See CLAUDE.md.
-const HOOK_SETTINGS = `${import.meta.dirname}/hooks/settings.json`;
+// Hooks of our claude only, passed with --settings so they run in any directory. See CLAUDE.md.
+const hookCommand = `node "${import.meta.dirname.replaceAll("\\", "/")}/hooks/reply.mjs"`;
+const hook = [{ hooks: [{ type: "command", command: hookCommand }] }];
+const HOOK_SETTINGS = JSON.stringify({ hooks: { SessionStart: hook, Stop: hook } });
 
 // Browser libraries, served from node_modules so versions are pinned by package.json.
 const NODE_MODULES = `${import.meta.dirname}/node_modules`;
@@ -28,10 +31,10 @@ const VENDOR = {
   "/vendor/hljs-github-dark.css": ["@highlightjs/cdn-assets/styles/github-dark.min.css", "text/css"],
 };
 
-// Usage: node server.mjs [port] [claude args]. No port: a free one. Claude args pass through as is.
-const args = process.argv.slice(2);
-const fixedPort = /^\d+$/.test(args[0] ?? "") ? Number(args.shift()) : null;
-const claudeArgs = ["--settings", HOOK_SETTINGS, ...args];
+// Usage: node server.mjs [claude args]. All args pass through to claude as is.
+// Port: CC_WEB_PORT if set (pnpm test uses 7682), else a free one.
+const claudeArgs = ["--settings", HOOK_SETTINGS, ...process.argv.slice(2)];
+const fixedPort = process.env.CC_WEB_PORT ? Number(process.env.CC_WEB_PORT) : null;
 
 let html = readFileSync(HTML_PATH, "utf8");
 
@@ -76,7 +79,9 @@ const server = http.createServer(async (req, res) => {
 const HOST = "127.0.0.1";
 const port = fixedPort ?? (await getPort({ host: HOST }));
 await new Promise((resolve) => server.listen(port, HOST, resolve));
-console.log(`http://localhost:${port}`);
+const url = `http://localhost:${port}`;
+console.log(url);
+await open(url);
 
 // One claude for the server's lifetime; browser tabs only attach and detach.
 // Started on the first tab's size, so its first output is formatted at the browser terminal's width.
@@ -95,7 +100,6 @@ const startClaude = (cols, rows) => {
       ...process.env,
       TERM: "xterm-256color",
       COLORTERM: "truecolor",
-      CC_WEB_DIR: import.meta.dirname,
       CC_WEB_REPLY_URL: `http://localhost:${port}${replyPath}`,
     },
   });

@@ -99,8 +99,10 @@
 - [x] Remove the single comment feature; kept as tag `single-comment`
 - [x] `CLAUDE.md`: staggered goals (1 daily use, 2 one comment, 3 many comments)
 - [ ] Verify on 7682 with haiku: selecting reply text opens no box; terminal and reply still work
-- [ ] Server builds the hook settings JSON at run time and passes it with `--settings`; the command has the full path to `hooks/reply.mjs`. Remove `hooks/settings.json` and `CC_WEB_DIR`
-- [ ] Check Windows quoting of the JSON argument through node-pty; if it breaks, the server writes a temp settings file instead
+- [x] Server builds the hook settings JSON at run time and passes it with `--settings`; the command has the full path to `hooks/reply.mjs`. Remove `hooks/settings.json` and `CC_WEB_DIR`
+- [x] Check Windows quoting of the JSON argument through node-pty: works, the SessionStart hook reached the server (scripted tab on 7682, no message sent)
+- [x] Server opens its URL in the default browser (`open`)
+- [x] No port arg: all args go to claude; port from `CC_WEB_PORT` (`pnpm test` sets 7682 with `cross-env`), else a free one
 - [ ] Verify one session on 7682 with haiku: reply shows, reload keeps it, a plain `claude` in another terminal sends nothing to the server
 - [ ] Verify one session on a random port: same checks
 - [ ] Verify two servers on random ports: each panel shows only its own reply
@@ -109,3 +111,4 @@
 - [ ] Verify on 7682 with haiku: reply, reload keeps it, `/clear` and `/resume` show the placeholder, `/compact` keeps the reply
 - [ ] One view per server: a second tab is refused, the server sends it a rejection; the first tab keeps the session. Verify a refresh still reconnects
 - [ ] `ccw` command: same args as `claude`, passes them through, opens the page; `bin` + `pnpm link --global`
+- [ ] Server args include `--settings` (file or JSON): merge them with our hook settings into one `--settings`
