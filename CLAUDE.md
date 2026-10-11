@@ -22,6 +22,11 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
    3. A new tab on the same URL is refused, with a clear message.
    4. This is the same as not opening one session in two terminals.
    5. Some cases may slip through. New tabs must be refused.
+3. The tab is only a view, like a page of a Vite dev server.
+   1. Closing the tab is the same as a refresh: it only disconnects.
+   2. Claude and the server keep running. Open the URL again to get back.
+   3. The session ends only when claude exits (it stops the server), or the server is stopped (it stops claude).
+   4. Why: a tab closes by accident easily; a lost tab must not lose the session.
 
 ## Files
 

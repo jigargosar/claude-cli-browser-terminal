@@ -104,11 +104,13 @@
 - [x] Server opens its URL in the default browser (`open`)
 - [x] No port arg: all args go to claude; port from `CC_WEB_PORT` (`pnpm test` sets 7682 with `cross-env`), else a free one
 - [ ] Verify one session on 7682 with haiku: reply shows, reload keeps it, a plain `claude` in another terminal sends nothing to the server
-- [ ] Verify one session on a random port: same checks
-- [ ] Verify two servers on random ports: each panel shows only its own reply
+- [x] Verify one session on a random port: same checks
+- [x] Verify two servers on random ports: each panel shows only its own reply; a plain `claude` in parallel works too
 - [ ] Panel rule: the last reply of the conversation in the terminal, if the server has it; else the placeholder. No transcript parsing; scroll the terminal for an old reply
 - [ ] Session ID match: Stop sends `{ session_id, md }`, SessionStart sends `{ session_id }` (every source); server shows the stored reply only when the IDs match
 - [ ] Verify on 7682 with haiku: reply, reload keeps it, `/clear` and `/resume` show the placeholder, `/compact` keeps the reply
 - [ ] One view per server: a second tab is refused, the server sends it a rejection; the first tab keeps the session. Verify a refresh still reconnects
 - [ ] `ccw` command: same args as `claude`, passes them through, opens the page; `bin` + `pnpm link --global`
 - [ ] Server args include `--settings` (file or JSON): merge them with our hook settings into one `--settings`
+- [ ] Low priority, DX: launch terminal shortcuts like Vite (`h` + Enter help, `o` + Enter open the URL, `q` + Enter quit). Check if Vite itself can start our server
+- [ ] Poor man's cc-web: a plain `claude` in this repo saves its reply and opens it in VS Code. Also check a browser session still saves its reply file (does `--settings` replace or add to project hooks?)
