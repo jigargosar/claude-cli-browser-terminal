@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cc-web": "node server.mjs",
+    "ccw": "node server.mjs",
     "new": "node server.mjs --model haiku",
     "resume": "node server.mjs --resume",
     "test": "cross-env CC_WEB_PORT=7682 node server.mjs --model haiku"
