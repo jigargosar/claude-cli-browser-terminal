@@ -98,23 +98,16 @@
 # Slice 11: Goal 1, daily use without comments
 - [x] Remove the single comment feature; kept as tag `single-comment`
 - [x] `CLAUDE.md`: staggered goals (1 daily use, 2 one comment, 3 many comments)
-- [ ] Verify on 7682 with haiku: selecting reply text opens no box; terminal and reply still work
 - [x] Server builds the hook settings JSON at run time and passes it with `--settings`; the command has the full path to `hooks/reply.mjs`. Remove `hooks/settings.json` and `CC_WEB_DIR`
 - [x] Check Windows quoting of the JSON argument through node-pty: works, the SessionStart hook reached the server (scripted tab on 7682, no message sent)
 - [x] Server opens its URL in the default browser (`open`)
 - [x] No port arg: all args go to claude; port from `CC_WEB_PORT` (`pnpm test` sets 7682 with `cross-env`), else a free one
-- [ ] Verify one session on 7682 with haiku: reply shows, reload keeps it, a plain `claude` in another terminal sends nothing to the server
-- [x] Verify one session on a random port: same checks
+- [x] Verify one session on a random port: reply shows, reload keeps it, a plain `claude` in another terminal sends nothing to the server
 - [x] Verify two servers on random ports: each panel shows only its own reply; a plain `claude` in parallel works too
-- [ ] Panel rule: the last reply of the conversation in the terminal, if the server has it; else the placeholder. No transcript parsing; scroll the terminal for an old reply
-- [ ] Bug: `/compact` clears the panel. `hooks/reply.mjs` sends an empty reply on every SessionStart, and compact fires SessionStart. The session ID match below fixes it
-- [ ] Session ID match: Stop sends `{ session_id, md }`, SessionStart sends `{ session_id }` (every source); server shows the stored reply only when the IDs match
-- [ ] Verify on 7682 with haiku: reply, reload keeps it, `/clear` and `/resume` show the placeholder, `/compact` keeps the reply
-- [ ] One view per server: a second tab is refused, the server sends it a rejection; the first tab keeps the session. Verify a refresh still reconnects
-- [ ] Bug: a second tab connects today. `clients` in `server.mjs` is a `Set`, so the second tab sees the terminal and can type into the session. The one-view item above fixes it
-- [ ] `ccw` command: same args as `claude`, passes them through, opens the page; `bin` + `pnpm link --global`
-- [ ] Stable `ccw` in other projects while this repo changes: tag a stable commit (for example `v0.1.0`), then `pnpm add -g github:jigargosar/claude-cli-browser-terminal#<tag>`. This repo stays the dev version (`pnpm run cc-web`). Other option: a second checkout at the tag with `pnpm link --global`
-- [ ] Check a global install builds or finds the `@lydell/node-pty` binary on Windows
-- [ ] Server args include `--settings` (file or JSON): merge them with our hook settings into one `--settings`
-- [ ] Low priority, DX: launch terminal shortcuts like Vite (`h` + Enter help, `o` + Enter open the URL, `q` + Enter quit). Check if Vite itself can start our server
-- [ ] Poor man's cc-web: a plain `claude` in this repo saves its reply and opens it in VS Code. Also check a browser session still saves its reply file (does `--settings` replace or add to project hooks?)
+
+# Slice 12: Goal 1, daily use in other projects
+- [x] Verify on 7682 with haiku: selecting reply text opens no box; terminal and reply still work
+- [x] Verify one session on 7682 with haiku: reply shows, reload keeps it, a plain `claude` in another terminal sends nothing to the server
+- [ ] A second tab connects to the same session and can type into it (Decision 2.3)
+- [ ] `ccw` command: start cc-web from any project with the same args as `claude`
+- [ ] Use a stable `ccw` in other projects while this repo changes
