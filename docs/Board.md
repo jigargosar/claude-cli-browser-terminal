@@ -113,8 +113,8 @@
 - [x] Hook code inlined in the `--settings` command (`node -e`); `hooks/reply.mjs` removed. Checked in bash and cmd against a local server
 
 # Slice 13: Goal 1, ccw package without extras
-- [ ] Tag `48e16c6` as `poor-mans-hook`; delete `.claude/hooks/`, its Stop hook and env var in `.claude/settings.json`, and `node-notifier`. Later in another project
-- [ ] `impeccable` moves to `devDependencies`
+- [x] Tag `48e16c6` as `poor-mans-hook`; delete `.claude/hooks/`, its Stop hook and env var in `.claude/settings.json`, and `node-notifier`. Later in another project
+- [x] `impeccable` moves to `devDependencies`
 - [ ] Browser libraries in an installed copy: bundle `web/` with Vite; the server serves the build
 - [ ] Test in this project with `pnpm test` on the build
 - [ ] Release to `published-versions`
