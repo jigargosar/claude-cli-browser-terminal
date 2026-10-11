@@ -13,7 +13,7 @@
     "build": "vite build",
     "build:watch": "vite build --watch",
     "ccw": "vite build && node server.mjs",
-    "release": "npm version patch && vite build && pnpm pack --pack-destination published-versions && git push --follow-tags",
+    "release": "vite build && pnpm version patch && pnpm pack --pack-destination published-versions && git push --follow-tags",
     "new": "vite build && node server.mjs --model haiku",
     "resume": "vite build && node server.mjs --resume",
     "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku"

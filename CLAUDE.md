@@ -36,6 +36,6 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 ## Rules
 
-- Release only with `pnpm release`, after a manual test. It bumps the patch version (commit and tag), builds, packs into `published-versions/`, and pushes. Never pack by hand.
+- Release only with `pnpm release`, after a manual test. It builds, bumps the patch version (commit and tag), packs into `published-versions/`, and pushes. Never pack by hand.
 - Testing in a browser: use `pnpm test` (port 7682, Haiku model). Port 7681 is the user's live session; typing there types into their real Claude.
 - Browser libraries come from `node_modules`, not a CDN.
