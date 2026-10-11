@@ -107,10 +107,14 @@
 - [x] Verify one session on a random port: same checks
 - [x] Verify two servers on random ports: each panel shows only its own reply; a plain `claude` in parallel works too
 - [ ] Panel rule: the last reply of the conversation in the terminal, if the server has it; else the placeholder. No transcript parsing; scroll the terminal for an old reply
+- [ ] Bug: `/compact` clears the panel. `hooks/reply.mjs` sends an empty reply on every SessionStart, and compact fires SessionStart. The session ID match below fixes it
 - [ ] Session ID match: Stop sends `{ session_id, md }`, SessionStart sends `{ session_id }` (every source); server shows the stored reply only when the IDs match
 - [ ] Verify on 7682 with haiku: reply, reload keeps it, `/clear` and `/resume` show the placeholder, `/compact` keeps the reply
 - [ ] One view per server: a second tab is refused, the server sends it a rejection; the first tab keeps the session. Verify a refresh still reconnects
+- [ ] Bug: a second tab connects today. `clients` in `server.mjs` is a `Set`, so the second tab sees the terminal and can type into the session. The one-view item above fixes it
 - [ ] `ccw` command: same args as `claude`, passes them through, opens the page; `bin` + `pnpm link --global`
+- [ ] Stable `ccw` in other projects while this repo changes: tag a stable commit (for example `v0.1.0`), then `pnpm add -g github:jigargosar/claude-cli-browser-terminal#<tag>`. This repo stays the dev version (`pnpm run cc-web`). Other option: a second checkout at the tag with `pnpm link --global`
+- [ ] Check a global install builds or finds the `@lydell/node-pty` binary on Windows
 - [ ] Server args include `--settings` (file or JSON): merge them with our hook settings into one `--settings`
 - [ ] Low priority, DX: launch terminal shortcuts like Vite (`h` + Enter help, `o` + Enter open the URL, `q` + Enter quit). Check if Vite itself can start our server
 - [ ] Poor man's cc-web: a plain `claude` in this repo saves its reply and opens it in VS Code. Also check a browser session still saves its reply file (does `--settings` replace or add to project hooks?)
