@@ -7,14 +7,16 @@
   },
   "files": [
     "server.mjs",
-    "web"
+    "dist"
   ],
   "scripts": {
-    "ccw": "node server.mjs",
-    "release": "pnpm pack --pack-destination published-versions",
-    "new": "node server.mjs --model haiku",
-    "resume": "node server.mjs --resume",
-    "test": "cross-env CC_WEB_PORT=7682 node server.mjs --model haiku"
+    "build": "vite build",
+    "build:watch": "vite build --watch",
+    "ccw": "vite build && node server.mjs",
+    "release": "vite build && pnpm pack --pack-destination published-versions",
+    "new": "vite build && node server.mjs --model haiku",
+    "resume": "vite build && node server.mjs --resume",
+    "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku"
   },
   "keywords": [],
   "author": "",
@@ -29,24 +31,26 @@
   "packageManager": "pnpm@12.9.1",
   "type": "module",
   "dependencies": {
-    "@highlightjs/cdn-assets": "11.12.0",
     "@lydell/node-pty": "1.2.0-beta.15",
-    "@xterm/addon-fit": "0.11.0",
     "@xterm/addon-serialize": "0.14.0",
-    "@xterm/addon-unicode11": "0.9.0",
-    "@xterm/addon-webgl": "0.19.0",
     "@xterm/headless": "6.0.0",
-    "@xterm/xterm": "6.0.0",
     "chokidar": "5.0.0",
-    "dompurify": "3.4.16",
     "get-port": "7.2.0",
-    "marked": "18.0.14",
-    "marked-highlight": "2.2.4",
     "open": "11.0.4",
+    "sirv": "3.0.2",
     "ws": "8.22.0"
   },
   "devDependencies": {
+    "@highlightjs/cdn-assets": "11.12.0",
+    "@xterm/addon-fit": "0.11.0",
+    "@xterm/addon-unicode11": "0.9.0",
+    "@xterm/addon-webgl": "0.19.0",
+    "@xterm/xterm": "6.0.0",
     "cross-env": "10.1.0",
-    "impeccable": "4.5.2"
+    "dompurify": "3.4.16",
+    "impeccable": "4.5.2",
+    "marked": "18.1.0",
+    "marked-highlight": "2.2.4",
+    "vite": "8.3.4"
   }
 }

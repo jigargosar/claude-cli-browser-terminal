@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { randomUUID } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import http from "node:http";
 import { spawn } from "@lydell/node-pty";
 import { SerializeAddon } from "@xterm/addon-serialize";
@@ -8,10 +8,12 @@ import headless from "@xterm/headless";
 import chokidar from "chokidar";
 import getPort from "get-port";
 import open from "open";
+import sirv from "sirv";
 import { WebSocketServer } from "ws";
 
-const WEB_DIR = `${import.meta.dirname}/web`;
-const HTML_PATH = `${WEB_DIR}/index.html`;
+// The page and its browser libraries, built by Vite from web/ (pnpm build).
+const DIST_DIR = `${import.meta.dirname}/dist`;
+const HTML_PATH = `${DIST_DIR}/index.html`;
 // Hooks of our claude only, passed with --settings so they run in any directory. See CLAUDE.md.
 // SessionStart and Stop POST the last reply to the server; a new session (start, /clear, resume) sends an empty one.
 // One line, single quotes only, and no $ ` ! so it runs the same in bash and cmd.
@@ -26,27 +28,14 @@ const hookCommand = `node --input-type=module -e "${hookScript}"`;
 const hook = [{ hooks: [{ type: "command", command: hookCommand }] }];
 const HOOK_SETTINGS = JSON.stringify({ hooks: { SessionStart: hook, Stop: hook } });
 
-// Browser libraries, served from node_modules so versions are pinned by package.json.
-const NODE_MODULES = `${import.meta.dirname}/node_modules`;
-const VENDOR = {
-  "/vendor/xterm.css": ["@xterm/xterm/css/xterm.css", "text/css"],
-  "/vendor/xterm.mjs": ["@xterm/xterm/lib/xterm.mjs", "text/javascript"],
-  "/vendor/addon-fit.mjs": ["@xterm/addon-fit/lib/addon-fit.mjs", "text/javascript"],
-  "/vendor/addon-webgl.mjs": ["@xterm/addon-webgl/lib/addon-webgl.mjs", "text/javascript"],
-  "/vendor/addon-unicode11.mjs": ["@xterm/addon-unicode11/lib/addon-unicode11.mjs", "text/javascript"],
-  "/vendor/marked.mjs": ["marked/lib/marked.esm.js", "text/javascript"],
-  "/vendor/purify.mjs": ["dompurify/dist/purify.es.mjs", "text/javascript"],
-  "/vendor/marked-highlight.mjs": ["marked-highlight/src/index.js", "text/javascript"],
-  "/vendor/highlight.mjs": ["@highlightjs/cdn-assets/es/highlight.min.js", "text/javascript"],
-  "/vendor/hljs-github-dark.css": ["@highlightjs/cdn-assets/styles/github-dark.min.css", "text/css"],
-};
-
 // Usage: node server.mjs [claude args]. All args pass through to claude as is.
 // Port: CC_WEB_PORT if set (pnpm test uses 7682), else a free one.
 const claudeArgs = ["--settings", HOOK_SETTINGS, ...process.argv.slice(2)];
 const fixedPort = process.env.CC_WEB_PORT ? Number(process.env.CC_WEB_PORT) : null;
 
-let html = readFileSync(HTML_PATH, "utf8");
+if (!existsSync(HTML_PATH)) throw new Error(`${HTML_PATH} is missing: run pnpm build`);
+// dev: read files on each request, so a rebuild shows on reload.
+const serveDist = sirv(DIST_DIR, { dev: true });
 
 const clients = new Set();
 const broadcast = (msg) => {
@@ -58,12 +47,11 @@ const replyPath = `/reply/${randomUUID()}`;
 let reply = "";
 const replyMessage = () => JSON.stringify({ t: "reply", md: reply });
 
-// Watch index.html for HMR in dev mode
+// A rebuild (pnpm build:watch) rewrites index.html: reload open tabs.
 chokidar
   .watch(HTML_PATH, { ignoreInitial: true, awaitWriteFinish: { stabilityThreshold: 100 } })
   .on("change", () => {
-    html = readFileSync(HTML_PATH, "utf8");
-    console.log("HTML changed, reloading clients");
+    console.log("Page rebuilt, reloading clients");
     broadcast(JSON.stringify({ t: "reload" }));
   });
 
@@ -76,14 +64,7 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(204).end();
     return;
   }
-  if (VENDOR[req.url]) {
-    const [file, type] = VENDOR[req.url];
-    res.writeHead(200, { "content-type": type });
-    res.end(readFileSync(`${NODE_MODULES}/${file}`));
-    return;
-  }
-  res.writeHead(200, { "content-type": "text/html" });
-  res.end(html);
+  serveDist(req, res, () => res.writeHead(404).end());
 });
 
 const HOST = "127.0.0.1";

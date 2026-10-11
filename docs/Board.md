@@ -115,6 +115,6 @@
 # Slice 13: Goal 1, ccw package without extras
 - [x] Tag `48e16c6` as `poor-mans-hook`; delete `.claude/hooks/`, its Stop hook and env var in `.claude/settings.json`, and `node-notifier`. Later in another project
 - [x] `impeccable` moves to `devDependencies`
-- [ ] Browser libraries in an installed copy: bundle `web/` with Vite; the server serves the build
+- [x] Browser libraries in an installed copy: bundle `web/` with Vite; the server serves the build (`dist/`, sirv). Browser libraries in devDependencies
 - [ ] Test in this project with `pnpm test` on the build
 - [ ] Release to `published-versions`

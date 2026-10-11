@@ -4,8 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Claude Code</title>
-<link rel="stylesheet" href="/vendor/xterm.css">
-<link rel="stylesheet" href="/vendor/hljs-github-dark.css">
 <style>
   /* The dark terminal you type into, the light page you read. */
   :root {
@@ -232,14 +230,16 @@
   <article id="reply" class="md"><p class="empty">Replies from this session show up here.</p></article>
 </aside>
 <script type="module">
-import { Terminal } from "/vendor/xterm.mjs";
-import { FitAddon } from "/vendor/addon-fit.mjs";
-import { WebglAddon } from "/vendor/addon-webgl.mjs";
-import { Unicode11Addon } from "/vendor/addon-unicode11.mjs";
-import { Marked } from "/vendor/marked.mjs";
-import { markedHighlight } from "/vendor/marked-highlight.mjs";
-import hljs from "/vendor/highlight.mjs";
-import DOMPurify from "/vendor/purify.mjs";
+import "@xterm/xterm/css/xterm.css";
+import "@highlightjs/cdn-assets/styles/github-dark.min.css";
+import { Terminal } from "@xterm/xterm";
+import { FitAddon } from "@xterm/addon-fit";
+import { WebglAddon } from "@xterm/addon-webgl";
+import { Unicode11Addon } from "@xterm/addon-unicode11";
+import { Marked } from "marked";
+import { markedHighlight } from "marked-highlight";
+import hljs from "@highlightjs/cdn-assets/es/highlight.min.js";
+import DOMPurify from "dompurify";
 
 const marked = new Marked(
   markedHighlight({
