@@ -1,10 +1,17 @@
 {
   "name": "claude-cli-browser-terminal",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "bin": {
+    "ccw": "server.mjs"
+  },
+  "files": [
+    "server.mjs",
+    "web"
+  ],
   "scripts": {
     "ccw": "node server.mjs",
+    "release": "pnpm pack --pack-destination published-versions",
     "new": "node server.mjs --model haiku",
     "resume": "node server.mjs --resume",
     "test": "cross-env CC_WEB_PORT=7682 node server.mjs --model haiku"

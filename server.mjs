@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import http from "node:http";
@@ -12,7 +13,16 @@ import { WebSocketServer } from "ws";
 const WEB_DIR = `${import.meta.dirname}/web`;
 const HTML_PATH = `${WEB_DIR}/index.html`;
 // Hooks of our claude only, passed with --settings so they run in any directory. See CLAUDE.md.
-const hookCommand = `node "${import.meta.dirname.replaceAll("\\", "/")}/hooks/reply.mjs"`;
+// SessionStart and Stop POST the last reply to the server; a new session (start, /clear, resume) sends an empty one.
+// One line, single quotes only, and no $ ` ! so it runs the same in bash and cmd.
+const hookScript = [
+  "import { readFileSync } from 'node:fs';",
+  "const input = JSON.parse(readFileSync(0, 'utf8'));",
+  "const md = input.hook_event_name === 'Stop' ? input.last_assistant_message : '';",
+  "const res = await fetch(process.env.CC_WEB_REPLY_URL, { method: 'POST', body: JSON.stringify({ md }), signal: AbortSignal.timeout(2000) });",
+  "if (res.status >= 300) throw new Error(process.env.CC_WEB_REPLY_URL + ' responded ' + res.status);",
+].join(" ");
+const hookCommand = `node --input-type=module -e "${hookScript}"`;
 const hook = [{ hooks: [{ type: "command", command: hookCommand }] }];
 const HOOK_SETTINGS = JSON.stringify({ hooks: { SessionStart: hook, Stop: hook } });
 

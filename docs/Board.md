@@ -109,4 +109,9 @@
 - [x] Verify on 7682 with haiku: selecting reply text opens no box; terminal and reply still work
 - [x] Verify one session on 7682 with haiku: reply shows, reload keeps it, a plain `claude` in another terminal sends nothing to the server
 - [x] Server refuses a second tab while one is connected; the page shows why (Decision 2.3). Verified with a duplicated tab
-- [ ] current repo tarballs go in folder: published-versions. Other projects install via `pnpm add -E -D <path>`.
+- [x] current repo tarballs go in folder: published-versions. Other projects install via `pnpm add -E -D <path>`. Checked in a scratch project
+- [x] `package.json`: version 0.1.0, `bin` `ccw`, `files`, `release` script (`pnpm pack` into `published-versions`). Shebang in `server.mjs`
+- [x] Hook code inlined in the `--settings` command (`node -e`); `hooks/reply.mjs` removed. Checked in bash and cmd against a local server
+- [ ] Browser libraries in an installed copy: bundle `web/` with Vite at release; the server serves the build
+- [ ] `impeccable` and `node-notifier` are runtime dependencies; installed projects get them but do not use them
+- [ ] Run `pnpm ccw` in another project: reply shows
