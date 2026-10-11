@@ -370,7 +370,13 @@ ws.onmessage = (e) => {
   }
   else if (m.t === "reload") location.reload();
 };
-ws.onclose = () => {
+// 4000: the server refused this tab, the session is open in another one.
+ws.onclose = (e) => {
+  if (e.code === 4000) {
+    term.write(`\r\n[${e.reason}. Close this tab, or close the other tab and reload this one.]\r\n`);
+    status.textContent = `${e.reason}.`;
+    return;
+  }
   term.write("\r\n[disconnected]\r\n");
   status.textContent = "Disconnected from the server. Restart it and reload this page.";
 };

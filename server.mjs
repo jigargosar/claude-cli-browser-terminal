@@ -119,7 +119,13 @@ const startClaude = (cols, rows) => {
 
 console.log("claude starts when the first tab opens");
 
+// One tab per session, like one terminal per session. A refresh closes the old socket first, so it reconnects.
+const SECOND_TAB = 4000;
 new WebSocketServer({ server }).on("connection", (ws) => {
+  if (clients.size > 0) {
+    ws.close(SECOND_TAB, "This session is open in another tab");
+    return;
+  }
   clients.add(ws);
   if (pty) ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
   ws.send(replyMessage());

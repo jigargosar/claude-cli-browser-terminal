@@ -108,5 +108,5 @@
 # Slice 12: Goal 1, daily use in other projects
 - [x] Verify on 7682 with haiku: selecting reply text opens no box; terminal and reply still work
 - [x] Verify one session on 7682 with haiku: reply shows, reload keeps it, a plain `claude` in another terminal sends nothing to the server
-- [ ] Server refuses a second tab while one is connected; the page shows why (Decision 2.3). A refresh still reconnects
+- [x] Server refuses a second tab while one is connected; the page shows why (Decision 2.3). Verified with a duplicated tab
 - [ ] current repo tarballs go in folder: published-versions. Other projects install via `pnpm add -E -D <path>`.
