@@ -32,7 +32,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 - `server.mjs`: starts `claude`, sends its terminal to the browser, sends the latest reply.
 - `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `lab.js`) and one file per reply view in `views/`. A feature touches `main.js` and `views/`; the other modules change only for a bug in them. A rebuild reloads open tabs.
-- `docs/Board.md`: the work plan and its status. Follow its Workflow. Closed slices are in `docs/Board-archive.md`.
+- `docs/Board.md`: the work plan and its status. Follow its Workflow. Closed slices are in `docs/Board-archive-2026-10-13.md`.
 
 ## Rules
 
