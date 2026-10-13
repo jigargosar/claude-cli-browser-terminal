@@ -38,11 +38,12 @@ export const size = () => ({ cols: term.cols, rows: term.rows });
 export const write = (d) => term.write(d);
 export const focus = () => term.focus();
 export const onResize = (cb) => term.onResize(cb);
-// Every byte the user types. Shift+Enter becomes ESC CR, a newline in Claude Code (same as Alt+Enter).
+// Every byte the user types. Shift+Enter becomes LF, the same bytes as Ctrl+J, Claude Code's newline key.
+// The browser fires keydown and keypress for Enter; both must be swallowed, or xterm sends its own CR after the LF.
 export const onInput = (cb) => {
   term.attachCustomKeyEventHandler((e) => {
-    if (e.type === "keydown" && e.key === "Enter" && e.shiftKey) {
-      cb("\x1b\r");
+    if (e.key === "Enter" && e.shiftKey) {
+      if (e.type === "keydown") cb("\n");
       return false;
     }
     return true;
