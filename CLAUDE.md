@@ -30,9 +30,17 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 ## Files
 
-- `server.mjs`: starts `claude`, sends its terminal to the browser, sends the latest reply.
+- `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`.
 - `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `lab.js`) and one file per reply view in `views/`. A feature touches `main.js` and `views/`; the other modules change only for a bug in them. A rebuild reloads open tabs.
 - `docs/Board.md`: the work plan and its status. Follow its Workflow. Closed slices are in `docs/Board-archive-2026-10-13.md`.
+
+## Terminal basics
+
+- node-pty gives a byte stream from `claude` and takes keystrokes. On Windows the stream comes from ConPTY, which keeps its own screen buffer and repaints it; the bytes are ConPTY's rendering, not claude's.
+- The page runs xterm.js (`web/terminal.js`) with fit, WebGL and Unicode 11. Keystrokes go up as `i`, size as `r`; the first `r` starts claude at that size.
+- The server keeps a headless xterm mirror of the screen. On reconnect it serializes the mirror into the new tab, so a refresh shows the screen without a redraw.
+- Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so duplicate lines in scrollback appear in any terminal, Windows Terminal included. Not fixable here; not in scope.
+- The transcript is the source for reply text. The terminal stream carries rendered cells, not markdown, so nothing is parsed from it.
 
 ## Rules
 
