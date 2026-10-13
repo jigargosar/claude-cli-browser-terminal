@@ -25,7 +25,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Page split by change rate: `index.html` markup only, `base.css`, `reader.css`, `main.js` wiring, stable modules (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `lab.js`), `views/last.js`. Lab rows are built by `lab.js`, so an experiment adds no markup. Manual test: terminal, divider, gear panel, looks, reading settings, reply all work
 - [x] Release 0.1.1 packed to `published-versions/` with `pnpm release`
 - [x] Terminal keys: shift-enter sends LF (Ctrl+J) to claude; both browser events swallowed, or xterm adds a CR and submits. Manual test
-- [ ] default panel layout, move to xterm not right panel.
+- [x] Default split 50/50, terminal floor 480px so the reply pane can take 60%. The reply pane was too small at 65/35. Double-click the divider to take the new default. Manual test
 - [ ] Terminal keys: ctrl-w deletes the last word in claude instead of closing the tab
 - [ ] Focus: a strong indicator shows which pane has focus; a click or key switches to the terminal; with no focus, the terminal gets it
 - [ ] Terminal scrolling while the cursor is in claude's input box

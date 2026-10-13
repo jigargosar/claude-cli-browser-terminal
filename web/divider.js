@@ -1,7 +1,7 @@
 // Pane divider: drag, arrow keys, double-click resets. Saved per browser.
 // body.dragging is set during a drag; the terminal pauses its refit while it is set.
 const SPLIT_KEY = "cc-web.split";
-const SPLIT_DEFAULT = 65;
+const SPLIT_DEFAULT = 50;
 
 export const initDivider = ({ onDragEnd }) => {
   const divider = document.getElementById("divider");

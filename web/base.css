@@ -49,7 +49,7 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--term-b
 body { display: flex; }
 
 /* --split: terminal pane width, set by dragging the divider (divider.js). */
-#terminal-pane { flex: 0 1 var(--split, 65%); min-width: 600px; padding: 14px 6px 14px 18px; box-sizing: border-box; }
+#terminal-pane { flex: 0 1 var(--split, 50%); min-width: 480px; padding: 14px 6px 14px 18px; box-sizing: border-box; }
 #divider { flex: none; width: 8px; cursor: col-resize; background: var(--term-bg); position: relative; touch-action: none; }
 #divider::after { content: ""; position: absolute; inset: 0 3px; background: #2a2e36; transition: background 0.15s; }
 #divider:hover::after, #divider:focus-visible::after, body.dragging #divider::after { background: var(--link); }
