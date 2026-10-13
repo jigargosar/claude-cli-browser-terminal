@@ -128,8 +128,9 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Release to `published-versions`
 
 # Slice 14
+- [x] Clean exit: `pty.onExit` closes sockets with code 4001 and reason, waits for the close handshake, then exits; the page shows "claude exited". Checked with a socket client against `server.mjs --version`
+- [x] Server listens after all handlers exist: a socket that connected while `open(url)` was pending was dropped with 1006
 - [ ] Archive n slices for clarity
-- [ ] Clean exit: `pty.onExit` closes sockets with a code and reason before `process.exit`; the page shows "claude exited"
 - [ ] Reading pane fed from the transcript instead of the Stop hook
 - [ ] Reply views for A/B persisted in localstorage
     - [ ] View "last": today's behavior

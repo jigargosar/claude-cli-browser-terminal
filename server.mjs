@@ -69,10 +69,6 @@ const server = http.createServer(async (req, res) => {
 
 const HOST = "127.0.0.1";
 const port = fixedPort ?? (await getPort({ host: HOST }));
-await new Promise((resolve) => server.listen(port, HOST, resolve));
-const url = `http://localhost:${port}`;
-console.log(url);
-await open(url);
 
 // One claude for the server's lifetime; browser tabs only attach and detach.
 // Started on the first tab's size, so its first output is formatted at the browser terminal's width.
@@ -101,17 +97,26 @@ const startClaude = (cols, rows) => {
     mirror.write(d);
     broadcast(JSON.stringify({ t: "o", d }));
   });
-  pty.onExit(({ exitCode }) => {
+  pty.onExit(async ({ exitCode }) => {
     console.log(`claude exited (${exitCode}), stopping server`);
-    for (const ws of clients) ws.close();
+    // Tell the tab why, and wait for the close handshake so the reason gets through before the process ends.
+    const closed = [...clients].map(
+      (ws) =>
+        new Promise((resolve) => {
+          ws.once("close", resolve);
+          ws.close(CLAUDE_EXITED, `claude exited (${exitCode})`);
+        }),
+    );
+    await Promise.all(closed);
     process.exit(exitCode);
   });
 };
 
-console.log("claude starts when the first tab opens");
+// Close codes sent to the tab. 4000-4999 are free for applications.
+const SECOND_TAB = 4000;
+const CLAUDE_EXITED = 4001;
 
 // One tab per session, like one terminal per session. A refresh closes the old socket first, so it reconnects.
-const SECOND_TAB = 4000;
 new WebSocketServer({ server }).on("connection", (ws) => {
   if (clients.size > 0) {
     ws.close(SECOND_TAB, "This session is open in another tab");
@@ -137,3 +142,10 @@ new WebSocketServer({ server }).on("connection", (ws) => {
     clients.delete(ws);
   });
 });
+
+// Listen last, so every handler exists before the first request.
+await new Promise((resolve) => server.listen(port, HOST, resolve));
+const url = `http://localhost:${port}`;
+console.log(url);
+console.log("claude starts when the first tab opens");
+await open(url);

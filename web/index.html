@@ -370,15 +370,18 @@ ws.onmessage = (e) => {
   }
   else if (m.t === "reload") location.reload();
 };
-// 4000: the server refused this tab, the session is open in another one.
+// 4000: the server refused this tab, the session is open in another one. 4001: claude exited, the server is gone.
 ws.onclose = (e) => {
   if (e.code === 4000) {
     term.write(`\r\n[${e.reason}. Close this tab, or close the other tab and reload this one.]\r\n`);
     status.textContent = `${e.reason}.`;
-    return;
+  } else if (e.code === 4001) {
+    term.write(`\r\n[${e.reason}. The server stopped. Close this tab.]\r\n`);
+    status.textContent = `${e.reason}. Close this tab.`;
+  } else {
+    term.write("\r\n[disconnected]\r\n");
+    status.textContent = "Disconnected from the server. Restart it and reload this page.";
   }
-  term.write("\r\n[disconnected]\r\n");
-  status.textContent = "Disconnected from the server. Restart it and reload this page.";
 };
 
 // Shift+Enter -> newline in Claude Code (same as Alt+Enter)
