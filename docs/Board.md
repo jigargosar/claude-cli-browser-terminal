@@ -7,7 +7,7 @@
 - A related task found during the work joins the current slice.
 - Work done without a task: add it to the current slice, ticked.
 - A new slice starts when a different context comes up, or when the current slice gets too long; its open items move to the new slice. A long slice hides its open tasks, so when a part is done and tested, suggest a new slice.
-- Older entries may break these rules. Never copy them as an example; fix a break the next time you touch that part.
+- Closed slices need not follow the Workflow. Do not read a closed slice as an example of the rules.
 
 # Slice 1: Side-by-side reply preview POC
 - [x] Create `.claude/hooks/last-reply.mjs`: Stop hook writes `last_assistant_message` to `.claude/replies/<session_id>.md`
