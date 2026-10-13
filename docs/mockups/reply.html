@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reply pane mockup</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --sepia-bg: #f4ecd8;
+      --sepia-text: #5b4636;
+      --sepia-head: #3e2f23;
+      --sepia-line: #d8c9a8;
+      --sepia-code: #ebe1c8;
+    }
+  </style>
+</head>
+<body class="h-screen m-0 flex overflow-hidden">
+
+  <!-- LHS: terminal, left blank on purpose -->
+  <section class="w-1/2 h-full bg-neutral-900 border-r border-neutral-700"></section>
+
+  <!-- RHS: one reply at a time. Up = older, Down = newer. -->
+  <section id="pane" class="w-1/2 h-full overflow-y-auto relative" style="background: var(--sepia-bg); color: var(--sepia-text)">
+    <div id="counter" class="absolute top-3 right-4 text-sm opacity-60"></div>
+    <article id="reply" class="max-w-prose mx-auto px-8 py-10 text-[17px] leading-7"></article>
+  </section>
+
+  <script>
+    // Data: replies, oldest first. Each reply is a list of blocks.
+    const replies = [
+      [
+        { t: 'h1', s: 'Board read' },
+        { t: 'p', s: 'Slice 14 has four open tasks. The next one is Focus.' },
+      ],
+      [
+        { t: 'h1', s: 'Why the socket dropped on reconnect' },
+        { t: 'p', s: 'The server started listening before all handlers were attached. A tab that connected in that window was closed with code 1006. The fix moves the listen call after the last handler.' },
+        { t: 'p', s: 'A refresh now gets the serialized screen from the headless mirror. No redraw is needed.' },
+        { t: 'h2', s: 'What changed' },
+        { t: 'ul', items: ['Listen after all handlers exist.', 'Close with code 4001 and a reason when claude exits.', 'Wait for the close handshake before the process exits.'] },
+        { t: 'pre', s: 'server.listen(port, () => {\n  console.log(`http://localhost:${port}`);\n});' },
+        { t: 'p', s: 'Checked with a socket client against server.mjs --version. The page shows "claude exited" and the server stops.' },
+      ],
+      [
+        { t: 'h1', s: 'Shift+Enter' },
+        { t: 'p', s: 'Shift+Enter now sends LF. Both keydown and keypress are swallowed, or xterm adds a CR and submits the prompt.' },
+        { t: 'ul', items: ['Manual test: a newline appears in the input box.', 'Enter alone still submits.'] },
+      ],
+      [
+        { t: 'h1', s: 'Default split' },
+        { t: 'p', s: 'The default split is 50/50. The terminal floor is 480px, so the reply pane can take 60% of the width.' },
+        { t: 'p', s: 'Double-click the divider to take the new default.' },
+        { t: 'p', s: 'The old 65/35 default left the reply pane too small to read.' },
+        { t: 'h2', s: 'Files' },
+        { t: 'ul', items: ['web/divider.js', 'web/base.css'] },
+      ],
+      [
+        { t: 'h1', s: 'Ctrl+W and Ctrl+Backspace' },
+        { t: 'p', s: 'Ctrl+W never reaches the page in Chrome. A leave guard never fires. Ctrl+Backspace deletes a word in claude.' },
+        { t: 'p', s: 'A closed tab reopens with the typed text still in the input box.' },
+      ],
+    ];
+
+    const head = { color: 'var(--sepia-head)' };
+    const code = { background: 'var(--sepia-code)', border: '1px solid var(--sepia-line)' };
+
+    function el(tag, cls, text, style) {
+      const e = document.createElement(tag);
+      e.className = cls;
+      if (text != null) e.textContent = text;
+      Object.assign(e.style, style);
+      return e;
+    }
+
+    function block(b) {
+      switch (b.t) {
+        case 'h1': return el('h1', 'text-2xl font-semibold mb-4', b.s, head);
+        case 'h2': return el('h2', 'text-xl font-semibold mt-8 mb-3', b.s, head);
+        case 'p': return el('p', 'mb-4', b.s);
+        case 'pre': {
+          const pre = el('pre', 'rounded px-4 py-3 mb-4 text-[15px] overflow-x-auto', null, code);
+          pre.append(el('code', '', b.s));
+          return pre;
+        }
+        case 'ul': {
+          const ul = el('ul', 'list-disc pl-6 mb-4 space-y-1');
+          b.items.forEach((s) => ul.append(el('li', '', s)));
+          return ul;
+        }
+      }
+    }
+
+    let index = replies.length - 1;
+
+    function render() {
+      const reply = document.getElementById('reply');
+      reply.replaceChildren(...replies[index].map(block));
+      document.getElementById('counter').textContent = `${index + 1} / ${replies.length}`;
+      document.getElementById('pane').scrollTop = 0;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const older = e.key === 'ArrowUp' || e.key === '{';
+      const newer = e.key === 'ArrowDown' || e.key === '}';
+      if (older && index > 0) index -= 1;
+      else if (newer && index < replies.length - 1) index += 1;
+      else return;
+      e.preventDefault();
+      render();
+    });
+
+    render();
+  </script>
+
+</body>
+</html>
