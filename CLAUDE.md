@@ -41,6 +41,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 - The page runs xterm.js (`web/terminal.js`) with fit, WebGL and Unicode 11. Keystrokes go up as `i`, size as `r`; the first `r` starts claude at that size.
 - The server keeps a headless xterm mirror of the screen. On reconnect it serializes the mirror into the new tab, so a refresh shows the screen without a redraw.
 - Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so duplicate lines in scrollback appear in any terminal, Windows Terminal included. Not fixable here; not in scope.
+- Keys: a remapped key in xterm must swallow both keydown and keypress, or xterm adds its own CR. Shift+Enter sends LF (Ctrl+J) for a newline. Ctrl+W never reaches the page in Chrome; Ctrl+Backspace deletes a word in claude.
 - The transcript is the source for reply text. The terminal stream carries rendered cells, not markdown, so nothing is parsed from it.
 
 ## Rules
