@@ -20,18 +20,10 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Closed slices moved to `docs/Board-archive-2026-10-13.md`; the board holds the Workflow and the open slice
 - [x] Lab: every A/B experiment (terminal look now, reply view next) in one panel, all choices in one localStorage key `cc-web.lab`. The terminal look dropdown is gone. Manual test: pick each look, reload, the choice stays
 - [x] No reply bar: one gear floats over the top right of the reply text and opens the only panel (status, Lab, reading settings). Default split 65% for the terminal. Manual test: gear opens, text starts at the top, settings still work
+- [x] Mockup `docs/mockups/outline.html` deleted: a markdown breadcrumb is not wanted
+- [x] Socket protocol written once, in the header of `web/socket.js`
 - [ ] Page split by change rate: `index.html` markup only, `base.css`, `reader.css`, `main.js` wiring, stable modules (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `lab.js`), `views/last.js`. Lab rows are built by `lab.js`, so an experiment adds no markup. Manual test: terminal, divider, gear panel, looks, reading settings, reply all work
-- [ ] Reply rendering basics
-    - [ ] Code blocks: word wrap (critical), line numbers, a copy button
-    - [ ] Syntax highlighting fixed (colors invert now) or removed
-    - [ ] The "Inference:" first line stands out from the body
-- [ ] Reply context: the prompt that produced the reply is a sticky first line above it
-- [ ] Pin: a new reply does not replace the one being read; a mark shows one arrived, a key or click goes to it
 - [ ] Thinking blocks from the transcript, toggleable (server keeps them as items; page shows them on demand)
-- [ ] Tool calls shown thin; a result is surfaced only above a size threshold, collapsed
-- [ ] Any item full screen in the right pane: select it, read it whole, Esc returns to where you were
 - [ ] A reply as a working document: ask for clarification on the same page, the answer lands next to the question (comments, Goal 2 and 3)
 - [ ] File paths in a reply open in the editor on click
 - [ ] A file in the panel: bring it in, read it, edit it, ask about it
-- [ ] Mockup `docs/mockups/outline.html` deleted: a markdown breadcrumb is not wanted
-- [ ] Socket protocol written once at the top of `server.mjs`
