@@ -27,7 +27,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Terminal keys: shift-enter sends LF (Ctrl+J) to claude; both browser events swallowed, or xterm adds a CR and submits. Manual test
 - [x] Default split 50/50, terminal floor 480px so the reply pane can take 60%. The reply pane was too small at 65/35. Double-click the divider to take the new default. Manual test
 - [x] Terminal keys: ctrl-w cannot be taken from Chrome (the page never sees it, a leave guard never fires). Ctrl-backspace deletes the word; a closed tab reopens with the typed text. Manual test
-- [ ] Focus: a strong indicator shows which pane has focus; a click or key switches to the terminal; with no focus, the terminal gets it
+- [x] Focus: the focused pane has an outline; Ctrl+` toggles between the panes; focus that lands nowhere goes to the terminal. Manual test: outline follows clicks, Ctrl+` from both sides, click on empty pane space returns to the terminal
 - [ ] Terminal scrolling while the cursor is in claude's input box
 - [ ] Richer reply pane (right).
     - [ ] Thinking blocks from the transcript, toggleable (server keeps them as items; page shows them on demand)
