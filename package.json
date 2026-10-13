@@ -52,6 +52,7 @@
     "impeccable": "4.5.2",
     "marked": "18.1.0",
     "marked-highlight": "2.2.4",
+    "puppeteer-core": "25.13.0",
     "vite": "8.3.4"
   }
 }
