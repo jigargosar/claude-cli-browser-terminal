@@ -8,7 +8,7 @@ when viewing reply, first line top sticky == my prompt. context !! AI thoughts/t
 
 tool calls, with its verbose output only actively thinly surfaced when it exceeds certain threshold,
 
-the main problem is viewing these items, fully not partiallty whithought preve content type flow, i.e. select, fullscreen, i.e. right pane esc back to where we were,
+the main problem is viewing these items, fully not partiallty withought preve content type flow, i.e. select, fullscreen, i.e. right pane esc back to where we were,
 
 here i have described what I would like to have. not sure about priority, because I like to pick most likely candidate.
 
