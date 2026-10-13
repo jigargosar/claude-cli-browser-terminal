@@ -79,26 +79,22 @@
     padding: 5px 10px; cursor: pointer;
   }
   .bar-button:hover { color: var(--ink); background: var(--tint); }
-  .bar-button:focus-visible, .seg button:focus-visible, #terminal-look:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
-
-  /* Terminal look dropdown, oldest look first. */
-  .look { display: flex; align-items: center; gap: 6px; margin-right: 4px; white-space: nowrap; }
-  #terminal-look {
-    font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px;
-    padding: 4px 6px; cursor: pointer;
-  }
-  #terminal-look:hover { background: var(--tint); }
+  .bar-button:focus-visible, .seg button:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+  #lab-button { anchor-name: --lab; }
   #reader-button { font: 600 15px/1 var(--serif); anchor-name: --reader; }
 
-  /* Reading settings panel, anchored under the Aa button. */
-  #reader-settings {
-    position-anchor: --reader; inset: auto; top: anchor(bottom); right: anchor(right); margin: 6px 0 0;
+  /* Panels anchored under their bar button: the Lab (A/B experiments) and the reading settings. */
+  .panel {
+    inset: auto; top: anchor(bottom); right: anchor(right); margin: 6px 0 0;
     width: 280px; padding: 14px 16px; box-sizing: border-box;
     background: var(--paper); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px;
     box-shadow: 0 8px 24px rgb(0 0 0 / 0.14); font: 13px/1.4 var(--sans);
   }
-  #reader-settings .row { display: grid; gap: 6px; margin-bottom: 12px; }
-  #reader-settings .label { color: var(--ink-muted); }
+  #lab { position-anchor: --lab; }
+  #reader-settings { position-anchor: --reader; }
+  .panel .row { display: grid; gap: 6px; margin-bottom: 12px; }
+  .panel .row:last-child { margin-bottom: 0; }
+  .panel .label { color: var(--ink-muted); }
   .seg { display: flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
   .seg button {
     flex: 1; font: inherit; color: var(--ink); background: none; border: 0; padding: 7px 4px; cursor: pointer;
@@ -181,16 +177,20 @@
 <aside id="reply-pane" aria-label="Last reply">
   <div id="reply-bar">
     <span id="reply-status">Waiting for the first reply</span>
-    <label class="look">Terminal
-      <select id="terminal-look">
-        <option value="prototype">Prototype (62618d0)</option>
-        <option value="original">Slice 5 (448568e)</option>
-        <option value="slice7">Slice 7</option>
-      </select>
-    </label>
+    <button type="button" id="lab-button" class="bar-button" popovertarget="lab">Lab</button>
     <button type="button" id="reader-button" class="bar-button" popovertarget="reader-settings" aria-label="Reading settings">Aa</button>
   </div>
-  <div id="reader-settings" popover aria-label="Reading settings">
+  <!-- Lab: every A/B experiment, oldest option first. One row per experiment; the script wires any [data-lab] group. -->
+  <div id="lab" class="panel" popover aria-label="Experiments">
+    <div class="row"><span class="label">Terminal look</span>
+      <div class="seg" role="group" aria-label="Terminal look">
+        <button type="button" data-lab="terminal" data-value="prototype">Prototype</button>
+        <button type="button" data-lab="terminal" data-value="original">Slice 5</button>
+        <button type="button" data-lab="terminal" data-value="slice7">Slice 7</button>
+      </div>
+    </div>
+  </div>
+  <div id="reader-settings" class="panel" popover aria-label="Reading settings">
     <div class="row"><span class="label">Theme</span>
       <div class="seg" role="group" aria-label="Theme">
         <button type="button" class="swatch" data-set="theme" data-theme-value="light" data-value="light">Light</button>
@@ -256,10 +256,16 @@ const TERMINAL_LOOKS = {
   // Slice 7: prototype size and black background, Slice 5 padding.
   slice7: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 15, fontWeight: "normal", lineHeight: 1, theme: {} },
 };
-const TERMINAL_KEY = "cc-web.terminal";
-// A saved look that no longer exists (e.g. the removed Windows Terminal look) falls back to Slice 7.
-const savedLook = localStorage.getItem(TERMINAL_KEY);
-let terminalLook = savedLook in TERMINAL_LOOKS ? savedLook : "slice7";
+const TERMINAL_LOOK_DEFAULT = "slice7";
+
+// Lab: A/B experiments. Each is a named choice with buttons in #lab; one localStorage key holds all choices.
+const LAB_KEY = "cc-web.lab";
+const lab = JSON.parse(localStorage.getItem(LAB_KEY) ?? "{}");
+const labButtons = (name) => document.querySelectorAll(`#lab [data-lab="${name}"]`);
+// A saved value with no button (e.g. the removed Windows Terminal look) falls back.
+const labValue = (name, fallback) =>
+  [...labButtons(name)].some((b) => b.dataset.value === lab[name]) ? lab[name] : fallback;
+const terminalLook = labValue("terminal", TERMINAL_LOOK_DEFAULT);
 document.body.dataset.terminal = terminalLook;
 
 const term = new Terminal({ allowProposedApi: true, cursorBlink: true, ...TERMINAL_LOOKS[terminalLook] });
@@ -304,16 +310,32 @@ fit.fit();
 // Refit whenever the pane changes size (window resize, divider, or the narrow-layout switch).
 new ResizeObserver(() => dragging || fit.fit()).observe(document.getElementById("term"));
 
-const lookSelect = document.getElementById("terminal-look");
-lookSelect.value = terminalLook;
-lookSelect.addEventListener("change", () => {
-  terminalLook = lookSelect.value;
-  Object.assign(term.options, TERMINAL_LOOKS[terminalLook]);
-  document.body.dataset.terminal = terminalLook;
-  localStorage.setItem(TERMINAL_KEY, terminalLook);
-  fit.fit();
-  term.focus();
-});
+// What each Lab choice does. Adding an experiment: one entry here, one row in #lab.
+const LAB = {
+  terminal: {
+    fallback: TERMINAL_LOOK_DEFAULT,
+    apply: (look) => {
+      Object.assign(term.options, TERMINAL_LOOKS[look]);
+      document.body.dataset.terminal = look;
+      fit.fit();
+    },
+  },
+};
+const applyLab = (name) => {
+  const value = labValue(name, LAB[name].fallback);
+  LAB[name].apply(value);
+  for (const b of labButtons(name)) b.setAttribute("aria-pressed", String(b.dataset.value === value));
+};
+for (const name in LAB) {
+  applyLab(name);
+  for (const b of labButtons(name)) {
+    b.addEventListener("click", () => {
+      lab[name] = b.dataset.value;
+      localStorage.setItem(LAB_KEY, JSON.stringify(lab));
+      applyLab(name);
+    });
+  }
+}
 
 // Reading settings, like an ebook reader. Saved per browser.
 const READER_KEY = "cc-web.reader";
