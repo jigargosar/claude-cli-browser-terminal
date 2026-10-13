@@ -1,0 +1,112 @@
+/* The dark terminal you type into, the light page you read. Layout, panes, the settings panel. */
+:root {
+  /* Terminal and code blocks (Slice 5). */
+  --term-bg: #16181d;
+  --code-fg: #c9d1d9;
+  /* Reading page */
+  --paper: #f8fbfb;
+  --ink: #1a2326;
+  --ink-muted: #5b6569;
+  --quote: #454f52;
+  --rule: #dbe1e2;
+  --tint: #ebf1f3;
+  --code-ink: #a94620;
+  --stripe: #f3f6f7;
+  --link: #0064b5;
+  --selection: #bfdeff;
+  --thumb: #b8bfc0;
+  --mono: "Cascadia Mono", Consolas, monospace;
+  --sans: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --serif: "Sitka Text", Sitka, Georgia, serif;
+  --serif-display: "Sitka Subheading", Sitka, Georgia, serif;
+  /* Reading settings; reader.js overrides these on #reply-pane. */
+  --reader-size: 17px;
+  --reader-leading: 1.6;
+  --reader-measure: 68ch;
+  --reader-font: var(--sans);
+  --reader-heading-font: var(--display);
+}
+
+/* Reading themes, like an ebook reader. Light is the default above. */
+#reply-pane[data-theme="sepia"] {
+  --paper: #f4ecd8; --ink: #3b2f22; --ink-muted: #6e5d49; --quote: #57483a; --rule: #ddd0b5;
+  --tint: #ebe0c6; --stripe: #efe6cf; --code-ink: #8a3a12; --link: #1f5a99; --selection: #e3cfa0; --thumb: #c9b994;
+}
+#reply-pane[data-theme="dark"] {
+  --paper: #1e2227; --ink: #d6dade; --ink-muted: #9aa2ab; --quote: #b5bcc4; --rule: #343a42;
+  --tint: #272c32; --stripe: #23272c; --code-ink: #f0a57c; --link: #7cb3ff; --selection: #2f4a6b; --thumb: #4a525c;
+}
+
+/* Terminal looks (terminal.js sets body[data-terminal]). The first prototype: no padding, terminal on a #1e1e1e page. */
+body[data-terminal="prototype"] { --term-bg: #1e1e1e; }
+body[data-terminal="prototype"] #terminal-pane { padding: 0; }
+/* Slice 7: the prototype's black, with Slice 5's padding (the default below). */
+body[data-terminal="slice7"] { --term-bg: #000000; }
+
+/* The page never scrolls; each pane owns its scrolling. */
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--term-bg); }
+body { display: flex; }
+
+/* --split: terminal pane width, set by dragging the divider (divider.js). */
+#terminal-pane { flex: 0 1 var(--split, 65%); min-width: 600px; padding: 14px 6px 14px 18px; box-sizing: border-box; }
+#divider { flex: none; width: 8px; cursor: col-resize; background: var(--term-bg); position: relative; touch-action: none; }
+#divider::after { content: ""; position: absolute; inset: 0 3px; background: #2a2e36; transition: background 0.15s; }
+#divider:hover::after, #divider:focus-visible::after, body.dragging #divider::after { background: var(--link); }
+#divider:focus-visible { outline: none; }
+body.dragging { cursor: col-resize; user-select: none; }
+#term { width: 100%; height: 100%; overflow: hidden; }
+.xterm-viewport { scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
+
+#reply-pane {
+  flex: 1 1 0; min-width: 380px; display: flex; flex-direction: column; position: relative;
+  background: var(--paper); color: var(--ink);
+}
+.bar-button {
+  font: 13px/1.4 var(--sans); color: var(--ink-muted); background: none; border: 1px solid transparent; border-radius: 6px;
+  padding: 5px 10px; cursor: pointer;
+}
+.bar-button:hover { color: var(--ink); background: var(--tint); }
+.bar-button:focus-visible, .seg button:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+/* The gear floats over the top right corner of the reply text, so the pane has no bar. */
+#settings-button { position: absolute; top: 8px; right: 10px; z-index: 1; font-size: 17px; line-height: 1; padding: 6px 8px; anchor-name: --settings; }
+
+/* The settings panel, anchored under the gear. */
+.panel {
+  position-anchor: --settings; inset: auto; top: anchor(bottom); right: anchor(right); margin: 6px 0 0;
+  width: 280px; padding: 14px 16px; box-sizing: border-box;
+  background: var(--paper); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.14); font: 13px/1.4 var(--sans);
+}
+#reply-status { margin: 0 0 12px; }
+.panel .row { display: grid; gap: 6px; margin-bottom: 12px; }
+.panel .label { color: var(--ink-muted); }
+.seg { display: flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.seg button {
+  flex: 1; font: inherit; color: var(--ink); background: none; border: 0; padding: 7px 4px; cursor: pointer;
+}
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button:hover { background: var(--tint); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.seg button:disabled { opacity: 0.4; cursor: default; background: none; }
+.seg output { flex: 1; align-self: center; text-align: center; font-variant-numeric: tabular-nums; }
+.seg .swatch { font: 600 14px/1 var(--serif); }
+.seg .swatch[data-theme-value="light"] { background: #f8fbfb; color: #1a2326; }
+.seg .swatch[data-theme-value="sepia"] { background: #f4ecd8; color: #3b2f22; }
+.seg .swatch[data-theme-value="dark"] { background: #1e2227; color: #d6dade; }
+.seg .swatch[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--link); }
+#reader-reset { width: 100%; margin-top: 2px; }
+#reply {
+  flex: 1; overflow-y: auto; padding: 32px 48px 72px;
+  scrollbar-width: thin; scrollbar-color: var(--thumb) transparent;
+}
+#reply ::selection { background: var(--selection); color: var(--ink); }
+
+/* Narrow windows: stack, terminal on top. Each pane still scrolls on its own. */
+@media (max-width: 1000px) {
+  body { flex-direction: column; }
+  #terminal-pane { flex: 1 1 55%; min-width: 0; min-height: 0; }
+  #reply-pane { flex: 1 1 45%; min-width: 0; min-height: 0; }
+  #divider { display: none; }
+  #reply { padding-left: 20px; padding-right: 20px; }
+}

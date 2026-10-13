@@ -1,0 +1,44 @@
+/* Rendered markdown: a calm reading column. The tokens come from base.css and reader.js. */
+.md {
+  max-width: var(--reader-measure);
+  font-family: var(--reader-font); font-size: var(--reader-size); line-height: var(--reader-leading);
+}
+.md > :first-child { margin-top: 0; }
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
+  font-family: var(--reader-heading-font); font-weight: 600; line-height: 1.25; margin: 1.7em 0 0.5em; text-wrap: balance;
+}
+.md h1 { font-size: 1.6em; }
+.md h2 { font-size: 1.3em; }
+.md h3 { font-size: 1.1em; }
+.md h4, .md h5, .md h6 { font-size: 1em; }
+.md h5, .md h6 { color: var(--ink-muted); }
+.md p, .md ul, .md ol, .md blockquote, .md pre, .md table { margin: 0 0 1em; }
+.md ul, .md ol { padding-left: 1.5em; }
+.md li + li, .md li > ul, .md li > ol { margin-top: 0.3em; }
+.md li > ul, .md li > ol { margin-bottom: 0; }
+.md li::marker { color: var(--ink-muted); }
+.md a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.md a:hover { text-decoration-thickness: 2px; }
+.md a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px; }
+.md strong { font-weight: 600; }
+.md hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }
+.md blockquote { padding: 0 0 0 1em; color: var(--quote); border-left: 2px solid var(--rule); }
+/* Inline code stays in the reading sans: no box to chop the sentence, just a rust ink. */
+.md code { font: 1em var(--sans); color: var(--code-ink); }
+/* Code blocks are pieces of the terminal set into the page. */
+.md pre {
+  background: var(--term-bg); color: var(--code-fg); border-radius: 6px; padding: 14px 16px; overflow-x: auto;
+  scrollbar-width: thin; scrollbar-color: #3a3f4b transparent;
+}
+.md pre code { font: 14px/1.55 var(--mono); color: inherit; }
+.md pre code.hljs { background: none; padding: 0; }
+.md pre ::selection { background: #ffffff40; color: inherit; }
+.md table { border-collapse: collapse; display: block; overflow-x: auto; font-size: 0.94em; }
+.md th, .md td { border: 1px solid var(--rule); padding: 6px 12px; text-align: left; vertical-align: top; }
+.md th { background: var(--tint); font-weight: 600; }
+.md tr:nth-child(2n) td { background: var(--stripe); }
+.md td { font-variant-numeric: tabular-nums; }
+.md img { max-width: 100%; }
+.md input[type="checkbox"] { margin-right: 0.4em; accent-color: var(--link); }
+
+.empty { color: var(--ink-muted); }
