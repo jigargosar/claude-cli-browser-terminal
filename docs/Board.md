@@ -129,12 +129,6 @@ The board exists so that all known work is written in one list, and the next tas
 
 # Slice 14
 - [ ] Archive n slices for clarity
-- [ ] Why? -> Resize only when the size changed
-    - [ ] Server skips `pty.resize` and `mirror.resize` when cols and rows are unchanged. Verify: a refresh causes no redraw
-    - [ ] One fit at startup: no `r` after claude starts unless the pane changed. Verify with a server log of `r` messages
-- [ ] Dedupe redundant lines in xterm view:
-    - [ ] Measure resize duplicates: set `windowsPty` on the browser terminal and the mirror, drag the divider, compare with a Windows Terminal resize, report what differs. The Ink duplicates seen in Windows Terminal are not ours
-- [ ] Is this petty? -> Server survives any socket message order: an `i` before the pty exists does not crash it
 - [ ] Clean exit: `pty.onExit` closes sockets with a code and reason before `process.exit`; the page shows "claude exited"
 - [ ] Reading pane fed from the transcript instead of the Stop hook
 - [ ] Reply views for A/B persisted in localstorage
@@ -143,7 +137,5 @@ The board exists so that all known work is written in one list, and the next tas
     - [ ] View "outline": a one-line bracket tree of the shown reply's headings, as position context
 - [ ] Comments threads on a reply workflow
 - [ ] Split the page script into modules: terminal, divider, reader, socket, views
-- [ ] Remove the museum terminal looks after A/B is done; tag first
+- [ ] reduce sreen estate perhaps group all ab testing, and add persistance for all: Remove the museum terminal looks after A/B is done; tag first
 - [ ] Socket protocol written once at the top of `server.mjs`
-- [ ] Research: `useConptyDll: true` on `spawn`, does it change anything visible
-- [ ] Research: Agent SDK as a full frontend, what it costs versus the PTY path
