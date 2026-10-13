@@ -40,6 +40,8 @@ export const focus = () => term.focus();
 export const onResize = (cb) => term.onResize(cb);
 // Every byte the user types. Shift+Enter becomes LF, the same bytes as Ctrl+J, Claude Code's newline key.
 // The browser fires keydown and keypress for Enter; both must be swallowed, or xterm sends its own CR after the LF.
+// Ctrl+W closes the tab in Chrome and Edge; the page never sees the key. Reopen the URL to get the session back.
+// Ctrl+Backspace deletes the previous word in claude instead.
 export const onInput = (cb) => {
   term.attachCustomKeyEventHandler((e) => {
     if (e.key === "Enter" && e.shiftKey) {
