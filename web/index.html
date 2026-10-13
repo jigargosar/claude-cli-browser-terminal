@@ -56,7 +56,7 @@
   body { display: flex; }
 
   /* --split: terminal pane width, set by dragging the divider. */
-  #terminal-pane { flex: 0 1 var(--split, 55%); min-width: 600px; padding: 14px 6px 14px 18px; box-sizing: border-box; }
+  #terminal-pane { flex: 0 1 var(--split, 65%); min-width: 600px; padding: 14px 6px 14px 18px; box-sizing: border-box; }
   #divider { flex: none; width: 8px; cursor: col-resize; background: var(--term-bg); position: relative; touch-action: none; }
   #divider::after { content: ""; position: absolute; inset: 0 3px; background: #2a2e36; transition: background 0.15s; }
   #divider:hover::after, #divider:focus-visible::after, body.dragging #divider::after { background: var(--link); }
@@ -66,34 +66,27 @@
   .xterm-viewport { scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
 
   #reply-pane {
-    flex: 1 1 0; min-width: 380px; display: flex; flex-direction: column;
+    flex: 1 1 0; min-width: 380px; display: flex; flex-direction: column; position: relative;
     background: var(--paper); color: var(--ink);
   }
-  #reply-bar {
-    flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 6px 40px 6px 48px;
-    font: 13px/1.4 var(--sans); color: var(--ink-muted); border-bottom: 1px solid var(--rule);
-  }
-  #reply-status { flex: 1 0 auto; white-space: nowrap; }
   .bar-button {
-    font: inherit; color: var(--ink-muted); background: none; border: 1px solid transparent; border-radius: 6px;
+    font: 13px/1.4 var(--sans); color: var(--ink-muted); background: none; border: 1px solid transparent; border-radius: 6px;
     padding: 5px 10px; cursor: pointer;
   }
   .bar-button:hover { color: var(--ink); background: var(--tint); }
   .bar-button:focus-visible, .seg button:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
-  #lab-button { anchor-name: --lab; }
-  #reader-button { font: 600 15px/1 var(--serif); anchor-name: --reader; }
+  /* The gear floats over the top right corner of the reply text, so the pane has no bar. */
+  #settings-button { position: absolute; top: 8px; right: 10px; z-index: 1; font-size: 17px; line-height: 1; padding: 6px 8px; anchor-name: --settings; }
 
-  /* Panels anchored under their bar button: the Lab (A/B experiments) and the reading settings. */
+  /* The settings panel, anchored under the gear. */
   .panel {
-    inset: auto; top: anchor(bottom); right: anchor(right); margin: 6px 0 0;
+    position-anchor: --settings; inset: auto; top: anchor(bottom); right: anchor(right); margin: 6px 0 0;
     width: 280px; padding: 14px 16px; box-sizing: border-box;
     background: var(--paper); color: var(--ink); border: 1px solid var(--rule); border-radius: 8px;
     box-shadow: 0 8px 24px rgb(0 0 0 / 0.14); font: 13px/1.4 var(--sans);
   }
-  #lab { position-anchor: --lab; }
-  #reader-settings { position-anchor: --reader; }
+  #reply-status { margin: 0 0 12px; }
   .panel .row { display: grid; gap: 6px; margin-bottom: 12px; }
-  .panel .row:last-child { margin-bottom: 0; }
   .panel .label { color: var(--ink-muted); }
   .seg { display: flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
   .seg button {
@@ -122,7 +115,7 @@
     #terminal-pane { flex: 1 1 55%; min-width: 0; min-height: 0; }
     #reply-pane { flex: 1 1 45%; min-width: 0; min-height: 0; }
     #divider { display: none; }
-    #reply-bar, #reply { padding-left: 20px; padding-right: 20px; }
+    #reply { padding-left: 20px; padding-right: 20px; }
   }
 
   /* Rendered markdown: a calm reading column. */
@@ -175,13 +168,11 @@
 <main id="terminal-pane"><div id="term"></div></main>
 <div id="divider" role="separator" aria-orientation="vertical" aria-label="Resize panes" tabindex="0"></div>
 <aside id="reply-pane" aria-label="Last reply">
-  <div id="reply-bar">
-    <span id="reply-status">Waiting for the first reply</span>
-    <button type="button" id="lab-button" class="bar-button" popovertarget="lab">Lab</button>
-    <button type="button" id="reader-button" class="bar-button" popovertarget="reader-settings" aria-label="Reading settings">Aa</button>
-  </div>
-  <!-- Lab: every A/B experiment, oldest option first. One row per experiment; the script wires any [data-lab] group. -->
-  <div id="lab" class="panel" popover aria-label="Experiments">
+  <!-- One gear over the reply text: status, Lab experiments and reading settings. These change rarely. -->
+  <button type="button" id="settings-button" class="bar-button" popovertarget="settings" aria-label="Settings">&#9881;</button>
+  <div id="settings" class="panel" popover aria-label="Settings">
+    <p id="reply-status" class="label">Waiting for the first reply</p>
+    <!-- Lab: every A/B experiment, oldest option first. One row per experiment; the script wires any [data-lab] group. -->
     <div class="row"><span class="label">Terminal look</span>
       <div class="seg" role="group" aria-label="Terminal look">
         <button type="button" data-lab="terminal" data-value="prototype">Prototype</button>
@@ -189,8 +180,6 @@
         <button type="button" data-lab="terminal" data-value="slice7">Slice 7</button>
       </div>
     </div>
-  </div>
-  <div id="reader-settings" class="panel" popover aria-label="Reading settings">
     <div class="row"><span class="label">Theme</span>
       <div class="seg" role="group" aria-label="Theme">
         <button type="button" class="swatch" data-set="theme" data-theme-value="light" data-value="light">Light</button>
@@ -258,10 +247,10 @@ const TERMINAL_LOOKS = {
 };
 const TERMINAL_LOOK_DEFAULT = "slice7";
 
-// Lab: A/B experiments. Each is a named choice with buttons in #lab; one localStorage key holds all choices.
+// Lab: A/B experiments. Each is a named choice with buttons in #settings; one localStorage key holds all choices.
 const LAB_KEY = "cc-web.lab";
 const lab = JSON.parse(localStorage.getItem(LAB_KEY) ?? "{}");
-const labButtons = (name) => document.querySelectorAll(`#lab [data-lab="${name}"]`);
+const labButtons = (name) => document.querySelectorAll(`#settings [data-lab="${name}"]`);
 // A saved value with no button (e.g. the removed Windows Terminal look) falls back.
 const labValue = (name, fallback) =>
   [...labButtons(name)].some((b) => b.dataset.value === lab[name]) ? lab[name] : fallback;
@@ -278,7 +267,7 @@ term.loadAddon(new WebglAddon());
 // Pane divider: drag, arrow keys, double-click resets. Saved per browser.
 // claude re-wraps the whole conversation on every resize, so the terminal refits only when the drag ends.
 const SPLIT_KEY = "cc-web.split";
-const SPLIT_DEFAULT = 55;
+const SPLIT_DEFAULT = 65;
 const divider = document.getElementById("divider");
 let dragging = false;
 const setSplit = (percent) => {
@@ -310,7 +299,7 @@ fit.fit();
 // Refit whenever the pane changes size (window resize, divider, or the narrow-layout switch).
 new ResizeObserver(() => dragging || fit.fit()).observe(document.getElementById("term"));
 
-// What each Lab choice does. Adding an experiment: one entry here, one row in #lab.
+// What each Lab choice does. Adding an experiment: one entry here, one row in #settings.
 const LAB = {
   terminal: {
     fallback: TERMINAL_LOOK_DEFAULT,
@@ -357,12 +346,12 @@ const applyReader = () => {
   document.getElementById("size-value").textContent = `${size}px`;
   document.getElementById("size-down").disabled = size <= READER_SIZES[0];
   document.getElementById("size-up").disabled = size >= READER_SIZES[1];
-  for (const b of document.querySelectorAll("#reader-settings [data-set]")) {
+  for (const b of document.querySelectorAll("#settings [data-set]")) {
     b.setAttribute("aria-pressed", String(readerSettings[b.dataset.set] === b.dataset.value));
   }
   localStorage.setItem(READER_KEY, JSON.stringify(readerSettings));
 };
-for (const b of document.querySelectorAll("#reader-settings [data-set]")) {
+for (const b of document.querySelectorAll("#settings [data-set]")) {
   b.addEventListener("click", () => { readerSettings[b.dataset.set] = b.dataset.value; applyReader(); });
 }
 document.getElementById("size-down").addEventListener("click", () => { readerSettings.size -= 1; applyReader(); });
