@@ -1,9 +1,13 @@
-# FLow
-- Write slices before any work.
-- Never write another slice until a slice is complete
-- Either delete the todo item, or move it to new slice.
-- If a slice is long reorder it. And either finish it, or move to next slice once a part is done.
-- Work done by mistake, without following these rules: add it to the current slice, marked done.
+# Workflow
+
+- Write a task in the current slice (chunk) before you work on it.
+- A slice is one flat list of the work to do.
+- Reordering is always allowed.
+- When a task is done and tested, tick it, move it to just below the last done item, and commit.
+- A related task found during the work joins the current slice.
+- Work done without a task: add it to the current slice, ticked.
+- A new slice starts when a different context comes up, or when the current slice gets too long; its open items move to the new slice. A long slice hides its open tasks, so when a part is done and tested, suggest a new slice.
+- Older entries may break these rules. Never copy them as an example; fix a break the next time you touch that part.
 
 # Slice 1: Side-by-side reply preview POC
 - [x] Create `.claude/hooks/last-reply.mjs`: Stop hook writes `last_assistant_message` to `.claude/replies/<session_id>.md`

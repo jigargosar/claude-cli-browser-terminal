@@ -32,7 +32,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 - `server.mjs`: starts `claude`, sends its terminal to the browser, sends the latest reply.
 - `web/index.html`: the whole page. Saving it reloads open tabs.
-- `docs/Board.md`: the work plan and its status. Follow its Flow.
+- `docs/Board.md`: the work plan and its status. Follow its Workflow.
 
 ## Rules
 
