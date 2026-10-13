@@ -352,23 +352,33 @@ const reply = document.getElementById("reply");
 const status = document.getElementById("reply-status");
 const timeFormat = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
 
+// The conversation as the server read it from claude's transcript. Views are functions of this list.
+let items = [];
+const showLastReply = () => {
+  const last = items.findLast((i) => i.kind === "reply");
+  if (last) {
+    reply.innerHTML = DOMPurify.sanitize(marked.parse(last.text));
+    status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
+  } else {
+    reply.innerHTML = '<p class="empty">Replies from this session show up here.</p>';
+    status.textContent = "Waiting for the first reply";
+  }
+  reply.scrollTop = 0;
+};
+
 const ws = new WebSocket("ws://" + location.host);
 const send = (m) => ws.readyState === 1 && ws.send(JSON.stringify(m));
 ws.onopen = () => send({ t: "r", cols: term.cols, rows: term.rows });
 ws.onmessage = (e) => {
   const m = JSON.parse(e.data);
   if (m.t === "o") term.write(m.d);
-  else if (m.t === "reply") {
-    if (m.md) {
-      reply.innerHTML = DOMPurify.sanitize(marked.parse(m.md));
-      status.textContent = `Updated ${timeFormat.format(new Date())}`;
-    } else {
-      reply.innerHTML = '<p class="empty">Replies from this session show up here.</p>';
-      status.textContent = "Waiting for the first reply";
-    }
-    reply.scrollTop = 0;
-  }
-  else if (m.t === "reload") location.reload();
+  else if (m.t === "items") {
+    items = m.items;
+    showLastReply();
+  } else if (m.t === "item") {
+    items.push(m.item);
+    if (m.item.kind === "reply") showLastReply();
+  } else if (m.t === "reload") location.reload();
 };
 // 4000: the server refused this tab, the session is open in another one. 4001: claude exited, the server is gone.
 ws.onclose = (e) => {

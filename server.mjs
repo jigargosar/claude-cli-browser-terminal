@@ -9,24 +9,24 @@ import chokidar from "chokidar";
 import getPort from "get-port";
 import open from "open";
 import sirv from "sirv";
+import { Tail } from "tail";
 import { WebSocketServer } from "ws";
 
 // The page and its browser libraries, built by Vite from web/ (pnpm build).
 const DIST_DIR = `${import.meta.dirname}/dist`;
 const HTML_PATH = `${DIST_DIR}/index.html`;
-// Hooks of our claude only, passed with --settings so they run in any directory. See CLAUDE.md.
-// SessionStart and Stop POST the last reply to the server; a new session (start, /clear, resume) sends an empty one.
+// Hook of our claude only, passed with --settings so it runs in any directory. See CLAUDE.md.
+// SessionStart (startup, /clear, resume, compact) POSTs the transcript path; the server reads the conversation from that file.
 // One line, single quotes only, and no $ ` ! so it runs the same in bash and cmd.
 const hookScript = [
   "import { readFileSync } from 'node:fs';",
   "const input = JSON.parse(readFileSync(0, 'utf8'));",
-  "const md = input.hook_event_name === 'Stop' ? input.last_assistant_message : '';",
-  "const res = await fetch(process.env.CC_WEB_REPLY_URL, { method: 'POST', body: JSON.stringify({ md }), signal: AbortSignal.timeout(2000) });",
-  "if (res.status >= 300) throw new Error(process.env.CC_WEB_REPLY_URL + ' responded ' + res.status);",
+  "const body = JSON.stringify({ transcriptPath: input.transcript_path, source: input.source });",
+  "const res = await fetch(process.env.CC_WEB_SESSION_URL, { method: 'POST', body, signal: AbortSignal.timeout(2000) });",
+  "if (res.status >= 300) throw new Error(process.env.CC_WEB_SESSION_URL + ' responded ' + res.status);",
 ].join(" ");
 const hookCommand = `node --input-type=module -e "${hookScript}"`;
-const hook = [{ hooks: [{ type: "command", command: hookCommand }] }];
-const HOOK_SETTINGS = JSON.stringify({ hooks: { SessionStart: hook, Stop: hook } });
+const HOOK_SETTINGS = JSON.stringify({ hooks: { SessionStart: [{ hooks: [{ type: "command", command: hookCommand }] }] } });
 
 // Usage: node server.mjs [claude args]. All args pass through to claude as is.
 // Port: CC_WEB_PORT if set (pnpm test uses 7682), else a free one.
@@ -42,10 +42,82 @@ const broadcast = (msg) => {
   for (const ws of clients) ws.send(msg);
 };
 
-// Our claude's hooks POST its last reply here; the path is unique to this server's claude.
-const replyPath = `/reply/${randomUUID()}`;
-let reply = "";
-const replyMessage = () => JSON.stringify({ t: "reply", md: reply });
+// Our claude's hook POSTs its transcript path here; the path is unique to this server's claude.
+const sessionPath = `/session/${randomUUID()}`;
+
+// The conversation: items made from the transcript (one JSON line per event), in file order.
+// Kinds: prompt (text), reply (text), tool_use (name, input), tool_result (results), turn_end.
+// The page gets the whole list on connect and each new item after that.
+const TOOL_RESULT_MAX = 2000;
+let items = [];
+let transcriptPath = null;
+let transcriptWait = null;
+let tail = null;
+
+const clip = (content) =>
+  typeof content === "string"
+    ? content.slice(0, TOOL_RESULT_MAX)
+    : Array.isArray(content)
+      ? content.map((b) => (b.type === "text" ? { ...b, text: b.text.slice(0, TOOL_RESULT_MAX) } : { type: b.type }))
+      : content;
+
+const itemsOf = (line) => {
+  const o = JSON.parse(line);
+  const base = { id: o.uuid, parentId: o.parentUuid, at: o.timestamp };
+  if (o.type === "system" && o.subtype === "turn_duration") return [{ ...base, kind: "turn_end" }];
+  if (o.type === "user" && !o.isMeta) {
+    const c = o.message?.content;
+    const blocks = typeof c === "string" ? [{ type: "text", text: c }] : Array.isArray(c) ? c : [];
+    const results = blocks.filter((b) => b.type === "tool_result");
+    if (results.length) {
+      return [{ ...base, kind: "tool_result", results: results.map((r) => ({ toolUseId: r.tool_use_id, content: clip(r.content) })) }];
+    }
+    const text = blocks.filter((b) => b.type === "text").map((b) => b.text).join("\n");
+    // Slash commands and their output are logged as user lines wrapped in <command-...> and <local-command-...> tags.
+    return text && !text.startsWith("<") ? [{ ...base, kind: "prompt", text }] : [];
+  }
+  if (o.type === "assistant") {
+    const blocks = Array.isArray(o.message?.content) ? o.message.content : [];
+    return blocks.flatMap((b, i) => {
+      const id = i === 0 ? base.id : `${base.id}:${i}`;
+      if (b.type === "text") return [{ ...base, id, kind: "reply", text: b.text, stopReason: o.message.stop_reason }];
+      if (b.type === "tool_use") return [{ ...base, id, kind: "tool_use", toolUseId: b.id, name: b.name, input: b.input }];
+      return [];
+    });
+  }
+  return [];
+};
+
+const itemsMessage = () => JSON.stringify({ t: "items", items });
+
+// Follow the transcript from its first line. The file may not exist yet on startup; chokidar waits for it.
+const followTranscript = (path) => {
+  tail?.unwatch();
+  transcriptWait?.close();
+  tail = null;
+  transcriptWait = chokidar.watch(path, { usePolling: true, interval: 200 }).on("add", () => {
+    transcriptWait.close();
+    tail = new Tail(path, { fromBeginning: true, useWatchFile: true, fsWatchOptions: { interval: 200 } });
+    tail.on("line", (line) => {
+      for (const item of itemsOf(line)) {
+        items.push(item);
+        broadcast(JSON.stringify({ t: "item", item }));
+      }
+    });
+    tail.on("error", (err) => {
+      throw err;
+    });
+  });
+};
+
+const startSession = ({ transcriptPath: path, source }) => {
+  console.log(`session ${source}: ${path}`);
+  if (path === transcriptPath) return;
+  transcriptPath = path;
+  items = [];
+  broadcast(itemsMessage());
+  followTranscript(path);
+};
 
 // A rebuild (pnpm build:watch) rewrites index.html: reload open tabs.
 chokidar
@@ -56,11 +128,10 @@ chokidar
   });
 
 const server = http.createServer(async (req, res) => {
-  if (req.method === "POST" && req.url === replyPath) {
+  if (req.method === "POST" && req.url === sessionPath) {
     let body = "";
     for await (const chunk of req) body += chunk;
-    reply = JSON.parse(body).md;
-    broadcast(replyMessage());
+    startSession(JSON.parse(body));
     res.writeHead(204).end();
     return;
   }
@@ -87,7 +158,7 @@ const startClaude = (cols, rows) => {
       ...process.env,
       TERM: "xterm-256color",
       COLORTERM: "truecolor",
-      CC_WEB_REPLY_URL: `http://localhost:${port}${replyPath}`,
+      CC_WEB_SESSION_URL: `http://localhost:${port}${sessionPath}`,
     },
   });
   mirror = new headless.Terminal({ cols, rows, scrollback: 1000, allowProposedApi: true });
@@ -124,7 +195,7 @@ new WebSocketServer({ server }).on("connection", (ws) => {
   }
   clients.add(ws);
   if (pty) ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
-  ws.send(replyMessage());
+  ws.send(itemsMessage());
 
   ws.on("message", (raw) => {
     const m = JSON.parse(raw.toString());

@@ -38,6 +38,7 @@
     "get-port": "7.2.0",
     "open": "11.0.4",
     "sirv": "3.0.2",
+    "tail": "2.2.6",
     "ws": "8.22.0"
   },
   "devDependencies": {

@@ -130,13 +130,12 @@ The board exists so that all known work is written in one list, and the next tas
 # Slice 14
 - [x] Clean exit: `pty.onExit` closes sockets with code 4001 and reason, waits for the close handshake, then exits; the page shows "claude exited". Checked with a socket client against `server.mjs --version`
 - [x] Server listens after all handlers exist: a socket that connected while `open(url)` was pending was dropped with 1006
+- [x] Reading pane fed from the transcript instead of the Stop hook: SessionStart posts `transcript_path`, the server tails the file (`tail`, chokidar waits for it) into items (prompt, reply, tool_use, tool_result, turn_end), the page shows the last reply item. Resume and compact no longer blank the pane. Scripted haiku run and manual test
 - [ ] Archive n slices for clarity
-- [ ] Reading pane fed from the transcript instead of the Stop hook
 - [ ] Reply views for A/B persisted in localstorage
     - [ ] View "last": today's behavior
     - [ ] View "snap": one assistant text at a time, prev and next, the prompt that led to it as a one-line header
     - [ ] View "outline": a one-line bracket tree of the shown reply's headings, as position context
 - [ ] Comments threads on a reply workflow
-- [ ] Split the page script into modules: terminal, divider, reader, socket, views
 - [ ] reduce sreen estate perhaps group all ab testing, and add persistance for all: Remove the museum terminal looks after A/B is done; tag first
 - [ ] Socket protocol written once at the top of `server.mjs`

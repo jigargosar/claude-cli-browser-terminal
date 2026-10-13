@@ -38,4 +38,6 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 - Release only with `pnpm release`, after a manual test. It builds, bumps the patch version (commit and tag), packs into `published-versions/`, and pushes. Never pack by hand.
 - Testing in a browser: use `pnpm test` (port 7682, Haiku model). Port 7681 is the user's live session; typing there types into their real Claude.
+- Any test that starts `claude` uses `--model haiku`. Never another model.
+- A `claude` started from inside a Claude Code session writes no transcript. A test started by Claude must remove every `CLAUDE*` variable from the environment it gives the server, or the transcript feed stays empty.
 - Browser libraries come from `node_modules`, not a CDN.
