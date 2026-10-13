@@ -27,12 +27,12 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Terminal keys: shift-enter sends LF (Ctrl+J) to claude; both browser events swallowed, or xterm adds a CR and submits. Manual test
 - [x] Default split 50/50, terminal floor 480px so the reply pane can take 60%. The reply pane was too small at 65/35. Double-click the divider to take the new default. Manual test
 - [x] Terminal keys: ctrl-w cannot be taken from Chrome (the page never sees it, a leave guard never fires). Ctrl-backspace deletes the word; a closed tab reopens with the typed text. Manual test
-- [x] Focus: the focused pane has an outline; Ctrl+` toggles between the panes; focus that lands nowhere goes to the terminal. Manual test: outline follows clicks, Ctrl+` from both sides, click on empty pane space returns to the terminal
+- [ ] Focus: the focused pane has an outline; Ctrl+` toggles between the panes; focus that lands nowhere goes to the terminal. Manual test: outline follows clicks, Ctrl+` from both sides, click on empty pane space returns to the terminal
 - [ ] Reply navigation (R1): the pane shows one reply at a time. Up shows the older reply, Down the newer. The change is animated in the key's direction. Mockup: `docs/mockups/replies.html`, opens without a build, five replies of different sizes. The page implementation comes after the mockup is approved
     - [x] Interim: `views/all.js` replaced `views/last.js` and shows every reply in one scroll, oldest first, with a stay-put rule when scrolled up. Built, not manually tested. R1 replaces it
-- [ ] Terminal scrolling while the cursor is in claude's input box
 - [ ] Richer reply pane (right).
     - [ ] Thinking blocks from the transcript, toggleable (server keeps them as items; page shows them on demand)
     - [ ] A reply as a working document: ask for clarification on the same page, the answer lands next to the question (comments, Goal 2 and 3)
     - [ ] File paths in a reply open in the editor on click
     - [ ] A file in the panel: bring it in, read it, edit it, ask about it
+- [ ] Terminal scrolling while the cursor is in claude's input box
