@@ -126,36 +126,22 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Browser libraries in an installed copy: bundle `web/` with Vite; the server serves the build (`dist/`, sirv). Browser libraries in devDependencies
 - [x] Test in this project with `pnpm test` on the build
 - [x] Release to `published-versions`
-- [ ] Resize only when the size changed
+
+# Slice 14
+- [ ] Archive n slices for clarity
+- [ ] Why? -> Resize only when the size changed
     - [ ] Server skips `pty.resize` and `mirror.resize` when cols and rows are unchanged. Verify: a refresh causes no redraw
     - [ ] One fit at startup: no `r` after claude starts unless the pane changed. Verify with a server log of `r` messages
-- [ ] Measure resize duplicates: set `windowsPty` on the browser terminal and the mirror, drag the divider, compare with a Windows Terminal resize, report what differs. The Ink duplicates seen in Windows Terminal are not ours
-- [ ] Server survives any socket message order: an `i` before the pty exists does not crash it
+- [ ] Dedupe redundant lines in xterm view:
+    - [ ] Measure resize duplicates: set `windowsPty` on the browser terminal and the mirror, drag the divider, compare with a Windows Terminal resize, report what differs. The Ink duplicates seen in Windows Terminal are not ours
+- [ ] Is this petty? -> Server survives any socket message order: an `i` before the pty exists does not crash it
 - [ ] Clean exit: `pty.onExit` closes sockets with a code and reason before `process.exit`; the page shows "claude exited"
 - [ ] Reading pane fed from the transcript instead of the Stop hook
-    - [ ] SessionStart hook posts `transcript_path` and `source`; the Stop hook is removed
-    - [ ] Server tails the transcript with a library; waits for a file that does not exist yet; switches file on a new SessionStart
-    - [ ] Server parses each line by `type`; skips `attachment`, `file-history-snapshot`, `last-prompt`, `ai-title`, `mode`, `permission-mode`, `atis-latch`; never logs or sends a raw line
-    - [ ] Socket sends items to the page: user prompt, assistant text, tool_use (name, input), tool_result, turn end (`end_turn` or `turn_duration`). Shape stays close to the file
-    - [ ] Page keeps the full item list in memory, not surfaced, for later views
-    - [ ] Reading pane shows the last assistant text from the item stream, same look as today. Blank after compact or resume is accepted
-    - [ ] Verify with `pnpm test`: reply shows, reload keeps it, `/clear` blanks it
-- [ ] Reply views for A/B: a picker next to the terminal look picker, persisted in localStorage
+- [ ] Reply views for A/B persisted in localstorage
     - [ ] View "last": today's behavior
     - [ ] View "snap": one assistant text at a time, prev and next, the prompt that led to it as a one-line header
     - [ ] View "outline": a one-line bracket tree of the shown reply's headings, as position context
-- [ ] More of the transcript in the reading pane
-    - [ ] Tool calls and results as collapsed one-liners between texts, off by default, a toggle per view
-    - [ ] AskUserQuestion rendered as a question, read only
-    - [ ] A pending tool_use without tool_result shown as "waiting on terminal"
-- [ ] Answer from the page
-    - [ ] Send a prompt from the page: text plus Enter into the pty
-    - [ ] Answer AskUserQuestion by sending the keystrokes the TUI dialog expects
-    - [ ] PreToolUse hook as a channel: hook posts, page shows allow or deny, hook returns the decision. Test first whether it can answer AskUserQuestion with `updatedInput`
-- [ ] Comments on a reply
-    - [ ] Goal 2: select text in a reply, write a comment, send it with a quote of the text and the message id
-    - [ ] Goal 3: many comments, sent as one message
-    - [ ] Thread: a comment answered in the same session is shown next to the text it is about
+- [ ] Comments threads on a reply workflow
 - [ ] Split the page script into modules: terminal, divider, reader, socket, views
 - [ ] Remove the museum terminal looks after A/B is done; tag first
 - [ ] Socket protocol written once at the top of `server.mjs`
