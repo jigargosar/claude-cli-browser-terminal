@@ -4,6 +4,9 @@
   font-family: var(--reader-font); font-size: var(--reader-size); line-height: var(--reader-leading);
 }
 .md > :first-child { margin-top: 0; }
+/* One section per reply (views/all.js); a thin rule and the time separate them. */
+.reply-item + .reply-item { margin-top: 2.5em; padding-top: 1.5em; border-top: 1px solid var(--tint); }
+.reply-time { font: 12px/1.4 var(--sans); color: var(--ink-muted); margin: 0 0 0.8em; }
 .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
   font-family: var(--reader-heading-font); font-weight: 600; line-height: 1.25; margin: 1.7em 0 0.5em; text-wrap: balance;
 }

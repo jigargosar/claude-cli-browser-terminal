@@ -33,6 +33,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 - `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`.
 - `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `lab.js`) and one file per reply view in `views/`. A feature touches `main.js` and `views/`; the other modules change only for a bug in them. A rebuild reloads open tabs.
 - `docs/Board.md`: the work plan and its status. Follow its Workflow. Closed slices are in `docs/Board-archive-2026-10-13.md`.
+- `docs/mockups/`: standalone HTML mockups that link the real stylesheets and open without a build. A mockup is approved before the page implements it.
 
 ## Terminal basics
 
