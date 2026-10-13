@@ -23,11 +23,11 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Mockup `docs/mockups/outline.html` deleted: a markdown breadcrumb is not wanted
 - [x] Socket protocol written once, in the header of `web/socket.js`
 - [x] Page split by change rate: `index.html` markup only, `base.css`, `reader.css`, `main.js` wiring, stable modules (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `lab.js`), `views/last.js`. Lab rows are built by `lab.js`, so an experiment adds no markup. Manual test: terminal, divider, gear panel, looks, reading settings, reply all work
-- left pane scrolling, when in xterm input box
-- xterm map shift enter for new line
-- ctrl-w to delete last word, closes tab!
-- easy switch to xterm input. (strong indicator of focus for both panes, and handle no focus to default somewhere)
-- [ ] Richer leftpane interface.
+- [ ] Terminal keys: shift-enter sends a newline to claude
+- [ ] Terminal keys: ctrl-w deletes the last word in claude instead of closing the tab
+- [ ] Focus: a strong indicator shows which pane has focus; a click or key switches to the terminal; with no focus, the terminal gets it
+- [ ] Terminal scrolling while the cursor is in claude's input box
+- [ ] Richer reply pane (right).
     - [ ] Thinking blocks from the transcript, toggleable (server keeps them as items; page shows them on demand)
     - [ ] A reply as a working document: ask for clarification on the same page, the answer lands next to the question (comments, Goal 2 and 3)
     - [ ] File paths in a reply open in the editor on click
