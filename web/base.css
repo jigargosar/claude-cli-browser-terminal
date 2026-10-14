@@ -49,21 +49,19 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--term-b
 body { display: flex; }
 
 /* --split: terminal pane width, set by dragging the divider (divider.js). */
-#terminal-pane { flex: 0 1 var(--split, 50%); min-width: 480px; padding: 14px 6px 14px 18px; box-sizing: border-box; }
+#terminal-pane { flex: 0 1 var(--split, 50%); min-width: 480px; padding: 14px 6px 14px 18px; box-sizing: border-box; position: relative; }
 #divider { flex: none; width: 8px; cursor: col-resize; background: var(--term-bg); position: relative; touch-action: none; }
 #divider::after { content: ""; position: absolute; inset: 0 3px; background: #2a2e36; transition: background 0.15s; }
 #divider:hover::after, #divider:focus-visible::after, body.dragging #divider::after { background: var(--link); }
 #divider:focus-visible { outline: none; }
 body.dragging { cursor: col-resize; user-select: none; }
-/* The pane that holds focus is outlined, so it is clear where typing goes. Ctrl+` toggles (main.js). */
-#terminal-pane:focus-within, #reply-pane:focus-within { outline: 3px solid var(--link); outline-offset: -6px; }
+/* Alt+` toggles focus between the panes (main.js). No visual cue yet: outline, ring, bar and dimming were tried and dropped. */
 #reply:focus { outline: none; }
 #term { width: 100%; height: 100%; overflow: hidden; }
 .xterm-viewport { scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
 
 #reply-pane {
-  flex: 1 1 0; min-width: 380px; display: flex; flex-direction: column; position: relative;
-  background: var(--paper); color: var(--ink);
+  flex: 1 1 0; min-width: 380px; display: flex; flex-direction: column; position: relative;  background: var(--paper); color: var(--ink);
 }
 .bar-button {
   font: 13px/1.4 var(--sans); color: var(--ink-muted); background: none; border: 1px solid transparent; border-radius: 6px;
