@@ -33,6 +33,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Reply pane shows only the last reply: `views/last.js` back without a scroll reset, `views/all.js` and its CSS deleted, `docs/mockups/reply.html` deleted. Manual test
 - [x] Ctrl+V pastes text, as in Windows Terminal: xterm sent it as `\x16` and blocked the browser paste; now the browser pastes. Manual test
 - [x] Focus key: Alt+` toggles the panes (chosen over Ctrl+` and Alt+\ as the easier key). Manual test
+- [ ] Release 0.1.2 with `pnpm release`
 - [ ] Bug: Enter does not submit (perhaps when there are blanks )
     - [x] Ruled out: claude submits "say hi\r" whether it arrives in one pty write or two
     - [x] Diagnostic: the console logs every input chunk with CR or LF; on the bug, see whether the page sent `\r` or `\n`
