@@ -36,7 +36,7 @@ The board exists so that all known work is written in one list, and the next tas
     - [x] Ruled out: claude submits "say hi\r" whether it arrives in one pty write or two
     - [x] Diagnostic: the console logs every input chunk with CR or LF; on the bug, see whether the page sent `\r` or `\n`
     - [ ] Suspect: the `\x16` from a failed Ctrl+V made the next Enter literal. Watch whether the bug returns now that Ctrl+V pastes
-- [ ] Focus: the focused pane has an outline; Ctrl+` toggles between the panes; focus that lands nowhere goes to the terminal. Manual test: outline follows clicks, Ctrl+` from both sides, click on empty pane space returns to the terminal
+- [ ] Focus: a clear focused-pane cue and a toggle key that works in the user's browser (Alt+\ works in the test browser, not in the user's)
 - [ ] Richer reply pane (right).
     - [ ] Thinking blocks from the transcript, toggleable (server keeps them as items; page shows them on demand)
     - [ ] A reply as a working document: ask for clarification on the same page, the answer lands next to the question (comments, Goal 2 and 3)

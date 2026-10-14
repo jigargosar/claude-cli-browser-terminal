@@ -43,14 +43,14 @@ terminal.onInput((d) => {
 terminal.onResize(server.resize);
 terminal.focus();
 
-// Focus: Ctrl+` toggles between the panes (capture phase, so xterm never sees the key). Focus that lands nowhere,
+// Focus: Alt+\ toggles between the panes (capture phase, so xterm never sees the key). Focus that lands nowhere,
 // e.g. a click on empty pane space, goes to the terminal.
 const terminalPane = document.getElementById("terminal-pane");
 const reply = document.getElementById("reply");
 document.addEventListener(
   "keydown",
   (e) => {
-    if (!(e.ctrlKey && e.key === "`")) return;
+    if (!(e.altKey && !e.ctrlKey && !e.shiftKey && e.code === "Backslash")) return;
     e.preventDefault();
     e.stopPropagation();
     if (terminalPane.contains(document.activeElement)) reply.focus();
