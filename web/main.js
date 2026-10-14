@@ -4,7 +4,7 @@ import { initDivider } from "./divider.js";
 import { connect } from "./socket.js";
 import { experiment } from "./lab.js";
 import "./reader.js";
-import * as all from "./views/all.js";
+import * as last from "./views/last.js";
 
 const status = document.getElementById("reply-status");
 
@@ -24,11 +24,11 @@ const server = connect({
   onOutput: terminal.write,
   onItems: (list) => {
     items = list;
-    all.show(items);
+    last.show(items);
   },
   onItem: (item) => {
     items.push(item);
-    if (item.kind === "reply") all.add(item);
+    if (item.kind === "reply") last.show(items);
   },
   onClosed: ({ line, status: text }) => {
     terminal.write(`\r\n[${line}]\r\n`);
