@@ -1,6 +1,6 @@
 {
   "name": "claude-cli-browser-terminal",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "bin": {
     "ccw": "server.mjs"
