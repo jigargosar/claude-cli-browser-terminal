@@ -46,6 +46,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 ## Rules
 
+- Before any edit, read the Workflow in `docs/Board.md` and write the task there first.
 - Release only with `pnpm release`, after a manual test. It builds, bumps the patch version (commit and tag), packs into `published-versions/`, and pushes. Never pack by hand.
 - Testing in a browser: use `pnpm test` (port 7682, Haiku model). Port 7681 is the user's live session; typing there types into their real Claude.
 - Claude tests the page itself with the `browser-test` skill (puppeteer-core over CDP, its own browser profile). Never attach to the user's browser. After the tab closes, a new socket gets the serialized screen, so a script can read the result from the server.
