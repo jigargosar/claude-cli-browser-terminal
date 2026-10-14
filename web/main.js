@@ -2,19 +2,11 @@
 import * as terminal from "./terminal.js";
 import { initDivider } from "./divider.js";
 import { connect } from "./socket.js";
-import { experiment } from "./lab.js";
 import "./reader.js";
 import * as last from "./views/last.js";
 
 const status = document.getElementById("reply-status");
 
-experiment(
-  "terminal",
-  "Terminal look",
-  [["prototype", "Prototype"], ["original", "Slice 5"], ["slice7", "Slice 7"]],
-  terminal.TERMINAL_LOOK_DEFAULT,
-  terminal.setLook,
-);
 initDivider({ onDragEnd: terminal.refit });
 
 // The conversation as the server read it from claude's transcript. Views are functions of this list.

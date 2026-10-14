@@ -11,12 +11,10 @@
 <main id="terminal-pane"><div id="term"></div></main>
 <div id="divider" role="separator" aria-orientation="vertical" aria-label="Resize panes" tabindex="0"></div>
 <aside id="reply-pane" aria-label="Last reply">
-  <!-- One gear over the reply text: status, Lab experiments and reading settings. These change rarely. -->
+  <!-- One gear over the reply text: status and reading settings. These change rarely. -->
   <button type="button" id="settings-button" class="bar-button" popovertarget="settings" aria-label="Settings">&#9881;</button>
   <div id="settings" class="panel" popover aria-label="Settings">
     <p id="reply-status" class="label">Waiting for the first reply</p>
-    <!-- Lab rows: lab.js adds one row per experiment (see main.js). -->
-    <div id="lab-rows"></div>
     <!-- Reading settings: reader.js wires the [data-set] buttons and the size buttons. -->
     <div class="row"><span class="label">Theme</span>
       <div class="seg" role="group" aria-label="Theme">

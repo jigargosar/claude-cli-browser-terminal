@@ -5,18 +5,16 @@ import { FitAddon } from "@xterm/addon-fit";
 import { WebglAddon } from "@xterm/addon-webgl";
 import { Unicode11Addon } from "@xterm/addon-unicode11";
 
-// Looks kept for A/B, oldest first. The Lab row that picks one is in main.js.
-export const TERMINAL_LOOKS = {
-  // First prototype (62618d0): xterm defaults with Cascadia Mono, on a #1e1e1e page.
-  prototype: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 15, fontWeight: "normal", lineHeight: 1, theme: {} },
-  // Slice 5 (448568e): xterm defaults on #16181d.
-  original: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 14, fontWeight: "normal", lineHeight: 1, theme: { background: "#16181d" } },
-  // Slice 7: prototype size and black background, Slice 5 padding.
-  slice7: { fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 15, fontWeight: "normal", lineHeight: 1, theme: {} },
-};
-export const TERMINAL_LOOK_DEFAULT = "slice7";
-
-const term = new Terminal({ allowProposedApi: true, cursorBlink: true, ...TERMINAL_LOOKS[TERMINAL_LOOK_DEFAULT] });
+// The Slice 5 look (448568e): xterm defaults on #16181d (--term-bg in base.css).
+const term = new Terminal({
+  allowProposedApi: true,
+  cursorBlink: true,
+  fontFamily: "Cascadia Mono, Consolas, monospace",
+  fontSize: 14,
+  fontWeight: "normal",
+  lineHeight: 1,
+  theme: { background: "#16181d" },
+});
 const fit = new FitAddon();
 term.loadAddon(fit);
 term.loadAddon(new Unicode11Addon());
@@ -29,11 +27,6 @@ fit.fit();
 new ResizeObserver(() => document.body.classList.contains("dragging") || fit.fit()).observe(document.getElementById("term"));
 
 export const refit = () => fit.fit();
-export const setLook = (look) => {
-  Object.assign(term.options, TERMINAL_LOOKS[look]);
-  document.body.dataset.terminal = look;
-  fit.fit();
-};
 export const size = () => ({ cols: term.cols, rows: term.rows });
 export const write = (d) => term.write(d);
 export const focus = () => term.focus();

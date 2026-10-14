@@ -38,12 +38,6 @@
   --tint: #272c32; --stripe: #23272c; --code-ink: #f0a57c; --link: #7cb3ff; --selection: #2f4a6b; --thumb: #4a525c;
 }
 
-/* Terminal looks (terminal.js sets body[data-terminal]). The first prototype: no padding, terminal on a #1e1e1e page. */
-body[data-terminal="prototype"] { --term-bg: #1e1e1e; }
-body[data-terminal="prototype"] #terminal-pane { padding: 0; }
-/* Slice 7: the prototype's black, with Slice 5's padding (the default below). */
-body[data-terminal="slice7"] { --term-bg: #000000; }
-
 /* The page never scrolls; each pane owns its scrolling. */
 html, body { margin: 0; height: 100%; overflow: hidden; background: var(--term-bg); }
 body { display: flex; }
