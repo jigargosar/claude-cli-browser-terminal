@@ -1,8 +1,10 @@
 // Wiring only. Each module owns one part of the page; this file connects them and grows one line per new module.
+import { showError } from "./errors.js";
 import * as terminal from "./terminal.js";
 import { initDivider } from "./divider.js";
 import { connect } from "./socket.js";
 import "./reader.js";
+import * as settings from "./settings.js";
 import * as last from "./views/last.js";
 
 const status = document.getElementById("reply-status");
@@ -13,7 +15,13 @@ initDivider({ onDragEnd: terminal.refit });
 let items = [];
 const server = connect({
   size: terminal.size,
+  // Applied and refit before the socket sends its first size, so claude starts at the saved split.
+  onSettings: (saved) => {
+    settings.load(saved);
+    terminal.refit();
+  },
   onOutput: terminal.write,
+  onError: showError,
   onItems: (list) => {
     items = list;
     last.show(items);
@@ -33,6 +41,7 @@ terminal.onInput((d) => {
   server.input(d);
 });
 terminal.onResize(server.resize);
+settings.onSave(server.saveSettings);
 terminal.focus();
 
 // Focus: Alt+` toggles between the panes (capture phase, so xterm never sees the key). Focus that lands nowhere,

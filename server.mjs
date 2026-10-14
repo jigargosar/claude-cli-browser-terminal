@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { randomUUID } from "node:crypto";
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import http from "node:http";
 import { spawn } from "@lydell/node-pty";
 import { SerializeAddon } from "@xterm/addon-serialize";
@@ -10,6 +10,7 @@ import getPort from "get-port";
 import open from "open";
 import sirv from "sirv";
 import { Tail } from "tail";
+import writeFileAtomic from "write-file-atomic";
 import { WebSocketServer } from "ws";
 
 // The page and its browser libraries, built by Vite from web/ (pnpm build).
@@ -36,6 +37,18 @@ const fixedPort = process.env.CC_WEB_PORT ? Number(process.env.CC_WEB_PORT) : nu
 if (!existsSync(HTML_PATH)) throw new Error(`${HTML_PATH} is missing: run pnpm build`);
 // dev: read files on each request, so a rebuild shows on reload.
 const serveDist = sirv(DIST_DIR, { dev: true });
+
+// Page settings, per project: the folder where claude runs. Not localStorage, which is per origin, and the port changes.
+// The folder ignores itself, so the project's .gitignore is left alone. Writes are atomic (temp file, then rename),
+// so a crash mid-write never leaves a broken config.
+const CACHE_DIR = `${process.cwd()}/.ccw-cache`;
+const CONFIG_PATH = `${CACHE_DIR}/config.json`;
+const readConfig = () => (existsSync(CONFIG_PATH) ? JSON.parse(readFileSync(CONFIG_PATH, "utf8")) : {});
+const writeConfig = (settings) => {
+  mkdirSync(CACHE_DIR, { recursive: true });
+  writeFileAtomic.sync(`${CACHE_DIR}/.gitignore`, "*\n");
+  writeFileAtomic.sync(CONFIG_PATH, `${JSON.stringify(settings, null, 2)}\n`);
+};
 
 const clients = new Set();
 const broadcast = (msg) => {
@@ -170,15 +183,7 @@ const startClaude = (cols, rows) => {
   });
   pty.onExit(async ({ exitCode }) => {
     console.log(`claude exited (${exitCode}), stopping server`);
-    // Tell the tab why, and wait for the close handshake so the reason gets through before the process ends.
-    const closed = [...clients].map(
-      (ws) =>
-        new Promise((resolve) => {
-          ws.once("close", resolve);
-          ws.close(CLAUDE_EXITED, `claude exited (${exitCode})`);
-        }),
-    );
-    await Promise.all(closed);
+    await closeClients(CLAUDE_EXITED, `claude exited (${exitCode})`);
     process.exit(exitCode);
   });
 };
@@ -186,6 +191,31 @@ const startClaude = (cols, rows) => {
 // Close codes sent to the tab. 4000-4999 are free for applications.
 const SECOND_TAB = 4000;
 const CLAUDE_EXITED = 4001;
+const SERVER_CRASHED = 4002;
+
+// Tell the tab why, and wait for the close handshake so the reason gets through before the process ends.
+// A socket that never answers is given up after a second.
+const closeClients = (code, reason) =>
+  Promise.all(
+    [...clients].map(
+      (ws) =>
+        new Promise((resolve) => {
+          ws.once("close", resolve);
+          setTimeout(resolve, 1000);
+          ws.close(code, reason);
+        }),
+    ),
+  );
+
+// Fail loudly: any uncaught error prints, shows its stack in the tab, and stops the server (and claude with it).
+const crash = async (err) => {
+  console.error(err);
+  broadcast(JSON.stringify({ t: "error", stack: err?.stack ?? String(err) }));
+  await closeClients(SERVER_CRASHED, "The server crashed");
+  process.exit(1);
+};
+process.on("uncaughtException", crash);
+process.on("unhandledRejection", crash);
 
 // One tab per session, like one terminal per session. A refresh closes the old socket first, so it reconnects.
 new WebSocketServer({ server }).on("connection", (ws) => {
@@ -194,12 +224,14 @@ new WebSocketServer({ server }).on("connection", (ws) => {
     return;
   }
   clients.add(ws);
+  ws.send(JSON.stringify({ t: "settings", settings: readConfig() }));
   if (pty) ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
   ws.send(itemsMessage());
 
   ws.on("message", (raw) => {
     const m = JSON.parse(raw.toString());
     if (m.t === "i") pty.write(m.d);
+    else if (m.t === "s") writeConfig(m.settings);
     else if (m.t === "r" && !pty) startClaude(m.cols, m.rows);
     else if (m.t === "r") {
       pty.resize(m.cols, m.rows);

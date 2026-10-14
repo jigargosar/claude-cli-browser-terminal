@@ -39,6 +39,7 @@
     "open": "11.0.4",
     "sirv": "3.0.2",
     "tail": "2.2.6",
+    "write-file-atomic": "8.0.0",
     "ws": "8.22.0"
   },
   "devDependencies": {
