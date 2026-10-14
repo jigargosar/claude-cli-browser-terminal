@@ -38,17 +38,4 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Release 0.1.3 packed to `published-versions/` with `pnpm release`
 - [x] Settings in `<project>/.ccw-cache/config.json` instead of localStorage: localStorage is per origin, and the port changes each run. The folder ignores itself with its own `.gitignore`. Server pushes them on connect (`settings`, like `items`); the page saves with `s`. Writes are atomic (write-file-atomic). Not browser-tested
 - [x] Fail loudly: an uncaught server error sends its stack to the tab, prints it, exits. An uncaught page error shows its stack in a red banner. Not browser-tested
-- [ ] Focus cue: a clear sign of the focused pane. Outline, ring, top bar and dimming were tried and dropped
-- [ ] Richer reply pane (right).
-    - [ ] Thinking blocks from the transcript, toggleable (server keeps them as items; page shows them on demand)
-    - [ ] A reply as a working document: ask for clarification on the same page, the answer lands next to the question (comments, Goal 2 and 3)
-    - [ ] File paths in a reply open in the editor on click
-    - [ ] A file in the panel: bring it in, read it, edit it, ask about it
-- [ ] Terminal scrolling while the cursor is in claude's input box
-
-## Waiting For
-- [ ] Bug: the page is blank for seconds at start
-- [ ] Bug: Enter does not submit (perhaps when there are blanks )
-    - [x] Ruled out: claude submits "say hi\r" whether it arrives in one pty write or two
-    - [x] Diagnostic: the console logs every input chunk with CR or LF; on the bug, see whether the page sent `\r` or `\n`
-    - [ ] Suspect: the `\x16` from a failed Ctrl+V made the next Enter literal. Watch whether the bug returns now that Ctrl+V pastes
+- [x] Focus cue: a clear sign of the focused pane. Outline, ring, top bar and dimming were tried and dropped
