@@ -40,3 +40,4 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Fail loudly: an uncaught server error sends its stack to the tab, prints it, exits. An uncaught page error shows its stack in a red banner. Not browser-tested
 - [x] Focus cue: a clear sign of the focused pane. Outline, ring, top bar and dimming were tried and dropped
 - [x] Release 0.1.4 packed to `published-versions/` with `pnpm release`
+- [x] Release also packs `published-versions/claude-cli-browser-terminal.tgz`, overwritten each release, so the install path never changes
