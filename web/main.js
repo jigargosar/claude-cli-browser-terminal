@@ -35,7 +35,11 @@ const server = connect({
     status.textContent = text;
   },
 });
-terminal.onInput(server.input);
+// Diagnostic for the Enter bug (Board): which bytes the page sent for each Enter.
+terminal.onInput((d) => {
+  if (/[\r\n]/.test(d)) console.debug("input", JSON.stringify(d));
+  server.input(d);
+});
 terminal.onResize(server.resize);
 terminal.focus();
 

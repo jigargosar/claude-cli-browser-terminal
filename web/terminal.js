@@ -42,12 +42,14 @@ export const onResize = (cb) => term.onResize(cb);
 // The browser fires keydown and keypress for Enter; both must be swallowed, or xterm sends its own CR after the LF.
 // Ctrl+W closes the tab in Chrome and Edge; the page never sees the key. Reopen the URL to get the session back.
 // Ctrl+Backspace deletes the previous word in claude instead.
+// Ctrl+V pastes text, as in Windows Terminal: xterm skips the key, so the browser fires paste and xterm sends the text.
 export const onInput = (cb) => {
   term.attachCustomKeyEventHandler((e) => {
     if (e.key === "Enter" && e.shiftKey) {
       if (e.type === "keydown") cb("\n");
       return false;
     }
+    if (e.ctrlKey && !e.shiftKey && !e.altKey && e.key.toLowerCase() === "v") return false;
     return true;
   });
   term.onData(cb);

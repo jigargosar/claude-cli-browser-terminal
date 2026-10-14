@@ -31,7 +31,11 @@ The board exists so that all known work is written in one list, and the next tas
 
 # Slice 15
 - [x] Reply pane shows only the last reply: `views/last.js` back without a scroll reset, `views/all.js` and its CSS deleted, `docs/mockups/reply.html` deleted. Manual test
+- [x] Ctrl+V pastes text, as in Windows Terminal: xterm sent it as `\x16` and blocked the browser paste; now the browser pastes. Manual test
 - [ ] Bug: Enter does not submit (perhaps when there are blanks )
+    - [x] Ruled out: claude submits "say hi\r" whether it arrives in one pty write or two
+    - [x] Diagnostic: the console logs every input chunk with CR or LF; on the bug, see whether the page sent `\r` or `\n`
+    - [ ] Suspect: the `\x16` from a failed Ctrl+V made the next Enter literal. Watch whether the bug returns now that Ctrl+V pastes
 - [ ] Focus: the focused pane has an outline; Ctrl+` toggles between the panes; focus that lands nowhere goes to the terminal. Manual test: outline follows clicks, Ctrl+` from both sides, click on empty pane space returns to the terminal
 - [ ] Richer reply pane (right).
     - [ ] Thinking blocks from the transcript, toggleable (server keeps them as items; page shows them on demand)
