@@ -15,3 +15,10 @@ The board exists so that all known work is written in one list, and the next tas
 
 # Slice 16
 - [x] Slices 14 and 15 moved to `docs/Board-archive-2026-10-13.md`
+- [ ] panel when wide, inner scroll shown. And it is awway from browser edge. 
+- scroll to top when new reply arrives
+- make it easy on eyes, i.e. simple easeing or some such thing.
+- [ ] Select lines in a reply, and Claude answers about those lines in a format that shows the change as a diff. No concurrent editing.
+- [ ] Concurrent editing of one shared doc. The server holds it in Yjs and is the only writer of the file. The user edits in the page. Claude edits through `doc_read` and `doc_edit` on an `/mcp` endpoint of the server.
+- Fact: a file change the user saves between Claude's turns reaches Claude with the user's next message, as the changed lines with line numbers. Verified 2026-10-15.
+- Fact: after that notice, Claude's Edit on the file passes without a re-read. Verified 2026-10-15.
