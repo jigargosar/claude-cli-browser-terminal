@@ -13,9 +13,11 @@ The board exists so that all known work is written in one list, and the next tas
 - When a part of a long slice is done and tested, suggest a new slice.
 - Closed slices need not follow the Workflow. Do not read a closed slice as an example of the rules.
 
+--- 
+
 # Slice 16
 - [x] Slices 14 and 15 moved to `docs/Board-archive-2026-10-13.md`
-- [ ] panel when wide, inner scroll shown. And it is awway from browser edge. 
+- bring in all known tasks in then process them.
 - scroll to top when new reply arrives
 - make it easy on eyes, i.e. simple easeing or some such thing.
 - [ ] Select lines in a reply, and Claude answers about those lines in a format that shows the change as a diff. No concurrent editing.
