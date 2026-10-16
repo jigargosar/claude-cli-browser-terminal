@@ -53,6 +53,5 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 ## Known issues
 
-- Raw HTML in reply prose is dropped. `Promise<T>` without backticks loses `<T>`: CommonMark reads it as a tag, DOMPurify strips it. Code and backticks are safe. Fix when needed: escape it in marked's `renderer.html`.
 - Rewind leaves the reply pane hanging. Low priority.
 - Duplicate lines in terminal scrollback. Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so this happens in any terminal, Windows Terminal included. Not fixable here.

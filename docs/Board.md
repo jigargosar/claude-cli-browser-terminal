@@ -28,7 +28,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Bugs live in CLAUDE.md under Known issues, not on the board. `Promise<T>` and Rewind moved there.
 - [x] CLAUDE.md: Terminal basics dissolved. Keys, the headless mirror and the protocol were duplicates of code comments, so they are gone. ConPTY and transcript-only went under Files, Ink duplicates under Known issues. File-change facts stay, titled as facts for concurrent editing.
 - [x] Terminal knowledge cut to the supercritical: four lines in CLAUDE.md. `docs/Terminal.md` deleted; its one critical fact (output keeps its width) is the why of Decision 1.2.
-- [ ] !!! Raw HTML in reply prose vanishes: `<placeholder>` text in Claude's replies is dropped (see Known issues in CLAUDE.md). It happens often, and the pane is for one reader, so escape all raw HTML in marked's `renderer.html`.
+- [x] !!! Raw HTML in reply prose vanished: `<placeholder>` text in Claude's replies was dropped. Now escaped in marked's `renderer.html`, except `details`, `summary` and `small`, which fold or shrink carried-forward points.
 - [ ] select text, type something, repeat multiple times, then send at once. This maintains my sanity, when I want to respond to multiple parts of ai response.
 - [ ] Thinking block needed (add to the previous response block).
 - [ ] (recurring) QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
