@@ -27,6 +27,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] !! Markdown or any code fence needs word wrap and copy. A Wrap and Copy bar on each code block (`web/views/last.js`).
 - [x] Bugs live in CLAUDE.md under Known issues, not on the board. `Promise<T>` and Rewind moved there.
 - [x] CLAUDE.md: Terminal basics dissolved. Keys, the headless mirror and the protocol were duplicates of code comments, so they are gone. ConPTY and transcript-only went under Files, Ink duplicates under Known issues. File-change facts stay, titled as facts for concurrent editing.
+- [x] Terminal knowledge cut to the supercritical: four lines in CLAUDE.md. `docs/Terminal.md` deleted; its one critical fact (output keeps its width) is the why of Decision 1.2.
 - [ ] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [ ] Need ability to reply with multiple sections of previous reply, i.e. select text, type something, repeat multiple times, then send at once. (This is a solution, XY. Discuss the problem, because the answer can be much simpler.)
 - [ ] Thinking block needed (add to the previous response block).

@@ -14,7 +14,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 1. Start works like the terminal.
    1. The server runs the same `claude` command, with the flags given to the server.
-   2. Claude starts after the first tab sends its columns and rows.
+   2. Claude starts after the first tab sends its columns and rows. Why: output keeps the width it was written at, so the first size must be the real one.
    3. After that, the session works the same as in a terminal.
 2. One tab per session.
    1. Each server starts on a random free port.
@@ -28,7 +28,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
    3. The session ends only when claude exits (it stops the server), or the server is stopped (it stops claude).
    4. Why: a tab closes by accident easily; a lost tab must not lose the session.
 
-## Claude Code facts for a later feature, concurrent editing: how user changes to files Claude also changed reach Claude
+## Concurrent editing facts (for a later feature)
 - Fact: a file change the user saves between Claude's turns reaches Claude with the user's next message, as the changed lines with line numbers. Verified 2026-10-15.
 - Fact: after that notice, Claude's Edit on the file passes without a re-read. Verified 2026-10-15.
 
