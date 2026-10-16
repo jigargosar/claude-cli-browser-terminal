@@ -23,6 +23,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] ccw refuses to start unless the build watch runs, and copies `pnpm watch` to the clipboard. The watch holds port 7689 as a lock. All in `scripts/build-watch/`, explained in its README.
 - [x] Scroll to top when a new reply arrives. Without creating a jerking effect, if any. (Make it easy on the eyes, i.e. simple easing or some such thing.) while at it, also fix the gap between scrollbar and viewport edge.
 - [ ] !! Markdown or any code fence needs word wrap and copy.
+- [ ] A/B test marked against markdown-it: one mockup for each, same content, every feature we need.
 - [ ] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [ ] Need ability to reply with multiple sections of previous reply, i.e. select text, type something, repeat multiple times, then send at once. (This is a solution, XY. Discuss the problem, because the answer can be much simpler.)
 - [ ] Thinking block needed (add to the previous response block).

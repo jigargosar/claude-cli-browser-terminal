@@ -34,6 +34,20 @@
 .md pre code { font: 14px/1.55 var(--mono); color: inherit; }
 .md pre code.hljs { background: none; padding: 0; }
 .md pre ::selection { background: #ffffff40; color: inherit; }
+.md pre.wrap { white-space: pre-wrap; overflow-wrap: anywhere; }
+/* Wrap and Copy float over the top right of a code block (views/last.js). They show on hover or keyboard focus. */
+.md .code-block { position: relative; margin: 0 0 1em; }
+.md .code-block > pre { margin: 0; }
+.md .code-bar { position: absolute; top: 6px; right: 6px; display: flex; gap: 4px; opacity: 0; transition: opacity 0.12s; }
+.md .code-block:hover .code-bar, .md .code-bar:focus-within { opacity: 1; }
+@media (hover: none) { .md .code-bar { opacity: 1; } }
+.md .code-bar button {
+  font: 12px/1 var(--sans); color: var(--code-fg); background: #2a2e36; border: 1px solid #3a3f4b; border-radius: 5px;
+  padding: 5px 8px; cursor: pointer;
+}
+.md .code-bar button:hover { background: #343a44; }
+.md .code-bar button[aria-pressed="true"] { border-color: var(--code-fg); }
+.md .code-bar button:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
 .md table { border-collapse: collapse; display: block; overflow-x: auto; font-size: 0.94em; }
 .md th, .md td { border: 1px solid var(--rule); padding: 6px 12px; text-align: left; vertical-align: top; }
 .md th { background: var(--tint); font-weight: 600; }
