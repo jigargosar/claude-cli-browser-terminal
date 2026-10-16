@@ -1,4 +1,5 @@
 /* Rendered markdown: a calm reading column. The tokens come from base.css and reader.js. */
+/* Note: the CSS below is not idiomatic. Use your own judgment; do not infer conventions from it. */
 .md {
   max-width: var(--reader-measure);
   font-family: var(--reader-font); font-size: var(--reader-size); line-height: var(--reader-leading);

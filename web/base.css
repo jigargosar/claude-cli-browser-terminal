@@ -1,4 +1,5 @@
 /* The dark terminal you type into, the light page you read. Layout, panes, the settings panel. */
+/* Note: the CSS below is not idiomatic. Use your own judgment; do not infer conventions from it. */
 :root {
   /* Terminal and code blocks (Slice 5). */
   --term-bg: #16181d;
@@ -93,10 +94,18 @@ body.dragging { cursor: col-resize; user-select: none; }
 .seg .swatch[data-theme-value="dark"] { background: #1e2227; color: #d6dade; }
 .seg .swatch[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--link); }
 #reader-reset { width: 100%; margin-top: 2px; }
+/* #reply is the scroller and spans the pane, so its scrollbar sits at the window edge. The right padding takes the
+   width beyond the reading measure; it replaces the max-width of .md here. --gutter: the side padding. */
 #reply {
-  flex: 1; overflow-y: auto; padding: 32px 48px 72px;
+  --gutter: 48px;
+  flex: 1; overflow-y: auto; max-width: none;
+  padding: 32px max(var(--gutter), calc(100% - var(--reader-measure) - var(--gutter))) 72px var(--gutter);
   scrollbar-width: thin; scrollbar-color: var(--thumb) transparent;
 }
+/* A new reply fades in, which hides its jump to the top (views/last.js). */
+#reply.arrived { animation: reply-in 0.18s ease-out; }
+@keyframes reply-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { #reply.arrived { animation: none; } }
 #reply ::selection { background: var(--selection); color: var(--ink); }
 
 /* Narrow windows: stack, terminal on top. Each pane still scrolls on its own. */
@@ -105,5 +114,5 @@ body.dragging { cursor: col-resize; user-select: none; }
   #terminal-pane { flex: 1 1 55%; min-width: 0; min-height: 0; }
   #reply-pane { flex: 1 1 45%; min-width: 0; min-height: 0; }
   #divider { display: none; }
-  #reply { padding-left: 20px; padding-right: 20px; }
+  #reply { --gutter: 20px; }
 }
