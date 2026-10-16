@@ -25,9 +25,9 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] A/B test marked against markdown-it: marked stays. markdown-it's gains (link plugin, escaped raw HTML) are small fixes on marked. Patch updates for marked, dompurify, puppeteer-core.
 - [x] Web links in a reply open in a new tab, so a click never leaves the session (DOMPurify hook in `web/markdown.js`).
 - [x] !! Markdown or any code fence needs word wrap and copy. A Wrap and Copy bar on each code block (`web/views/last.js`).
-- [ ] Low priority: raw HTML in prose is dropped, so `Promise<T>` without backticks loses `<T>`. Fix: escape it in marked's `renderer.html`.
+- [x] Bugs live in CLAUDE.md under Known issues, not on the board. `Promise<T>` and Rewind moved there.
+- [ ] CLAUDE.md: Terminal basics and the file-change facts are stale or belong in their own file. Check each against the code, then move or delete.
 - [ ] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [ ] Need ability to reply with multiple sections of previous reply, i.e. select text, type something, repeat multiple times, then send at once. (This is a solution, XY. Discuss the problem, because the answer can be much simpler.)
 - [ ] Thinking block needed (add to the previous response block).
 - [ ] (recurring) QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
-- [ ] Rewind leaves the pane hanging. Low priority. (It's ok, but it should be written down as a known issue.)

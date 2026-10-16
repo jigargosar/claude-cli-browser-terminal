@@ -58,3 +58,8 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 - Any test that starts `claude` uses `--model haiku`. Never another model.
 - A `claude` started from inside a Claude Code session writes no transcript. A test started by Claude must remove every `CLAUDE*` variable from the environment it gives the server, or the transcript feed stays empty.
 - Browser libraries come from `node_modules`, not a CDN.
+
+## Known issues
+
+- Raw HTML in reply prose is dropped. `Promise<T>` without backticks loses `<T>`: CommonMark reads it as a tag, DOMPurify strips it. Code and backticks are safe. Fix when needed: escape it in marked's `renderer.html`.
+- Rewind leaves the reply pane hanging. Low priority.
