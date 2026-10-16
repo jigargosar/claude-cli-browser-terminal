@@ -17,24 +17,18 @@ The board exists so that all known work is written in one list, and the next tas
 
 # Slice 16
 - [x] Slices 14 and 15 moved to `docs/Board-archive-2026-10-13.md`
-- bring in all known tasks in then process them.
-  what does QN need
-  quick issues quick gains
-  !!! why our first line interpretation doesn't worked compared to claude desktop
-
-!! markdown or any code fence needs worwrap and copy
-
-scrolling annoyance in markdown pane.
-
-thinking block needed (add to prev response block)
-
-open links. open common folders and files related to claude
-
-rewind leaves pane hanging, its ok, but should be a known issue.
-
-- scroll to top when new reply arrives
-- make it easy on eyes, i.e. simple easeing or some such thing.
-- [ ] Select lines in a reply, and Claude answers about those lines in a format that shows the change as a diff. No concurrent editing.
-- [ ] Concurrent editing of one shared doc. The server holds it in Yjs and is the only writer of the file. The user edits in the page. Claude edits through `doc_read` and `doc_edit` on an `/mcp` endpoint of the server.
-- Fact: a file change the user saves between Claude's turns reaches Claude with the user's next message, as the changed lines with line numbers. Verified 2026-10-15.
-- Fact: after that notice, Claude's Edit on the file passes without a re-read. Verified 2026-10-15.
+- [x] Bring in all known tasks.
+- [ ] Process them.
+- [ ] QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
+- [ ] Bring quick fix issues on top, and if they take too much time, then deprioritize them.
+- [ ] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
+- [ ] !! Markdown or any code fence needs word wrap and copy.
+- [ ] Scrolling annoyance in the markdown pane.
+- [ ] Thinking block needed (add to the previous response block).
+- [ ] Open links.
+- [ ] Open common folders and files related to Claude.
+- [ ] Rewind leaves the pane hanging. Low priority. (It's ok, but it should be written down as a known issue.)
+- [ ] Scroll to top when a new reply arrives. Without creating a jerking effect, if any. (Make it easy on the eyes, i.e. simple easing or some such thing.)
+- [ ] Need ability to reply with multiple sections of previous reply, i.e. select text, type something, repeat multiple times, then send at once. (This is a solution, XY. Discuss the problem, because the answer can be much simpler.)
+- Discuss: Fact: a file change the user saves between Claude's turns reaches Claude with the user's next message, as the changed lines with line numbers. Verified 2026-10-15.
+- Discuss: Fact: after that notice, Claude's Edit on the file passes without a re-read. Verified 2026-10-15.
