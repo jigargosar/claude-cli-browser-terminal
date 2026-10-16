@@ -1,4 +1,4 @@
-# If wishes had wings horses would fly (discuss if this idiom is correct)
+# If wishes had wings horses would fly
 
 Once upon a time in a far far future some of them were surprisingly alive.
 
