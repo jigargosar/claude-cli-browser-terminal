@@ -8,7 +8,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 - Goal 2 (later): select text in a reply, comment on it, send the comment to Claude. First try kept as tag `single-comment`.
 - Goal 3 (later): many comments, sent to Claude as one message.
 - Not planned: more than one Claude session per server, login, publishing.
-- Principle: it works exactly like `claude` in a terminal; the only addition is a relay server to one browser tab. Browser quirks are fixed in the page (buttons, key remaps), not by new lifecycle rules.
+- Principle: it works exactly like `claude` in a terminal; the only addition is a relay server to one browser tab. (Confusing for user, keep it here for now -> )Browser quirks are fixed in the page (buttons, key remaps), not by new lifecycle rules.
 
 ## Decisions
 
@@ -27,6 +27,10 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
    2. Claude and the server keep running. Open the URL again to get back.
    3. The session ends only when claude exits (it stops the server), or the server is stopped (it stops claude).
    4. Why: a tab closes by accident easily; a lost tab must not lose the session.
+
+## How does claude code cli handles user changes to files that were also changed by you
+- Fact: a file change the user saves between Claude's turns reaches Claude with the user's next message, as the changed lines with line numbers. Verified 2026-10-15.
+- Fact: after that notice, Claude's Edit on the file passes without a re-read. Verified 2026-10-15.
 
 ## Files
 

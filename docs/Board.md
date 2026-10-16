@@ -18,17 +18,12 @@ The board exists so that all known work is written in one list, and the next tas
 # Slice 16
 - [x] Slices 14 and 15 moved to `docs/Board-archive-2026-10-13.md`
 - [x] Bring in all known tasks.
-- [ ] Process them.
-- [ ] QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
-- [ ] Bring quick fix issues on top, and if they take too much time, then deprioritize them.
+- [x] Process them.
+- [x] Bring quick fix issues on top, and if they take too much time, then deprioritize them.
+- [ ] Scroll to top when a new reply arrives. Without creating a jerking effect, if any. (Make it easy on the eyes, i.e. simple easing or some such thing.) while at it, also fix the gap between scrollbar and viewport edge.
 - [ ] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [ ] !! Markdown or any code fence needs word wrap and copy.
-- [ ] Scrolling annoyance in the markdown pane.
-- [ ] Thinking block needed (add to the previous response block).
-- [ ] Open links.
-- [ ] Open common folders and files related to Claude.
-- [ ] Rewind leaves the pane hanging. Low priority. (It's ok, but it should be written down as a known issue.)
-- [ ] Scroll to top when a new reply arrives. Without creating a jerking effect, if any. (Make it easy on the eyes, i.e. simple easing or some such thing.)
 - [ ] Need ability to reply with multiple sections of previous reply, i.e. select text, type something, repeat multiple times, then send at once. (This is a solution, XY. Discuss the problem, because the answer can be much simpler.)
-- Discuss: Fact: a file change the user saves between Claude's turns reaches Claude with the user's next message, as the changed lines with line numbers. Verified 2026-10-15.
-- Discuss: Fact: after that notice, Claude's Edit on the file passes without a re-read. Verified 2026-10-15.
+- [ ] Thinking block needed (add to the previous response block).
+- [ ] (recurring) QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
+- [ ] Rewind leaves the pane hanging. Low priority. (It's ok, but it should be written down as a known issue.)
