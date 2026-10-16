@@ -13,7 +13,7 @@ import { Tail } from "tail";
 import writeFileAtomic from "write-file-atomic";
 import { WebSocketServer } from "ws";
 
-// The page and its browser libraries, built by Vite from web/ (pnpm build).
+// The page and its browser libraries, built by Vite from web/ into dist/.
 const DIST_DIR = `${import.meta.dirname}/dist`;
 const HTML_PATH = `${DIST_DIR}/index.html`;
 // Hook of our claude only, passed with --settings so it runs in any directory. See CLAUDE.md.
@@ -34,8 +34,8 @@ const HOOK_SETTINGS = JSON.stringify({ hooks: { SessionStart: [{ hooks: [{ type:
 const claudeArgs = ["--settings", HOOK_SETTINGS, ...process.argv.slice(2)];
 const fixedPort = process.env.CC_WEB_PORT ? Number(process.env.CC_WEB_PORT) : null;
 
-if (!existsSync(HTML_PATH)) throw new Error(`${HTML_PATH} is missing: run pnpm build`);
-// dev: read files on each request, so a rebuild shows on reload.
+if (!existsSync(HTML_PATH)) throw new Error(`${HTML_PATH} is missing: run pnpm watch`);
+// Dev loop: read files on each request, so a rebuild shows on reload. See scripts/build-watch/README.md.
 const serveDist = sirv(DIST_DIR, { dev: true });
 
 // Page settings, per project: the folder where claude runs. Not localStorage, which is per origin, and the port changes.
@@ -132,7 +132,7 @@ const startSession = ({ transcriptPath: path, source }) => {
   followTranscript(path);
 };
 
-// A rebuild (pnpm build:watch) rewrites index.html: reload open tabs.
+// Dev loop: a rebuild rewrites index.html, so open tabs reload. See scripts/build-watch/README.md.
 chokidar
   .watch(HTML_PATH, { ignoreInitial: true, awaitWriteFinish: { stabilityThreshold: 100 } })
   .on("change", () => {

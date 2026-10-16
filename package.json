@@ -10,12 +10,11 @@
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
-    "build:watch": "vite build --watch",
-    "ccw": "vite build && node server.mjs",
+    "watch": "node scripts/build-watch/start-build-watch-holding-port.mjs",
+    "watch:about": "echo Rebuilds dist/ on every change in web/. Run it first, in its own terminal. Why: scripts/build-watch/README.md",
+    "ccw": "node scripts/build-watch/refuse-start-without-build-watch.mjs && node server.mjs",
+    "ccw:about": "echo Starts a session. Refuses to start without pnpm watch, so the page is never stale. Why: scripts/build-watch/README.md",
     "release": "vite build && pnpm version patch && pnpm pack --pack-destination published-versions && pnpm pack --out published-versions/claude-cli-browser-terminal.tgz && git push --follow-tags",
-    "new": "vite build && node server.mjs --model haiku",
-    "resume": "vite build && node server.mjs --resume",
     "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku"
   },
   "keywords": [],
@@ -48,9 +47,11 @@
     "@xterm/addon-unicode11": "0.9.0",
     "@xterm/addon-webgl": "0.19.0",
     "@xterm/xterm": "6.0.0",
+    "clipboardy": "5.3.2",
     "cross-env": "10.1.0",
     "dompurify": "3.4.16",
     "impeccable": "4.5.2",
+    "is-port-reachable": "4.0.0",
     "marked": "18.1.0",
     "marked-highlight": "2.2.4",
     "puppeteer-core": "25.13.0",
