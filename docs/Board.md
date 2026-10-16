@@ -24,7 +24,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Scroll to top when a new reply arrives. Without creating a jerking effect, if any. (Make it easy on the eyes, i.e. simple easing or some such thing.) while at it, also fix the gap between scrollbar and viewport edge.
 - [x] A/B test marked against markdown-it: marked stays. markdown-it's gains (link plugin, escaped raw HTML) are small fixes on marked. Patch updates for marked, dompurify, puppeteer-core.
 - [x] Web links in a reply open in a new tab, so a click never leaves the session (DOMPurify hook in `web/markdown.js`).
-- [ ] !! Markdown or any code fence needs word wrap and copy. Built (Wrap and Copy bar); waiting for a manual test.
+- [x] !! Markdown or any code fence needs word wrap and copy. A Wrap and Copy bar on each code block (`web/views/last.js`).
 - [ ] Low priority: raw HTML in prose is dropped, so `Promise<T>` without backticks loses `<T>`. Fix: escape it in marked's `renderer.html`.
 - [ ] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [ ] Need ability to reply with multiple sections of previous reply, i.e. select text, type something, repeat multiple times, then send at once. (This is a solution, XY. Discuss the problem, because the answer can be much simpler.)
