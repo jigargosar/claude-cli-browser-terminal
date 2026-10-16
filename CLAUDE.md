@@ -28,25 +28,17 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
    3. The session ends only when claude exits (it stops the server), or the server is stopped (it stops claude).
    4. Why: a tab closes by accident easily; a lost tab must not lose the session.
 
-## How does claude code cli handles user changes to files that were also changed by you
+## Claude Code facts for a later feature, concurrent editing: how user changes to files Claude also changed reach Claude
 - Fact: a file change the user saves between Claude's turns reaches Claude with the user's next message, as the changed lines with line numbers. Verified 2026-10-15.
 - Fact: after that notice, Claude's Edit on the file passes without a re-read. Verified 2026-10-15.
 
 ## Files
 
-- `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`.
+- `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`. On Windows the bytes are ConPTY's rendering of its own screen buffer, not claude's output.
+- Reply text comes only from the transcript. The terminal stream carries rendered cells, not markdown, so nothing is parsed from it.
 - `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`) and one file per reply view in `views/`. A feature touches `main.js` and `views/`; the other modules change only for a bug in them. A rebuild reloads open tabs.
 - `docs/Board.md`: the work plan and its status. Follow its Workflow. Closed slices are in `docs/Board-archive-2026-10-13.md`.
 - `docs/mockups/`: standalone HTML mockups that link the real stylesheets and open without a build. A mockup is approved before the page implements it.
-
-## Terminal basics
-
-- node-pty gives a byte stream from `claude` and takes keystrokes. On Windows the stream comes from ConPTY, which keeps its own screen buffer and repaints it; the bytes are ConPTY's rendering, not claude's.
-- The page runs xterm.js (`web/terminal.js`) with fit, WebGL and Unicode 11. Keystrokes go up as `i`, size as `r`; the first `r` starts claude at that size.
-- The server keeps a headless xterm mirror of the screen. On reconnect it serializes the mirror into the new tab, so a refresh shows the screen without a redraw.
-- Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so duplicate lines in scrollback appear in any terminal, Windows Terminal included. Not fixable here; not in scope.
-- Keys: a remapped key in xterm must swallow both keydown and keypress, or xterm adds its own CR. Shift+Enter sends LF (Ctrl+J) for a newline. Ctrl+W never reaches the page in Chrome; Ctrl+Backspace deletes a word in claude. Ctrl+V is left to the browser, which pastes; xterm would send `\x16`. Alt+` toggles the panes.
-- The transcript is the source for reply text. The terminal stream carries rendered cells, not markdown, so nothing is parsed from it.
 
 ## Rules
 
@@ -63,3 +55,4 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 - Raw HTML in reply prose is dropped. `Promise<T>` without backticks loses `<T>`: CommonMark reads it as a tag, DOMPurify strips it. Code and backticks are safe. Fix when needed: escape it in marked's `renderer.html`.
 - Rewind leaves the reply pane hanging. Low priority.
+- Duplicate lines in terminal scrollback. Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so this happens in any terminal, Windows Terminal included. Not fixable here.
