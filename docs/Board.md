@@ -18,6 +18,20 @@ The board exists so that all known work is written in one list, and the next tas
 # Slice 16
 - [x] Slices 14 and 15 moved to `docs/Board-archive-2026-10-13.md`
 - bring in all known tasks in then process them.
+  what does QN need
+  quick issues quick gains
+  !!! why our first line interpretation doesn't worked compared to claude desktop
+
+!! markdown or any code fence needs worwrap and copy
+
+scrolling annoyance in markdown pane.
+
+thinking block needed (add to prev response block)
+
+open links. open common folders and files related to claude
+
+rewind leaves pane hanging, its ok, but should be a known issue.
+
 - scroll to top when new reply arrives
 - make it easy on eyes, i.e. simple easeing or some such thing.
 - [ ] Select lines in a reply, and Claude answers about those lines in a format that shows the change as a diff. No concurrent editing.
