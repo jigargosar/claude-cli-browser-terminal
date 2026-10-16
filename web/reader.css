@@ -18,6 +18,10 @@
 .md li + li, .md li > ul, .md li > ol { margin-top: 0.3em; }
 .md li > ul, .md li > ol { margin-bottom: 0; }
 .md li::marker { color: var(--ink-muted); }
+/* Carried-forward points: a reply wraps an unchanged point in <small>. The whole item steps back, number included. */
+.md small { font-size: 0.8em; color: var(--ink-muted); }
+.md li:has(> small:only-child) { font-size: 0.8em; color: var(--ink-muted); }
+.md li > small:only-child { font-size: inherit; }
 .md a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .md a:hover { text-decoration-thickness: 2px; }
 .md a:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 2px; }
