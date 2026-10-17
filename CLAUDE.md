@@ -54,4 +54,5 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 ## Known issues
 
 - Rewind leaves the reply pane hanging. Low priority.
+- The tab sometimes shows "disconnected" while the server still runs; a refresh brings it back. Rare, seen when idle, not while working. The page has no auto-reconnect. Postponed. Next step when it gets frequent: log the close code and time on both sides, then add auto-reconnect and a server heartbeat.
 - Duplicate lines in terminal scrollback. Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so this happens in any terminal, Windows Terminal included. Not fixable here.
