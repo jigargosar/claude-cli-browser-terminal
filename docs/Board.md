@@ -40,12 +40,9 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] A bare Alt tap focused the browser's menu. The page swallows it.
 - [x] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [x] A rebuild reloaded the page mid-turn and lost comments. The reload now waits for the turn's end.
-- [ ] The UX is very poor, specifically when working across two panel. i.e switching focus from one pane to another, and xterm losing focus also ctrl enter to submit response doesnt trigger. one solution is to make improvements to tab and shift tab, i.e deterministic focus. other is to hvae input box outside of terminal. dialogs can be intercepted and shown in markdown and result sent to xterm, and when I want to 
-  use andy slash command related stuff, I can run it from terminal.
-  - [ ] Tab and Shift+Tab cycle focus through the page with a focus trap; xterm no longer takes Tab. With nothing focused, Tab picks the first stop.
-  - [ ] Claude's own Tab (completion) and Shift+Tab (mode) move to other keys.
-  - [ ] Optional: after a comment is saved or cancelled, focus returns to the reply pane.
-  - [ ] A visible mark of the focused pane. Ideas and verdicts: `docs/focus-indicator.md`.
+- [ ] Quick Keybord based traversal across panes. Focus trapped. xterm tab moves focus to right pane, to a specific item, or general if there is no specific item. shift tab is bit shakey when in term panel. and its bound in brain. Our biggest hope can be rather than cycling we can direcly kb change each mode. research needed if its even possible.
+- [ ] divider doesnt work in top down view ie. panes are vertical. 
+- [ ] Permanent focus feedback: which pane gets the keys, or none. Ideas and verdicts: `docs/focus-indicator.md`.
 - [ ] Sepia is the only reading theme. Remove Light and Dark from the app.
 - [ ] The error banner covers dialogs and other elements. Show it as an overlay that can be dismissed.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
