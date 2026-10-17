@@ -34,7 +34,8 @@ The board exists so that all known work is written in one list, and the next tas
   - [x] Mockup `docs/mockups/comments.html`: Reply button at the selection (Floating UI), popup saves on Enter, highlight stays, a click on it reopens the popup, Submit sends all.
   - [x] Build it into the page (`web/views/comments.js`). Submit pastes the quotes and comments into claude's prompt and presses Enter.
   - [x] Mockup: `docs/mockups/replies.html`.
-- [] (recurring) QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
+- [] (recurring) QN means quickie notes, is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
+  - [ ] Record it properly, so its usefull. And keeps our focus tied together. 
 - [ ] Thinking block needed (add to the previous response block).
 - [x] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both.
