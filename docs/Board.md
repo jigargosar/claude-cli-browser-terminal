@@ -41,6 +41,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [x] A rebuild reloaded the page mid-turn and lost comments. The reload now waits for the turn's end.
 - [ ] Quick Keybord based traversal across panes. Focus trapped. xterm tab moves focus to right pane (tough decision, sleep on it) to a specific item, or general if there is no specific item. shift tab is bit shakey when in term panel. and its bound in brain. 
+  - Research on Tab and mode keys: `docs/mode-keys-research.md`.
 - [ ] need favicon. specifically for browser quick identification.
 - [ ] divider doesnt work in top down view ie. panes are vertical. 
 - [ ] Permanent focus feedback: which pane gets the keys, or none. Ideas and verdicts: `docs/focus-indicator.md`.
