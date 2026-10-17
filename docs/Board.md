@@ -50,7 +50,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [ ] Maintain a proper change log. not dump from slices. With releases marked.
   - app should show version.
 - [ ] preserving comments and send button carrying historic comments I am not sure I ned that feature, and at the same time no way to clear it. and its content are also not visible. 
-  - [ ] For now: comments clear when a new reply arrives.
+  - [x] For now: comments clear when a new reply arrives.
   - [ ] Comments survive a refresh. They belong to the reply on view.
   - [ ] A button discards all comments by hand.
 - [ ] The reply pane swaps one reply for the next too harshly. Add a transition.
