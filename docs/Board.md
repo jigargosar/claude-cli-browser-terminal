@@ -38,9 +38,11 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Idle disconnect while the server runs: recorded under Known issues in CLAUDE.md, postponed.
 - [x] CLAUDE.md: removed the misread rules "works exactly like claude in a terminal" and "nothing is parsed from the terminal stream".
 - [x] A bare Alt tap focused the browser's menu. The page swallows it.
+- [x] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [ ] The UX is very poor, specifically when working across two panel. i.e switching focus from one pane to another, and xterm losing focus also ctrl enter to submit response doesnt trigger. one solution is to make improvements to tab and shift tab, i.e deterministic focus. other is to hvae input box outside of terminal. dialogs can be intercepted and shown in markdown and result sent to xterm, and when I want to 
   use andy slash command related stuff, I can run it from terminal.
   - [ ] Tab and Shift+Tab cycle focus through the page with a focus trap; xterm no longer takes Tab. With nothing focused, Tab picks the first stop.
+  - [ ] Claude's own Tab (completion) and Shift+Tab (mode) move to other keys.
   - [ ] Optional: after a comment is saved or cancelled, focus returns to the reply pane.
   - [ ] A visible mark of the focused pane, so Alt+` toggling can be seen. Earlier tries (darkening, a rect, a top band) did not help.
 - [ ] The error banner covers dialogs and other elements. Show it as an overlay that can be dismissed.
@@ -49,6 +51,9 @@ The board exists so that all known work is written in one list, and the next tas
   - app should show version.
 - [ ] preserving comments and send button carrying historic comments I am not sure I ned that feature, and at the same time no way to clear it. and its content are also not visible. 
   - [ ] For now: comments clear when a new reply arrives.
+  - [ ] Comments survive a refresh. They belong to the reply on view.
+  - [ ] A button discards all comments by hand.
+- [ ] The reply pane swaps one reply for the next too harshly. Add a transition.
 - [ ] A rebuild reloads the page mid-turn and loses comments. The reload waits for the turn's end.
 - [ ] A rebuild between two dependent edits can leave the page on a broken in-between build. If its reload handler is what broke, no later rebuild can recover it ("a is not a function" on every reload message). Only a manual refresh gets out.
 - [ ] A small message sent mid-turn gets a small reply, which replaces the long reply in the pane. The user is left staring at a wall.
@@ -59,7 +64,6 @@ The board exists so that all known work is written in one list, and the next tas
 - [] (recurring) QN means quickie notes, is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
   - [ ] Record it properly, so its usefull. And keeps our focus tied together. 
 - [ ] Thinking block needed (add to the previous response block).
-- [x] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both.
   - [ ] Take the skill's version: Terms, archive on close, first open task is next, bare lines reformatted, `[x]` never means dropped, Commits with "WIP:".
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
