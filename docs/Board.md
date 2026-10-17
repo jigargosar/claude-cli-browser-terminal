@@ -31,6 +31,8 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] !!! Raw HTML in reply prose vanished: `<placeholder>` text in Claude's replies was dropped. Now escaped in marked's `renderer.html`, except `details`, `summary` and `small`, which fold or shrink carried-forward points.
 - [x] A list item that is only `<small>` text shrinks whole, number included, and turns muted (`web/reader.css`).
 - [ ] select text, type something, repeat multiple times, then send at once. This maintains my sanity, when I want to respond to multiple parts of ai response.
+  - [ ] Mockup: `docs/mockups/replies.html`.
+- [ ] 
 - [ ] Thinking block needed (add to the previous response block).
 - [ ] (recurring) QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
 - [ ] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
@@ -39,3 +41,4 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
   - [ ] Archive name `docs/Board-archive-<date>.md`, one file per closed slice.
   - [ ] Fold the global rule "commit before a multi-cycle task" into Commits.
+- [ ] browser-test skill: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
