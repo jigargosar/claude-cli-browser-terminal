@@ -7,6 +7,7 @@ import "./reader.js";
 import * as settings from "./settings.js";
 import * as last from "./views/last.js";
 import * as comments from "./views/comments.js";
+import { tabbable } from "tabbable";
 
 const status = document.getElementById("reply-status");
 
@@ -86,6 +87,27 @@ document.addEventListener(
     e.stopPropagation();
     if (terminalPane.contains(document.activeElement)) reply.focus();
     else terminal.focus();
+  },
+  true,
+);
+// Tab and Shift+Tab cycle the reply pane's stops. Past either end, focus goes to the terminal, which keeps Tab for
+// claude. With nothing focused, Tab picks the pane's first stop.
+const replyPane = document.getElementById("reply-pane");
+document.addEventListener(
+  "keydown",
+  (e) => {
+    if (e.key !== "Tab" || e.ctrlKey || e.altKey || e.metaKey) return;
+    const active = document.activeElement;
+    if (terminalPane.contains(active)) return;
+    e.preventDefault();
+    const stops = tabbable(replyPane);
+    if (!replyPane.contains(active)) {
+      stops[0].focus();
+      return;
+    }
+    const next = stops.indexOf(active) + (e.shiftKey ? -1 : 1);
+    if (next < 0 || next >= stops.length) terminal.focus();
+    else stops[next].focus();
   },
   true,
 );

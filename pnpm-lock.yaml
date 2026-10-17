@@ -242,6 +242,9 @@ importers:
       puppeteer-core:
         specifier: 25.14.0
         version: 25.14.0
+      tabbable:
+        specifier: 6.5.0
+        version: 6.5.0
       vite:
         specifier: 8.3.4
         version: 8.3.4
@@ -897,6 +900,9 @@ packages:
     resolution: {integrity: sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA==}
     engines: {node: '>=18'}
 
+  tabbable@6.5.0:
+    resolution: {integrity: sha512-wieBHXygIm7OyQOu5hQlkk62/WyCFYGlWg7L6/ZCUZwx0o398Zkn4pVmMyfYhfMG8kGrj/Krt8eIk6UKC6VzwA==}
+
   tail@2.2.6:
     resolution: {integrity: sha512-IQ6G4wK/t8VBauYiGPLx+d3fA5XjSVagjWV5SIYzvEvglbQjwEcukeYI68JOPpdydjxhZ9sIgzRlSmwSpphHyw==}
     engines: {node: '>= 6.0.0'}
@@ -1530,6 +1536,8 @@ snapshots:
       unique-string: 3.0.0
 
   system-architecture@0.1.0: {}
+
+  tabbable@6.5.0: {}
 
   tail@2.2.6: {}
 
