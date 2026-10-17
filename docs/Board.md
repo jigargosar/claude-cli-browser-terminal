@@ -41,6 +41,10 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [x] A rebuild reloaded the page mid-turn and lost comments. The reload now waits for the turn's end.
 - [ ] Quick Keybord based traversal across panes. Focus trapped. xterm tab moves focus to right pane (tough decision, sleep on it) to a specific item, or general if there is no specific item. shift tab is bit shakey when in term panel. and its bound in brain. Our biggest hope can be rather than cycling we can direcly kb change each mode. research needed if its even possible.
+- [ ] Parked: one key per mode instead of cycling with Shift+Tab. Why: in the terminal, Shift+Tab cycling is shaky (from the traversal task above). Take it only if a simple solution exists; otherwise drop it.
+  - [x] Research: Claude has no key that sets a mode directly, only `chat:cycleMode` (Shift+Tab). The page could send N Shift+Tabs to reach a mode, if it knows the current one. Tab completion can move off Tab via `autocomplete:accept` in `~/.claude/keybindings.json`.
+  - [ ] Find the current mode, from the terminal footer text or the transcript. Then decide: build or drop.
+- [ ] need favicon. specifically for browser quick identification.
 - [ ] divider doesnt work in top down view ie. panes are vertical. 
 - [ ] Permanent focus feedback: which pane gets the keys, or none. Ideas and verdicts: `docs/focus-indicator.md`.
 - [ ] Sepia is the only reading theme. Remove Light and Dark from the app.
