@@ -46,6 +46,7 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Claude's own Tab (completion) and Shift+Tab (mode) move to other keys.
   - [ ] Optional: after a comment is saved or cancelled, focus returns to the reply pane.
   - [ ] A visible mark of the focused pane, so Alt+` toggling can be seen. Earlier tries (darkening, a rect, a top band) did not help.
+- [ ] Sepia is the only reading theme. Remove Light and Dark from the app.
 - [ ] The error banner covers dialogs and other elements. Show it as an overlay that can be dismissed.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
 - [ ] Maintain a proper change log. not dump from slices. With releases marked.
