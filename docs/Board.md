@@ -56,6 +56,7 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] A button discards all comments by hand.
 - [ ] The reply pane swaps one reply for the next too harshly. Add a transition.
 - [ ] Remove the leftover Enter diagnostic log in `web/main.js`.
+- [ ] The page reloaded twice for one rebuild, seen once at 17:42 on 2026-10-17. A reload log (`.ccw-cache/reload.log`) now records rebuilds, tab connects and closes, and the page's reload decisions; it works after the next ccw start. Read it when it happens again.
 - [ ] A rebuild between two dependent edits can leave the page on a broken in-between build. If its reload handler is what broke, no later rebuild can recover it ("a is not a function" on every reload message). Only a manual refresh gets out.
 - [ ] A small message sent mid-turn gets a small reply, which replaces the long reply in the pane. The user is left staring at a wall.
 - [ ] Bring claude's dialogs (permission prompts, choices) out of xterm into the page. Big gain in readability.
