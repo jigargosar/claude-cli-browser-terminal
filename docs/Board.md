@@ -38,7 +38,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Idle disconnect while the server runs: recorded under Known issues in CLAUDE.md, postponed.
 - [ ] The UX is very poor, specifically when working across two panel. i.e switching focus from one pane to another, and xterm losing focus also ctrl enter to submit response doesnt trigger. one solution is to make improvements to tab and shift tab, i.e deterministic focus. other is to hvae input box outside of terminal. dialogs can be intercepted and shown in markdown and result sent to xterm, and when I want to 
   use andy slash command related stuff, I can run it from terminal.
-- [ ] preserving 
+- [ ] preserving comments and send button carrying historic comments I am not sure I ned that feature, and at the same time no way to clear it. and its content are also not visible. 
 - [] (recurring) QN means quickie notes, is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
   - [ ] Record it properly, so its usefull. And keeps our focus tied together. 
 - [ ] Thinking block needed (add to the previous response block).
