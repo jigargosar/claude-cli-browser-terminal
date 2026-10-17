@@ -251,4 +251,5 @@ await new Promise((resolve) => server.listen(port, HOST, resolve));
 const url = `http://localhost:${port}`;
 console.log(url);
 console.log("claude starts when the first tab opens");
-await open(url);
+// CC_WEB_NO_OPEN: a test by Claude drives its own browser, so the user's browser must not take the one tab.
+if (!process.env.CC_WEB_NO_OPEN) await open(url);

@@ -53,6 +53,14 @@
     <button type="button" id="reader-reset" class="bar-button">Reset reading settings</button>
   </div>
   <article id="reply" class="md" tabindex="0"><p class="empty">Replies from this session show up here.</p></article>
+  <!-- Comments on reply text (views/comments.js). Floating UI places the button and the box at the selection.
+       Inside the pane, so they take the reading theme. -->
+  <button type="button" id="comment-submit" class="bar-button" hidden></button>
+  <button type="button" id="comment-reply" class="bar-button comment-float" hidden>Reply</button>
+  <div id="comment-box" class="comment-float" hidden>
+    <textarea aria-label="Comment"></textarea>
+    <p>Enter saves · Shift+Enter new line · Esc cancels · empty deletes</p>
+  </div>
 </aside>
 <script type="module" src="./main.js"></script>
 </body>

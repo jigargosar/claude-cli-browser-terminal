@@ -30,6 +30,8 @@ export const refit = () => fit.fit();
 export const size = () => ({ cols: term.cols, rows: term.rows });
 export const write = (d) => term.write(d);
 export const focus = () => term.focus();
+// Sends text as a paste, the same bytes as Ctrl+V: bracketed when claude asked for bracketed paste.
+export const paste = (text) => term.paste(text);
 export const onResize = (cb) => term.onResize(cb);
 // Every byte the user types. Shift+Enter becomes LF, the same bytes as Ctrl+J, Claude Code's newline key.
 // The browser fires keydown and keypress for Enter; both must be swallowed, or xterm sends its own CR after the LF.

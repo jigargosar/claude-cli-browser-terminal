@@ -6,6 +6,7 @@ import { connect } from "./socket.js";
 import "./reader.js";
 import * as settings from "./settings.js";
 import * as last from "./views/last.js";
+import * as comments from "./views/comments.js";
 
 const status = document.getElementById("reply-status");
 
@@ -42,6 +43,14 @@ terminal.onInput((d) => {
 });
 terminal.onResize(server.resize);
 settings.onSave(server.saveSettings);
+// Comments go to claude as one pasted message, then Enter, as if typed in the terminal.
+comments.init({
+  send: (text) => {
+    terminal.paste(text);
+    server.input("\r");
+    terminal.focus();
+  },
+});
 terminal.focus();
 
 // Focus: Alt+` toggles between the panes (capture phase, so xterm never sees the key). Focus that lands nowhere,

@@ -32,6 +32,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] A list item that is only `<small>` text shrinks whole, number included, and turns muted (`web/reader.css`).
 - [ ] select text, type something, repeat multiple times, then send at once. This maintains my sanity, when I want to respond to multiple parts of ai response.
   - [x] Mockup `docs/mockups/comments.html`: Reply button at the selection (Floating UI), popup saves on Enter, highlight stays, a click on it reopens the popup, Submit sends all.
+  - [x] Build it into the page (`web/views/comments.js`). Submit pastes the quotes and comments into claude's prompt and presses Enter.
   - [ ] Mockup: `docs/mockups/replies.html`.
 - [ ] 
 - [ ] Thinking block needed (add to the previous response block).
