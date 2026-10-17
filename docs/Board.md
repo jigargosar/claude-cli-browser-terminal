@@ -34,6 +34,7 @@ The board exists so that all known work is written in one list, and the next tas
   - [x] Mockup `docs/mockups/comments.html`: Reply button at the selection (Floating UI), popup saves on Enter, highlight stays, a click on it reopens the popup, Submit sends all.
   - [x] Build it into the page (`web/views/comments.js`). Submit pastes the quotes and comments into claude's prompt and presses Enter.
   - [x] Mockup: `docs/mockups/replies.html`.
+- [x] Ctrl+Enter sends all comments: from the comment box (saves it first) or anywhere in the reply pane.
 - [] (recurring) QN means quickie notes, is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
   - [ ] Record it properly, so its usefull. And keeps our focus tied together. 
 - [ ] Thinking block needed (add to the previous response block).

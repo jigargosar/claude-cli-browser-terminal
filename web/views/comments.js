@@ -3,6 +3,7 @@
 // changed. A new reply replaces the DOM: its old highlights vanish, but the comments keep their quoted text and still send.
 import { computePosition, autoUpdate, offset, flip, shift, inline } from "@floating-ui/dom";
 
+const pane = document.getElementById("reply-pane");
 const reply = document.getElementById("reply");
 const replyButton = document.getElementById("comment-reply");
 const box = document.getElementById("comment-box");
@@ -49,7 +50,7 @@ const render = () => {
   highlight.clear();
   for (const c of comments) highlight.add(c.range);
   submit.hidden = comments.length === 0;
-  submit.textContent = `Send ${comments.length} comment${comments.length === 1 ? "" : "s"}`;
+  submit.textContent = `Send ${comments.length} comment${comments.length === 1 ? "" : "s"} · Ctrl+Enter`;
 };
 
 // An empty comment deletes it. That is the only way to delete one.
@@ -102,7 +103,7 @@ document.addEventListener("mousedown", (event) => {
 });
 
 input.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && !event.shiftKey) {
+  if (event.key === "Enter" && !event.shiftKey && !event.ctrlKey) {
     event.preventDefault();
     save();
   } else if (event.key === "Escape") {
@@ -111,9 +112,19 @@ input.addEventListener("keydown", (event) => {
 });
 
 export const init = ({ send }) => {
-  submit.addEventListener("click", () => {
+  const sendAll = () => {
+    if (comments.length === 0) return;
     send(message());
     comments.length = 0;
     render();
+  };
+  submit.addEventListener("click", sendAll);
+  // Ctrl+Enter anywhere in the reply pane sends. In the comment box it saves that comment first.
+  // The terminal is outside the pane, so its Ctrl+Enter still goes to claude.
+  pane.addEventListener("keydown", (event) => {
+    if (!(event.key === "Enter" && event.ctrlKey)) return;
+    event.preventDefault();
+    if (!box.hidden) save();
+    sendAll();
   });
 };
