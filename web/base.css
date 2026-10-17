@@ -1,42 +1,30 @@
-/* The dark terminal you type into, the light page you read. Layout, panes, the settings panel. */
+/* The dark terminal you type into, the sepia page you read. Layout, panes, the settings panel. */
 /* Note: the CSS below is not idiomatic. Use your own judgment; do not infer conventions from it. */
 :root {
   /* Terminal and code blocks (Slice 5). */
   --term-bg: #16181d;
   --code-fg: #c9d1d9;
-  /* Reading page */
-  --paper: #f8fbfb;
-  --ink: #1a2326;
-  --ink-muted: #5b6569;
-  --quote: #454f52;
-  --rule: #dbe1e2;
-  --tint: #ebf1f3;
-  --code-ink: #a94620;
-  --stripe: #f3f6f7;
-  --link: #0064b5;
-  --selection: #bfdeff;
-  --thumb: #b8bfc0;
+  /* Reading page: sepia, the only theme. */
+  --paper: #f4ecd8;
+  --ink: #3b2f22;
+  --ink-muted: #6e5d49;
+  --quote: #57483a;
+  --rule: #ddd0b5;
+  --tint: #ebe0c6;
+  --code-ink: #8a3a12;
+  --stripe: #efe6cf;
+  --link: #1f5a99;
+  --selection: #e3cfa0;
+  --thumb: #c9b994;
   --mono: "Cascadia Mono", Consolas, monospace;
   --sans: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
   --display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
-  --serif: "Sitka Text", Sitka, Georgia, serif;
-  --serif-display: "Sitka Subheading", Sitka, Georgia, serif;
   /* Reading settings; reader.js overrides these on #reply-pane. */
   --reader-size: 17px;
   --reader-leading: 1.6;
   --reader-measure: 68ch;
   --reader-font: var(--sans);
   --reader-heading-font: var(--display);
-}
-
-/* Reading themes, like an ebook reader. Light is the default above. */
-#reply-pane[data-theme="sepia"] {
-  --paper: #f4ecd8; --ink: #3b2f22; --ink-muted: #6e5d49; --quote: #57483a; --rule: #ddd0b5;
-  --tint: #ebe0c6; --stripe: #efe6cf; --code-ink: #8a3a12; --link: #1f5a99; --selection: #e3cfa0; --thumb: #c9b994;
-}
-#reply-pane[data-theme="dark"] {
-  --paper: #1e2227; --ink: #d6dade; --ink-muted: #9aa2ab; --quote: #b5bcc4; --rule: #343a42;
-  --tint: #272c32; --stripe: #23272c; --code-ink: #f0a57c; --link: #7cb3ff; --selection: #2f4a6b; --thumb: #4a525c;
 }
 
 /* The page never scrolls; each pane owns its scrolling. */
@@ -88,11 +76,6 @@ body.dragging { cursor: col-resize; user-select: none; }
 .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 .seg button:disabled { opacity: 0.4; cursor: default; background: none; }
 .seg output { flex: 1; align-self: center; text-align: center; font-variant-numeric: tabular-nums; }
-.seg .swatch { font: 600 14px/1 var(--serif); }
-.seg .swatch[data-theme-value="light"] { background: #f8fbfb; color: #1a2326; }
-.seg .swatch[data-theme-value="sepia"] { background: #f4ecd8; color: #3b2f22; }
-.seg .swatch[data-theme-value="dark"] { background: #1e2227; color: #d6dade; }
-.seg .swatch[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--link); }
 #reader-reset { width: 100%; margin-top: 2px; }
 /* #reply is the scroller and spans the pane, so its scrollbar sits at the window edge. The right padding takes the
    width beyond the reading measure; it replaces the max-width of .md here. --gutter: the side padding. */
@@ -110,7 +93,6 @@ body.dragging { cursor: col-resize; user-select: none; }
 
 /* Comments on reply text (views/comments.js). Commented text keeps an amber highlight; selection stays blue. */
 #reply-pane { --comment: #ffd86b80; }
-#reply-pane[data-theme="dark"] { --comment: #9a7a2080; }
 ::highlight(comment) { background: var(--comment); }
 .comment-float { position: fixed; top: 0; left: 0; z-index: 5; }
 .comment-float[hidden], #comment-submit[hidden] { display: none; }

@@ -17,19 +17,6 @@
   <div id="settings" class="panel" popover aria-label="Settings">
     <p id="reply-status" class="label">Waiting for the first reply</p>
     <!-- Reading settings: reader.js wires the [data-set] buttons and the size buttons. -->
-    <div class="row"><span class="label">Theme</span>
-      <div class="seg" role="group" aria-label="Theme">
-        <button type="button" class="swatch" data-set="theme" data-theme-value="light" data-value="light">Light</button>
-        <button type="button" class="swatch" data-set="theme" data-theme-value="sepia" data-value="sepia">Sepia</button>
-        <button type="button" class="swatch" data-set="theme" data-theme-value="dark" data-value="dark">Dark</button>
-      </div>
-    </div>
-    <div class="row"><span class="label">Font</span>
-      <div class="seg" role="group" aria-label="Font">
-        <button type="button" data-set="font" data-value="sans" style="font-family: var(--sans)">Sans</button>
-        <button type="button" data-set="font" data-value="serif" style="font-family: var(--serif)">Serif</button>
-      </div>
-    </div>
     <div class="row"><span class="label">Text size</span>
       <div class="seg" role="group" aria-label="Text size">
         <button type="button" id="size-down" aria-label="Smaller text">A−</button>
@@ -55,7 +42,7 @@
   </div>
   <article id="reply" class="md" tabindex="0"><p class="empty">Replies from this session show up here.</p></article>
   <!-- Comments on reply text (views/comments.js). Floating UI places the button and the box at the selection.
-       Inside the pane, so they take the reading theme. -->
+       Inside the pane, so they take the reading colors. -->
   <button type="button" id="comment-submit" class="bar-button" hidden></button>
   <button type="button" id="comment-reply" class="bar-button comment-float" hidden>Reply</button>
   <div id="comment-box" class="comment-float" hidden>

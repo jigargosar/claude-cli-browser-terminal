@@ -45,7 +45,7 @@ The board exists so that all known work is written in one list, and the next tas
   - Research on Tab and mode keys: `docs/mode-keys-research.md`.
 - [x] Removed the leftover Enter debug log in `web/main.js`.
 - [x] Favicon for quick identification: dark terminal half with a prompt, sepia half with text lines (`web/favicon.svg`).
-- [ ] Sepia is the only reading theme. Remove Light and Dark from the app.
+- [x] Sepia is the only reading theme, sans the only font. The Theme and Font sections are gone from the settings.
 - [ ] Permanent focus feedback: which pane gets the keys, or none. Ideas and verdicts: `docs/focus-indicator.md`.
 - [ ] The error banner covers dialogs and other elements. Show it as an overlay that can be dismissed.
 - [ ] Thinking block. travel to previous replies. 

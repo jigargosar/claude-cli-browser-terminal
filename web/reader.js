@@ -1,10 +1,10 @@
-// Reading settings, like an ebook reader: theme, font, size, line spacing, width. Saved per project (settings.js).
+// Reading settings, like an ebook reader: size, line spacing, width. Saved per project (settings.js).
+// The colors (sepia) and the font (sans) are fixed in base.css.
 // The controls are the [data-set] buttons and the size buttons in #settings (index.html).
 import * as saved from "./settings.js";
 
 const READER_KEY = "reader";
-const READER_DEFAULTS = { theme: "light", font: "sans", size: 17, leading: "normal", width: "normal" };
-const READER_FONTS = { sans: ["var(--sans)", "var(--display)"], serif: ["var(--serif)", "var(--serif-display)"] };
+const READER_DEFAULTS = { size: 17, leading: "normal", width: "normal" };
 const READER_LEADING = { tight: 1.45, normal: 1.6, loose: 1.85 };
 const READER_WIDTH = { narrow: "58ch", normal: "68ch", wide: "82ch" };
 const READER_SIZES = [14, 24];
@@ -17,10 +17,7 @@ const buttons = document.querySelectorAll("#settings [data-set]");
 let settings = READER_DEFAULTS;
 
 const apply = () => {
-  const { theme, font, size, leading, width } = settings;
-  replyPane.dataset.theme = theme;
-  replyPane.style.setProperty("--reader-font", READER_FONTS[font][0]);
-  replyPane.style.setProperty("--reader-heading-font", READER_FONTS[font][1]);
+  const { size, leading, width } = settings;
   replyPane.style.setProperty("--reader-size", `${size}px`);
   replyPane.style.setProperty("--reader-leading", READER_LEADING[leading]);
   replyPane.style.setProperty("--reader-measure", READER_WIDTH[width]);
