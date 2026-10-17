@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: comments on a reply</title>
+<link rel="stylesheet" href="../../web/base.css">
+<link rel="stylesheet" href="../../web/reader.css">
+<style>
+  /* Mockup only: the terminal is a placeholder. */
+  #terminal-pane { color: #6b7380; font: 13px/1.5 var(--mono); }
+
+  /* Commented text keeps its color. Custom Highlight API: no DOM changes to the reply. */
+  ::highlight(comment) { background: #ffd86b80; }
+
+  .float { position: fixed; top: 0; left: 0; z-index: 5; }
+  .float[hidden] { display: none; }
+  #reply-button { background: var(--paper); border-color: var(--rule); box-shadow: 0 4px 12px rgb(0 0 0 / 0.12); }
+  #comment-box {
+    width: 320px; padding: 8px; box-sizing: border-box;
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; box-shadow: 0 8px 24px rgb(0 0 0 / 0.14);
+  }
+  #comment-box textarea {
+    display: block; width: 100%; box-sizing: border-box; resize: vertical; min-height: 60px;
+    font: 14px/1.45 var(--sans); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 8px;
+  }
+  #comment-box textarea:focus { outline: 2px solid var(--link); outline-offset: -1px; }
+  #comment-box p { margin: 6px 2px 0; font: 12px/1.4 var(--sans); color: var(--ink-muted); }
+  #submit { position: absolute; right: 16px; bottom: 14px; z-index: 1; background: var(--ink); color: var(--paper); }
+  #submit:hover { background: var(--ink); color: var(--paper); opacity: 0.9; }
+  #submit[hidden] { display: none; }
+  #sent { position: absolute; left: 16px; right: 16px; bottom: 60px; max-height: 40%; overflow: auto; margin: 0; padding: 10px 12px;
+    background: var(--term-bg); color: var(--code-fg); font: 12px/1.5 var(--mono); white-space: pre-wrap; border-radius: 8px; }
+  #sent[hidden] { display: none; }
+</style>
+</head>
+<body>
+<main id="terminal-pane">Terminal (placeholder)</main>
+<div id="divider"></div>
+<aside id="reply-pane" aria-label="Last reply">
+  <article id="reply" class="md" tabindex="0">
+    <h2>Plan for the cache</h2>
+    <p>The cache holds the last 50 replies in memory. A refresh drops it, which matches Decision 2.2: the right panel may be blank after a refresh.</p>
+    <ol>
+      <li>Keep replies in a <code>Map</code> keyed by message id.</li>
+      <li>Evict the oldest entry once the map passes 50.</li>
+      <li>Write nothing to disk. The transcript already holds every reply.</li>
+    </ol>
+    <p>Two risks remain. A very long reply may be slow to render, and a rewind leaves stale entries behind.</p>
+    <blockquote>Open question: should a rewind clear the whole cache, or only the entries after the rewind point?</blockquote>
+    <p>Select any text above, click Reply, type, and press Enter. Click a highlight to edit it. An empty comment removes it.</p>
+  </article>
+  <pre id="sent" hidden></pre>
+  <button type="button" id="submit" class="bar-button" hidden></button>
+</aside>
+
+<button type="button" id="reply-button" class="bar-button float" hidden>Reply</button>
+<div id="comment-box" class="float" hidden>
+  <textarea aria-label="Comment"></textarea>
+  <p>Enter saves · Shift+Enter new line · Esc cancels</p>
+</div>
+
+<script src="../../node_modules/@floating-ui/core/dist/floating-ui.core.umd.js"></script>
+<script src="../../node_modules/@floating-ui/dom/dist/floating-ui.dom.umd.js"></script>
+<script>
+const { computePosition, autoUpdate, offset, flip, shift, inline } = FloatingUIDOM;
+
+const reply = document.getElementById("reply");
+const replyButton = document.getElementById("reply-button");
+const box = document.getElementById("comment-box");
+const input = box.querySelector("textarea");
+const submit = document.getElementById("submit");
+const sent = document.getElementById("sent");
+
+/** @type {{range: Range, text: string, comment: string}[]} */
+const comments = [];
+const highlight = new Highlight();
+CSS.highlights.set("comment", highlight);
+
+// One floating element at a time follows one range. Floating UI places it and keeps it there while #reply scrolls.
+let stopFollowing = () => {};
+function show(el, range) {
+  stopFollowing();
+  el.hidden = false;
+  const anchor = { getBoundingClientRect: () => range.getBoundingClientRect(), getClientRects: () => range.getClientRects() };
+  stopFollowing = autoUpdate(anchor, el, async () => {
+    const { x, y } = await computePosition(anchor, el, {
+      placement: "top", strategy: "fixed", middleware: [inline(), offset(8), flip(), shift({ padding: 8 })],
+    });
+    Object.assign(el.style, { left: `${x}px`, top: `${y}px` });
+  });
+}
+function hideAll() {
+  stopFollowing();
+  replyButton.hidden = true;
+  box.hidden = true;
+}
+
+// The comment being written: a new one (no index) or an existing one.
+let editing = null;
+function openBox(range, index) {
+  editing = { range, index };
+  input.value = index === undefined ? "" : comments[index].comment;
+  replyButton.hidden = true;
+  show(box, range);
+  input.focus();
+}
+
+function save() {
+  const text = input.value.trim();
+  const { range, index } = editing;
+  if (index === undefined) {
+    if (text) comments.push({ range, text: range.toString(), comment: text });
+  } else if (text) {
+    comments[index].comment = text;
+  } else {
+    comments.splice(index, 1);
+  }
+  highlight.clear();
+  for (const c of comments) highlight.add(c.range);
+  editing = null;
+  hideAll();
+  render();
+}
+
+function render() {
+  submit.hidden = comments.length === 0;
+  submit.textContent = `Submit ${comments.length} comment${comments.length === 1 ? "" : "s"}`;
+}
+
+reply.addEventListener("mouseup", (event) => {
+  const selection = getSelection();
+  if (!selection.isCollapsed) {
+    const range = selection.getRangeAt(0).cloneRange();
+    if (!reply.contains(range.commonAncestorContainer)) return;
+    box.hidden = true;
+    show(replyButton, range);
+    replyButton.onclick = () => {
+      selection.removeAllRanges();
+      openBox(range);
+    };
+    return;
+  }
+  const index = comments.findIndex((c) =>
+    [...c.range.getClientRects()].some((r) =>
+      event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom));
+  if (index !== -1) openBox(comments[index].range, index);
+});
+
+// A press anywhere outside the floating elements cancels them.
+document.addEventListener("mousedown", (event) => {
+  if (replyButton.contains(event.target) || box.contains(event.target)) return;
+  hideAll();
+});
+
+input.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    save();
+  } else if (event.key === "Escape") {
+    hideAll();
+  }
+});
+
+// The real page sends this to the server, which pastes it into claude's prompt.
+submit.addEventListener("click", () => {
+  sent.textContent = comments
+    .map((c, i) => `${i + 1}. ${c.text.split("\n").map((line) => `> ${line}`).join("\n   ")}\n   ${c.comment}`)
+    .join("\n\n");
+  sent.hidden = false;
+  comments.length = 0;
+  highlight.clear();
+  render();
+});
+</script>
+</body>
+</html>

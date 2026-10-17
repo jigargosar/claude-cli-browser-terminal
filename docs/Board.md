@@ -31,6 +31,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] !!! Raw HTML in reply prose vanished: `<placeholder>` text in Claude's replies was dropped. Now escaped in marked's `renderer.html`, except `details`, `summary` and `small`, which fold or shrink carried-forward points.
 - [x] A list item that is only `<small>` text shrinks whole, number included, and turns muted (`web/reader.css`).
 - [ ] select text, type something, repeat multiple times, then send at once. This maintains my sanity, when I want to respond to multiple parts of ai response.
+  - [x] Mockup `docs/mockups/comments.html`: Reply button at the selection (Floating UI), popup saves on Enter, highlight stays, a click on it reopens the popup, Submit sends all.
   - [ ] Mockup: `docs/mockups/replies.html`.
 - [ ] 
 - [ ] Thinking block needed (add to the previous response block).
