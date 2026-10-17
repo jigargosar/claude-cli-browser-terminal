@@ -45,7 +45,7 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Tab and Shift+Tab cycle focus through the page with a focus trap; xterm no longer takes Tab. With nothing focused, Tab picks the first stop.
   - [ ] Claude's own Tab (completion) and Shift+Tab (mode) move to other keys.
   - [ ] Optional: after a comment is saved or cancelled, focus returns to the reply pane.
-  - [ ] A visible mark of the focused pane, so Alt+` toggling can be seen. Earlier tries (darkening, a rect, a top band) did not help.
+  - [ ] A visible mark of the focused pane. Ideas and verdicts: `docs/focus-indicator.md`.
 - [ ] Sepia is the only reading theme. Remove Light and Dark from the app.
 - [ ] The error banner covers dialogs and other elements. Show it as an overlay that can be dismissed.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
