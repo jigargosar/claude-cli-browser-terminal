@@ -8,7 +8,6 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 - Goal 2 (later): select text in a reply, comment on it, send the comment to Claude. First try kept as tag `single-comment`.
 - Goal 3 (later): many comments, sent to Claude as one message.
 - Not planned: more than one Claude session per server, login, publishing.
-- Principle: it works exactly like `claude` in a terminal; the only addition is a relay server to one browser tab. (Confusing for user, keep it here for now -> )Browser quirks are fixed in the page (buttons, key remaps), not by new lifecycle rules.
 
 ## Decisions
 
@@ -35,7 +34,6 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 ## Files
 
 - `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`. On Windows the bytes are ConPTY's rendering of its own screen buffer, not claude's output.
-- Reply text comes only from the transcript. The terminal stream carries rendered cells, not markdown, so nothing is parsed from it.
 - `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`) and one file per reply view in `views/`. 
 - `docs/Board.md`: the work plan and its status. Follow its Workflow. Closed slices are in `docs/Board-archive-2026-10-13.md`.
 - `docs/mockups/`: standalone HTML mockups that link the real stylesheets and open without a build. A mockup is approved before the page implements it.
