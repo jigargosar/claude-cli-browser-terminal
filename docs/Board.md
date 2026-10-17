@@ -34,3 +34,8 @@ The board exists so that all known work is written in one list, and the next tas
 - [ ] Thinking block needed (add to the previous response block).
 - [ ] (recurring) QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
 - [ ] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
+- [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both.
+  - [ ] Take the skill's version: Terms, archive on close, first open task is next, bare lines reformatted, `[x]` never means dropped, Commits with "WIP:".
+  - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
+  - [ ] Archive name `docs/Board-archive-<date>.md`, one file per closed slice.
+  - [ ] Fold the global rule "commit before a multi-cycle task" into Commits.
