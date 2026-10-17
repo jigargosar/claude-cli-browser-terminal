@@ -58,11 +58,7 @@ const server = connect({
     status.textContent = text;
   },
 });
-// Diagnostic for the Enter bug (Board): which bytes the page sent for each Enter.
-terminal.onInput((d) => {
-  if (/[\r\n]/.test(d)) console.debug("input", JSON.stringify(d));
-  server.input(d);
-});
+terminal.onInput(server.input);
 terminal.onResize(server.resize);
 settings.onSave(server.saveSettings);
 // Comments go to claude as one pasted message, then Enter, as if typed in the terminal.

@@ -41,32 +41,26 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [x] A rebuild reloaded the page mid-turn and lost comments. The reload now waits for the turn's end.
 - [x] Focus trap: Tab and Shift+Tab cycle the reply pane's stops (`tabbable`). Past either end, focus goes to the terminal. With nothing focused, Tab picks the pane's first stop.
-- [ ] Quick Keybord based traversal across panes. Focus trapped. Current state: Tab in the terminal stays Claude's. Alt+Backquote switches panes. Tab and Shift+Tab cycle the reply pane's stops (`tabbable`); past either end, focus goes to the terminal; with nothing focused, Tab picks the pane's first stop. Built, untested.
+- [x] Quick Keybord based traversal across panes. Focus trapped. Current state: Tab in the terminal stays Claude's. Alt+Backquote switches panes. Tab and Shift+Tab cycle the reply pane's stops (`tabbable`); past either end, focus goes to the terminal; with nothing focused, Tab picks the pane's first stop. Built, untested.
   - Research on Tab and mode keys: `docs/mode-keys-research.md`.
+- [x] Removed the leftover Enter debug log in `web/main.js`.
 - [ ] need favicon. specifically for browser quick identification.
-- [ ] divider doesnt work in top down view ie. panes are vertical. 
-- [ ] Permanent focus feedback: which pane gets the keys, or none. Ideas and verdicts: `docs/focus-indicator.md`.
 - [ ] Sepia is the only reading theme. Remove Light and Dark from the app.
+- [ ] Permanent focus feedback: which pane gets the keys, or none. Ideas and verdicts: `docs/focus-indicator.md`.
 - [ ] The error banner covers dialogs and other elements. Show it as an overlay that can be dismissed.
+- [ ] Thinking block. travel to previous replies. 
+- [ ] The reply pane swaps one reply for the next too harshly. Add a transition.
+- app should show version.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
-- [ ] Maintain a proper change log. not dump from slices. With releases marked.
-  - app should show version.
 - [ ] preserving comments and send button carrying historic comments I am not sure I ned that feature, and at the same time no way to clear it. and its content are also not visible. 
   - [x] For now: comments clear when a new reply arrives.
   - [ ] Comments survive a refresh. They belong to the reply on view.
   - [ ] A button discards all comments by hand.
-- [ ] The reply pane swaps one reply for the next too harshly. Add a transition.
-- [ ] Remove the leftover Enter diagnostic log in `web/main.js`.
-- [ ] The page reloaded twice for one rebuild, seen once at 17:42 on 2026-10-17. A reload log (`.ccw-cache/reload.log`) now records rebuilds, tab connects and closes, and the page's reload decisions; it works after the next ccw start. Read it when it happens again.
+- [ ] (Wating for regression) The page reloaded twice for one rebuild, seen once at 17:42 on 2026-10-17. A reload log (`.ccw-cache/reload.log`) now records rebuilds, tab connects and closes, and the page's reload decisions; it works after the next ccw start. Read it when it happens again.
 - [ ] A rebuild between two dependent edits can leave the page on a broken in-between build. If its reload handler is what broke, no later rebuild can recover it ("a is not a function" on every reload message). Only a manual refresh gets out.
 - [ ] A small message sent mid-turn gets a small reply, which replaces the long reply in the pane. The user is left staring at a wall.
-- [ ] Bring claude's dialogs (permission prompts, choices) out of xterm into the page. Big gain in readability.
-- [ ] From the page, type during a turn and push it into the current turn (Ctrl+X Ctrl+S in the terminal).
 - [ ] Edit project files (Board.md, CLAUDE.md) in the page, by comments or direct markdown editing. Edits concurrent with Claude's are edge cases; a library such as Yjs may handle them. See "Concurrent editing facts" in CLAUDE.md.
-- [ ] Direction: the page is where the user types and reads. The terminal is for rare cases. The page handles the common scenarios; the rest can be recovered from the transcript.
 - [] (recurring) QN means quickie notes, is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
-  - [ ] Record it properly, so its usefull. And keeps our focus tied together. 
-- [ ] Thinking block needed (add to the previous response block).
 - [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both.
   - [ ] Take the skill's version: Terms, archive on close, first open task is next, bare lines reformatted, `[x]` never means dropped, Commits with "WIP:".
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
