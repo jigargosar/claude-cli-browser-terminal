@@ -45,6 +45,15 @@ The board exists so that all known work is written in one list, and the next tas
 - [ ] Maintain a proper change log. not dump from slices. With releases marked.
   - app should show version.
 - [ ] preserving comments and send button carrying historic comments I am not sure I ned that feature, and at the same time no way to clear it. and its content are also not visible. 
+  - [ ] For now: comments clear when a new reply arrives.
+- [ ] A bare Alt tap focuses the browser's menu. The page swallows it.
+- [ ] A rebuild reloads the page mid-turn and loses comments. The reload waits for the turn's end.
+- [ ] A rebuild between two dependent edits can leave the page on a broken in-between build. If its reload handler is what broke, no later rebuild can recover it ("a is not a function" on every reload message). Only a manual refresh gets out.
+- [ ] A small message sent mid-turn gets a small reply, which replaces the long reply in the pane. The user is left staring at a wall.
+- [ ] Bring claude's dialogs (permission prompts, choices) out of xterm into the page. Big gain in readability.
+- [ ] From the page, type during a turn and push it into the current turn (Ctrl+X Ctrl+S in the terminal).
+- [ ] Edit project files (Board.md, CLAUDE.md) in the page, by comments or direct markdown editing. Edits concurrent with Claude's are edge cases; a library such as Yjs may handle them. See "Concurrent editing facts" in CLAUDE.md.
+- [ ] Direction: the page is where the user types and reads. The terminal is for rare cases. The page handles the common scenarios; the rest can be recovered from the transcript.
 - [] (recurring) QN means quickie notes, is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
   - [ ] Record it properly, so its usefull. And keeps our focus tied together. 
 - [ ] Thinking block needed (add to the previous response block).

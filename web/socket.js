@@ -4,7 +4,7 @@
 //   page -> server: i (typed input), r (cols and rows; the first one starts claude), s (all page settings, to save)
 // The page sends its first r after settings, so claude starts at the saved split's size.
 // Close codes: 4000 the server refused this tab, 4001 claude exited and the server stopped, 4002 the server crashed.
-export const connect = ({ size, onSettings, onOutput, onItems, onItem, onError, onClosed }) => {
+export const connect = ({ size, onSettings, onOutput, onItems, onItem, onReload, onError, onClosed }) => {
   const ws = new WebSocket("ws://" + location.host);
   const send = (m) => ws.readyState === 1 && ws.send(JSON.stringify(m));
   ws.onmessage = (e) => {
@@ -15,7 +15,7 @@ export const connect = ({ size, onSettings, onOutput, onItems, onItem, onError, 
     } else if (m.t === "o") onOutput(m.d);
     else if (m.t === "items") onItems(m.items);
     else if (m.t === "item") onItem(m.item);
-    else if (m.t === "reload") location.reload();
+    else if (m.t === "reload") onReload();
     else if (m.t === "error") onError(m.stack);
   };
   ws.onclose = (e) => {

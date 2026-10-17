@@ -14,6 +14,10 @@ initDivider({ onDragEnd: terminal.refit });
 
 // The conversation as the server read it from claude's transcript. Views are functions of this list.
 let items = [];
+// A rebuild reloads the page, but never mid-turn: a reload loses the comments. It waits for the turn's end.
+// A turn is open when the last prompt comes after the last turn end.
+let reloadPending = false;
+const midTurn = () => items.findLast((i) => i.kind === "prompt" || i.kind === "turn_end")?.kind === "prompt";
 const server = connect({
   size: terminal.size,
   // Applied and refit before the socket sends its first size, so claude starts at the saved split.
@@ -29,7 +33,15 @@ const server = connect({
   },
   onItem: (item) => {
     items.push(item);
-    if (item.kind === "reply") last.show(items);
+    if (item.kind === "reply") {
+      last.show(items);
+      comments.clear();
+    }
+    if (item.kind === "turn_end" && reloadPending) location.reload();
+  },
+  onReload: () => {
+    if (midTurn()) reloadPending = true;
+    else location.reload();
   },
   onClosed: ({ line, status: text }) => {
     terminal.write(`\r\n[${line}]\r\n`);
@@ -68,6 +80,10 @@ document.addEventListener(
   },
   true,
 );
+// A bare Alt tap focuses the browser's menu (Chrome and Edge on Windows). Swallowed, so focus stays in the page.
+for (const type of ["keydown", "keyup"]) {
+  document.addEventListener(type, (e) => e.key === "Alt" && e.preventDefault(), true);
+}
 document.addEventListener("focusout", (e) => {
   if (e.relatedTarget === null) terminal.focus();
 });

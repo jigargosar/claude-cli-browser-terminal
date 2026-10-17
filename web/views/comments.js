@@ -1,6 +1,6 @@
 // View "comments": select reply text, comment on it, repeat, then send all comments to claude as one message.
 // Approved mockup: docs/mockups/comments.html. Highlights use the CSS Custom Highlight API, so the reply's DOM is never
-// changed. A new reply replaces the DOM: its old highlights vanish, but the comments keep their quoted text and still send.
+// changed. A new reply replaces the DOM and clears the comments, sent or not.
 import { computePosition, autoUpdate, offset, flip, shift, inline } from "@floating-ui/dom";
 
 const pane = document.getElementById("reply-pane");
@@ -110,6 +110,13 @@ input.addEventListener("keydown", (event) => {
     hideAll();
   }
 });
+
+export const clear = () => {
+  comments.length = 0;
+  editing = null;
+  hideAll();
+  render();
+};
 
 export const init = ({ send }) => {
   const sendAll = () => {
