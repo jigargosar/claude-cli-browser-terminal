@@ -9,56 +9,33 @@
 <style>
   /* Mockup only: the terminal is a placeholder that takes focus like xterm. */
   #terminal-pane { color: #6b7380; font: 13px/1.5 var(--mono); outline: none; }
-  #reply-pane, #reply { outline: none; }
-  #reply-pane { position: relative; }
+  #reply { outline: none; }
 
-  /* The accent: a color neither pane uses, so it reads on the dark terminal and on every reading theme. */
-  :root { --accent: #ff8a00; }
-
-  /* Ring: an inset outline around the active pane, drawn above its content. */
-  body[data-mode~="ring"][data-active="term"] #terminal-pane::after,
-  body[data-mode~="ring"][data-active="reply"] #reply-pane::after {
-    content: ""; position: absolute; inset: 0; border: 3px solid var(--accent); pointer-events: none; z-index: 10;
+  /* Idea 12 (docs/focus-indicator.md): a large triangle from the divider's center, pointing into the active pane.
+     It takes the other pane's color: sepia over the dark terminal, dark over the sepia pane. */
+  #focus-mark { position: absolute; top: 50%; z-index: 6; width: 36px; height: 72px; transform: translateY(-50%); pointer-events: none; }
+  body[data-active="term"] #focus-mark { right: 50%; clip-path: polygon(100% 0, 0 50%, 100% 100%); background: var(--paper); }
+  body[data-active="reply"] #focus-mark { left: 50%; clip-path: polygon(0 0, 100% 50%, 0 100%); background: var(--term-bg); }
+  /* Nothing focused: a diamond on the center, sepia half over the terminal, dark half over the reply. */
+  body[data-active="none"] #focus-mark {
+    left: 50%; width: 48px; height: 48px; transform: translate(-50%, -50%);
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    background: linear-gradient(90deg, var(--paper) 50%, var(--term-bg) 50%);
   }
-
-  /* Arrow: the divider turns the accent color and points at the active pane. */
-  body[data-mode~="arrow"] #divider { width: 16px; }
-  body[data-mode~="arrow"] #divider::after { inset: 0; background: var(--accent); }
-  body[data-mode~="arrow"] #divider::before {
-    position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); z-index: 1;
-    text-align: center; color: #16181d; font: 12px/1 var(--sans);
-  }
-  body[data-mode~="arrow"][data-active="term"] #divider::before { content: "◀"; }
-  body[data-mode~="arrow"][data-active="reply"] #divider::before { content: "▶"; }
-
-  #tools { position: absolute; left: 18px; bottom: 14px; display: flex; flex-wrap: wrap; gap: 6px; font: 12px var(--sans); }
-  #tools button { font: inherit; padding: 4px 8px; border-radius: 6px; border: 1px solid #3a404a; background: #22262d; color: #c9d1d9; cursor: pointer; }
-  #tools button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
 </style>
 </head>
-<body data-mode="ring arrow" data-active="term">
+<body data-active="term">
 <main id="terminal-pane" tabindex="0">
-  <p>Terminal (placeholder). Click a pane, or press Alt+Backquote to switch.</p>
+  <p>Terminal (placeholder).</p>
+  <p>Click a pane or press Alt+Backquote to switch. Esc: nothing focused.</p>
   <p>&gt; <span id="typed"></span>▌</p>
-  <div id="tools">
-    <button type="button" data-mode="ring">Ring</button>
-    <button type="button" data-mode="arrow">Arrow</button>
-    <button type="button" data-mode="ring arrow">Both</button>
-    <button type="button" data-theme="light">Light</button>
-    <button type="button" data-theme="sepia">Sepia</button>
-    <button type="button" data-theme="dark">Dark</button>
-  </div>
 </main>
-<div id="divider"></div>
+<div id="divider"><div id="focus-mark"></div></div>
 <aside id="reply-pane" aria-label="Last reply">
   <article id="reply" class="md" tabindex="0">
-    <h1>Focus: discussion</h1>
-    <p>The two panes are already opposite colors, so dimming one doesn't read. The mark needs a color that neither pane uses.</p>
-    <ol>
-      <li>Accent ring: a 3 px bright accent outline, inset, around the whole active pane.</li>
-      <li>Divider arrow: the divider turns the accent color and points at the active pane.</li>
-      <li>Both together.</li>
-    </ol>
+    <h1>Focus indicator</h1>
+    <p>The triangle points into the pane that gets the keys. It is sepia over the terminal and dark over this pane.</p>
+    <p>With nothing focused, a half-sepia, half-dark diamond sits on the divider.</p>
     <p>Type a letter: it shows in the terminal only while the terminal has focus.</p>
   </article>
 </aside>
@@ -66,35 +43,22 @@
   const term = document.getElementById("terminal-pane");
   const reply = document.getElementById("reply");
   const pane = document.getElementById("reply-pane");
-
-  document.addEventListener("focusin", () => {
-    document.body.dataset.active = pane.contains(document.activeElement) ? "reply" : "term";
-  });
+  const mark = () => {
+    const a = document.activeElement;
+    document.body.dataset.active = term.contains(a) ? "term" : pane.contains(a) ? "reply" : "none";
+  };
+  document.addEventListener("focusin", mark);
+  document.addEventListener("focusout", () => setTimeout(mark));
   document.addEventListener("keydown", (e) => {
     if (e.altKey && e.code === "Backquote") {
       e.preventDefault();
       (pane.contains(document.activeElement) ? term : reply).focus();
+    } else if (e.key === "Escape") {
+      document.activeElement.blur();
     } else if (document.activeElement === term && e.key.length === 1) {
       document.getElementById("typed").textContent += e.key;
     }
   });
-
-  // Tool buttons never take focus, so the indicator keeps showing the pane in use.
-  const tools = document.getElementById("tools");
-  tools.addEventListener("mousedown", (e) => e.preventDefault());
-  const mark = () => {
-    for (const b of tools.querySelectorAll("[data-mode]")) b.ariaPressed = String(b.dataset.mode === document.body.dataset.mode);
-    for (const b of tools.querySelectorAll("[data-theme]")) b.ariaPressed = String(b.dataset.theme === pane.dataset.theme);
-  };
-  tools.addEventListener("click", (e) => {
-    const b = e.target.closest("button");
-    if (!b) return;
-    if (b.dataset.mode) document.body.dataset.mode = b.dataset.mode;
-    if (b.dataset.theme) pane.dataset.theme = b.dataset.theme;
-    mark();
-  });
-  pane.dataset.theme = "light";
-  mark();
   term.focus();
 </script>
 </body>

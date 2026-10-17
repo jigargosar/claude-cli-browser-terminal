@@ -24,3 +24,4 @@ Show which pane gets the keys: the terminal, the reply pane, or nothing.
 9. Two-tone big arrow at the seam, no divider: dark fill, light outline, so it reads on both backgrounds. Terminal ◀, reply ▶, nothing a hollow ◆ or "?". No verdict yet.
 10. Labelled badge in the active pane: solid dark pill, light border, text "Keys → Terminal", "Keys → Reply", "Keys → nothing · press Tab". No verdict yet.
 11. Two-tone ring: dark and light strokes, so it reads on both backgrounds. Nothing focused: no ring, a small badge says "press Tab". No verdict yet.
+12. From the user: a large triangle from the center of the divider, pointing into the active pane. Its color is the other pane's: sepia over the dark terminal, dark over the sepia pane. Nothing focused: a diamond on the divider, sepia half over the terminal, dark half over the reply. Mockup `docs/mockups/focus.html`. Verdict: works.

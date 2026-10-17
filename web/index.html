@@ -10,7 +10,10 @@
 </head>
 <body>
 <main id="terminal-pane"><div id="term"></div></main>
-<div id="divider" role="separator" aria-orientation="vertical" aria-label="Resize panes" tabindex="0"></div>
+<div id="divider" role="separator" aria-orientation="vertical" aria-label="Resize panes" tabindex="0">
+  <!-- Points into the pane that gets the keys (main.js); a diamond when nothing has focus. -->
+  <div id="focus-mark" aria-hidden="true"></div>
+</div>
 <aside id="reply-pane" aria-label="Last reply">
   <!-- One gear over the reply text: status and reading settings. These change rarely. -->
   <button type="button" id="settings-button" class="bar-button" popovertarget="settings" aria-label="Settings">&#9881;</button>

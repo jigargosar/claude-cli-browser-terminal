@@ -107,6 +107,15 @@ document.addEventListener(
   },
   true,
 );
+// The focus mark on the divider (base.css) shows which pane gets the keys, or none. Focusout runs before focus
+// lands, so it reads the result after the move.
+const markFocus = () => {
+  const active = document.activeElement;
+  document.body.dataset.focus = terminalPane.contains(active) ? "terminal" : replyPane.contains(active) ? "reply" : "none";
+};
+document.addEventListener("focusin", markFocus);
+document.addEventListener("focusout", () => setTimeout(markFocus));
+markFocus();
 // A bare Alt tap focuses the browser's menu (Chrome and Edge on Windows). Swallowed, so focus stays in the page.
 for (const type of ["keydown", "keyup"]) {
   document.addEventListener(type, (e) => e.key === "Alt" && e.preventDefault(), true);
