@@ -30,14 +30,13 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Terminal knowledge cut to the supercritical: four lines in CLAUDE.md. `docs/Terminal.md` deleted; its one critical fact (output keeps its width) is the why of Decision 1.2.
 - [x] !!! Raw HTML in reply prose vanished: `<placeholder>` text in Claude's replies was dropped. Now escaped in marked's `renderer.html`, except `details`, `summary` and `small`, which fold or shrink carried-forward points.
 - [x] A list item that is only `<small>` text shrinks whole, number included, and turns muted (`web/reader.css`).
-- [ ] select text, type something, repeat multiple times, then send at once. This maintains my sanity, when I want to respond to multiple parts of ai response.
+- [x] select text, type something, repeat multiple times, then send at once. This maintains my sanity, when I want to respond to multiple parts of ai response.
   - [x] Mockup `docs/mockups/comments.html`: Reply button at the selection (Floating UI), popup saves on Enter, highlight stays, a click on it reopens the popup, Submit sends all.
   - [x] Build it into the page (`web/views/comments.js`). Submit pastes the quotes and comments into claude's prompt and presses Enter.
-  - [ ] Mockup: `docs/mockups/replies.html`.
-- [ ] 
+  - [x] Mockup: `docs/mockups/replies.html`.
+- [] (recurring) QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
 - [ ] Thinking block needed (add to the previous response block).
-- [ ] (recurring) QN is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
-- [ ] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
+- [x] !!! Why our first line interpretation doesn't work compared to Claude Desktop.
 - [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both.
   - [ ] Take the skill's version: Terms, archive on close, first open task is next, bare lines reformatted, `[x]` never means dropped, Commits with "WIP:".
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
