@@ -44,7 +44,7 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Quick Keybord based traversal across panes. Focus trapped. Current state: Tab in the terminal stays Claude's. Alt+Backquote switches panes. Tab and Shift+Tab cycle the reply pane's stops (`tabbable`); past either end, focus goes to the terminal; with nothing focused, Tab picks the pane's first stop. Built, untested.
   - Research on Tab and mode keys: `docs/mode-keys-research.md`.
 - [x] Removed the leftover Enter debug log in `web/main.js`.
-- [ ] need favicon. specifically for browser quick identification.
+- [x] Favicon for quick identification: dark terminal half with a prompt, sepia half with text lines (`web/favicon.svg`).
 - [ ] Sepia is the only reading theme. Remove Light and Dark from the app.
 - [ ] Permanent focus feedback: which pane gets the keys, or none. Ideas and verdicts: `docs/focus-indicator.md`.
 - [ ] The error banner covers dialogs and other elements. Show it as an overlay that can be dismissed.
