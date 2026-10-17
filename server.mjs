@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { randomUUID } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import http from "node:http";
 import { spawn } from "@lydell/node-pty";
 import { SerializeAddon } from "@xterm/addon-serialize";
@@ -44,11 +44,23 @@ const serveDist = sirv(DIST_DIR, { dev: true });
 const CACHE_DIR = `${process.cwd()}/.ccw-cache`;
 const CONFIG_PATH = `${CACHE_DIR}/config.json`;
 const readConfig = () => (existsSync(CONFIG_PATH) ? JSON.parse(readFileSync(CONFIG_PATH, "utf8")) : {});
-const writeConfig = (settings) => {
+const makeCacheDir = () => {
   mkdirSync(CACHE_DIR, { recursive: true });
   writeFileAtomic.sync(`${CACHE_DIR}/.gitignore`, "*\n");
+};
+const writeConfig = (settings) => {
+  makeCacheDir();
   writeFileAtomic.sync(CONFIG_PATH, `${JSON.stringify(settings, null, 2)}\n`);
 };
+
+// Dev loop diagnostics: each rebuild, tab connect and close, and each reload decision of the page, one timed line each.
+// A double reload then shows which rebuild or which decision caused it.
+const RELOAD_LOG_PATH = `${CACHE_DIR}/reload.log`;
+const reloadLog = (line) => {
+  makeCacheDir();
+  appendFileSync(RELOAD_LOG_PATH, `${new Date().toISOString()} ${line}\n`);
+};
+const builtScript = () => readFileSync(HTML_PATH, "utf8").match(/index-[\w-]+\.js/)[0];
 
 const clients = new Set();
 const broadcast = (msg) => {
@@ -137,6 +149,7 @@ chokidar
   .watch(HTML_PATH, { ignoreInitial: true, awaitWriteFinish: { stabilityThreshold: 100 } })
   .on("change", () => {
     console.log("Page rebuilt, reloading clients");
+    reloadLog(`rebuilt ${builtScript()}, ${clients.size} tab(s) told to reload`);
     broadcast(JSON.stringify({ t: "reload" }));
   });
 
@@ -220,9 +233,11 @@ process.on("unhandledRejection", crash);
 // One tab per session, like one terminal per session. A refresh closes the old socket first, so it reconnects.
 new WebSocketServer({ server }).on("connection", (ws) => {
   if (clients.size > 0) {
+    reloadLog("tab refused");
     ws.close(SECOND_TAB, "This session is open in another tab");
     return;
   }
+  reloadLog("tab connected");
   clients.add(ws);
   ws.send(JSON.stringify({ t: "settings", settings: readConfig() }));
   if (pty) ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
@@ -232,13 +247,17 @@ new WebSocketServer({ server }).on("connection", (ws) => {
     const m = JSON.parse(raw.toString());
     if (m.t === "i") pty.write(m.d);
     else if (m.t === "s") writeConfig(m.settings);
+    else if (m.t === "l") reloadLog(`page: ${m.line}`);
     else if (m.t === "r" && !pty) startClaude(m.cols, m.rows);
     else if (m.t === "r") {
       pty.resize(m.cols, m.rows);
       mirror.resize(m.cols, m.rows);
     }
   });
-  ws.on("close", () => clients.delete(ws));
+  ws.on("close", (code) => {
+    clients.delete(ws);
+    reloadLog(`tab closed ${code}`);
+  });
   // A tab closed or refreshed mid-send (e.g. ECONNRESET): only that viewer is gone, the session stays.
   ws.on("error", (err) => {
     console.error(`viewer disconnected: ${err.message}`);

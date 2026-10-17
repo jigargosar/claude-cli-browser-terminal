@@ -1,7 +1,8 @@
 // The socket to server.mjs. One message type per line:
 //   server -> page: settings (saved page settings, first on connect), o (terminal output), items (the whole conversation),
 //                   item (one new item), reload (page rebuilt), error (the server crashed; its stack)
-//   page -> server: i (typed input), r (cols and rows; the first one starts claude), s (all page settings, to save)
+//   page -> server: i (typed input), r (cols and rows; the first one starts claude), s (all page settings, to save),
+//                   l (one line for the server's reload log)
 // The page sends its first r after settings, so claude starts at the saved split's size.
 // Close codes: 4000 the server refused this tab, 4001 claude exited and the server stopped, 4002 the server crashed.
 export const connect = ({ size, onSettings, onOutput, onItems, onItem, onReload, onError, onClosed }) => {
@@ -31,5 +32,6 @@ export const connect = ({ size, onSettings, onOutput, onItems, onItem, onReload,
     input: (d) => send({ t: "i", d }),
     resize: ({ cols, rows }) => send({ t: "r", cols, rows }),
     saveSettings: (settings) => send({ t: "s", settings }),
+    log: (line) => send({ t: "l", line }),
   };
 };

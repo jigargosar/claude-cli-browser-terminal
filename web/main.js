@@ -24,6 +24,7 @@ const server = connect({
   onSettings: (saved) => {
     settings.load(saved);
     terminal.refit();
+    server.log(`loaded ${new URL(import.meta.url).pathname.split("/").pop()}`);
   },
   onOutput: terminal.write,
   onError: showError,
@@ -37,11 +38,19 @@ const server = connect({
       last.show(items);
       comments.clear();
     }
-    if (item.kind === "turn_end" && reloadPending) location.reload();
+    if (item.kind === "turn_end" && reloadPending) {
+      server.log("reload at turn end");
+      location.reload();
+    }
   },
   onReload: () => {
-    if (midTurn()) reloadPending = true;
-    else location.reload();
+    if (midTurn()) {
+      reloadPending = true;
+      server.log("reload deferred, mid-turn");
+    } else {
+      server.log("reload now");
+      location.reload();
+    }
   },
   onClosed: ({ line, status: text }) => {
     terminal.write(`\r\n[${line}]\r\n`);
