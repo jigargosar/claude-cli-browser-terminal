@@ -39,11 +39,20 @@ export const show = (items) => {
   if (last) {
     // A new reply starts at its top. The swap runs in a view transition, so the old reply crossfades into the new one
     // (base.css) and the text never slides past the eye.
-    document.startViewTransition(() => {
+    const swap = () => {
       reply.innerHTML = render(last.text);
       addCodeBars();
       reply.scrollTop = 0;
-    });
+    };
+    if (document.hidden) {
+      swap();
+    } else {
+      // The browser aborts the transition when the tab hides before it starts. The swap still runs, so only the crossfade
+      // is lost. Any other failure goes on to the error banner.
+      document.startViewTransition(swap).ready.catch((error) => {
+        if (error.name !== "InvalidStateError") throw error;
+      });
+    }
     status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
   } else {
     reply.innerHTML = '<p class="empty">Replies from this session show up here.</p>';
