@@ -15,8 +15,9 @@
   <div id="focus-mark" aria-hidden="true"></div>
 </div>
 <aside id="reply-pane" aria-label="Last reply">
-  <!-- One gear over the reply text: status and reading settings. These change rarely. -->
-  <button type="button" id="settings-button" class="bar-button" popovertarget="settings" aria-label="Settings">&#9881;</button>
+  <!-- One gear over the reply text: status and reading settings. These change rarely. Mouse only: it never gets
+       keyboard focus, so Alt+` and Tab land on the reply text. -->
+  <button type="button" id="settings-button" class="bar-button" popovertarget="settings" aria-label="Settings" tabindex="-1">&#9881;</button>
   <div id="settings" class="panel" popover aria-label="Settings">
     <p id="reply-status" class="label">Waiting for the first reply</p>
     <!-- Reading settings: reader.js wires the [data-set] buttons and the size buttons. -->
