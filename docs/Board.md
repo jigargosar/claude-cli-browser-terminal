@@ -48,7 +48,8 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Sepia is the only reading theme, sans the only font. The Theme and Font sections are gone from the settings.
 - [x] The error banner covered dialogs and other elements. Now one banner collects every error, with a Dismiss button (`web/errors.js`).
 - [x] Permanent focus feedback: a triangle from the divider's center points into the pane that gets the keys, sepia over the terminal, dark over the reply; a diamond when nothing has focus. Ideas and verdicts: `docs/focus-indicator.md`.
-- [ ] ensure that first item is selected when pressing alt-quote/
+- [x] Alt+Backquote focuses the reply pane's first element (today the gear), not the reply text. Tab and Shift+Tab then wrap inside the pane. Only Alt+Backquote goes back to the terminal.
+- [ ] Restrict focus to the two panes, so the triangle always shows and the diamond never does.
 - [ ] The reply pane swaps one reply for the next too harshly. Add a transition.
 - [ ] Thinking block. travel to previous replies. 
 - app should show version.

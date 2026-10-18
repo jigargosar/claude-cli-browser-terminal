@@ -71,24 +71,24 @@ comments.init({
 });
 terminal.focus();
 
-// Focus: Alt+` toggles between the panes (capture phase, so xterm never sees the key). Focus that lands nowhere,
-// e.g. a click on empty pane space, goes to the terminal.
+// Focus: Alt+` is the only way between the panes (capture phase, so xterm never sees the key). Into the reply pane,
+// it lands on the pane's first stop; with no stop, it does nothing. Focus that lands nowhere, e.g. a click on empty
+// pane space, goes to the terminal.
 const terminalPane = document.getElementById("terminal-pane");
-const reply = document.getElementById("reply");
+const replyPane = document.getElementById("reply-pane");
 document.addEventListener(
   "keydown",
   (e) => {
     if (!(e.altKey && !e.ctrlKey && !e.shiftKey && e.code === "Backquote")) return;
     e.preventDefault();
     e.stopPropagation();
-    if (terminalPane.contains(document.activeElement)) reply.focus();
-    else terminal.focus();
+    if (!terminalPane.contains(document.activeElement)) terminal.focus();
+    else tabbable(replyPane)[0]?.focus();
   },
   true,
 );
-// Tab and Shift+Tab cycle the reply pane's stops. Past either end, focus goes to the terminal, which keeps Tab for
-// claude. With nothing focused, Tab picks the pane's first stop.
-const replyPane = document.getElementById("reply-pane");
+// Tab and Shift+Tab cycle the reply pane's stops and wrap at either end, so focus stays trapped in the pane. The
+// terminal keeps Tab for claude. With nothing focused, Tab picks the pane's first stop.
 document.addEventListener(
   "keydown",
   (e) => {
@@ -102,8 +102,7 @@ document.addEventListener(
       return;
     }
     const next = stops.indexOf(active) + (e.shiftKey ? -1 : 1);
-    if (next < 0 || next >= stops.length) terminal.focus();
-    else stops[next].focus();
+    stops[(next + stops.length) % stops.length].focus();
   },
   true,
 );
