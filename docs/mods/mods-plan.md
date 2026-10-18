@@ -1,6 +1,6 @@
 # Mods plan
 
-Goal: capture each dialog claude shows, show it inline in the browser, answer it from there. Findings and sources: `docs/mods-research.md`.
+Goal: capture each dialog claude shows, show it inline in the browser, answer it from there. Findings and sources: `docs/mods/mods-research.md`.
 
 ## Steps
 
