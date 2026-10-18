@@ -56,13 +56,14 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] The reply pane swapped one reply for the next too harshly. Now the old reply crossfades into the new one, 0.4s, even under reduced motion (Windows reports it when animation effects are off).
 
 # Slice 17
-- [ ] Show Claude's thinking in the reply pane, folded by default.
+- [ ] Comments are never lost, and can be removed.
+  - [x] For now: comments clear when a new reply arrives.
+  - [ ] Saved to `localStorage` on each keystroke, the open comment box's draft included, tied to the reply on view. A refresh, a closed tab or a rebuild reload restores them.
+  - [ ] A Remove button on each comment, and Remove all next to Submit all.
+- [ ] Hint keys, as in Vimium: one key shows a one-letter label on every button and link, and pressing that letter presses it. One fixed letter goes to the terminal input. No guessing what Tab or Ctrl+Enter does where.
+- [ ] One key shows the thinking of the reply on view, in place, and the same key hides it. Nothing folded, no click.
 - app should show version.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
-- [ ] preserving comments and send button carrying historic comments I am not sure I ned that feature, and at the same time no way to clear it. and its content are also not visible. 
-  - [x] For now: comments clear when a new reply arrives.
-  - [ ] Comments survive a refresh. They belong to the reply on view.
-  - [ ] A button discards all comments by hand.
 - [ ] (Wating for regression) The page reloaded twice for one rebuild, seen once at 17:42 on 2026-10-17. A reload log (`.ccw-cache/reload.log`) now records rebuilds, tab connects and closes, and the page's reload decisions; it works after the next ccw start. Read it when it happens again.
 - [ ] A rebuild between two dependent edits can leave the page on a broken in-between build. If its reload handler is what broke, no later rebuild can recover it ("a is not a function" on every reload message). Only a manual refresh gets out.
 - [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both.
@@ -70,12 +71,12 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
   - [ ] Archive name `docs/Board-archive-<date>.md`, one file per closed slice.
   - [ ] Fold the global rule "commit before a multi-cycle task" into Commits.
-- [ ] Step back through earlier replies in the reply pane, so a short follow-up never hides a long reply.
+- [ ] (On hold: a reply going away while read hasn't been a problem) Step back through earlier replies in the reply pane, so a short follow-up never hides a long reply.
   - [ ] A bar at the top of the reply pane: "‹", "3 of 7", "›".
   - [ ] "‹" shows the previous reply, "›" the next.
-- [ ] Earlier replies: keys to step through them.
-- [ ] Earlier replies: what a new reply does while an earlier one is on view.
-- [ ] Earlier replies: comments on an earlier reply.
+- [ ] (On hold) Earlier replies: keys to step through them.
+- [ ] (On hold) Earlier replies: what a new reply does while an earlier one is on view.
+- [ ] (On hold) Earlier replies: comments on an earlier reply.
 - [ ] browser-test skill: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
 - [ ] Selection convenience.
 - [x] Error banner text can't be selected or copied. Suspected: a click on the banner blurs the terminal and `main.js` refocuses it, which drops the selection. Fixed: the banner is focusable (`web/errors.js`), so the click stays on it. Checked with puppeteer: a drag selects the text, and without the fix the focus goes back to xterm and the selection is empty.
