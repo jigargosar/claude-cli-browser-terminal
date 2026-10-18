@@ -5,4 +5,4 @@ node_modules
 dist
 published-versions
 
-docs/vendor/
+docs/mods/raw/

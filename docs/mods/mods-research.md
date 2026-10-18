@@ -2,7 +2,7 @@
 
 Goal: capture each dialog claude shows, show it inline in the browser, answer it from there.
 
-Sources: docs downloaded 2026-10-18 into `docs/vendor/claude-code-docs-2026-10-18/` (gitignored). `toc-all.txt` and `toc-mods.txt` index every heading with its line. Nothing below is verified at runtime yet.
+Sources: docs downloaded 2026-10-18 into `docs/mods/raw/claude-code-docs-2026-10-18/` (gitignored). `toc-all.txt` and `toc-mods.txt` index every heading with its line. Nothing below is verified at runtime yet.
 
 ## Baseline today
 
