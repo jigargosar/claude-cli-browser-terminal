@@ -48,9 +48,9 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Sepia is the only reading theme, sans the only font. The Theme and Font sections are gone from the settings.
 - [x] The error banner covered dialogs and other elements. Now one banner collects every error, with a Dismiss button (`web/errors.js`).
 - [x] Permanent focus feedback: a triangle from the divider's center points into the pane that gets the keys, sepia over the terminal, dark over the reply; a diamond when nothing has focus. Ideas and verdicts: `docs/focus-indicator.md`.
-- [ ] ensure that first item is selected when pressing alt-quote/+B
-- [ ] Thinking block. travel to previous replies. 
+- [ ] ensure that first item is selected when pressing alt-quote/
 - [ ] The reply pane swaps one reply for the next too harshly. Add a transition.
+- [ ] Thinking block. travel to previous replies. 
 - app should show version.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
 - [ ] preserving comments and send button carrying historic comments I am not sure I ned that feature, and at the same time no way to clear it. and its content are also not visible. 
@@ -59,9 +59,6 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] A button discards all comments by hand.
 - [ ] (Wating for regression) The page reloaded twice for one rebuild, seen once at 17:42 on 2026-10-17. A reload log (`.ccw-cache/reload.log`) now records rebuilds, tab connects and closes, and the page's reload decisions; it works after the next ccw start. Read it when it happens again.
 - [ ] A rebuild between two dependent edits can leave the page on a broken in-between build. If its reload handler is what broke, no later rebuild can recover it ("a is not a function" on every reload message). Only a manual refresh gets out.
-- [ ] A small message sent mid-turn gets a small reply, which replaces the long reply in the pane. The user is left staring at a wall.
-- [ ] Edit project files (Board.md, CLAUDE.md) in the page, by comments or direct markdown editing. Edits concurrent with Claude's are edge cases; a library such as Yjs may handle them. See "Concurrent editing facts" in CLAUDE.md.
-- [] (recurring) QN means quickie notes, is the quintessential client where we work using this project. So we need to bring in all the tasks, regularly.
 - [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both.
   - [ ] Take the skill's version: Terms, archive on close, first open task is next, bare lines reformatted, `[x]` never means dropped, Commits with "WIP:".
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
