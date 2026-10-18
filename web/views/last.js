@@ -37,14 +37,13 @@ reply.addEventListener("click", async (event) => {
 export const show = (items) => {
   const last = items.findLast((i) => i.kind === "reply");
   if (last) {
-    reply.innerHTML = render(last.text);
-    addCodeBars();
-    // A new reply starts at its top. The jump is hidden by a short fade-in (base.css), so the text never slides past
-    // the eye. Reading offsetWidth restarts the animation when replies arrive back to back.
-    reply.scrollTop = 0;
-    reply.classList.remove("arrived");
-    void reply.offsetWidth;
-    reply.classList.add("arrived");
+    // A new reply starts at its top. The swap runs in a view transition, so the old reply crossfades into the new one
+    // (base.css) and the text never slides past the eye.
+    document.startViewTransition(() => {
+      reply.innerHTML = render(last.text);
+      addCodeBars();
+      reply.scrollTop = 0;
+    });
     status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
   } else {
     reply.innerHTML = '<p class="empty">Replies from this session show up here.</p>';

@@ -52,8 +52,8 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] The gear is mouse only. The reply text is no Tab stop: Tab cycles only buttons and links. Alt+Backquote lands on the first one, or on the reply text when there is none.
 - [x] Coming back from a link's new tab, focus stays on the link instead of jumping to the terminal.
 - [x] Code blocks start wrapped. The Wrap button unwraps.
+- [x] The reply pane swapped one reply for the next too harshly. Now the old reply crossfades into the new one, 0.4s, even under reduced motion (Windows reports it when animation effects are off).
 - [ ] Restrict focus to the two panes, so the triangle always shows and the diamond never does.
-- [ ] The reply pane swaps one reply for the next too harshly. Add a transition.
 - [ ] Thinking block. travel to previous replies. 
 - app should show version.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.

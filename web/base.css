@@ -99,10 +99,12 @@ body[data-focus="none"] #focus-mark {
   padding: 32px max(var(--gutter), calc(100% - var(--reader-measure) - var(--gutter))) 72px var(--gutter);
   scrollbar-width: thin; scrollbar-color: var(--thumb) transparent;
 }
-/* A new reply fades in, which hides its jump to the top (views/last.js). */
-#reply.arrived { animation: reply-in 0.18s ease-out; }
-@keyframes reply-in { from { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { #reply.arrived { animation: none; } }
+/* A new reply crossfades with the old one, which also hides its jump to the top (views/last.js). Only the reply
+   takes part: the root is not captured, so the terminal never freezes in a snapshot. It stays on under reduced
+   motion: a fade has no movement, and Windows reports reduced motion whenever its animation effects are off. */
+:root { view-transition-name: none; }
+#reply { view-transition-name: reply; }
+::view-transition-group(reply) { animation-duration: 0.4s; }
 #reply ::selection { background: var(--selection); color: var(--ink); }
 
 /* Comments on reply text (views/comments.js). Commented text keeps an amber highlight; selection stays blue. */
