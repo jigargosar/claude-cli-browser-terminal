@@ -72,10 +72,11 @@ comments.init({
 terminal.focus();
 
 // Focus: Alt+` is the only way between the panes (capture phase, so xterm never sees the key). Into the reply pane,
-// it lands on the pane's first stop; with no stop, it does nothing. Focus that lands nowhere, e.g. a click on empty
-// pane space, goes to the terminal.
+// it lands on the pane's first stop, e.g. a Send or Copy button; with no stop, on the reply text, so the keys still
+// scroll it.
 const terminalPane = document.getElementById("terminal-pane");
 const replyPane = document.getElementById("reply-pane");
+const reply = document.getElementById("reply");
 document.addEventListener(
   "keydown",
   (e) => {
@@ -83,12 +84,13 @@ document.addEventListener(
     e.preventDefault();
     e.stopPropagation();
     if (!terminalPane.contains(document.activeElement)) terminal.focus();
-    else tabbable(replyPane)[0]?.focus();
+    else (tabbable(replyPane)[0] ?? reply).focus();
   },
   true,
 );
 // Tab and Shift+Tab cycle the reply pane's stops and wrap at either end, so focus stays trapped in the pane. The
-// terminal keeps Tab for claude. With nothing focused, Tab picks the pane's first stop.
+// reply text is no stop. From it, or from nowhere, Tab picks the first stop and Shift+Tab the last. With no stop,
+// Tab does nothing. The terminal keeps Tab for claude.
 document.addEventListener(
   "keydown",
   (e) => {
@@ -97,12 +99,11 @@ document.addEventListener(
     if (terminalPane.contains(active)) return;
     e.preventDefault();
     const stops = tabbable(replyPane);
-    if (!replyPane.contains(active)) {
-      stops[0].focus();
-      return;
-    }
-    const next = stops.indexOf(active) + (e.shiftKey ? -1 : 1);
-    stops[(next + stops.length) % stops.length].focus();
+    if (!stops.length) return;
+    const step = e.shiftKey ? -1 : 1;
+    const at = stops.indexOf(active);
+    const next = at < 0 ? (e.shiftKey ? stops.length - 1 : 0) : (at + step + stops.length) % stops.length;
+    stops[next].focus();
   },
   true,
 );
@@ -119,6 +120,10 @@ markFocus();
 for (const type of ["keydown", "keyup"]) {
   document.addEventListener(type, (e) => e.key === "Alt" && e.preventDefault(), true);
 }
-document.addEventListener("focusout", (e) => {
-  if (e.relatedTarget === null) terminal.focus();
-});
+// Focus that lands nowhere goes to the terminal. A window switch, e.g. a link opened in a new tab, also fires
+// focusout, but the element keeps focus, so the page comes back to it.
+document.addEventListener("focusout", () =>
+  setTimeout(() => {
+    if (document.activeElement === document.body) terminal.focus();
+  }),
+);

@@ -5,13 +5,15 @@ const reply = document.getElementById("reply");
 const status = document.getElementById("reply-status");
 const timeFormat = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
 
-// Each code block gets a bar with Wrap and Copy. marked has no extension for this (marked.js.org, Known Extensions).
+// Each code block gets a bar with Wrap and Copy. Blocks start wrapped. marked has no extension for this
+// (marked.js.org, Known Extensions).
 const addCodeBars = () => {
   for (const pre of reply.querySelectorAll("pre")) {
+    pre.classList.add("wrap");
     const block = document.createElement("div");
     block.className = "code-block";
     block.innerHTML =
-      '<div class="code-bar"><button type="button" data-code="wrap" aria-pressed="false">Wrap</button>' +
+      '<div class="code-bar"><button type="button" data-code="wrap" aria-pressed="true">Wrap</button>' +
       '<button type="button" data-code="copy">Copy</button></div>';
     pre.replaceWith(block);
     block.prepend(pre);

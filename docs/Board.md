@@ -49,6 +49,9 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] The error banner covered dialogs and other elements. Now one banner collects every error, with a Dismiss button (`web/errors.js`).
 - [x] Permanent focus feedback: a triangle from the divider's center points into the pane that gets the keys, sepia over the terminal, dark over the reply; a diamond when nothing has focus. Ideas and verdicts: `docs/focus-indicator.md`.
 - [x] Alt+Backquote focuses the reply pane's first element (today the gear), not the reply text. Tab and Shift+Tab then wrap inside the pane. Only Alt+Backquote goes back to the terminal.
+- [x] The gear is mouse only. The reply text is no Tab stop: Tab cycles only buttons and links. Alt+Backquote lands on the first one, or on the reply text when there is none.
+- [x] Coming back from a link's new tab, focus stays on the link instead of jumping to the terminal.
+- [x] Code blocks start wrapped. The Wrap button unwraps.
 - [ ] Restrict focus to the two panes, so the triangle always shows and the diamond never does.
 - [ ] The reply pane swaps one reply for the next too harshly. Add a transition.
 - [ ] Thinking block. travel to previous replies. 
