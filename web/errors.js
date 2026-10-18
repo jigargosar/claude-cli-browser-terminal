@@ -6,6 +6,8 @@ export const showError = (text) => {
   if (!banner) {
     banner = document.createElement("div");
     banner.className = "error-banner";
+    // Focusable, so a click lands here and not on body. main.js hands focus from body back to the terminal, which drops the selection.
+    banner.tabIndex = -1;
     const dismiss = document.createElement("button");
     dismiss.type = "button";
     dismiss.textContent = "Dismiss";
