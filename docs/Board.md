@@ -55,9 +55,6 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] The reply pane swapped one reply for the next too harshly. Now the old reply crossfades into the new one, 0.4s, even under reduced motion (Windows reports it when animation effects are off).
 
 # Slice 17
-- [ ] Step back through earlier replies in the reply pane, so a short follow-up never hides a long reply.
-  - [ ] A bar at the top of the reply pane: "‹", "3 of 7", "›".
-  - [ ] "‹" shows the previous reply, "›" the next.
 - [ ] Show Claude's thinking in the reply pane, folded by default.
 - app should show version.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
@@ -72,6 +69,9 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
   - [ ] Archive name `docs/Board-archive-<date>.md`, one file per closed slice.
   - [ ] Fold the global rule "commit before a multi-cycle task" into Commits.
+- [ ] Step back through earlier replies in the reply pane, so a short follow-up never hides a long reply.
+  - [ ] A bar at the top of the reply pane: "‹", "3 of 7", "›".
+  - [ ] "‹" shows the previous reply, "›" the next.
 - [ ] Earlier replies: keys to step through them.
 - [ ] Earlier replies: what a new reply does while an earlier one is on view.
 - [ ] Earlier replies: comments on an earlier reply.
