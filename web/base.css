@@ -110,6 +110,8 @@ body[data-focus="none"] #focus-mark {
 /* Comments on reply text (views/comments.js). Commented text keeps an amber highlight; selection stays blue. */
 #reply-pane { --comment: #ffd86b80; }
 ::highlight(comment) { background: var(--comment); }
+/* A sentence a single click picked looks like a selection. */
+::highlight(picked) { background: var(--selection); color: var(--ink); }
 .comment-float { position: fixed; top: 0; left: 0; z-index: 5; }
 .comment-float[hidden], #comment-submit[hidden] { display: none; }
 #comment-reply { background: var(--paper); color: var(--ink); border-color: var(--rule); box-shadow: 0 4px 12px rgb(0 0 0 / 0.12); }

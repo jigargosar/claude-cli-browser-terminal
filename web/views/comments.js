@@ -2,6 +2,7 @@
 // Approved mockup: docs/mockups/comments.html. Highlights use the CSS Custom Highlight API, so the reply's DOM is never
 // changed. A new reply replaces the DOM and clears the comments, sent or not.
 import { computePosition, autoUpdate, offset, flip, shift, inline } from "@floating-ui/dom";
+import { sentenceAt } from "../sentence.js";
 
 const pane = document.getElementById("reply-pane");
 const reply = document.getElementById("reply");
@@ -14,11 +15,17 @@ const submit = document.getElementById("comment-submit");
 const comments = [];
 const highlight = new Highlight();
 CSS.highlights.set("comment", highlight);
+// The sentence a single click picked. A highlight, not the browser selection, so a later press inside it starts a new
+// selection instead of dragging the text.
+const picked = new Highlight();
+CSS.highlights.set("picked", picked);
 
 // One floating element at a time follows one range. Floating UI places it and keeps it there while #reply scrolls.
 let stopFollowing = () => {};
 const show = (el, range) => {
   stopFollowing();
+  // Invisible until placed, so it never shows at its last position and then jumps.
+  el.style.visibility = "hidden";
   el.hidden = false;
   const anchor = { getBoundingClientRect: () => range.getBoundingClientRect(), getClientRects: () => range.getClientRects() };
   stopFollowing = autoUpdate(anchor, el, async () => {
@@ -27,11 +34,12 @@ const show = (el, range) => {
       strategy: "fixed",
       middleware: [inline(), offset(8), flip(), shift({ padding: 8 })],
     });
-    Object.assign(el.style, { left: `${x}px`, top: `${y}px` });
+    Object.assign(el.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
   });
 };
 const hideAll = () => {
   stopFollowing();
+  picked.clear();
   replyButton.hidden = true;
   box.hidden = true;
 };
@@ -77,23 +85,29 @@ const message = () =>
 
 reply.addEventListener("mouseup", (event) => {
   const selection = getSelection();
-  if (!selection.isCollapsed) {
-    const range = selection.getRangeAt(0).cloneRange();
+  let range;
+  if (selection.isCollapsed) {
+    const index = comments.findIndex((c) =>
+      [...c.range.getClientRects()].some(
+        (r) => event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom,
+      ),
+    );
+    if (index !== -1) return openBox(comments[index].range, index);
+    // A single click picks the sentence under it. Links and buttons keep their click.
+    if (event.detail !== 1 || event.target.closest("a, button")) return;
+    range = sentenceAt(event.clientX, event.clientY);
+    if (!range) return;
+    picked.add(range);
+  } else {
+    range = selection.getRangeAt(0).cloneRange();
     if (!reply.contains(range.commonAncestorContainer)) return;
-    box.hidden = true;
-    show(replyButton, range);
-    replyButton.onclick = () => {
-      selection.removeAllRanges();
-      openBox(range);
-    };
-    return;
   }
-  const index = comments.findIndex((c) =>
-    [...c.range.getClientRects()].some(
-      (r) => event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom,
-    ),
-  );
-  if (index !== -1) openBox(comments[index].range, index);
+  box.hidden = true;
+  show(replyButton, range);
+  replyButton.onclick = () => {
+    selection.removeAllRanges();
+    openBox(range);
+  };
 });
 
 // A press anywhere outside the floating elements cancels them.

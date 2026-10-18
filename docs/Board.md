@@ -5,6 +5,8 @@ The board exists so that all known work is written in one list, and the next tas
 - The last slice is the open slice. All other slices are closed.
 - The open slice is one list of tasks: all known work, ticked or not. A task may have a sub-list of its steps, one level, each step ticked on its own.
 - Any task may be written at any time. Work on a task only after it is written.
+- Claude writes a task, then stops. Claude builds only after the user's "go" on that task.
+- Status: `[ ]` open, `[t]` built, test pending, `[x]` done and tested.
 - Reorder tasks when it helps.
 - When a task is done and tested: tick it, move it below the last ticked task, commit.
 - Work done without a task: add it to the open slice, ticked.
@@ -56,11 +58,18 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] The reply pane swapped one reply for the next too harshly. Now the old reply crossfades into the new one, 0.4s, even under reduced motion (Windows reports it when animation effects are off).
 
 # Slice 17
+- [ ] Reply button: colors flipped, so it stands out from the sepia background. Scroll issues too (details from the user).
+- [ ] The Reply popup offers Reply and Done. Done marks the picked text as handled, with no comment box.
+- [ ] Bug from click-to-select, to discuss (details from the user).
+- [ ] Carry by default: each reply repeats what is still open or unanswered from the reply before, so the pane never loses it. Until the page does this, Claude does it in every reply.
+- [ ] Earlier replies design: a working page. The reply you work on stays on view. Comments attach to it, and Claude's answer to them shows on top of it instead of replacing it.
+- [ ] A one-line note Claude writes mid-turn, such as "Fixing all three now", replaces the long reply on view. The pane shows only that line.
+- [ ] File paths in a reply are links. A click opens the file in a dialog in the page, editable with CodeMirror and vim bindings (the board, for one).
 - [ ] Comments are never lost, and can be removed.
   - [x] For now: comments clear when a new reply arrives.
-  - [ ] Saved to `localStorage` on each keystroke, the open comment box's draft included, tied to the reply on view. A refresh, a closed tab or a rebuild reload restores them.
-  - [ ] A Remove button on each comment, and Remove all next to Submit all.
-- [ ] Hint keys, as in Vimium: one key shows a one-letter label on every button and link, and pressing that letter presses it. One fixed letter goes to the terminal input. No guessing what Tab or Ctrl+Enter does where.
+  - [ ] Saved to `localStorage` on each keystroke, the open comment box's draft included, with the id of the reply they belong to. They come back only while that reply is on view. A refresh, a closed tab or a rebuild reload restores them.
+  - [ ] A Remove button on each comment, and Remove all next to Submit all. Not sure it's needed; try it and see.
+- [ ] Hint keys, as in Vimium: while Alt is held down, every button and link shows a one-letter label, and pressing that letter presses it. Likely the next priority. One fixed letter goes to the terminal input. No guessing what Tab or Ctrl+Enter does where.
 - [ ] One key shows the thinking of the reply on view, in place, and the same key hides it. Nothing folded, no click.
 - app should show version.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
@@ -71,17 +80,20 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
   - [ ] Archive name `docs/Board-archive-<date>.md`, one file per closed slice.
   - [ ] Fold the global rule "commit before a multi-cycle task" into Commits.
-- [ ] (On hold: a reply going away while read hasn't been a problem) Step back through earlier replies in the reply pane, so a short follow-up never hides a long reply.
+- [ ] Step back through earlier replies in the reply pane, so a short follow-up never hides a long reply.
   - [ ] A bar at the top of the reply pane: "‹", "3 of 7", "›".
   - [ ] "‹" shows the previous reply, "›" the next.
-- [ ] (On hold) Earlier replies: keys to step through them.
-- [ ] (On hold) Earlier replies: what a new reply does while an earlier one is on view.
-- [ ] (On hold) Earlier replies: comments on an earlier reply.
+- [ ] Earlier replies: keys to step through them.
+- [ ] Earlier replies: what a new reply does while an earlier one is on view.
+- [ ] Earlier replies: comments on an earlier reply.
 - [ ] browser-test skill: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
-- [ ] Selection convenience.
 - [x] Error banner text can't be selected or copied. Suspected: a click on the banner blurs the terminal and `main.js` refocuses it, which drops the selection. Fixed: the banner is focusable (`web/errors.js`), so the click stays on it. Checked with puppeteer: a drag selects the text, and without the fix the focus goes back to xterm and the selection is empty.
 - [x] Banner "InvalidStateError: Transition was aborted because of invalid state. Document hidden": a reply that arrives in a hidden tab aborts the crossfade, and its rejected `ready` reaches the banner. Fix in `web/views/last.js`: no transition in a hidden tab, and an abort is recovered. Checked with puppeteer in a hidden tab: the old code raised the rejection and still showed the old reply after 300 ms. The fix raises none and shows the new reply.
 - [x] CLAUDE.md: test trip wires and cleanup notes under Rules, the divider focus-triangle bug under Known issues.
+- [x] Selection convenience: a single click in the reply picks the sentence under it (a line in a code block) and shows Reply (`web/sentence.js`). Links and buttons keep their click. Drag and double click select as before. Tested by the user.
+  - [x] Bug: the Reply button flickered and jumped.
+    - Attempt 1: Reply placed before it shows; a press in the reply clears the selection first. Fixed the jump, the stale Reply and double click. A drag inside a clicked sentence still selected the whole sentence.
+    - Attempt 2: the clicked sentence is a CSS highlight, not the browser selection, so drags and double clicks never start inside a selection. Puppeteer: click, same click again, double and triple click right, no jump. The drag checked by the user.
 - [ ] (On hold) Mods gap analysis: can transcript, hooks or mods capture each dialog claude shows and answer it from the browser? Research in `docs/mods/mods-research.md`, raw docs in `docs/mods/raw/` (gitignored).
   - [x] Download the mod-related doc pages as `.md`, build a TOC.
   - [x] Baseline: what transcript and hooks give today.
