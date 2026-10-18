@@ -53,8 +53,10 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Coming back from a link's new tab, focus stays on the link instead of jumping to the terminal.
 - [x] Code blocks start wrapped. The Wrap button unwraps.
 - [x] The reply pane swapped one reply for the next too harshly. Now the old reply crossfades into the new one, 0.4s, even under reduced motion (Windows reports it when animation effects are off).
-- [ ] Restrict focus to the two panes, so the triangle always shows and the diamond never does.
-- [ ] Thinking block. travel to previous replies. 
+- [ ] Step back through earlier replies in the reply pane, so a short follow-up never hides a long reply.
+  - [ ] A bar at the top of the reply pane: "‹", "3 of 7", "›".
+  - [ ] "‹" shows the previous reply, "›" the next.
+- [ ] Show Claude's thinking in the reply pane, folded by default.
 - app should show version.
 - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
 - [ ] preserving comments and send button carrying historic comments I am not sure I ned that feature, and at the same time no way to clear it. and its content are also not visible. 
@@ -68,4 +70,7 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
   - [ ] Archive name `docs/Board-archive-<date>.md`, one file per closed slice.
   - [ ] Fold the global rule "commit before a multi-cycle task" into Commits.
+- [ ] Earlier replies: keys to step through them.
+- [ ] Earlier replies: what a new reply does while an earlier one is on view.
+- [ ] Earlier replies: comments on an earlier reply.
 - [ ] browser-test skill: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
