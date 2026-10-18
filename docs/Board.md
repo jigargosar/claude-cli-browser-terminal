@@ -79,7 +79,8 @@ The board exists so that all known work is written in one list, and the next tas
 - [ ] Selection convenience.
 - [x] Error banner text can't be selected or copied. Suspected: a click on the banner blurs the terminal and `main.js` refocuses it, which drops the selection. Fixed: the banner is focusable (`web/errors.js`), so the click stays on it. Checked with puppeteer: a drag selects the text, and without the fix the focus goes back to xterm and the selection is empty.
 - [x] Banner "InvalidStateError: Transition was aborted because of invalid state. Document hidden": a reply that arrives in a hidden tab aborts the crossfade, and its rejected `ready` reaches the banner. Fix in `web/views/last.js`: no transition in a hidden tab, and an abort is recovered. Checked with puppeteer in a hidden tab: the old code raised the rejection and still showed the old reply after 300 ms. The fix raises none and shows the new reply.
-- [ ] Mods gap analysis: can transcript, hooks or mods capture each dialog claude shows and answer it from the browser? Research in `docs/mods/mods-research.md`, raw docs in `docs/vendor/` (gitignored).
+- [x] CLAUDE.md: test trip wires and cleanup notes under Rules, the divider focus-triangle bug under Known issues.
+- [ ] Mods gap analysis: can transcript, hooks or mods capture each dialog claude shows and answer it from the browser? Research in `docs/mods/mods-research.md`, raw docs in `docs/mods/raw/` (gitignored).
   - [x] Download the mod-related doc pages as `.md`, build a TOC.
   - [x] Baseline: what transcript and hooks give today.
   - [x] Dialog list, each checked for capture and answer by hooks and by mods. Plan approval and MCP elicitation still unchecked.

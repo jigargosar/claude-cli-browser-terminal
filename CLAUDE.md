@@ -48,9 +48,16 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 - Any test that starts `claude` uses `--model haiku`. Never another model.
 - A `claude` started from inside a Claude Code session writes no transcript. A test started by Claude must remove every `CLAUDE*` variable from the environment it gives the server, or the transcript feed stays empty.
 - Browser libraries come from `node_modules`, not a CDN.
+- Test trip wires:
+  - The terminal draws with WebGL. Its text is not in the DOM, so read the screen from the server.
+  - A tab left open, such as one from a crashed script, makes the server refuse every new socket (4000). Close the page in a `finally`.
+  - The test `claude` gives no ready signal. A script waits a fixed time before typing.
+  - Stopping the shell that ran `pnpm test` leaves node and its `claude` running on 7682.
+- Cleanup after a test: close every tab the script opened, then kill the process tree on 7682 (`taskkill //T //F //PID <pid>`). Kill only what this session started.
 
 ## Known issues
 
 - Rewind leaves the reply pane hanging. Low priority.
+- Dragging the divider turns the focus triangle into a tilted square.
 - The tab sometimes shows "disconnected" while the server still runs; a refresh brings it back. Rare, seen when idle, not while working. The page has no auto-reconnect. Postponed. Next step when it gets frequent: log the close code and time on both sides, then add auto-reconnect and a server heartbeat.
 - Duplicate lines in terminal scrollback. Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so this happens in any terminal, Windows Terminal included. Not fixable here.
