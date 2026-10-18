@@ -34,8 +34,8 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 ## Files
 
 - `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`. On Windows the bytes are ConPTY's rendering of its own screen buffer, not claude's output.
-- `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`) and one file per reply view in `views/`. 
-- `docs/Board.md`: the work plan and its status. Follow its Workflow. Closed slices are in `docs/Board-archive-2026-10-13.md`.
+- `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `errors.js`, `sentence.js`) and one file per reply view in `views/`. 
+- `docs/Board.md`: the work plan and its status. Follow its Workflow. Closed slices are in `docs/Board-archive-2026-10-13.md` and `docs/Board-archive-2026-10-18.md`.
 - `docs/mockups/`: standalone HTML mockups that link the real stylesheets and open without a build. A mockup is approved before the page implements it.
 
 ## Rules
@@ -53,11 +53,14 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
   - A tab left open, such as one from a crashed script, makes the server refuse every new socket (4000). Close the page in a `finally`.
   - The test `claude` gives no ready signal. A script waits a fixed time before typing.
   - Stopping the shell that ran `pnpm test` leaves node and its `claude` running on 7682.
+  - A puppeteer drag in the reply pane selects nothing. A drag needs a manual test.
 - Cleanup after a test: close every tab the script opened, then kill the process tree on 7682 (`taskkill //T //F //PID <pid>`). Kill only what this session started.
 
 ## Known issues
 
 - Rewind leaves the reply pane hanging. Low priority.
 - Dragging the divider turns the focus triangle into a tilted square.
+- A click that picks a sentence in the reply shows Reply, and the focus goes to the terminal.
+- A one-line note Claude writes mid-turn replaces the long reply on view.
 - The tab sometimes shows "disconnected" while the server still runs; a refresh brings it back. Rare, seen when idle, not while working. The page has no auto-reconnect. Postponed. Next step when it gets frequent: log the close code and time on both sides, then add auto-reconnect and a server heartbeat.
 - Duplicate lines in terminal scrollback. Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so this happens in any terminal, Windows Terminal included. Not fixable here.
