@@ -9,6 +9,7 @@ The board exists so that all known work is written in one list, and the next tas
 - When a task is done and tested: tick it, move it below the last ticked task, commit.
 - Work done without a task: add it to the open slice, ticked.
 - A task that is no longer wanted is deleted.
+- Research stops at the first answer good enough to act on. Then build it, or mark the task "(On hold)" with the answer written in it. No research for a feature that isn't next.
 - Start a new slice when the context changes, or when the open slice is too long. Move every unticked task into it. The old slice is then closed.
 - When a part of a long slice is done and tested, suggest a new slice.
 - Closed slices need not follow the Workflow. Do not read a closed slice as an example of the rules.
@@ -80,11 +81,12 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Error banner text can't be selected or copied. Suspected: a click on the banner blurs the terminal and `main.js` refocuses it, which drops the selection. Fixed: the banner is focusable (`web/errors.js`), so the click stays on it. Checked with puppeteer: a drag selects the text, and without the fix the focus goes back to xterm and the selection is empty.
 - [x] Banner "InvalidStateError: Transition was aborted because of invalid state. Document hidden": a reply that arrives in a hidden tab aborts the crossfade, and its rejected `ready` reaches the banner. Fix in `web/views/last.js`: no transition in a hidden tab, and an abort is recovered. Checked with puppeteer in a hidden tab: the old code raised the rejection and still showed the old reply after 300 ms. The fix raises none and shows the new reply.
 - [x] CLAUDE.md: test trip wires and cleanup notes under Rules, the divider focus-triangle bug under Known issues.
-- [ ] Mods gap analysis: can transcript, hooks or mods capture each dialog claude shows and answer it from the browser? Research in `docs/mods/mods-research.md`, raw docs in `docs/mods/raw/` (gitignored).
+- [ ] (On hold) Mods gap analysis: can transcript, hooks or mods capture each dialog claude shows and answer it from the browser? Research in `docs/mods/mods-research.md`, raw docs in `docs/mods/raw/` (gitignored).
   - [x] Download the mod-related doc pages as `.md`, build a TOC.
   - [x] Baseline: what transcript and hooks give today.
   - [x] Dialog list, each checked for capture and answer by hooks and by mods. Plan approval and MCP elicitation still unchecked.
   - [x] Mod to server channel.
   - [x] Verdict per dialog, from docs only.
   - [x] Plan in `docs/mods/mods-plan.md`.
+  - [ ] Free Tab and Shift+Tab for focus. Answer, no mod needed: the page owns Tab and Shift+Tab, and two spare keys send Claude the Tab and Shift+Tab bytes. Mode keys (such as Alt+1 to Alt+5) send counted Shift+Tabs, starting from `permissionMode`, which transcript rows carry (as of the last prompt).
   - [ ] Verify at runtime: a test mod dumps `tool.check`, `tool.call` and `session.append` events to files.
