@@ -53,6 +53,8 @@ The board exists so that all known work is written in one list, and the next tas
 - [x] Coming back from a link's new tab, focus stays on the link instead of jumping to the terminal.
 - [x] Code blocks start wrapped. The Wrap button unwraps.
 - [x] The reply pane swapped one reply for the next too harshly. Now the old reply crossfades into the new one, 0.4s, even under reduced motion (Windows reports it when animation effects are off).
+
+# Slice 17
 - [ ] Step back through earlier replies in the reply pane, so a short follow-up never hides a long reply.
   - [ ] A bar at the top of the reply pane: "‹", "3 of 7", "›".
   - [ ] "‹" shows the previous reply, "›" the next.
