@@ -19,6 +19,7 @@ The board exists so that all known work is written in one list, and the next tas
 --- 
 
 # Slice 18
+- [x] The experimental reminder system was lifted up to its own project at `~/projects/subconscious-reminder`.
 - [ ] Reply button and click-to-select.
   - [ ] Big bug: a click picks the sentence and shows Reply, and the focus goes to the terminal.
   - [ ] Colors flipped, so it stands out from the sepia background. Scroll issues too (details from the user).
