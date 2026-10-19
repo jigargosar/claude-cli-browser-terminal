@@ -114,7 +114,10 @@ body[data-focus="none"] #focus-mark {
 ::highlight(picked) { background: var(--selection); color: var(--ink); }
 .comment-float { position: fixed; top: 0; left: 0; z-index: 5; }
 .comment-float[hidden], #comment-submit[hidden] { display: none; }
-#comment-reply { background: var(--paper); color: var(--ink); border-color: var(--rule); box-shadow: 0 4px 12px rgb(0 0 0 / 0.12); }
+/* Ink on paper, flipped, so the popup stands out from the sepia reply. */
+#comment-pick:not([hidden]) { display: flex; gap: 4px; }
+#comment-pick button { background: var(--ink); color: var(--paper); border-color: var(--ink); box-shadow: 0 4px 12px rgb(0 0 0 / 0.18); }
+#comment-pick button:hover { background: var(--quote); color: var(--paper); }
 #comment-box {
   width: 320px; padding: 8px; box-sizing: border-box;
   background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; box-shadow: 0 8px 24px rgb(0 0 0 / 0.14);

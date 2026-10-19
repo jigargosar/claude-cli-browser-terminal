@@ -6,7 +6,9 @@ import { sentenceAt } from "../sentence.js";
 
 const pane = document.getElementById("reply-pane");
 const reply = document.getElementById("reply");
+const pick = document.getElementById("comment-pick");
 const replyButton = document.getElementById("comment-reply");
+const doneButton = document.getElementById("comment-done");
 const box = document.getElementById("comment-box");
 const input = box.querySelector("textarea");
 const submit = document.getElementById("comment-submit");
@@ -20,16 +22,32 @@ CSS.highlights.set("comment", highlight);
 const picked = new Highlight();
 CSS.highlights.set("picked", picked);
 
-// One floating element at a time follows one range. Floating UI places it and keeps it there while #reply scrolls.
+// Floating UI anchor: the box of the range under the mouse, at the mouse's x. Kept relative to that box, so it
+// follows the text while #reply scrolls. A line has one box per piece of inline markup (a link, code, bold), so the
+// box must hold the mouse's x too. A mouse off the range, e.g. at the end of a drag, takes its last box.
+const near = (range, x, y) => {
+  const rects = [...range.getClientRects()];
+  const found = rects.findIndex((r) => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom);
+  const line = found === -1 ? rects.length - 1 : found;
+  const dx = Math.min(Math.max(x - rects[line].left, 0), rects[line].width);
+  const rect = () => {
+    // A reflow, e.g. a divider drag, can leave the range fewer lines.
+    const now = range.getClientRects();
+    const r = now[Math.min(line, now.length - 1)];
+    return new DOMRect(r.left + dx, r.top, 0, r.height);
+  };
+  return { getBoundingClientRect: rect, getClientRects: () => [rect()] };
+};
+
+// One floating element at a time follows one anchor. Floating UI places it and keeps it there while #reply scrolls.
 // Resolves once it is first placed. Only then can it take focus.
 let stopFollowing = () => {};
-const show = (el, range) =>
+const show = (el, anchor) =>
   new Promise((placed) => {
     stopFollowing();
     // Invisible until placed, so it never shows at its last position and then jumps.
     el.style.visibility = "hidden";
     el.hidden = false;
-    const anchor = { getBoundingClientRect: () => range.getBoundingClientRect(), getClientRects: () => range.getClientRects() };
     stopFollowing = autoUpdate(anchor, el, async () => {
       const { x, y } = await computePosition(anchor, el, {
         placement: "top",
@@ -43,17 +61,17 @@ const show = (el, range) =>
 const hideAll = () => {
   stopFollowing();
   picked.clear();
-  replyButton.hidden = true;
+  pick.hidden = true;
   box.hidden = true;
 };
 
 // The comment being written: a new one (no index) or an existing one.
 let editing = null;
-const openBox = async (range, index) => {
+const openBox = async (range, anchor, index) => {
   editing = { range, index };
   input.value = index === undefined ? "" : comments[index].comment;
-  replyButton.hidden = true;
-  await show(box, range);
+  pick.hidden = true;
+  await show(box, anchor);
   input.focus();
 };
 
@@ -95,7 +113,10 @@ reply.addEventListener("mouseup", (event) => {
         (r) => event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom,
       ),
     );
-    if (index !== -1) return openBox(comments[index].range, index);
+    if (index !== -1) {
+      const { range: commented } = comments[index];
+      return openBox(commented, near(commented, event.clientX, event.clientY), index);
+    }
     // A single click picks the sentence under it. Links and buttons keep their click.
     if (event.detail !== 1 || event.target.closest("a, button")) return;
     range = sentenceAt(event.clientX, event.clientY);
@@ -106,16 +127,24 @@ reply.addEventListener("mouseup", (event) => {
     if (!reply.contains(range.commonAncestorContainer)) return;
   }
   box.hidden = true;
+  const anchor = near(range, event.clientX, event.clientY);
   replyButton.onclick = () => {
     selection.removeAllRanges();
-    return openBox(range);
+    return openBox(range, anchor);
   };
-  return show(replyButton, range);
+  // Done: the picked text is handled. It is sent as a comment that says "Done", with no box to write in.
+  doneButton.onclick = () => {
+    selection.removeAllRanges();
+    comments.push({ range, text: range.toString(), comment: "Done" });
+    hideAll();
+    render();
+  };
+  return show(pick, anchor);
 });
 
 // A press anywhere outside the floating elements cancels them.
 document.addEventListener("mousedown", (event) => {
-  if (replyButton.contains(event.target) || box.contains(event.target)) return;
+  if (pick.contains(event.target) || box.contains(event.target)) return;
   hideAll();
 });
 

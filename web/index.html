@@ -49,7 +49,10 @@
   <!-- Comments on reply text (views/comments.js). Floating UI places the button and the box at the selection.
        Inside the pane, so they take the reading colors. -->
   <button type="button" id="comment-submit" class="bar-button" hidden></button>
-  <button type="button" id="comment-reply" class="bar-button comment-float" hidden>Reply</button>
+  <div id="comment-pick" class="comment-float" hidden>
+    <button type="button" id="comment-reply" class="bar-button">Reply</button>
+    <button type="button" id="comment-done" class="bar-button">Done</button>
+  </div>
   <div id="comment-box" class="comment-float" hidden>
     <textarea aria-label="Comment"></textarea>
     <p>Enter saves · Ctrl+Enter sends all · Shift+Enter new line · Esc cancels · empty deletes</p>

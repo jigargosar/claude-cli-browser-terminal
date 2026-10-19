@@ -48,5 +48,7 @@ export const sentenceAt = (x, y) => {
   const range = document.createRange();
   range.setStart(...point(start, false));
   range.setEnd(...point(end, true));
-  return range;
+  // The caret is the nearest text, however far the click was. Only a click on the sentence's own text picks it.
+  const on = [...range.getClientRects()].some((r) => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom);
+  return on ? range : null;
 };
