@@ -19,6 +19,7 @@ The board exists so that all known work is written in one list, and the next tas
 --- 
 
 # Slice 18
+- [ ] Next session starts here: the Workflow merge below. Decided: merge first, then check the slice against the merged rules. Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
 - [x] The experimental reminder system was lifted up to its own project at `~/projects/subconscious-reminder`.
 - [x] Reply button and click-to-select.
   - [x] Big bug: a click picks the sentence and shows Reply, and the focus goes to the terminal.
@@ -31,7 +32,7 @@ The board exists so that all known work is written in one list, and the next tas
   - [x] Bug: a click on the sentence whose popup is open moves the popup. Fix: it stays; only another sentence gets a new popup.
   - [x] The popup offers Reply and Done. Done marks the picked text as handled, with no comment box. Done is sent as a comment that says "Done".
   - [x] Bug: a dragged word loses its highlight while the comment box is open. Fix: one source, a range the page holds. A sentence click and `selectionchange` (mouse up, inside `#reply`, not empty) both write it. The browser selection is only an input, and stays until Reply or Done, so Ctrl+C still copies it. The highlight, the popup, Reply and Done read only that range. Test: a console script that performs the actions and logs the results; the user pastes it and copies the console back.
-- [ ] (On hold) A fixture page for CDP tests: the real markup, stylesheets and `comments.js`, with a canned reply. No server and no `claude`, so Claude can run the tests itself. Until then: a console script the user pastes into their tab. It never Sends, it saves its log as `pickLog`, and the user runs `copy(pickLog)` (`copy()` is not defined after an `await`).
+- [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
 - [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both. Then check the open slice against the merged rules.
   - [ ] Take the skill's version: Terms, archive on close, first open task is next, bare lines reformatted, `[x]` never means dropped, Commits with "WIP:".
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
