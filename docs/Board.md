@@ -31,11 +31,8 @@ The board exists so that all known work is written in one list, and the next tas
   - [x] Bug: a click on the sentence whose popup is open moves the popup. Fix: it stays; only another sentence gets a new popup.
   - [x] The popup offers Reply and Done. Done marks the picked text as handled, with no comment box. Done is sent as a comment that says "Done".
   - [x] Bug: a dragged word loses its highlight while the comment box is open. Fix: one source, a range the page holds. A sentence click and `selectionchange` (mouse up, inside `#reply`, not empty) both write it. The browser selection is only an input, and stays until Reply or Done, so Ctrl+C still copies it. The highlight, the popup, Reply and Done read only that range. Test: a console script that performs the actions and logs the results; the user pastes it and copies the console back.
-- [ ] Comments are never lost for a given response
-  - [ ] Feat: delete individual comment and all comment. 
-  - [x] For now: comments clear when a new reply arrives.
-  - [ ] Saved to `localStorage` on each keystroke, the open comment box's draft included, with the id of the reply they belong to. They come back only while that reply is on view. A refresh, a closed tab or a rebuild reload restores them.
-  - [ ] A Remove button on each comment, and Remove all next to Submit all. Not sure it's needed; try it and see.
+  - [ ] A short quote loses its context: "> offers" alone can't be placed. Fix: the message quotes the whole sentence, with the picked part in bold.
+- [ ] (On hold) A fixture page for CDP tests: the real markup, stylesheets and `comments.js`, with a canned reply. No server and no `claude`, so Claude can run the tests itself. Until then: a console script the user pastes into their tab. It never Sends, it saves its log as `pickLog`, and the user runs `copy(pickLog)` (`copy()` is not defined after an `await`).
 - [ ] Earlier replies, so a short follow-up never hides a long reply.
   - [ ] Design: a working page. The reply you work on stays on view. Comments attach to it, and Claude's answer to them shows on top of it instead of replacing it.
   - [ ] Step back: a bar at the top of the reply pane, "‹", "3 of 7", "›". "‹" shows the previous reply, "›" the next.
@@ -49,6 +46,12 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] One key shows the thinking of the reply on view, in place, and the same key hides it. Nothing folded, no click.
   - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
   - [ ] Free Tab and Shift+Tab for focus. Answer, no mod needed: the page owns Tab and Shift+Tab, and two spare keys send Claude the Tab and Shift+Tab bytes. Mode keys (such as Alt+1 to Alt+5) send counted Shift+Tabs, starting from `permissionMode`, which transcript rows carry (as of the last prompt).
+- [ ] (Queued after all other comment UX) Comments are never lost for a given response
+  - [ ] Feat: delete individual comment and all comment. 
+  - [x] For now: comments clear when a new reply arrives.
+  - [ ] Saved to `localStorage` on each keystroke, the open comment box's draft included, with the id of the reply they belong to. They come back only while that reply is on view. A refresh, a closed tab or a rebuild reload restores them.
+  - [ ] A Remove button on each comment, and Remove all next to Submit all. Not sure it's needed; try it and see.
+  - [ ] Today's workarounds: a refresh clears all comments, and emptying a comment deletes it. Saving comments takes the refresh away, so Clear all ships first or with it. Open: Clear all as a two-step action; Escape while editing a comment drops the edit.
 - [ ] The error banner becomes an overlay that shows the error's full context, and its text can be selected and copied.
 - [ ] Bug: dragging the divider turns the focus triangle into a tilted square (also in CLAUDE.md Known issues).
 - [ ] File paths in a reply are links. A click opens the file in a dialog in the page, editable with CodeMirror and vim bindings (the board, for one).
