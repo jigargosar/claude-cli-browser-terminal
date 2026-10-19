@@ -120,10 +120,18 @@ markFocus();
 for (const type of ["keydown", "keyup"]) {
   document.addEventListener(type, (e) => e.key === "Alt" && e.preventDefault(), true);
 }
-// Focus that lands nowhere goes to the terminal. A window switch, e.g. a link opened in a new tab, also fires
-// focusout, but the element keeps focus, so the page comes back to it.
+// Focus that lands nowhere goes back to the pane that last had it: the terminal, or the reply text. A focused element
+// that hides, e.g. the comment box after a save, drops focus to the body. A window switch, e.g. a link opened in a new
+// tab, also fires focusout, but the element keeps focus, so the page comes back to it.
+let lastPane = "terminal";
+document.addEventListener("focusin", () => {
+  if (terminalPane.contains(document.activeElement)) lastPane = "terminal";
+  else if (replyPane.contains(document.activeElement)) lastPane = "reply";
+});
 document.addEventListener("focusout", () =>
   setTimeout(() => {
-    if (document.activeElement === document.body) terminal.focus();
+    if (document.activeElement !== document.body) return;
+    if (lastPane === "reply") reply.focus({ preventScroll: true });
+    else terminal.focus();
   }),
 );

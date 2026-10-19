@@ -21,7 +21,8 @@ The board exists so that all known work is written in one list, and the next tas
 # Slice 18
 - [x] The experimental reminder system was lifted up to its own project at `~/projects/subconscious-reminder`.
 - [ ] Reply button and click-to-select.
-  - [ ] Big bug: a click picks the sentence and shows Reply, and the focus goes to the terminal.
+  - [x] Big bug: a click picks the sentence and shows Reply, and the focus goes to the terminal.
+  - [x] Bug: a click on Reply, and a save in the comment box, send the focus to the terminal. Fix: focus that lands nowhere goes back to the pane that last had it, and the comment box takes the focus after it is placed. Test manually: a sentence click, Reply, save, Escape, Ctrl+Enter.
   - [ ] Colors flipped, so it stands out from the sepia background. Scroll issues too (details from the user).
   - [ ] The popup offers Reply and Done. Done marks the picked text as handled, with no comment box.
 - [ ] Comments are never lost, and can be removed.
@@ -53,6 +54,9 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Archive name `docs/Board-archive-<date>.md`, one file per closed slice.
   - [ ] Fold the global rule "commit before a multi-cycle task" into Commits.
 - [ ] browser-test skill: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
+- [ ] Merge the board's Workflow with the `board-setup` skill's first (task above), then check the open slice against the merged rules. Add a rule: a task may be reworded in place, and keeps its status, steps, position and go.
+- [ ] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: on hold.
+- [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
 - [ ] (On hold) Mods gap analysis: can transcript, hooks or mods capture each dialog claude shows and answer it from the browser? Research in `docs/mods/mods-research.md`, raw docs in `docs/mods/raw/` (gitignored).
   - [x] Download the mod-related doc pages as `.md`, build a TOC.
   - [x] Baseline: what transcript and hooks give today.

@@ -21,22 +21,25 @@ const picked = new Highlight();
 CSS.highlights.set("picked", picked);
 
 // One floating element at a time follows one range. Floating UI places it and keeps it there while #reply scrolls.
+// Resolves once it is first placed. Only then can it take focus.
 let stopFollowing = () => {};
-const show = (el, range) => {
-  stopFollowing();
-  // Invisible until placed, so it never shows at its last position and then jumps.
-  el.style.visibility = "hidden";
-  el.hidden = false;
-  const anchor = { getBoundingClientRect: () => range.getBoundingClientRect(), getClientRects: () => range.getClientRects() };
-  stopFollowing = autoUpdate(anchor, el, async () => {
-    const { x, y } = await computePosition(anchor, el, {
-      placement: "top",
-      strategy: "fixed",
-      middleware: [inline(), offset(8), flip(), shift({ padding: 8 })],
+const show = (el, range) =>
+  new Promise((placed) => {
+    stopFollowing();
+    // Invisible until placed, so it never shows at its last position and then jumps.
+    el.style.visibility = "hidden";
+    el.hidden = false;
+    const anchor = { getBoundingClientRect: () => range.getBoundingClientRect(), getClientRects: () => range.getClientRects() };
+    stopFollowing = autoUpdate(anchor, el, async () => {
+      const { x, y } = await computePosition(anchor, el, {
+        placement: "top",
+        strategy: "fixed",
+        middleware: [inline(), offset(8), flip(), shift({ padding: 8 })],
+      });
+      Object.assign(el.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
+      placed();
     });
-    Object.assign(el.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
   });
-};
 const hideAll = () => {
   stopFollowing();
   picked.clear();
@@ -46,11 +49,11 @@ const hideAll = () => {
 
 // The comment being written: a new one (no index) or an existing one.
 let editing = null;
-const openBox = (range, index) => {
+const openBox = async (range, index) => {
   editing = { range, index };
   input.value = index === undefined ? "" : comments[index].comment;
   replyButton.hidden = true;
-  show(box, range);
+  await show(box, range);
   input.focus();
 };
 
@@ -103,11 +106,11 @@ reply.addEventListener("mouseup", (event) => {
     if (!reply.contains(range.commonAncestorContainer)) return;
   }
   box.hidden = true;
-  show(replyButton, range);
   replyButton.onclick = () => {
     selection.removeAllRanges();
-    openBox(range);
+    return openBox(range);
   };
+  return show(replyButton, range);
 });
 
 // A press anywhere outside the floating elements cancels them.
