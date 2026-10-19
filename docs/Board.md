@@ -23,9 +23,11 @@ The board exists so that all known work is written in one list, and the next tas
 - [ ] Reply button and click-to-select.
   - [x] Big bug: a click picks the sentence and shows Reply, and the focus goes to the terminal.
   - [x] Bug: a click on Reply, and a save in the comment box, send the focus to the terminal. Fix: focus that lands nowhere goes back to the pane that last had it, and the comment box takes the focus after it is placed. Test manually: a sentence click, Reply, save, Escape, Ctrl+Enter.
-  - [ ] Colors flipped, so it stands out from the sepia background. Scroll issues too (details from the user).
+  - [ ] Reply button should sensible and distiunguishble color on sepia background.
+  - [ ] The popup should appear near to where mouse was clicked not center of selection!
   - [ ] The popup offers Reply and Done. Done marks the picked text as handled, with no comment box.
-- [ ] Comments are never lost, and can be removed.
+- [ ] Comments are never lost for a given response
+  - [ ] Feat: delete individual comment and all comment. 
   - [x] For now: comments clear when a new reply arrives.
   - [ ] Saved to `localStorage` on each keystroke, the open comment box's draft included, with the id of the reply they belong to. They come back only while that reply is on view. A refresh, a closed tab or a rebuild reload restores them.
   - [ ] A Remove button on each comment, and Remove all next to Submit all. Not sure it's needed; try it and see.
