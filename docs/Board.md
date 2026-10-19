@@ -20,7 +20,7 @@ The board exists so that all known work is written in one list, and the next tas
 
 # Slice 18
 - [x] The experimental reminder system was lifted up to its own project at `~/projects/subconscious-reminder`.
-- [ ] Reply button and click-to-select.
+- [x] Reply button and click-to-select.
   - [x] Big bug: a click picks the sentence and shows Reply, and the focus goes to the terminal.
   - [x] Bug: a click on Reply, and a save in the comment box, send the focus to the terminal. Fix: focus that lands nowhere goes back to the pane that last had it, and the comment box takes the focus after it is placed. Test manually: a sentence click, Reply, save, Escape, Ctrl+Enter.
   - [x] Bug: a click far from any text still picks the nearest sentence. Fix: only a click on the sentence's own text picks it.
@@ -31,47 +31,13 @@ The board exists so that all known work is written in one list, and the next tas
   - [x] Bug: a click on the sentence whose popup is open moves the popup. Fix: it stays; only another sentence gets a new popup.
   - [x] The popup offers Reply and Done. Done marks the picked text as handled, with no comment box. Done is sent as a comment that says "Done".
   - [x] Bug: a dragged word loses its highlight while the comment box is open. Fix: one source, a range the page holds. A sentence click and `selectionchange` (mouse up, inside `#reply`, not empty) both write it. The browser selection is only an input, and stays until Reply or Done, so Ctrl+C still copies it. The highlight, the popup, Reply and Done read only that range. Test: a console script that performs the actions and logs the results; the user pastes it and copies the console back.
-  - [ ] A short quote loses its context: "> offers" alone can't be placed. Fix: the message quotes the whole sentence, with the picked part in bold.
 - [ ] (On hold) A fixture page for CDP tests: the real markup, stylesheets and `comments.js`, with a canned reply. No server and no `claude`, so Claude can run the tests itself. Until then: a console script the user pastes into their tab. It never Sends, it saves its log as `pickLog`, and the user runs `copy(pickLog)` (`copy()` is not defined after an `await`).
-- [ ] Earlier replies, so a short follow-up never hides a long reply.
-  - [ ] Design: a working page. The reply you work on stays on view. Comments attach to it, and Claude's answer to them shows on top of it instead of replacing it.
-  - [ ] Step back: a bar at the top of the reply pane, "‹", "3 of 7", "›". "‹" shows the previous reply, "›" the next.
-  - [ ] Keys to step through them.
-  - [ ] What a new reply does while an earlier one is on view.
-  - [ ] Comments on an earlier reply.
-  - [ ] Bug: a one-line note Claude writes mid-turn, such as "Fixing all three now", replaces the long reply on view. The pane shows only that line.
-  - [ ] Carry by default: each reply repeats what is still open or unanswered from the reply before, so the pane never loses it. Until the page does this, Claude adds what the user asks for before replying, then lists it under "Added". Open questions live in their board item. While the user is adding items, Claude only adds; no task work.
-- [ ] Keys.
-  - [ ] Hint keys, as in Vimium: while Alt is held down, every button and link shows a one-letter label, and pressing that letter presses it. One fixed letter goes to the terminal input. No guessing what Tab or Ctrl+Enter does where. Likely the next priority.
-  - [ ] One key shows the thinking of the reply on view, in place, and the same key hides it. Nothing folded, no click.
-  - [ ] A send or a stray keystroke can answer a dialog claude shows (a comment's Enter approved a git permission prompt). Guard against it.
-  - [ ] Free Tab and Shift+Tab for focus. Answer, no mod needed: the page owns Tab and Shift+Tab, and two spare keys send Claude the Tab and Shift+Tab bytes. Mode keys (such as Alt+1 to Alt+5) send counted Shift+Tabs, starting from `permissionMode`, which transcript rows carry (as of the last prompt).
-- [ ] (Queued after all other comment UX) Comments are never lost for a given response
-  - [ ] Feat: delete individual comment and all comment. 
-  - [x] For now: comments clear when a new reply arrives.
-  - [ ] Saved to `localStorage` on each keystroke, the open comment box's draft included, with the id of the reply they belong to. They come back only while that reply is on view. A refresh, a closed tab or a rebuild reload restores them.
-  - [ ] A Remove button on each comment, and Remove all next to Submit all. Not sure it's needed; try it and see.
-  - [ ] Today's workarounds: a refresh clears all comments, and emptying a comment deletes it. Saving comments takes the refresh away, so Clear all ships first or with it. Open: Clear all as a two-step action; Escape while editing a comment drops the edit.
-- [ ] The error banner becomes an overlay that shows the error's full context, and its text can be selected and copied.
-- [ ] Bug: dragging the divider turns the focus triangle into a tilted square (also in CLAUDE.md Known issues).
-- [ ] File paths in a reply are links. A click opens the file in a dialog in the page, editable with CodeMirror and vim bindings (the board, for one).
-- [ ] The app shows its version.
-- [ ] (Waiting for regression) The page reloaded twice for one rebuild, seen once at 17:42 on 2026-10-17. A reload log (`.ccw-cache/reload.log`) now records rebuilds, tab connects and closes, and the page's reload decisions; it works after the next ccw start. Read it when it happens again.
-- [ ] A rebuild between two dependent edits can leave the page on a broken in-between build. If its reload handler is what broke, no later rebuild can recover it ("a is not a function" on every reload message). Only a manual refresh gets out.
-- [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both.
+- [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both. Then check the open slice against the merged rules.
   - [ ] Take the skill's version: Terms, archive on close, first open task is next, bare lines reformatted, `[x]` never means dropped, Commits with "WIP:".
   - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
   - [ ] Archive name `docs/Board-archive-<date>.md`, one file per closed slice.
   - [ ] Fold the global rule "commit before a multi-cycle task" into Commits.
-- [ ] browser-test skill: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
-- [ ] Merge the board's Workflow with the `board-setup` skill's first (task above), then check the open slice against the merged rules. Add a rule: a task may be reworded in place, and keeps its status, steps, position and go.
+  - [ ] Add a rule: a task may be reworded in place, and keeps its status, steps, position and go.
+- [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
 - [ ] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: on hold.
 - [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
-- [ ] (On hold) Mods gap analysis: can transcript, hooks or mods capture each dialog claude shows and answer it from the browser? Research in `docs/mods/mods-research.md`, raw docs in `docs/mods/raw/` (gitignored).
-  - [x] Download the mod-related doc pages as `.md`, build a TOC.
-  - [x] Baseline: what transcript and hooks give today.
-  - [x] Dialog list, each checked for capture and answer by hooks and by mods. Plan approval and MCP elicitation still unchecked.
-  - [x] Mod to server channel.
-  - [x] Verdict per dialog, from docs only.
-  - [x] Plan in `docs/mods/mods-plan.md`.
-  - [ ] Verify at runtime: a test mod dumps `tool.check`, `tool.call` and `session.append` events to files.

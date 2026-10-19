@@ -1,3 +1,5 @@
+Only the user adds to this file. Claude never writes here.
+
 # If wishes had wings horses would fly
 
 Once upon a time in a far far future some of them were surprisingly alive.
