@@ -25,9 +25,11 @@ The board exists so that all known work is written in one list, and the next tas
   - [x] Bug: a click on Reply, and a save in the comment box, send the focus to the terminal. Fix: focus that lands nowhere goes back to the pane that last had it, and the comment box takes the focus after it is placed. Test manually: a sentence click, Reply, save, Escape, Ctrl+Enter.
   - [x] Bug: a click far from any text still picks the nearest sentence. Fix: only a click on the sentence's own text picks it.
   - [x] Bug: the popup sometimes opens away from the mouse. Cause: a line with a link, code or bold has one box per piece, and the popup took the first box on the line. Fix: it takes the box under the mouse.
-  - [t] Reply button should sensible and distiunguishble color on sepia background.
-  - [t] The popup should appear near to where mouse was clicked not center of selection!
-  - [t] The popup offers Reply and Done. Done marks the picked text as handled, with no comment box. Done is sent as a comment that says "Done".
+  - [x] Reply button should sensible and distiunguishble color on sepia background.
+  - [x] The popup should appear near to where mouse was clicked not center of selection!
+  - [x] Bug: a click outside the comment box loses what was typed. Fix: a click outside saves it, as Enter does.
+  - [x] Bug: a click on the sentence whose popup is open moves the popup. Fix: it stays; only another sentence gets a new popup.
+  - [x] The popup offers Reply and Done. Done marks the picked text as handled, with no comment box. Done is sent as a comment that says "Done".
 - [ ] Comments are never lost for a given response
   - [ ] Feat: delete individual comment and all comment. 
   - [x] For now: comments clear when a new reply arrives.

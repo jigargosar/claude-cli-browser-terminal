@@ -39,6 +39,13 @@ const near = (range, x, y) => {
   return { getBoundingClientRect: rect, getClientRects: () => [rect()] };
 };
 
+const hits = (range, { clientX: x, clientY: y }) =>
+  [...range.getClientRects()].some((r) => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom);
+const same = (a, b) =>
+  a.compareBoundaryPoints(Range.START_TO_START, b) === 0 && a.compareBoundaryPoints(Range.END_TO_END, b) === 0;
+// The range the open Reply and Done popup belongs to.
+let shown = null;
+
 // One floating element at a time follows one anchor. Floating UI places it and keeps it there while #reply scrolls.
 // Resolves once it is first placed. Only then can it take focus.
 let stopFollowing = () => {};
@@ -108,11 +115,7 @@ reply.addEventListener("mouseup", (event) => {
   const selection = getSelection();
   let range;
   if (selection.isCollapsed) {
-    const index = comments.findIndex((c) =>
-      [...c.range.getClientRects()].some(
-        (r) => event.clientX >= r.left && event.clientX <= r.right && event.clientY >= r.top && event.clientY <= r.bottom,
-      ),
-    );
+    const index = comments.findIndex((c) => hits(c.range, event));
     if (index !== -1) {
       const { range: commented } = comments[index];
       return openBox(commented, near(commented, event.clientX, event.clientY), index);
@@ -121,8 +124,12 @@ reply.addEventListener("mouseup", (event) => {
     if (event.detail !== 1 || event.target.closest("a, button")) return;
     range = sentenceAt(event.clientX, event.clientY);
     if (!range) return;
+    // A click on the sentence whose popup is open leaves it where it is.
+    if (!pick.hidden && same(range, shown)) return;
     picked.add(range);
   } else {
+    // A drag that starts on the picked sentence kept its highlight (see mousedown).
+    picked.clear();
     range = selection.getRangeAt(0).cloneRange();
     if (!reply.contains(range.commonAncestorContainer)) return;
   }
@@ -139,13 +146,17 @@ reply.addEventListener("mouseup", (event) => {
     hideAll();
     render();
   };
+  shown = range;
   return show(pick, anchor);
 });
 
-// A press anywhere outside the floating elements cancels them.
+// A press outside the floating elements closes them. An open comment box saves first, so a stray click never loses
+// what was typed. A press on the sentence whose popup is open keeps it open.
 document.addEventListener("mousedown", (event) => {
   if (pick.contains(event.target) || box.contains(event.target)) return;
-  hideAll();
+  if (!pick.hidden && hits(shown, event)) return;
+  if (!box.hidden) save();
+  else hideAll();
 });
 
 input.addEventListener("keydown", (event) => {
