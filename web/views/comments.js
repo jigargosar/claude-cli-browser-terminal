@@ -17,8 +17,7 @@ const submit = document.getElementById("comment-submit");
 const comments = [];
 const highlight = new Highlight();
 CSS.highlights.set("comment", highlight);
-// The sentence a single click picked. A highlight, not the browser selection, so a later press inside it starts a new
-// selection instead of dragging the text.
+// Shows the pick (see `current`). The browser selection can't: the comment box takes it when it gets the focus.
 const picked = new Highlight();
 CSS.highlights.set("picked", picked);
 
@@ -43,8 +42,9 @@ const hits = (range, { clientX: x, clientY: y }) =>
   [...range.getClientRects()].some((r) => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom);
 const same = (a, b) =>
   a.compareBoundaryPoints(Range.START_TO_START, b) === 0 && a.compareBoundaryPoints(Range.END_TO_END, b) === 0;
-// The range the open Reply and Done popup belongs to.
-let shown = null;
+// The one pick: a clicked sentence, or a selection in the reply. The highlight, the popup, Reply and Done read only
+// this. The browser selection is an input to it, and stays until Reply or Done, so Ctrl+C still copies it.
+let current = null;
 
 // One floating element at a time follows one anchor. Floating UI places it and keeps it there while #reply scrolls.
 // Resolves once it is first placed. Only then can it take focus.
@@ -111,50 +111,67 @@ const message = () =>
     .map((c, i) => `${i + 1}. ${c.text.trim().split("\n").map((line) => `> ${line}`).join("\n   ")}\n   ${c.comment}`)
     .join("\n\n");
 
-reply.addEventListener("mouseup", (event) => {
-  const selection = getSelection();
-  let range;
-  if (selection.isCollapsed) {
-    const index = comments.findIndex((c) => hits(c.range, event));
-    if (index !== -1) {
-      const { range: commented } = comments[index];
-      return openBox(commented, near(commented, event.clientX, event.clientY), index);
-    }
-    // A single click picks the sentence under it. Links and buttons keep their click.
-    if (event.detail !== 1 || event.target.closest("a, button")) return;
-    range = sentenceAt(event.clientX, event.clientY);
-    if (!range) return;
-    // A click on the sentence whose popup is open leaves it where it is.
-    if (!pick.hidden && same(range, shown)) return;
-    picked.add(range);
-  } else {
-    // A drag that starts on the picked sentence kept its highlight (see mousedown).
-    picked.clear();
-    range = selection.getRangeAt(0).cloneRange();
-    if (!reply.contains(range.commonAncestorContainer)) return;
-  }
-  box.hidden = true;
-  const anchor = near(range, event.clientX, event.clientY);
+// The pick changes only here. A pick that is already on view keeps its popup where it is.
+const pickRange = (range, anchor) => {
+  if (!pick.hidden && same(range, current)) return;
+  if (!box.hidden) save();
+  current = range;
+  picked.clear();
+  picked.add(range);
   replyButton.onclick = () => {
-    selection.removeAllRanges();
+    getSelection().removeAllRanges();
     return openBox(range, anchor);
   };
   // Done: the picked text is handled. It is sent as a comment that says "Done", with no box to write in.
   doneButton.onclick = () => {
-    selection.removeAllRanges();
+    getSelection().removeAllRanges();
     comments.push({ range, text: range.toString(), comment: "Done" });
     hideAll();
     render();
   };
-  shown = range;
   return show(pick, anchor);
+};
+
+// The browser selection, when it is text in the reply.
+const selected = () => {
+  const selection = getSelection();
+  if (selection.isCollapsed || selection.rangeCount === 0) return null;
+  const range = selection.getRangeAt(0).cloneRange();
+  if (!reply.contains(range.commonAncestorContainer) || range.getClientRects().length === 0) return null;
+  return range;
+};
+
+// A drag changes the selection on every move, so its end is read on mouseup. A selection made any other way, by
+// keyboard or by script, is read on selectionchange, with the popup at its end. This handler never changes the
+// selection, so it can't trigger itself.
+let pressed = false;
+document.addEventListener("mousedown", () => (pressed = true), true);
+window.addEventListener("mouseup", () => (pressed = false), true);
+document.addEventListener("selectionchange", () => {
+  if (pressed) return;
+  const range = selected();
+  if (range) return pickRange(range, near(range, Infinity, 0));
+});
+
+reply.addEventListener("mouseup", (event) => {
+  const range = selected();
+  if (range) return pickRange(range, near(range, event.clientX, event.clientY));
+  const index = comments.findIndex((c) => hits(c.range, event));
+  if (index !== -1) {
+    const { range: commented } = comments[index];
+    return openBox(commented, near(commented, event.clientX, event.clientY), index);
+  }
+  // A single click picks the sentence under it. Links and buttons keep their click.
+  if (event.detail !== 1 || event.target.closest("a, button")) return;
+  const sentence = sentenceAt(event.clientX, event.clientY);
+  if (sentence) return pickRange(sentence, near(sentence, event.clientX, event.clientY));
 });
 
 // A press outside the floating elements closes them. An open comment box saves first, so a stray click never loses
-// what was typed. A press on the sentence whose popup is open keeps it open.
+// what was typed. A press on the pick whose popup is open keeps it open.
 document.addEventListener("mousedown", (event) => {
   if (pick.contains(event.target) || box.contains(event.target)) return;
-  if (!pick.hidden && hits(shown, event)) return;
+  if (!pick.hidden && hits(current, event)) return;
   if (!box.hidden) save();
   else hideAll();
 });

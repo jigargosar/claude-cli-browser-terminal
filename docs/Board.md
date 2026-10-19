@@ -30,6 +30,7 @@ The board exists so that all known work is written in one list, and the next tas
   - [x] Bug: a click outside the comment box loses what was typed. Fix: a click outside saves it, as Enter does.
   - [x] Bug: a click on the sentence whose popup is open moves the popup. Fix: it stays; only another sentence gets a new popup.
   - [x] The popup offers Reply and Done. Done marks the picked text as handled, with no comment box. Done is sent as a comment that says "Done".
+  - [x] Bug: a dragged word loses its highlight while the comment box is open. Fix: one source, a range the page holds. A sentence click and `selectionchange` (mouse up, inside `#reply`, not empty) both write it. The browser selection is only an input, and stays until Reply or Done, so Ctrl+C still copies it. The highlight, the popup, Reply and Done read only that range. Test: a console script that performs the actions and logs the results; the user pastes it and copies the console back.
 - [ ] Comments are never lost for a given response
   - [ ] Feat: delete individual comment and all comment. 
   - [x] For now: comments clear when a new reply arrives.
