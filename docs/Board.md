@@ -58,3 +58,6 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
   - [ ] Source maps: none (see review). Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
   - [ ] Compression: none (see review). Inference: not worth it on localhost.
+
+* drawing tilde on arrow
+* zindex for dialog.
