@@ -43,10 +43,9 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 - Before any edit, read the Workflow in `docs/Board.md` and write the task there first.
 - Dev: `pnpm watch` in one terminal, then `pnpm ccw`; ccw refuses without the watch. Read `scripts/build-watch/README.md` when page changes don't show, or before touching the watch or ccw scripts.
 - Release only with `pnpm release`, after a manual test. It builds, bumps the patch version (commit and tag), packs into `published-versions/`, and pushes. Never pack by hand.
-- Testing in a browser: use `pnpm test` (port 7682, Haiku model). Port 7681 is the user's live session; typing there types into their real Claude.
-- Claude tests the page itself with the `browser-test` skill (puppeteer-core over CDP, its own browser profile). Never attach to the user's browser. After the tab closes, a new socket gets the serialized screen, so a script can read the result from the server.
+- Claude never starts `claude` itself. Why: a `claude` started from inside a Claude Code session writes no transcript, so the reply pane stays empty. Tests of the reply pane: Claude writes a console script, the user runs it in their tab and pastes the log back.
+- Testing in a browser: the user runs `pnpm test` (port 7682, Haiku model). Port 7681 is the user's live session; typing there types into their real Claude.
 - Any test that starts `claude` uses `--model haiku`. Never another model.
-- A `claude` started from inside a Claude Code session writes no transcript. A test started by Claude must remove every `CLAUDE*` variable from the environment it gives the server, or the transcript feed stays empty.
 - Browser libraries come from `node_modules`, not a CDN.
 - Test trip wires:
   - The terminal draws with WebGL. Its text is not in the DOM, so read the screen from the server.
