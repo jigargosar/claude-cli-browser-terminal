@@ -20,6 +20,7 @@ The board exists so that all known work is written in one list, and the next tas
 --- 
 
 # Slice 18
+- [ ] Next session starts here: the Workflow merge below. Decided: merge first, then check the slice against the merged rules. Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
 - [x] The experimental reminder system was lifted up to its own project at `~/projects/subconscious-reminder`.
 - [x] Reply button and click-to-select.
   - [x] Big bug: a click picks the sentence and shows Reply, and the focus goes to the terminal.
@@ -32,15 +33,6 @@ The board exists so that all known work is written in one list, and the next tas
   - [x] Bug: a click on the sentence whose popup is open moves the popup. Fix: it stays; only another sentence gets a new popup.
   - [x] The popup offers Reply and Done. Done marks the picked text as handled, with no comment box. Done is sent as a comment that says "Done".
   - [x] Bug: a dragged word loses its highlight while the comment box is open. Fix: one source, a range the page holds. A sentence click and `selectionchange` (mouse up, inside `#reply`, not empty) both write it. The browser selection is only an input, and stays until Reply or Done, so Ctrl+C still copies it. The highlight, the popup, Reply and Done read only that range. Test: a console script that performs the actions and logs the results; the user pastes it and copies the console back.
-- [x] ccw reliability review. Found 2026-10-24. Its findings are in the ccw reliability task of Slice 19.
-  - [x] read `server.mjs` fully: hook, `startSession`, `followTranscript`, socket handling.
-  - [x] read `web/main.js`, `web/socket.js`, `web/views/last.js`: the replay path.
-  - [x] hook docs (code.claude.com/docs/en/hooks): SessionStart sources are `startup`, `resume`, `clear`, `compact`, `fork`. Every hook gets `transcript_path`. A `CwdChanged` hook exists, documented for Claude running `cd`.
-  - [x] build config: `vite.config.mjs` sets no `build.sourcemap`, so Vite's default applies: no source maps. sirv serves `dist/` uncompressed.
-  - [x] write each finding into its issue below, labeled verified or inference.
-
-# Slice 19
-- [ ] Next session starts here: the Workflow merge below. Decided: merge first, then check the slice against the merged rules. Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
 - [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
 - [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both. Then check the open slice against the merged rules.
   - [ ] Take the skill's version: Terms, archive on close, first open task is next, bare lines reformatted, `[x]` never means dropped, Commits with "WIP:".
@@ -51,13 +43,18 @@ The board exists so that all known work is written in one list, and the next tas
 - [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
 - [ ] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: on hold.
 - [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
-- [ ] ccw reliability: fix the pragmatic issues below. Found 2026-10-24.
-  - [ ] Review: live test of the missing folder: `pnpm test` in a new temp folder, haiku. Blocked: Claude never starts `claude` itself (CLAUDE.md Rules).
+- [ ] ccw reliability: review the project, verify each issue below, then fix the pragmatic ones. Found 2026-10-24.
+  - [x] Review: read `server.mjs` fully: hook, `startSession`, `followTranscript`, socket handling.
+  - [x] Review: read `web/main.js`, `web/socket.js`, `web/views/last.js`: the replay path.
+  - [ ] Review: live test of the missing folder: `pnpm test` in a new temp folder, haiku. Blocked: the first task of this slice says Claude never starts `claude` itself.
+  - [x] Review: hook docs (code.claude.com/docs/en/hooks): SessionStart sources are `startup`, `resume`, `clear`, `compact`, `fork`. Every hook gets `transcript_path`. A `CwdChanged` hook exists, documented for Claude running `cd`.
+  - [x] Review: build config: `vite.config.mjs` sets no `build.sourcemap`, so Vite's default applies: no source maps. sirv serves `dist/` uncompressed.
+  - [x] Review: write each finding into its issue below, labeled verified or inference.
   - [ ] No replies in a folder's first session. The transcript folder `~/.claude/projects/<folder>/` does not exist yet when `followTranscript` starts, and chokidar 5.0.0 never fires `add` for a file in a missing folder. Verified in isolation and by the folder's creation time; the code (`server.mjs:123`) watches only the file. Not yet reproduced live. Fix idea: create the parent folder before the watch.
   - [ ] `/cd` moves the transcript to the new folder's `~/.claude/projects/` folder. No new path reaches the server, so it tails the old, deleted file and replies stop. Seen live. Verified: the server hooks only SessionStart, whose sources do not include a folder change. Unknown: whether `/cd` fires `CwdChanged`. Fix idea: also post the path from `CwdChanged` or UserPromptSubmit; `startSession` already ignores a repeated path.
   - [ ] Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
   - [ ] Too few logs to trace a failure. Verified: `.ccw-cache/reload.log` already has tab connected, refused and closed. Missing: the session path received (console only), tail started, lines read, items sent.
   - [ ] A transcript line that fails `JSON.parse` in `itemsOf` throws and crashes the server. Verified in code. Inference: rare, a line could be read half written.
   - [ ] Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
-  - [ ] Source maps: none. Verified: `vite.config.mjs` sets no `build.sourcemap`, and Vite's default is none. Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
-  - [ ] Compression: none. Verified: sirv serves `dist/` uncompressed. Inference: not worth it on localhost.
+  - [ ] Source maps: none (see review). Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
+  - [ ] Compression: none (see review). Inference: not worth it on localhost.
