@@ -14,6 +14,7 @@ The board exists so that all known work is written in one list, and the next tas
 - Research stops at the first answer good enough to act on. Then build it, or mark the task "(On hold)" with the answer written in it. No research for a feature that isn't next.
 - Start a new slice when the context changes, or when the open slice is too long. Move every unticked task into it. The old slice is then closed.
 - When a part of a long slice is done and tested, suggest a new slice.
+- Keep the last closed slice on the board, above the open slice, so it shows what was done or moved out. Archive only older closed slices.
 - Closed slices need not follow the Workflow. Do not read a closed slice as an example of the rules.
 
 --- 
