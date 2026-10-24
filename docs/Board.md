@@ -21,6 +21,7 @@ The board exists so that all known work is written in one list, and the next tas
 
 # Slice 18
 - [ ] Next session starts here: the Workflow merge below. Decided: merge first, then check the slice against the merged rules. Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
+- all UX, submit, switching, more options yes no style stuff. 
 - [x] The experimental reminder system was lifted up to its own project at `~/projects/subconscious-reminder`.
 - [x] Reply button and click-to-select.
   - [x] Big bug: a click picks the sentence and shows Reply, and the focus goes to the terminal.
