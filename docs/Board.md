@@ -61,3 +61,8 @@ The board exists so that all known work is written in one list, and the next tas
 
 * drawing tilde on arrow
 * zindex for dialog.
+* all intermideate logs captures, perhaps like closed blocks as seen in other tools. something that is easy to browse. unlike claude desktop and web.
+
+* keep sent answers it will be easy once we start storing response histories.
+
+board visiblity. 
