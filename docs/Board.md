@@ -58,11 +58,8 @@ The board exists so that all known work is written in one list, and the next tas
   - [ ] Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
   - [ ] Source maps: none (see review). Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
   - [ ] Compression: none (see review). Inference: not worth it on localhost.
-
-* drawing tilde on arrow
-* zindex for dialog.
-* all intermideate logs captures, perhaps like closed blocks as seen in other tools. something that is easy to browse. unlike claude desktop and web.
-
-* keep sent answers it will be easy once we start storing response histories.
-
-board visiblity. 
+- [ ] Drawing tilde on arrow.
+- [ ] z-index for the dialog.
+- [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
+- [ ] Keep sent answers. Easy once response histories are stored.
+- [ ] Board visibility.
