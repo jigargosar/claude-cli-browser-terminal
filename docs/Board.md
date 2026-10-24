@@ -42,3 +42,18 @@ The board exists so that all known work is written in one list, and the next tas
 - [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
 - [ ] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: on hold.
 - [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
+- [ ] ccw reliability: review the project, verify each issue below, then fix the pragmatic ones. Found 2026-10-24.
+  - [x] Review: read `server.mjs` fully: hook, `startSession`, `followTranscript`, socket handling.
+  - [x] Review: read `web/main.js`, `web/socket.js`, `web/views/last.js`: the replay path.
+  - [ ] Review: live test of the missing folder: `pnpm test` in a new temp folder, haiku. Blocked: the first task of this slice says Claude never starts `claude` itself.
+  - [x] Review: hook docs (code.claude.com/docs/en/hooks): SessionStart sources are `startup`, `resume`, `clear`, `compact`, `fork`. Every hook gets `transcript_path`. A `CwdChanged` hook exists, documented for Claude running `cd`.
+  - [x] Review: build config: `vite.config.mjs` sets no `build.sourcemap`, so Vite's default applies: no source maps. sirv serves `dist/` uncompressed.
+  - [x] Review: write each finding into its issue below, labeled verified or inference.
+  - [ ] No replies in a folder's first session. The transcript folder `~/.claude/projects/<folder>/` does not exist yet when `followTranscript` starts, and chokidar 5.0.0 never fires `add` for a file in a missing folder. Verified in isolation and by the folder's creation time; the code (`server.mjs:123`) watches only the file. Not yet reproduced live. Fix idea: create the parent folder before the watch.
+  - [ ] `/cd` moves the transcript to the new folder's `~/.claude/projects/` folder. No new path reaches the server, so it tails the old, deleted file and replies stop. Seen live. Verified: the server hooks only SessionStart, whose sources do not include a folder change. Unknown: whether `/cd` fires `CwdChanged`. Fix idea: also post the path from `CwdChanged` or UserPromptSubmit; `startSession` already ignores a repeated path.
+  - [ ] Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
+  - [ ] Too few logs to trace a failure. Verified: `.ccw-cache/reload.log` already has tab connected, refused and closed. Missing: the session path received (console only), tail started, lines read, items sent.
+  - [ ] A transcript line that fails `JSON.parse` in `itemsOf` throws and crashes the server. Verified in code. Inference: rare, a line could be read half written.
+  - [ ] Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
+  - [ ] Source maps: none (see review). Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
+  - [ ] Compression: none (see review). Inference: not worth it on localhost.
