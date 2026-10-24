@@ -19,10 +19,9 @@ The board holds all known work in one list, so the next task is never a guess.
 
 ## Tasks
 
+- Every plan's first step is recording it on the board. No task is ever started before it is recorded on the board.
 - In the open slice, any task may be written, reworded, moved (also into or out of another task) or deleted at any time.
-- Write a task before working on it. Work done without one is added afterwards, as done.
 - Claude formats a line that is not yet a task.
-- The first open task is the next one.
 - When a task is done: mark it `[x]`, move it below the last done task, and commit. Done tasks then sit above open ones, so progress reads top to bottom.
 - Delete a task that is no longer wanted. `[x]` means done, never dropped.
 

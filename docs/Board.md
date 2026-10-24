@@ -35,7 +35,7 @@ The board exists so that all known work is written in one list, and the next tas
 
 # Slice 19
 - [ ] Next session starts here: the Workflow merge below. Decided: merge first, then check the slice against the merged rules. Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
-- all UX, submit, switching, more options yes no style stuff. when mouse is hovering on hilighted content, show tooltip, small font and ellipsed on width. 
+- all UX, submit, switching, more options yes no style stuff. when mouse is hovering on hilighted content, show tooltip, small font and ellipsed on width. clicking on hilighted line should unhilight it. We have to be careful here, hilight line is overloaded, it can mean both commented or not yet commented. so we will use different colors.
 - fix selection hover dont follow it.
 - [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
 - [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both. Then check the open slice against the merged rules.
