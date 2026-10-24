@@ -1,23 +1,36 @@
 # Workflow
 
-The board exists so that all known work is written in one list, and the next task is never a guess.
+Every plan's first step is recording it on the board. No task is ever started before it is recorded on the board.
 
-- The last slice is the open slice. All other slices are closed.
-- The open slice is one list of tasks: all known work, ticked or not. A task may have a sub-list of its steps, one level, each step ticked on its own.
-- Any task may be written at any time. Work on a task only after it is written.
-- Claude writes a task, then stops. Claude builds only after the user's "go" on that task.
-- Status: `[ ]` open, `[t]` built, test pending, `[x]` done and tested.
-- Reorder tasks when it helps.
-- When a task is done and tested: tick it, move it below the last ticked task, commit.
-- Work done without a task: add it to the open slice, ticked.
-- A task that is no longer wanted is deleted.
-- Research stops at the first answer good enough to act on. Then build it, or mark the task "(On hold)" with the answer written in it. No research for a feature that isn't next.
-- Start a new slice when the context changes, or when the open slice is too long. Move every unticked task into it. The old slice is then closed.
-- When a part of a long slice is done and tested, suggest a new slice.
-- Keep the last closed slice on the board, above the open slice, so it shows what was done or moved out. Archive only older closed slices.
-- Closed slices need not follow the Workflow. Do not read a closed slice as an example of the rules.
+The board holds all known work in one list, so the next task is never a guess.
 
---- 
+## Terms
+
+- Slice: a `# Slice <n>` heading and its tasks.
+- Task: one item of work, written `- [ ] text`.
+- Nested task: a task under another task, one level deep. A task is done when all its nested tasks are.
+- Marks: `[ ]` open, not built yet. `[t]` built, test pending. `[x]` done: built and tested.
+
+## Slices
+
+- The last slice is open. New tasks go into it.
+- Start a new slice when the context changes, or when the open slice gets too long, since a long slice hides its open tasks. Suggest one once a part of the open slice is done.
+- Starting a new slice moves every open task into it and closes the old slice.
+- The last closed slice stays on the board, above the open slice, so it shows what was just done and what moved on. Older closed slices move to `docs/Board-archive-<date>.md`, one file per slice.
+- Closed slices are frozen. They may predate these rules, so do not read one as an example.
+
+## Tasks
+
+- In the open slice, any task may be written, reworded, moved (also into or out of another task) or deleted at any time.
+- Claude formats a line that is not yet a task.
+- When a task is done: mark it `[x]`, move it below the last done task, and commit. Done tasks then sit above open ones, so progress reads top to bottom.
+- Delete a task that is no longer wanted. `[x]` means done, never dropped.
+
+## Commits
+
+- Commit when a task is done, and whenever uncommitted work grows, even mid-task (message prefix "WIP:"). Small commits are cheap to review and undo.
+
+---
 
 # Slice 18
 - [x] The experimental reminder system was lifted up to its own project at `~/projects/subconscious-reminder`.
@@ -34,16 +47,10 @@ The board exists so that all known work is written in one list, and the next tas
   - [x] Bug: a dragged word loses its highlight while the comment box is open. Fix: one source, a range the page holds. A sentence click and `selectionchange` (mouse up, inside `#reply`, not empty) both write it. The browser selection is only an input, and stays until Reply or Done, so Ctrl+C still copies it. The highlight, the popup, Reply and Done read only that range. Test: a console script that performs the actions and logs the results; the user pastes it and copies the console back.
 
 # Slice 19
-- [ ] Next session starts here: the Workflow merge below. Decided: merge first, then check the slice against the merged rules. Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
-- all UX, submit, switching, more options yes no style stuff. when mouse is hovering on hilighted content, show tooltip, small font and ellipsed on width. clicking on hilighted line should unhilight it. We have to be careful here, hilight line is overloaded, it can mean both commented or not yet commented. so we will use different colors.
-- fix selection hover dont follow it.
-- [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
-- [ ] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both. Then check the open slice against the merged rules.
-  - [ ] Take the skill's version: Terms, archive on close, first open task is next, bare lines reformatted, `[x]` never means dropped, Commits with "WIP:".
-  - [ ] Keep the board's "Any task may be written at any time" and the `---` separator.
-  - [ ] Archive name `docs/Board-archive-<date>.md`, one file per closed slice.
-  - [ ] Fold the global rule "commit before a multi-cycle task" into Commits.
-  - [ ] Add a rule: a task may be reworded in place, and keeps its status, steps, position and go.
+- [x] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both, and the MUST line to `CLAUDE.md`. Check the open slice against the merged rules. Drafts are in `docs/archive/`.
+- [ ] Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
+- [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
+- [ ] Fix selection hover, don't follow it.
 - [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
 - [ ] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: on hold.
 - [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
@@ -67,3 +74,4 @@ The board exists so that all known work is written in one list, and the next tas
 - [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
 - [ ] Keep sent answers. Easy once response histories are stored.
 - [ ] Board visibility.
+- [ ] Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.

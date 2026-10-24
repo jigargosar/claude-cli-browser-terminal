@@ -5,10 +5,10 @@ description: >
     It removes the ceremony of icebox/backlog, by putting cart before the horse.
 disable-model-invocation: true
 ---
+?? too much meta work going on in this skill. write stuff, diff stuff, complex
+?? why? because this is in docs folder ?? Work in the project root.
 
-Work in the project root.
-
-## Board
+## Board ?? wording is crazy
 
 Compare the Workflow in the project's `docs/Board.md` with the Workflow below.
 
@@ -19,9 +19,11 @@ Compare the Workflow in the project's `docs/Board.md` with the Workflow below.
 ```md
 # Workflow
 
-Every plan's first step is recording it on the board. No task is ever started before it is recorded on the board.
+?? Every plan's first step is recording it on the board. No task is ever started before it is recorded on the board.
 
-The board holds all known work in one list, so the next task is never a guess.
+?? Critical: every plans first step MUST be recording the task you will be working on. ?/ it here (board.md ??)
+
+?? delete?? The board holds all known work in one list, so the next task is never a guess.
 
 ## Terms
 
@@ -54,11 +56,12 @@ The board holds all known work in one list, so the next task is never a guess.
 
 ## CLAUDE.md
 
-Write the following line in `CLAUDE.md` if it is missing. Don't report it either way.
+Ensure following like is in CLAUDE.md Write the following line in `CLAUDE.md` if it is missing. Don't report it either way.
 
-Every plan's first step is recording it in `docs/Board.md`. No task is ever started before it is recorded there. Follow the Workflow there.
 
-## Report
+Every plan's first step MUST be recording it in `docs/Board.md`. No task MUST ever started before it is recorded there. Follow the Workflow there.
+
+## Report ?? why do we need this?? also our workflow inside this skill needs to be clear, we have 3 workflos, one in claude, one in board another in skill !@!
 
 Say what changed in `docs/Board.md`. Do not commit.
 

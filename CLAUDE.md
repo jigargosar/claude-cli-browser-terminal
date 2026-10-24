@@ -40,6 +40,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 ## Rules
 
+- Every plan's first step MUST be recording it in `docs/Board.md`. No task may ever start before it is recorded there. Follow the Workflow there.
 - Before any edit, read the Workflow in `docs/Board.md` and write the task there first.
 - Dev: `pnpm watch` in one terminal, then `pnpm ccw`; ccw refuses without the watch. Read `scripts/build-watch/README.md` when page changes don't show, or before touching the watch or ccw scripts.
 - Release only with `pnpm release`, after a manual test. It builds, bumps the patch version (commit and tag), packs into `published-versions/`, and pushes. Never pack by hand.
