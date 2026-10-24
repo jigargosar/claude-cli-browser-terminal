@@ -50,7 +50,8 @@ The board holds all known work in one list, so the next task is never a guess.
 - [x] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both, and the MUST line to `CLAUDE.md`. Check the open slice against the merged rules. Drafts are in `docs/archive/`.
 - [ ] Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
 - [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
-- [ ] Fix selection hover, don't follow it.
+- [ ] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
+- [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
 - [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
 - [ ] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: on hold.
 - [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
@@ -74,4 +75,3 @@ The board holds all known work in one list, so the next task is never a guess.
 - [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
 - [ ] Keep sent answers. Easy once response histories are stored.
 - [ ] Board visibility.
-- [ ] Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
