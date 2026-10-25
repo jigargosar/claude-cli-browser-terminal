@@ -76,3 +76,5 @@ The board holds all known work in one list, so the next task is never a guess.
 - [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
 - [ ] Keep sent answers. Easy once response histories are stored.
 - [ ] Board visibility.
+- [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
+  - [x] Research: tools comparable to this project. Found 2026-10-25: [claude-review](https://github.com/Ch00k/claude-review) (browser, comment on a markdown file, threads back to Claude Code), [markdown-claude-review](https://github.com/MagicMicky/markdown-claude-review) (VS Code, comment threads over MCP), [herdr-web-ui #511](https://github.com/devswha/herdr-web-ui/issues/511) (proposal: comment on a selection of an agent's reply, sent with the next message), [AI DIAL Chat #9093](https://github.com/epam/ai-dial-chat/pull/9093) (Reply on selected text). None found pairs a live Claude Code terminal with its last reply as a reader page.
