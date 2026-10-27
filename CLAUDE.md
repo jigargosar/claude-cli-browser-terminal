@@ -2,6 +2,8 @@
 
 Run Claude Code in a browser tab: the terminal on the left, Claude's last reply on the right as readable markdown.
 
+Scope: developer experience (DX) when working with AI tools. That covers the tooling around the conversation, how Claude's replies read, and how the user's input reaches Claude. Why: the features built so far are small, and many are details you notice only after trying other tools. Each one serves this scope.
+
 ## Goal
 
 - Goal 1: done when you use this daily instead of the plain terminal.
