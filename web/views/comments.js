@@ -185,6 +185,9 @@ input.addEventListener("keydown", (event) => {
   }
 });
 
+// Every reload or close asks first. Comments live only in page memory (docs/plans/data-loss.md).
+window.addEventListener("beforeunload", (event) => event.preventDefault());
+
 export const clear = () => {
   comments.length = 0;
   editing = null;

@@ -55,6 +55,7 @@ The board holds all known work in one list, so the next task is never a guess.
 - [x] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: done.
 - [x] Conversation tracker: the conversation "exploring-conversation-ideas", from the AHK fix on, is captured in `docs/conversation-exploration/transcript.txt`.
 - [ ] Critical: Data loss during communication can no longer be deffered (it was used as poor mans delete all comments button replacement)
+  - [x] Quick fix first: replies render no links, and the page asks before every reload or close. Plan: [plans/data-loss.md](plans/data-loss.md). Tested by the user: Cancel keeps the comments, OK reloads and loses them.
   - [ ] Any page reload loses every comment typed in the reader pane. Observation: the loss was disorienting. It cut the conversation's threads, and it was hard to know where to pick up.
   - [ ] Pressing Esc in comment popup looses all the edits made since opening of popup.
 - [ ] Resolve [Board-pending.md](Board-pending.md): new tasks, the open UX tasks below regrouped and clarified, and the naming. Then rewrite them here.

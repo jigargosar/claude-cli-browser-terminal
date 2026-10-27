@@ -6,6 +6,7 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
 
 - Links in replies: a file or file:line link opens in the editor, not in the tab.
 - Board archive: put the archive files in their own folder, so other docs are not hidden among them. Update the Workflow rule.
+- Investigate why links in replies left the page. The new-tab hook in `web/markdown.js` matches only http(s) hrefs, so a relative link such as `web/main.js#L83` opened in the same tab. Inference: `#`-based and relative links are the cause.
 - Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
 
 ## Notes
