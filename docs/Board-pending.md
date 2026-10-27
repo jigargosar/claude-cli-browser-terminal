@@ -7,6 +7,9 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
 - Links in replies: a file or file:line link opens in the editor, not in the tab.
 - Board archive: put the archive files in their own folder, so other docs are not hidden among them. Update the Workflow rule.
 - Investigate why links in replies left the page. The new-tab hook in `web/markdown.js` matches only http(s) hrefs, so a relative link such as `web/main.js#L83` opened in the same tab. Inference: `#`-based and relative links are the cause.
+- Clear all: once comments survive a reload, a way to delete every comment on purpose.
+- Rewind: decide what the reader pane and the comments do on a rewind. Today the pane keeps the last reply (CLAUDE.md, Known issues).
+- CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
 - Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
 
 ## Notes
