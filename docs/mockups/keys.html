@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spike: where the keys go</title>
+<link rel="stylesheet" href="../../web/base.css">
+<link rel="stylesheet" href="../../web/reader.css">
+<link rel="stylesheet" href="../../node_modules/@xterm/xterm/css/xterm.css">
+<style>
+  /* Spike only: the mode switch and the key log. */
+  #mode { position: absolute; top: 8px; left: 10px; z-index: 2; display: flex; }
+  #mode button { font: 13px/1.4 var(--sans); padding: 5px 12px; }
+  #log {
+    position: absolute; left: 18px; right: 6px; bottom: 14px; z-index: 2; margin: 0; padding: 8px 10px;
+    background: #000c; color: var(--code-fg); font: 12px/1.5 var(--mono); border: 1px solid #3a3f4b; border-radius: 6px;
+    pointer-events: none; white-space: pre;
+  }
+  #log .lost { color: #ff7b72; font-weight: 600; }
+  #log .ok { color: #7ee787; }
+</style>
+</head>
+<body>
+<main id="terminal-pane"><div id="term"></div><pre id="log"></pre></main>
+<div id="divider"><div id="focus-mark" aria-hidden="true"></div></div>
+<aside id="reply-pane" aria-label="Last reply">
+  <div id="mode" class="seg" role="group" aria-label="Focus rules">
+    <button type="button" data-mode="today">Today</button>
+    <button type="button" data-mode="fixed">Fixed</button>
+  </div>
+  <article id="reply" class="md" tabindex="-1">
+    <h2>Where do the keys go?</h2>
+    <p>Pick Today or Fixed at the top left. The switch reloads the page. The black box under the terminal logs where each key went. <strong>LOST</strong> in red means the key reached nothing.</p>
+    <ol>
+      <li>Type in the terminal. Then click this sentence once, and keep typing.</li>
+      <li>Drag over a few words, then type.</li>
+      <li>Select a few words, then press Ctrl+C. Paste somewhere to check the copy.</li>
+      <li>Select a few words, click Reply, type a comment, press Enter. Then type again.</li>
+      <li>Click Copy or Wrap on the code block below, then type.</li>
+      <li>Press Alt+` to move the keys to this pane. Use the arrow keys to scroll, then type a letter. Press Alt+` again.</li>
+      <li>Click the terminal while the keys are in this pane, then type.</li>
+    </ol>
+    <p>The triangle on the divider points at the pane that gets the keys. A diamond means nothing gets them.</p>
+    <pre><code>pnpm watch
+pnpm ccw</code></pre>
+    <p>Filler, so the pane can scroll. The cache holds the last 50 replies in memory. A refresh drops it, which matches Decision 2.2: the right panel may be blank after a refresh. Keep replies in a Map keyed by message id. Evict the oldest entry once the map passes 50. Write nothing to disk. The transcript already holds every reply.</p>
+    <p>Two risks remain. A very long reply may be slow to render, and a rewind leaves stale entries behind.</p>
+    <p>Open question: should a rewind clear the whole cache, or only the entries after the rewind point?</p>
+    <p>More filler. The tab is only a view, like a page of a Vite dev server. Closing the tab is the same as a refresh: it only disconnects. Claude and the server keep running. Open the URL again to get back.</p>
+  </article>
+  <div id="comment-pick" class="comment-float" hidden>
+    <button type="button" id="comment-reply" class="bar-button">Reply</button>
+    <button type="button" id="comment-done" class="bar-button">Done</button>
+  </div>
+  <div id="comment-box" class="comment-float" hidden>
+    <textarea aria-label="Comment"></textarea>
+    <p>Enter saves · Esc cancels</p>
+  </div>
+</aside>
+<script src="../../node_modules/@xterm/xterm/lib/xterm.js"></script>
+<script src="../../node_modules/@xterm/addon-fit/lib/addon-fit.js"></script>
+<script>
+const mode = location.hash === "#fixed" ? "fixed" : "today";
+for (const b of document.querySelectorAll("[data-mode]")) {
+  b.setAttribute("aria-pressed", b.dataset.mode === mode);
+  b.addEventListener("mousedown", (e) => e.preventDefault());
+  b.addEventListener("click", () => {
+    location.hash = b.dataset.mode;
+    location.reload();
+  });
+}
+
+const terminalPane = document.getElementById("terminal-pane");
+const replyPane = document.getElementById("reply-pane");
+const reply = document.getElementById("reply");
+const pick = document.getElementById("comment-pick");
+const box = document.getElementById("comment-box");
+const input = box.querySelector("textarea");
+
+// The terminal: local echo, so a key that reaches it shows up.
+const term = new Terminal({ cursorBlink: true, fontFamily: "Cascadia Mono, Consolas, monospace", fontSize: 14, theme: { background: "#16181d" } });
+const fit = new FitAddon.FitAddon();
+term.loadAddon(fit);
+term.open(document.getElementById("term"));
+fit.fit();
+new ResizeObserver(() => fit.fit()).observe(document.getElementById("term"));
+term.write(`Spike: ${mode === "fixed" ? "FIXED" : "TODAY"} focus rules\r\n\r\n> `);
+// Keys that reached the terminal, by key number. A key's data arrives before the next key's keydown.
+let keyNumber = 0;
+const reachedTerminal = new Set();
+term.onData((d) => {
+  reachedTerminal.add(keyNumber);
+  term.write(d.replace(/\r/g, "\r\n> ").replace(/\x7f/g, "\b \b"));
+});
+
+// A bare Alt tap focuses the browser's menu. Swallowed, as in main.js.
+for (const type of ["keydown", "keyup"]) document.addEventListener(type, (e) => e.key === "Alt" && e.preventDefault(), true);
+
+// The comment pick and box: a selection in the reply shows Reply and Done at the mouse.
+const highlight = new Highlight();
+CSS.highlights.set("comment", highlight);
+let range = null;
+const place = (el, x, y) => Object.assign(el.style, { left: `${x}px`, top: `${Math.max(y - 44, 8)}px` });
+reply.addEventListener("mouseup", (e) => {
+  const s = getSelection();
+  if (s.isCollapsed || !reply.contains(s.anchorNode)) return;
+  range = s.getRangeAt(0).cloneRange();
+  place(pick, e.clientX, e.clientY);
+  pick.hidden = false;
+});
+document.addEventListener("mousedown", (e) => {
+  if (pick.contains(e.target) || box.contains(e.target)) return;
+  pick.hidden = true;
+  if (!box.hidden) closeBox(true);
+});
+document.getElementById("comment-done").addEventListener("click", () => {
+  highlight.add(range);
+  getSelection().removeAllRanges();
+  pick.hidden = true;
+});
+document.getElementById("comment-reply").addEventListener("click", () => {
+  box.style.left = pick.style.left;
+  box.style.top = pick.style.top;
+  pick.hidden = true;
+  getSelection().removeAllRanges();
+  input.value = "";
+  box.hidden = false;
+  openBox();
+});
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    closeBox(true);
+  } else if (e.key === "Escape") {
+    closeBox(false);
+  }
+});
+const closeBox = (save) => {
+  if (save && input.value.trim()) highlight.add(range);
+  box.hidden = true;
+  afterBox();
+};
+
+// The focus mark reads body[data-focus]: terminal, reply or none.
+const mark = (value) => (document.body.dataset.focus = value);
+
+if (mode === "today") {
+  // Today, as in main.js: the DOM focus decides. A click focuses what it hits. Focus that lands nowhere goes back to
+  // the pane that last had it.
+  var openBox = () => input.focus();
+  var afterBox = () => {};
+  const markFocus = () => {
+    const a = document.activeElement;
+    mark(terminalPane.contains(a) ? "terminal" : replyPane.contains(a) ? "reply" : "none");
+  };
+  document.addEventListener("focusin", markFocus);
+  document.addEventListener("focusout", () => setTimeout(markFocus));
+  let lastPane = "terminal";
+  document.addEventListener("focusin", () => {
+    if (terminalPane.contains(document.activeElement)) lastPane = "terminal";
+    else if (replyPane.contains(document.activeElement)) lastPane = "reply";
+  });
+  document.addEventListener("focusout", () =>
+    setTimeout(() => {
+      if (document.activeElement !== document.body) return;
+      if (lastPane === "reply") reply.focus({ preventScroll: true });
+      else term.focus();
+    }),
+  );
+  document.addEventListener("keydown", (e) => {
+    if (!(e.altKey && !e.ctrlKey && !e.shiftKey && e.code === "Backquote")) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (!terminalPane.contains(document.activeElement)) term.focus();
+    else reply.focus();
+  }, true);
+} else {
+  // Fixed: one owner gets the keys. Only Alt+` and the comment box change it. The mouse never does.
+  let owner = "terminal";
+  let before = "terminal";
+  const focusOwner = () => {
+    if (owner === "terminal") term.focus();
+    else if (owner === "reply") reply.focus({ preventScroll: true });
+    else input.focus();
+  };
+  const setOwner = (value) => {
+    owner = value;
+    mark(value === "box" ? "reply" : value);
+    focusOwner();
+  };
+  var openBox = () => {
+    before = owner;
+    setOwner("box");
+  };
+  var afterBox = () => setOwner(before);
+  // Buttons in the reply pane never take the focus.
+  replyPane.addEventListener("mousedown", (e) => e.target.closest("button") && e.preventDefault(), true);
+  document.addEventListener("keydown", (e) => {
+    if (e.altKey && !e.ctrlKey && !e.shiftKey && e.code === "Backquote") {
+      e.preventDefault();
+      e.stopPropagation();
+      if (owner !== "box") setOwner(owner === "terminal" ? "reply" : "terminal");
+      return;
+    }
+    // A bare modifier moves nothing. Moving the focus to the terminal clears the reply selection, so Ctrl alone must
+    // not, or the C that follows finds no selection and goes to claude.
+    if (["Alt", "Control", "Shift", "Meta"].includes(e.key)) return;
+    // Ctrl+C on a reply selection copies. It must never reach claude as an interrupt.
+    const selection = getSelection();
+    const copying = e.ctrlKey && ["c", "insert"].includes(e.key.toLowerCase()) && !selection.isCollapsed && reply.contains(selection.anchorNode);
+    if (copying) return;
+    const a = document.activeElement;
+    const inOwner = owner === "terminal" ? terminalPane.contains(a) : owner === "reply" ? a === reply : a === input;
+    // The key goes on to the owner: the focus moves before the browser types it.
+    if (!inOwner) focusOwner();
+  }, true);
+  setOwner("terminal");
+}
+term.focus();
+
+// The key log: where each key went. Added last, so it runs after the focus rules moved the focus.
+const log = document.getElementById("log");
+const lines = [];
+const where = () => {
+  const a = document.activeElement;
+  if (a === input) return "comment box";
+  if (a === reply) return "reply text";
+  if (terminalPane.contains(a)) return "terminal, no echo";
+  if (replyPane.contains(a)) return `reply button "${a.textContent}"`;
+  return "nowhere";
+};
+const scrollKeys = ["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"];
+document.addEventListener("keydown", (e) => {
+  if (["Alt", "Control", "Shift", "Meta"].includes(e.key)) return;
+  const n = ++keyNumber;
+  const at = where();
+  const name = (e.ctrlKey ? "Ctrl+" : "") + (e.altKey ? "Alt+" : "") + (e.key === " " ? "Space" : e.key);
+  setTimeout(() => {
+    let text = at;
+    let cls = "ok";
+    if (reachedTerminal.has(n)) text = "terminal";
+    else if (e.ctrlKey && e.key.toLowerCase() === "c" && at !== "terminal, no echo") text = "copy";
+    else if (e.altKey && e.code === "Backquote") text = "switch";
+    else if (at === "reply text" && scrollKeys.includes(e.key)) text = "scroll reply";
+    else if (at !== "comment box") cls = "lost";
+    lines.push(`<span class="${cls}">${name.padEnd(12)} → ${cls === "lost" ? "LOST at " : ""}${text}</span>`);
+    log.innerHTML = lines.slice(-6).join("\n");
+  }, 30);
+}, true);
+</script>
+</body>
+</html>

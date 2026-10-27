@@ -49,6 +49,7 @@ The board holds all known work in one list, so the next task is never a guess.
 # Slice 19
 - [x] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both, and the MUST line to `CLAUDE.md`. Check the open slice against the merged rules. Drafts are in `docs/archive/`.
 - [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
+  - [ ] Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
   - [ ] its finiky when switching between with clusy command name 
 - [ ] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
 - maximizing either pane maybe not?
