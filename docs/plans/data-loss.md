@@ -1,32 +1,37 @@
 # Plan: no data loss in comments
 
-Status: proposed, 2026-10-27. Board task: "Critical: Data loss during communication".
+Status: in progress, 2026-10-27. Board task: "Critical: Data loss during communication".
 
 ## Cases
 
 | # | Case | Source |
 |---|---|---|
-| 1 | Esc in the comment box drops the text typed since the box opened. | Verified by the user. Code: `web/views/comments.js:183` hides the box without saving. |
-| 2 | A page reload drops every comment. A click on a link in the reply is one way to reload. | Verified by the user. Code: `comments` lives only in page memory (`comments.js:17`). |
-| 3 | A new reply drops the unsent comments. | Code comment, `comments.js:3`. Not yet seen live. |
-| 4 | A reload was the only way to delete all comments. Fixing case 2 removes it. | The user's board note. |
+| 1 | Esc in the comment box drops the text typed since the box opened. | Verified by the user. Verified in code: Esc hides the box without saving (`web/views/comments.js:183`). |
+| 2 | A page reload drops every comment. The recent cause was a click on a link in a reply. | Verified by the user. Verified in code: comments live only in page memory (`comments.js:17`). |
+| 3 | Claude writes a new reply while the user comments on the previous one. The reader pane switches to the new reply and drops every unsent comment on the previous one. Example: a one-line note Claude writes mid-turn. | Verified in code: each new reply calls `comments.clear()` (`web/main.js:38-41`). Not yet seen live. |
+| 4 | A reload was the only way to delete all comments. | The user's board note. |
+| 5 | A page rebuild reloads the page at the turn's end. Development only. | Verified in code (`main.js:42-44`). The reload dialog now guards it. |
 
-## Steps, smallest first
+## Facts that shape the steps
 
-1. Esc saves, the same as Enter and a click outside. An empty comment still deletes it.
-2. A link in the reply opens in a new tab, so the page never leaves.
-3. Before the page unloads with unsent comments, the browser asks to confirm (`beforeunload`).
-4. A "Clear all" button beside Send, so a reload is never needed to delete.
-5. Comments survive a reload. Each comment is stored as text plus a text-quote selector, not as a DOM Range. The server saves them in `<project>/.ccw-cache/`, like the settings, since the port changes each run. After a reload, they are re-anchored when the reply shows.
-   - Library to check first: `@apache-annotator/dom` (W3C text-quote selectors). Inference: it does the anchoring, so we do not write our own.
-6. Case 3: decide whether unsent comments stay with their reply, or carry over to the new one.
+- The reply comes back after a reload: the server sends every item on connect (`server.mjs:244`), and the page shows the last reply.
+- Sent comments go to Claude as Markdown text: a numbered list, each item a quoted passage with the comment under it, in the order they were added (`comments.js:109-112`). It carries no reply id and no position.
 
-## Open questions
+## Steps
 
-- Step 5: does the reply come back after a reload? CLAUDE.md says the reader pane may be blank after a refresh. If it stays blank, the comments have no text to anchor to.
-- Step 6: which behavior is wanted?
+| # | Step | Cases | Status |
+|---|---|---|---|
+| 0 | Quick fix: replies render no links, and every reload asks first. | 2, 5 | Done, `9739849` |
+| 1 | Esc saves, the same as Enter and a click outside. An empty comment still deletes it. | 1 | Open |
+| 2 | Comments survive a reload. The server stores them in `<project>/.ccw-cache/`, like the settings. Each is stored as text plus a text-quote selector, not as a DOM Range, and is re-anchored when the reply shows. Library to check first: `@apache-annotator/dom`. | 2, 5 | Open |
+
+## Later, in `docs/Board-pending.md`
+
+- Clear all: a way to delete every comment on purpose. Case 4.
+- Reply history: the reader pane keeps every reply, so nothing is replaced. Case 3 goes away with it.
+- Rewind: what the reader pane and the comments do on a rewind.
 
 ## Testing
 
-- Steps 1 to 4: a manual test by the user, or a console script the user pastes.
-- Step 5: reload with comments, in both the live tab and after a server restart.
+- Step 1: a manual test by the user.
+- Step 2: reload with comments, in the live tab and after a server restart.
