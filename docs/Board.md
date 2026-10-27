@@ -50,6 +50,7 @@ The board holds all known work in one list, so the next task is never a guess.
 - [x] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both, and the MUST line to `CLAUDE.md`. Check the open slice against the merged rules. Drafts are in `docs/archive/`.
 - [x] Aside: clean up what the session started in ~ left behind: transcripts, trust entry, permission rules, files.
 - [x] `CLAUDE.md`: state the project's scope, DX when working with AI tools.
+- [x] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: done.
 - [ ] Conversation tracker: track the conversation "exploring-conversation-ideas", from the AHK fix on, in `docs/conversation-exploration/convo-tree.md`.
   - [ ] Simplify the file's structure (it was too complex).
   - [ ] Record the topics: AHK fix, its explanation, the aside on writing that assumes reader knowledge, the tracker, the move to this project.
@@ -61,7 +62,6 @@ The board holds all known work in one list, so the next task is never a guess.
 - [ ] Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
 - [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
 - [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
-- [ ] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: on hold.
 - [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
 - [ ] ccw reliability: review the project, verify each issue below, then fix the pragmatic ones. Found 2026-10-24.
   - [x] Review: read `server.mjs` fully: hook, `startSession`, `followTranscript`, socket handling.
@@ -86,3 +86,4 @@ The board holds all known work in one list, so the next task is never a guess.
 - [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
   - [x] Research: tools comparable to this project. Found 2026-10-25: [claude-review](https://github.com/Ch00k/claude-review) (browser, comment on a markdown file, threads back to Claude Code), [markdown-claude-review](https://github.com/MagicMicky/markdown-claude-review) (VS Code, comment threads over MCP), [herdr-web-ui #511](https://github.com/devswha/herdr-web-ui/issues/511) (proposal: comment on a selection of an agent's reply, sent with the next message), [AI DIAL Chat #9093](https://github.com/epam/ai-dial-chat/pull/9093) (Reply on selected text). None found pairs a live Claude Code terminal with its last reply as a reader page.
 - [ ] Draft the project's values and add them to `CLAUDE.md`. They say why we build what we build, beside what we build and how.
+- [ ] List the next goals under "Next Blaze" in `CLAUDE.md`.

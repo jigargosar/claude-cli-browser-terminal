@@ -4,12 +4,15 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 Scope: developer experience (DX) when working with AI tools. That covers the tooling around the conversation, how Claude's replies read, and how the user's input reaches Claude. Why: the features built so far are small, and many are details you notice only after trying other tools. Each one serves this scope.
 
-## Goal
+## Primary Goal
 
-- Goal 1: done when you use this daily instead of the plain terminal.
-- Goal 2 (later): select text in a reply, comment on it, send the comment to Claude. First try kept as tag `single-comment`.
-- Goal 3 (later): many comments, sent to Claude as one message.
-- Not planned: more than one Claude session per server, login, publishing.
+- [x] Goal 1: when you use this daily instead of the plain terminal.
+- [x] Goal 2: select text in a reply, comment on it, repeat, then send all to Claude with context included.
+- [x] Goal 3: many comments, sent to Claude as one message.
+
+# Next Blaze
+
+- Hold your horses
 
 ## Decisions
 
