@@ -52,16 +52,20 @@ The board holds all known work in one list, so the next task is never a guess.
 - [x] `CLAUDE.md`: state the project's scope, DX when working with AI tools.
 - [x] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: done.
 - [x] Conversation tracker: the conversation "exploring-conversation-ideas", from the AHK fix on, is captured in `docs/conversation-exploration/transcript.txt`.
-- [ ] Explore the conversation patterns in `docs/conversation-exploration/transcript.txt`, and how this project can use them.
 - [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
   - [ ] Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
   - [ ] its finiky when switching between with clusy command name 
 - [ ] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
 - maximizing either pane maybe not?
-- [ ] Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
-- [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
-- [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
-- [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
+- [ ] Drawing tilde on arrow.
+- [ ] z-index for the dialog.
+- [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
+- [ ] Keep sent answers. Easy once response histories are stored.
+- [ ] Board visibility.
+- [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
+  - [x] Research: tools comparable to this project. Found 2026-10-25: [claude-review](https://github.com/Ch00k/claude-review) (browser, comment on a markdown file, threads back to Claude Code), [markdown-claude-review](https://github.com/MagicMicky/markdown-claude-review) (VS Code, comment threads over MCP), [herdr-web-ui #511](https://github.com/devswha/herdr-web-ui/issues/511) (proposal: comment on a selection of an agent's reply, sent with the next message), [AI DIAL Chat #9093](https://github.com/epam/ai-dial-chat/pull/9093) (Reply on selected text). None found pairs a live Claude Code terminal with its last reply as a reader page.
+- [ ] Draft the project's values and add them to `CLAUDE.md`. They say why we build what we build, beside what we build and how.
+- [ ] List the next goals under "Next Blaze" in `CLAUDE.md`.
 - [ ] ccw reliability: review the project, verify each issue below, then fix the pragmatic ones. Found 2026-10-24.
   - [x] Review: read `server.mjs` fully: hook, `startSession`, `followTranscript`, socket handling.
   - [x] Review: read `web/main.js`, `web/socket.js`, `web/views/last.js`: the replay path.
@@ -77,12 +81,9 @@ The board holds all known work in one list, so the next task is never a guess.
   - [ ] Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
   - [ ] Source maps: none (see review). Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
   - [ ] Compression: none (see review). Inference: not worth it on localhost.
-- [ ] Drawing tilde on arrow.
-- [ ] z-index for the dialog.
-- [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
-- [ ] Keep sent answers. Easy once response histories are stored.
-- [ ] Board visibility.
-- [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
-  - [x] Research: tools comparable to this project. Found 2026-10-25: [claude-review](https://github.com/Ch00k/claude-review) (browser, comment on a markdown file, threads back to Claude Code), [markdown-claude-review](https://github.com/MagicMicky/markdown-claude-review) (VS Code, comment threads over MCP), [herdr-web-ui #511](https://github.com/devswha/herdr-web-ui/issues/511) (proposal: comment on a selection of an agent's reply, sent with the next message), [AI DIAL Chat #9093](https://github.com/epam/ai-dial-chat/pull/9093) (Reply on selected text). None found pairs a live Claude Code terminal with its last reply as a reader page.
-- [ ] Draft the project's values and add them to `CLAUDE.md`. They say why we build what we build, beside what we build and how.
-- [ ] List the next goals under "Next Blaze" in `CLAUDE.md`.
+- Adhoc testing stuff
+  - [ ] Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
+  - [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
+  - [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
+  - [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
+- [ ] Explore the conversation patterns in `docs/conversation-exploration/transcript.txt`, and how this project can use them.
