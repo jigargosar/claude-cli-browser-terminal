@@ -45,3 +45,6 @@ Source: the user's answers on what each open UX task means.
 | Low | Keys spike (`docs/mockups/keys.html`) |
 
 Pane names: "terminal pane" (left) and "reader pane" (right).
+
+# my notes
+- observation, divider can gain focus and it shows funny focs arrows. 
