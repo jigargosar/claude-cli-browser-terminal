@@ -48,7 +48,7 @@ The board holds all known work in one list, so the next task is never a guess.
 
 # Slice 19
 - [x] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both, and the MUST line to `CLAUDE.md`. Check the open slice against the merged rules. Drafts are in `docs/archive/`.
-- [ ] Aside: clean up what the session started in ~ left behind: transcripts, trust entry, permission rules, files.
+- [x] Aside: clean up what the session started in ~ left behind: transcripts, trust entry, permission rules, files.
 - [ ] Conversation tracker: track the conversation "exploring-conversation-ideas", from the AHK fix on, in `docs/conversation-exploration/convo-tree.md`.
   - [ ] Simplify the file's structure (it was too complex).
   - [ ] Record the topics: AHK fix, its explanation, the aside on writing that assumes reader knowledge, the tracker, the move to this project.
