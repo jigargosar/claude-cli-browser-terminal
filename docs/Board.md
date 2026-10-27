@@ -2,6 +2,8 @@
 
 Every plan's first step is recording it on the board. No task is ever started before it is recorded on the board.
 
+Pending rule: while `docs/Board-pending.md` exists, every new task goes there, not into the open slice. Recording it there counts as recording it on the board. Only the user puts a task straight into the open slice, as critical. This overrides "New tasks go into it" under Slices. This rule ends when `docs/Board-pending.md` is resolved.
+
 The board holds all known work in one list, so the next task is never a guess.
 
 ## Terms
@@ -54,7 +56,7 @@ The board holds all known work in one list, so the next task is never a guess.
 - [x] Conversation tracker: the conversation "exploring-conversation-ideas", from the AHK fix on, is captured in `docs/conversation-exploration/transcript.txt`.
 - [ ] Data loss: fix each case quickly.
   - [ ] Any page reload loses every comment typed in the reader pane. A click on a link, such as `main.js:83`, is one way to reload. Observation: the loss was disorienting. It cut the conversation's threads, and it was hard to know where to pick up.
-  - [ ] Esc while writing a comment loses it. There is no undo. Verified by the user.
+  - [ ] Esc while writing a new comment loses its text. There is no undo. A saved comment is kept, and a click outside the box saves. Verified by the user.
 - [ ] Resolve [Board-pending.md](Board-pending.md): new tasks, the open UX tasks below regrouped and clarified, and the naming. Then rewrite them here.
 - [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
   - [ ] Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.

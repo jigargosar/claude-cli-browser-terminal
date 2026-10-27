@@ -2,8 +2,6 @@
 
 Status: to resolve. Once agreed, these tasks replace the open UX tasks on the board. Written 2026-10-27.
 
-All new tasks land here first. Only the user moves one straight to the board, as critical.
-
 ## New tasks
 
 - Links in replies: a file or file:line link opens in the editor, not in the tab.
