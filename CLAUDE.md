@@ -36,9 +36,14 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 ## Files
 
 - `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`. On Windows the bytes are ConPTY's rendering of its own screen buffer, not claude's output.
-- `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `errors.js`, `sentence.js`) and one file per reply view in `views/`. 
+- `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `errors.js`, `sentence.js`, `settings.js`) and one file per reply view in `views/`. `settings.js` holds the page settings, which the server saves in `<project>/.ccw-cache/config.json`.
 - `docs/Board.md`: the work plan and its status. Follow its Workflow. Closed slices are in `docs/Board-archive-2026-10-13.md` and `docs/Board-archive-2026-10-18.md`.
 - `docs/mockups/`: standalone HTML mockups that link the real stylesheets and open without a build. A mockup is approved before the page implements it.
+- `docs/mods/`: the plan and research for capturing each dialog claude shows and answering it in the browser.
+- `docs/focus-indicator.md`: how the page shows which pane gets the keys.
+- `docs/mode-keys-research.md`: research on one key per mode, instead of cycling with Shift+Tab.
+- `docs/Brain-dump-2026-10-13.md`: the user's verbatim brain dump. Some board tasks come from it.
+- `docs/Wings.md`: the user's wishes. Only the user writes here. Claude never does.
 
 ## Rules
 
@@ -46,7 +51,7 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - Before any edit, read the Workflow in `docs/Board.md` and write the task there first.
 - Dev: `pnpm watch` in one terminal, then `pnpm ccw`; ccw refuses without the watch. Read `scripts/build-watch/README.md` when page changes don't show, or before touching the watch or ccw scripts.
 - Release only with `pnpm release`, after a manual test. It builds, bumps the patch version (commit and tag), packs into `published-versions/`, and pushes. Never pack by hand.
-- Testing in a browser: use `pnpm test` (port 7682, Haiku model). Port 7681 is the user's live session; typing there types into their real Claude.
+- Testing in a browser: use `pnpm test` (port 7682, Haiku model). The user's live session runs on any other port, because the server picks a free one unless `CC_WEB_PORT` is set. Typing there types into their real Claude.
 - Claude tests the page itself with the `browser-test` skill (puppeteer-core over CDP, its own browser profile). Never attach to the user's browser. After the tab closes, a new socket gets the serialized screen, so a script can read the result from the server.
 - Any test that starts `claude` uses `--model haiku`. Never another model.
 - A `claude` started from inside a Claude Code session writes no transcript. A test started by Claude must remove every `CLAUDE*` variable from the environment it gives the server, or the transcript feed stays empty.
