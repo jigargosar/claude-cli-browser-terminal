@@ -11,6 +11,7 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
 - [ ] Rewind: decide what the reader pane and the comments do on a rewind. Today the pane keeps the last reply (CLAUDE.md, Known issues).
 - [ ] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
 - [ ] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
+- [ ] Analyze the view implementation: does it need an upgrade, can it be simplified, what are the tradeoffs.
 - [ ] UX bugs
   - [ ] The popup follows the selected text when the page scrolls.
   - [ ] Overlay stacking: the focus arrow can show above the comment popup.
@@ -18,6 +19,8 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
   - [ ] Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
   - [ ] Submit: Ctrl+Enter clashes with right Ctrl, which is set to Handy (STT). Pick another key.
   - [ ] Keys spike (`docs/mockups/keys.html`). Low priority.
+  - [ ] The reader pane is fully keyboard driven: every mouse action in it also has a key.
+  - [ ] Global shortcuts: keys that work from either pane, such as sending the comments from the terminal pane.
 - [ ] UX polish
   - [ ] Atkinson Hyperlegible fonts
   - [ ] Tooltip on highlighted text

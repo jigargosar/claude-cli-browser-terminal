@@ -75,8 +75,8 @@ const hideAll = () => {
 // The comment being written: a new one (no index) or an existing one.
 let editing = null;
 const openBox = async (range, anchor, index) => {
-  editing = { range, index };
   input.value = index === undefined ? "" : comments[index].comment;
+  editing = { range, index, before: input.value };
   pick.hidden = true;
   await show(box, anchor);
   input.focus();
@@ -181,6 +181,9 @@ input.addEventListener("keydown", (event) => {
     event.preventDefault();
     save();
   } else if (event.key === "Escape") {
+    // Esc cancels. Changed text asks first, so it is never lost by accident (docs/plans/data-loss.md, case 1).
+    if (input.value.trim() !== editing.before.trim() && !confirm("Discard this comment's changes?")) return;
+    editing = null;
     hideAll();
   }
 });
