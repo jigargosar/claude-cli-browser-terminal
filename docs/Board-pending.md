@@ -2,6 +2,15 @@
 
 Status: to resolve. Once agreed, these tasks replace the open UX tasks on the board. Written 2026-10-27.
 
+## Where we are, 2026-10-28
+
+- Data-loss plan: closed and archived. Steps 0 and 1 are done. Step 2 (comments survive a reload) was dropped, because the reload guard covers it. Case 3 moved to the reply history task.
+- `docs/Board.md`: the critical data-loss task is done. Another session moves the remaining tasks.
+- Reply length: Claude's analysis and the user's comments are in `docs/reply-length-rca.md`. Another session continues it in the task below.
+- Next: the prune task. The user reviews this list first. Claude does a second pass only when the user asks.
+
+To resume: read this section, then take the first open task.
+
 ## Tasks
 
 - [ ] Prune the task list: ruthlessly delete tasks, and combine similar ones into a paragraph. Most tasks move to the dark log. Only the user pushes entries there.
