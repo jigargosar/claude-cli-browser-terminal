@@ -42,3 +42,20 @@ Comments on the analysis, numbered by row:
 - Row 8: there are two issues, one phrasing should not be extreme, appear factual, this happens all the time, with all content. Then how much can a rule take the burden of existing work implies neither a or b. what else do you have to go on!!! besides markers for suggestion, tentative decision, proposed by claude, but not verified by user explictly. etc.
 - Scope creep: some creep is unavoidable, but instructions should help reduce it not encourage it by overpressure of instructions.
 - Row 1: this might be an issue if not restricted properly.
+
+## Discussion: row 2
+
+Claude's reply to the user's row 2 comment.
+
+Proposed wording:
+
+> Open with one line that gives your reading of what the user wants, in your own words. It is the premise the rest of the reply builds on. Never echo the user's words.
+
+The impact, by inference:
+
+| Aspect | Today | With the new wording |
+|---|---|---|
+| How it was followed | As headings that echo the user's question, such as "## Which "last two" tasks?" | One line, said once |
+| Length | About 1 line per section, so maybe 10–15% of each reply | About 1 line per reply |
+| Confusion | "State the question" reads as "repeat it". That clashes with Concise mode, so the rule leaks into headings. | The purpose is explicit, so there is no clash. |
+| Payoff | Low | High. Example from this session: a one-line reading would have caught the "last two tasks" mix-up in one turn instead of three. |
