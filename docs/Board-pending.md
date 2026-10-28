@@ -8,7 +8,8 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
 - [ ] Board archive: put the archive files in their own folder, so other docs are not hidden among them. Update the Workflow rule.
 - [ ] Links in replies never affect this tab: every link opens outside it, whatever its href. Cause found: the new-tab hook in `web/markdown.js` (commented out) matched only http(s) hrefs, so a relative link such as `web/main.js#L83` opened in the same tab. Fix idea: `target="_blank"` on every `<a>`, or catch every link click and `window.open` it.
 - [ ] Clear all: once comments survive a reload, a way to delete every comment on purpose. Why: a reload was the only way to delete all comments, so it was used as one. To decide: undo, or is a confirmation enough?
-- [ ] Edits to a comment lose its earlier text on save. Saving it empty deletes it and all its text. Analyze, in depth, how to handle every kind of edit. A big task, not critical.
+- [ ] Loss scenarios: decide how to guard against data loss, by confirmation, by undo or by another design. Another option is continuous save that also keeps the content's undo and redo, so even Esc can close freely. This needs deep thought and analysis.
+- [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [ ] Delete a comment explicitly. Today the only way is to empty its text. To decide: undo, or is a confirmation enough?
 - [ ] Rewind: decide what the reader pane and the comments do on a rewind. Today the pane keeps the last reply (CLAUDE.md, Known issues).
 - [ ] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
