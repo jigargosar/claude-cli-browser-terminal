@@ -17,6 +17,7 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
 - [ ] UX keys
   - [ ] Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
   - [ ] Submit: Ctrl+Enter clashes with right Ctrl, which is set to Handy (STT). Pick another key.
+  - [ ] Keys spike (`docs/mockups/keys.html`). Low priority.
 - [ ] UX polish
   - [ ] Atkinson Hyperlegible fonts
   - [ ] Tooltip on highlighted text
@@ -30,8 +31,6 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
   - [ ] Comment on any document the way you comment on replies, starting with the board
   - [ ] Maximize the terminal pane or the reader pane
   - [ ] Bookmarks: bookmark a reply, perhaps also selected text in it
-- [ ] Low
-  - [ ] Keys spike (`docs/mockups/keys.html`)
 
 ## Notes
 
