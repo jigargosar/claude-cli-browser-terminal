@@ -34,7 +34,7 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
 - [ ] UX features
   - [ ] More options in the popup, beside Reply and Done
   - [ ] Keep the highlights of what was sent to Claude
-  - [ ] Reply history: browse earlier replies, not only the last one
+  - [ ] Reply history: browse earlier replies, not only the last one. Also fixes data-loss case 3: a new reply clears unsent comments ([plans/data-loss.md](plans/data-loss.md)).
   - [ ] Intermediate logs as collapsed blocks
   - [ ] Mods: explore which dialogs Claude shows (`docs/mods/`)
   - [ ] Comment on any document the way you comment on replies, starting with the board

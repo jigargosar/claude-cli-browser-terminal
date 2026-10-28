@@ -54,7 +54,7 @@ The board holds all known work in one list, so the next task is never a guess.
 - [x] `CLAUDE.md`: state the project's scope, DX when working with AI tools.
 - [x] `CLAUDE.md` facts: the "port 7681 is the user's live session" rule (the server picks a free port unless `CC_WEB_PORT` is set), and the Files list (missing `web/settings.js`, `docs/mods/`, `docs/focus-indicator.md`, `docs/mode-keys-research.md`, `docs/Wings.md`, the brain dump). Goals 2 and 3: done.
 - [x] Conversation tracker: the conversation "exploring-conversation-ideas", from the AHK fix on, is captured in `docs/conversation-exploration/transcript.txt`.
-- [ ] Critical: no data loss in comments. Plan: [plans/data-loss.md](plans/data-loss.md)
+- [x] Critical: no data loss in comments. Plan: [plans/data-loss.md](plans/data-loss.md)
 - [ ] Resolve [Board-pending.md](Board-pending.md): new tasks, the open UX tasks below regrouped and clarified, and the naming. Then rewrite them here.
 - [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
   - [ ] Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
