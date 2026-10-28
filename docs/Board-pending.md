@@ -7,7 +7,8 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
 - [ ] Links in replies: a file or file:line link opens in the editor, not in the tab.
 - [ ] Board archive: put the archive files in their own folder, so other docs are not hidden among them. Update the Workflow rule.
 - [ ] Links in replies never affect this tab: every link opens outside it, whatever its href. Cause found: the new-tab hook in `web/markdown.js` (commented out) matched only http(s) hrefs, so a relative link such as `web/main.js#L83` opened in the same tab. Fix idea: `target="_blank"` on every `<a>`, or catch every link click and `window.open` it.
-- [ ] Clear all: once comments survive a reload, a way to delete every comment on purpose. Why: a reload was the only way to delete all comments, so it was used as one.
+- [ ] Clear all: once comments survive a reload, a way to delete every comment on purpose. Why: a reload was the only way to delete all comments, so it was used as one. To decide: undo, or is a confirmation enough?
+- [ ] Delete a comment explicitly. Today the only way is to empty its text. To decide: undo, or is a confirmation enough?
 - [ ] Rewind: decide what the reader pane and the comments do on a rewind. Today the pane keeps the last reply (CLAUDE.md, Known issues).
 - [ ] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
 - [ ] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
@@ -21,6 +22,8 @@ Status: to resolve. Once agreed, these tasks replace the open UX tasks on the bo
   - [ ] Keys spike (`docs/mockups/keys.html`). Low priority.
   - [ ] The reader pane is fully keyboard driven: every mouse action in it also has a key.
   - [ ] Global shortcuts: keys that work from either pane, such as sending the comments from the terminal pane.
+  - [ ] Sentence select mode: a key marks each sentence in the reader pane with a letter. Typing a letter picks that sentence and starts the same flow as a click on it.
+  - [ ] Esc on a picked sentence clears the pick and its popup. Nothing is lost, since no comment exists yet.
 - [ ] UX polish
   - [ ] Atkinson Hyperlegible fonts
   - [ ] Tooltip on highlighted text

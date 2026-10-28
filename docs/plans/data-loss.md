@@ -21,7 +21,7 @@ Status: in progress, 2026-10-27. Board task: "Critical: Data loss during communi
 | # | Step | Cases | Status |
 |---|---|---|---|
 | 0 | Quick fix: replies render no links, and every reload asks first. | 2, 4 | Done, `9739849`. Tested by the user: Cancel keeps the comments, OK reloads and loses them. |
-| 1 | Esc cancels. If the text changed since the box opened, it asks first; Cancel keeps the box open. Unchanged text just closes. Why not "Esc saves": it would make Esc the same as Enter. | 1 | Built, test pending |
+| 1 | Esc cancels. If the text changed since the box opened, it asks first; Cancel keeps the box open. Unchanged text just closes. Why not "Esc saves": it would make Esc the same as Enter. | 1 | Done, `e85f0ed`. Tested by the user: all four cases pass. |
 | 2 | Comments survive a reload. The server stores them in `<project>/.ccw-cache/`, like the settings. Each is stored as text plus a text-quote selector, not as a DOM Range, and is re-anchored when the reply shows. Library to check first: `@apache-annotator/dom`. | 2, 4 | Open |
 
 ## Testing
