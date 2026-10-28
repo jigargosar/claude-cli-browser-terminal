@@ -7,8 +7,8 @@ Status: in progress, 2026-10-27. Board task: "Critical: Data loss during communi
 | # | Case | Source |
 |---|---|---|
 | 1 | Esc in the comment box drops the text typed since the box opened. | Verified by the user. Verified in code: Esc hides the box without saving (`web/views/comments.js:183`). |
-| 2 | A page reload drops every comment. The recent cause was a click on a link in a reply. | Verified by the user. Verified in code: comments live only in page memory (`comments.js:17`). |
-| 3 | Claude writes a new reply while the user comments on the previous one. The reader pane switches to the new reply and drops every unsent comment on the previous one. Example: a one-line note Claude writes mid-turn. | Verified in code: each new reply calls `comments.clear()` (`web/main.js:38-41`). Not yet seen live. |
+| 2 | A page reload drops every comment. The recent cause was a click on a link in a reply. The user found the loss disorienting. It cut the conversation's threads, and it was hard to know where to pick up. | Verified by the user. Verified in code: comments live only in page memory (`comments.js:17`). |
+| 3 | Claude writes a new reply while the user comments on the previous one. The reader pane switches to the new reply and drops every unsent comment on the previous one. Example: a one-line note Claude writes mid-turn. Goes away with reply history, a task in `docs/Board-pending.md`. | Verified in code: each new reply calls `comments.clear()` (`web/main.js:38-41`). Not yet seen live. |
 | 4 | A page rebuild reloads the page at the turn's end. Development only. | Verified in code (`main.js:42-44`). The reload dialog now guards it. |
 
 ## Facts that shape the steps
@@ -20,13 +20,9 @@ Status: in progress, 2026-10-27. Board task: "Critical: Data loss during communi
 
 | # | Step | Cases | Status |
 |---|---|---|---|
-| 0 | Quick fix: replies render no links, and every reload asks first. | 2, 4 | Done, `9739849` |
+| 0 | Quick fix: replies render no links, and every reload asks first. | 2, 4 | Done, `9739849`. Tested by the user: Cancel keeps the comments, OK reloads and loses them. |
 | 1 | Esc saves, the same as Enter and a click outside. An empty comment still deletes it. | 1 | Open |
 | 2 | Comments survive a reload. The server stores them in `<project>/.ccw-cache/`, like the settings. Each is stored as text plus a text-quote selector, not as a DOM Range, and is re-anchored when the reply shows. Library to check first: `@apache-annotator/dom`. | 2, 4 | Open |
-
-## Later, in `docs/Board-pending.md`
-
-- Reply history: the reader pane keeps every reply, so nothing is replaced. Case 3 goes away with it.
 
 ## Testing
 
