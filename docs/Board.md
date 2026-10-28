@@ -49,6 +49,7 @@ The board holds all known work in one list, so the next task is never a guess.
   - [x] Bug: a dragged word loses its highlight while the comment box is open. Fix: one source, a range the page holds. A sentence click and `selectionchange` (mouse up, inside `#reply`, not empty) both write it. The browser selection is only an input, and stays until Reply or Done, so Ctrl+C still copies it. The highlight, the popup, Reply and Done read only that range. Test: a console script that performs the actions and logs the results; the user pastes it and copies the console back.
 
 # Slice 19
+- [ ] Reply length investigation, outside the project and exempt from Workflow: measurements, causes and proposed CLAUDE.md changes are in `docs/reply-length-investigation.md`. Next: agree the changes, apply them, re-measure.
 - [x] Merge the board's Workflow with the `/board-setup` skill's. Write the result to both, and the MUST line to `CLAUDE.md`. Check the open slice against the merged rules. Drafts are in `docs/archive/`.
 - [x] Aside: clean up what the session started in ~ left behind: transcripts, trust entry, permission rules, files.
 - [x] `CLAUDE.md`: state the project's scope, DX when working with AI tools.
