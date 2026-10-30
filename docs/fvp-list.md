@@ -46,7 +46,7 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Rewind: decide what the reader pane and the comments do on a rewind. Today the pane keeps the last reply (CLAUDE.md, Known issues).
 - [.] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
 - [ ] Root cause of long replies: [reply-length-rca.md](reply-length-rca.md). Discussed with another AI instance.
-- [.] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
+- [x] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
 - [ ] Analyze the view implementation: does it need an upgrade, can it be simplified, what are the tradeoffs.
 - [ ] UX bug: The popup follows the selected text when the page scrolls.
 - [ ] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
