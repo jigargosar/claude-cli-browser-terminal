@@ -71,5 +71,5 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Weed list
 - [ ] Popup: an OK button beside Reply and Done.
 - [.] Delete the old docs in `docs/` (Board, Board-pending, archives, plans, void and the rest) and drop them from the CLAUDE.md Files list. Tag `board-before-fvp` keeps them.
-- [.] cleanup of all old pre fvp.
+- [x] cleanup of all old pre fvp.
 - [ ] the last dotted item is not visible, therefor making the comparision difficult.
