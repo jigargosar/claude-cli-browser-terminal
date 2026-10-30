@@ -86,7 +86,7 @@ const render = () => {
   highlight.clear();
   for (const c of comments) highlight.add(c.range);
   submit.hidden = comments.length === 0;
-  submit.textContent = `Send ${comments.length} comment${comments.length === 1 ? "" : "s"} · Ctrl+Enter`;
+  submit.textContent = `Send ${comments.length} comment${comments.length === 1 ? "" : "s"} · Alt+Enter`;
 };
 
 // An empty comment deletes it. That is the only way to delete one.
@@ -206,10 +206,11 @@ export const init = ({ send }) => {
     render();
   };
   submit.addEventListener("click", sendAll);
-  // Ctrl+Enter anywhere in the reply pane sends. In the comment box it saves that comment first.
+  // Alt+Enter or Ctrl+Enter anywhere in the reply pane sends. In the comment box it saves that comment first.
+  // Alt+Enter, because right Ctrl is the speech-to-text key.
   // The terminal is outside the pane, so its Ctrl+Enter still goes to claude.
   pane.addEventListener("keydown", (event) => {
-    if (!(event.key === "Enter" && event.ctrlKey)) return;
+    if (!(event.key === "Enter" && (event.altKey || event.ctrlKey))) return;
     event.preventDefault();
     if (!box.hidden) save();
     sendAll();

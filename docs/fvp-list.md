@@ -51,7 +51,6 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] UX bug: The popup follows the selected text when the page scrolls.
 - [ ] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
 - [ ] UX keys: Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
-- [.] UX keys: Submit: Ctrl+Enter clashes with right Ctrl, which is set to Handy (STT). Pick another key.
 - [ ] UX keys: Keys spike (`docs/mockups/keys.html`). Low priority.
 - [ ] UX keys: The reader pane is fully keyboard driven: every mouse action in it also has a key.
 - [ ] UX keys: Global shortcuts: keys that work from either pane, such as sending the comments from the terminal pane.
@@ -78,3 +77,5 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Inference is easy to tell apart from fact in a reply.
 - [ ] Claude's thinking shows in the reply pane, toggleable.
 - [ ] One key per mode (default, accept edits, plan). Claude Code has no set-mode action, only `chat:cycleMode` (Shift+Tab), so the page would send N Shift+Tabs and needs the current mode.
+- [ ] UX keys: Submit: Alt+Enter now sends the comments, beside Ctrl+Enter. Manual test that Chrome passes Alt+Enter to the page. If it fails, delete it from `web/views/comments.js`.
+- [ ] `web/views/comments.js` comments link `docs/plans/data-loss.md`, which is gone. Point them at tag `board-before-fvp` or drop the links.
