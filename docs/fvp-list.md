@@ -14,7 +14,7 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [.] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
 - [ ] Keep sent answers. Easy once response histories are stored.
 - [ ] Board visibility.
-- [.] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
+- [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
 - [ ] List the next goals under "Next Blaze" in `CLAUDE.md`.
 - [x] ccw reliability: review the project, verify each ccw reliability issue, then fix the pragmatic ones. Found 2026-10-24.
 - [ ] ccw reliability: Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
