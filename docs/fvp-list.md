@@ -17,7 +17,7 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [.] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
 - [.] Draft the project's values and add them to `CLAUDE.md`. They say why we build what we build, beside what we build and how.
 - [ ] List the next goals under "Next Blaze" in `CLAUDE.md`.
-- [.] ccw reliability: review the project, verify each ccw reliability issue, then fix the pragmatic ones. Found 2026-10-24.
+- [x] ccw reliability: review the project, verify each ccw reliability issue, then fix the pragmatic ones. Found 2026-10-24.
 - [ ] ccw reliability: Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
 - [ ] Adhoc testing: Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
 - [ ] Adhoc testing: (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
