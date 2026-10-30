@@ -32,7 +32,7 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Adhoc testing: Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
 - [ ] Adhoc testing: `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
 - [ ] Explore the conversation patterns in `docs/conversation-exploration/transcript.txt`, and how this project can use them.
-- [.] Workflow: try Forster's FVP on the board. Proposal saved in `dev-workflow-ideation/fvp-workflow-proposal.md`.
+- [x] Workflow: try Forster's FVP on the board. Proposal saved in `dev-workflow-ideation/fvp-workflow-proposal.md`.
 - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
 - [ ] Reply length: agree and apply the rule changes in `docs/reply-length-investigation.md`, then re-measure a later session. Measured: TLDR lines are 17 percent and table rows 39 percent of all reply words.
 - [ ] Links in replies: a file or file:line link opens in the editor, not in the tab.
