@@ -3,15 +3,14 @@
 Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 
 - [.] Reply length investigation, outside the project and exempt from Workflow: measurements, causes and proposed CLAUDE.md changes are in `docs/reply-length-investigation.md`. Next: agree the changes, apply them, re-measure.
-- [.] Resolve [Board-pending.md](Board-pending.md): new tasks, the open UX tasks below regrouped and clarified, and the naming. Then rewrite them here.
 - [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
-- [.] All UX: Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
-- [.] All UX: its finiky when switching between with clusy command name
-- [.] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
+- [ ] All UX: Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
+- [ ] All UX: its finiky when switching between with clusy command name
+- [ ] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
 - [ ] maximizing either pane maybe not?
 - [ ] Drawing tilde on arrow.
 - [ ] z-index for the dialog.
-- [.] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
+- [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
 - [ ] Keep sent answers. Easy once response histories are stored.
 - [ ] Board visibility.
 - [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
