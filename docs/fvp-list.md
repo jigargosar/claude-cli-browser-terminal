@@ -1,0 +1,83 @@
+# FVP list
+
+Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
+
+- [ ] Reply length investigation, outside the project and exempt from Workflow: measurements, causes and proposed CLAUDE.md changes are in `docs/reply-length-investigation.md`. Next: agree the changes, apply them, re-measure.
+- [ ] Resolve [Board-pending.md](Board-pending.md): new tasks, the open UX tasks below regrouped and clarified, and the naming. Then rewrite them here.
+- [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
+  - [ ] Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
+  - [ ] its finiky when switching between with clusy command name 
+- [ ] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
+- maximizing either pane maybe not?
+- [ ] Drawing tilde on arrow.
+- [ ] z-index for the dialog.
+- [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
+- [ ] Keep sent answers. Easy once response histories are stored.
+- [ ] Board visibility.
+- [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
+  - [x] Research: tools comparable to this project. Found 2026-10-25: [claude-review](https://github.com/Ch00k/claude-review) (browser, comment on a markdown file, threads back to Claude Code), [markdown-claude-review](https://github.com/MagicMicky/markdown-claude-review) (VS Code, comment threads over MCP), [herdr-web-ui #511](https://github.com/devswha/herdr-web-ui/issues/511) (proposal: comment on a selection of an agent's reply, sent with the next message), [AI DIAL Chat #9093](https://github.com/epam/ai-dial-chat/pull/9093) (Reply on selected text). None found pairs a live Claude Code terminal with its last reply as a reader page.
+- [ ] Draft the project's values and add them to `CLAUDE.md`. They say why we build what we build, beside what we build and how.
+- [ ] List the next goals under "Next Blaze" in `CLAUDE.md`.
+- [ ] ccw reliability: review the project, verify each issue below, then fix the pragmatic ones. Found 2026-10-24.
+  - [x] Review: read `server.mjs` fully: hook, `startSession`, `followTranscript`, socket handling.
+  - [x] Review: read `web/main.js`, `web/socket.js`, `web/views/last.js`: the replay path.
+  - [ ] Review: live test of the missing folder: `pnpm test` in a new temp folder, haiku. Blocked: the first task of this slice says Claude never starts `claude` itself.
+  - [x] Review: hook docs (code.claude.com/docs/en/hooks): SessionStart sources are `startup`, `resume`, `clear`, `compact`, `fork`. Every hook gets `transcript_path`. A `CwdChanged` hook exists, documented for Claude running `cd`.
+  - [x] Review: build config: `vite.config.mjs` sets no `build.sourcemap`, so Vite's default applies: no source maps. sirv serves `dist/` uncompressed.
+  - [x] Review: write each finding into its issue below, labeled verified or inference.
+  - [ ] No replies in a folder's first session. The transcript folder `~/.claude/projects/<folder>/` does not exist yet when `followTranscript` starts, and chokidar 5.0.0 never fires `add` for a file in a missing folder. Verified in isolation and by the folder's creation time; the code (`server.mjs:123`) watches only the file. Not yet reproduced live. Fix idea: create the parent folder before the watch.
+  - [ ] `/cd` moves the transcript to the new folder's `~/.claude/projects/` folder. No new path reaches the server, so it tails the old, deleted file and replies stop. Seen live. Verified: the server hooks only SessionStart, whose sources do not include a folder change. Unknown: whether `/cd` fires `CwdChanged`. Fix idea: also post the path from `CwdChanged` or UserPromptSubmit; `startSession` already ignores a repeated path.
+  - [ ] Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
+  - [ ] Too few logs to trace a failure. Verified: `.ccw-cache/reload.log` already has tab connected, refused and closed. Missing: the session path received (console only), tail started, lines read, items sent.
+  - [ ] A transcript line that fails `JSON.parse` in `itemsOf` throws and crashes the server. Verified in code. Inference: rare, a line could be read half written.
+  - [ ] Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
+  - [ ] Source maps: none (see review). Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
+  - [ ] Compression: none (see review). Inference: not worth it on localhost.
+- Adhoc testing stuff
+  - [ ] Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
+  - [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
+  - [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
+  - [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
+- [ ] Explore the conversation patterns in `docs/conversation-exploration/transcript.txt`, and how this project can use them.
+- [ ] Workflow: try Forster's FVP on the board. Proposal saved in `dev-workflow-ideation/fvp-workflow-proposal.md`.
+- [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
+- [ ] Prune the task list: ruthlessly delete tasks, and combine similar ones into a paragraph. Most tasks move to the dark log. Only the user pushes entries there.
+- [ ] Reply length: agree and apply the rule changes in `docs/reply-length-investigation.md`, then re-measure a later session. Measured: TLDR lines are 17 percent and table rows 39 percent of all reply words.
+- [ ] Board archive: put the archive files in their own folder, so other docs are not hidden among them. Update the Workflow rule.
+- [ ] Links in replies: a file or file:line link opens in the editor, not in the tab.
+- [ ] Links in replies never affect this tab: every link opens outside it, whatever its href. Cause found: the new-tab hook in `web/markdown.js` (commented out) matched only http(s) hrefs, so a relative link such as `web/main.js#L83` opened in the same tab. Fix idea: `target="_blank"` on every `<a>`, or catch every link click and `window.open` it.
+- [ ] Clear all: once comments survive a reload, a way to delete every comment on purpose. Why: a reload was the only way to delete all comments, so it was used as one. To decide: undo, or is a confirmation enough?
+- [ ] Loss scenarios: decide how to guard against data loss, by confirmation, by undo or by another design. Another option is continuous save that also keeps the content's undo and redo, so even Esc can close freely. This needs deep thought and analysis.
+- [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
+- [ ] Delete a comment explicitly. Today the only way is to empty its text. To decide: undo, or is a confirmation enough?
+- [ ] Rewind: decide what the reader pane and the comments do on a rewind. Today the pane keeps the last reply (CLAUDE.md, Known issues).
+- [ ] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
+- [ ] Root cause of long replies: [reply-length-rca.md](reply-length-rca.md). Discussed with another AI instance.
+- [ ] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
+- [ ] Analyze the view implementation: does it need an upgrade, can it be simplified, what are the tradeoffs.
+- [ ] UX bugs
+  - [ ] The popup follows the selected text when the page scrolls.
+  - [ ] Overlay stacking: the focus arrow can show above the comment popup.
+    - Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
+- [ ] UX keys
+  - [ ] Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
+  - [ ] Submit: Ctrl+Enter clashes with right Ctrl, which is set to Handy (STT). Pick another key.
+  - [ ] Keys spike (`docs/mockups/keys.html`). Low priority.
+  - [ ] The reader pane is fully keyboard driven: every mouse action in it also has a key.
+  - [ ] Global shortcuts: keys that work from either pane, such as sending the comments from the terminal pane.
+  - [ ] Sentence select mode: a key marks each sentence in the reader pane with a letter. Typing a letter picks that sentence and starts the same flow as a click on it.
+  - [ ] Esc on a picked sentence clears the pick and its popup. Nothing is lost, since no comment exists yet.
+- [ ] UX polish
+  - [ ] Atkinson Hyperlegible fonts
+  - [ ] Tooltip on highlighted text
+  - [ ] Click to unhighlight, with one color for commented text and another for not-yet-commented text
+- [ ] UX features
+  - [ ] More options in the popup, beside Reply and Done
+  - [ ] Keep the highlights of what was sent to Claude
+  - [ ] Reply history: browse earlier replies, not only the last one. Also fixes data-loss case 3: a new reply clears unsent comments ([plans/data-loss.md](plans/data-loss.md)).
+  - [ ] Intermediate logs as collapsed blocks
+  - [ ] Mods: explore which dialogs Claude shows (`docs/mods/`)
+  - [ ] Comment on any document the way you comment on replies, starting with the board
+  - [ ] Maximize the terminal pane or the reader pane
+  - [ ] Bookmarks: bookmark a reply, perhaps also selected text in it
+- [ ] Weed list
