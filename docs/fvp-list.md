@@ -44,7 +44,7 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [ ] Delete a comment explicitly. Today the only way is to empty its text. To decide: undo, or is a confirmation enough?
 - [ ] Rewind: decide what the reader pane and the comments do on a rewind. Today the pane keeps the last reply (CLAUDE.md, Known issues).
-- [.] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
+- [x] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
 - [ ] Root cause of long replies: [reply-length-rca.md](reply-length-rca.md). Discussed with another AI instance.
 - [x] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
 - [ ] Analyze the view implementation: does it need an upgrade, can it be simplified, what are the tradeoffs.

@@ -22,8 +22,7 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
    3. After that, the session works the same as in a terminal.
 2. One tab per session.
    1. Each server starts on a random free port.
-   2. A refresh continues the session. The right panel may be blank after a refresh.
-   3. A new tab on the same URL is refused, with a clear message.
+   2. A refresh continues the session.   3. A new tab on the same URL is refused, with a clear message.
    4. This is the same as not opening one session in two terminals.
    5. Some cases may slip through. New tabs must be refused.
 3. The tab is only a view, like a page of a Vite dev server.
