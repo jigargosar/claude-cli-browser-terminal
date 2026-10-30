@@ -6,7 +6,9 @@ Problems with `docs/fvp-rules.md`, parked instead of fixed on the spot. Claude a
 - No step covers a task finished as a side effect of another (line 73 by line 74). +
 - Step 14 does not say whose list edits it means, so when the user's dots get committed is unclear. ++
 - No step says to read the list from disk at the start. A session reported zero dots twice. ++
-- No step says when Claude may ask the user something (the OK task, the delete set). ++
+- No step says when Claude may ask the user something (the OK task, the delete set, the Alt+Enter key). +++
 - Claude planned to mark `[x]` before doing the work, which breaks step 5. +
 - Step 6 compares against the last dotted task, which can sit far up the screen. +
 - No step lets the user redo the dotted chain when it no longer fits (`fv-faq.md:162`). +
+- Claude names the next task by its line number. The user wants the task's text. +
+- Step 6 waits for the user to dot after each task. The user's default: Claude goes on through the dots unless the user asks about something. +
