@@ -2,6 +2,8 @@
 
 Rules for `docs/fvp-list.md`, from Mark Forster's Final Version Perfected.
 
+Claude never edits this file unless the user asks.
+
 Sources: tag `board-before-fvp`, folder `docs/dev-workflow-ideation/ref/`.
 
 Marks:

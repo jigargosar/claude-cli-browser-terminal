@@ -5,8 +5,8 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Reply length investigation, outside the project and exempt from Workflow: measurements, causes and proposed CLAUDE.md changes are in `docs/reply-length-investigation.md`. Next: agree the changes, apply them, re-measure.
 - [ ] Resolve [Board-pending.md](Board-pending.md): new tasks, the open UX tasks below regrouped and clarified, and the naming. Then rewrite them here.
 - [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
-- [ ] Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
-- [ ] its finiky when switching between with clusy command name
+- [ ] All UX: Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
+- [ ] All UX: its finiky when switching between with clusy command name
 - [ ] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
 - [ ] maximizing either pane maybe not?
 - [ ] Drawing tilde on arrow.
@@ -15,28 +15,22 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Keep sent answers. Easy once response histories are stored.
 - [ ] Board visibility.
 - [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
-- [x] Research: tools comparable to this project. Found 2026-10-25: [claude-review](https://github.com/Ch00k/claude-review) (browser, comment on a markdown file, threads back to Claude Code), [markdown-claude-review](https://github.com/MagicMicky/markdown-claude-review) (VS Code, comment threads over MCP), [herdr-web-ui #511](https://github.com/devswha/herdr-web-ui/issues/511) (proposal: comment on a selection of an agent's reply, sent with the next message), [AI DIAL Chat #9093](https://github.com/epam/ai-dial-chat/pull/9093) (Reply on selected text). None found pairs a live Claude Code terminal with its last reply as a reader page.
 - [ ] Draft the project's values and add them to `CLAUDE.md`. They say why we build what we build, beside what we build and how.
 - [ ] List the next goals under "Next Blaze" in `CLAUDE.md`.
-- [ ] ccw reliability: review the project, verify each issue below, then fix the pragmatic ones. Found 2026-10-24.
-- [x] Review: read `server.mjs` fully: hook, `startSession`, `followTranscript`, socket handling.
-- [x] Review: read `web/main.js`, `web/socket.js`, `web/views/last.js`: the replay path.
-- [ ] Review: live test of the missing folder: `pnpm test` in a new temp folder, haiku. Blocked: the first task of this slice says Claude never starts `claude` itself.
-- [x] Review: hook docs (code.claude.com/docs/en/hooks): SessionStart sources are `startup`, `resume`, `clear`, `compact`, `fork`. Every hook gets `transcript_path`. A `CwdChanged` hook exists, documented for Claude running `cd`.
-- [x] Review: build config: `vite.config.mjs` sets no `build.sourcemap`, so Vite's default applies: no source maps. sirv serves `dist/` uncompressed.
-- [x] Review: write each finding into its issue below, labeled verified or inference.
-- [ ] No replies in a folder's first session. The transcript folder `~/.claude/projects/<folder>/` does not exist yet when `followTranscript` starts, and chokidar 5.0.0 never fires `add` for a file in a missing folder. Verified in isolation and by the folder's creation time; the code (`server.mjs:123`) watches only the file. Not yet reproduced live. Fix idea: create the parent folder before the watch.
-- [ ] `/cd` moves the transcript to the new folder's `~/.claude/projects/` folder. No new path reaches the server, so it tails the old, deleted file and replies stop. Seen live. Verified: the server hooks only SessionStart, whose sources do not include a folder change. Unknown: whether `/cd` fires `CwdChanged`. Fix idea: also post the path from `CwdChanged` or UserPromptSubmit; `startSession` already ignores a repeated path.
-- [ ] Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
-- [ ] Too few logs to trace a failure. Verified: `.ccw-cache/reload.log` already has tab connected, refused and closed. Missing: the session path received (console only), tail started, lines read, items sent.
-- [ ] A transcript line that fails `JSON.parse` in `itemsOf` throws and crashes the server. Verified in code. Inference: rare, a line could be read half written.
-- [ ] Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
-- [ ] Source maps: none (see review). Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
-- [ ] Compression: none (see review). Inference: not worth it on localhost.
-- [ ] Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
-- [ ] (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
-- [ ] Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
-- [ ] `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
+- [ ] ccw reliability: review the project, verify each ccw reliability issue, then fix the pragmatic ones. Found 2026-10-24.
+- [ ] ccw reliability: Live test of "No replies in a folder's first session": `pnpm test` in a new temp folder, haiku.
+- [ ] ccw reliability: No replies in a folder's first session. The transcript folder `~/.claude/projects/<folder>/` does not exist yet when `followTranscript` starts, and chokidar 5.0.0 never fires `add` for a file in a missing folder. Verified in isolation and by the folder's creation time; the code (`server.mjs:123`) watches only the file. Not yet reproduced live. Fix idea: create the parent folder before the watch.
+- [ ] ccw reliability: `/cd` moves the transcript to the new folder's `~/.claude/projects/` folder. No new path reaches the server, so it tails the old, deleted file and replies stop. Seen live. Verified: the server hooks only SessionStart, whose sources do not include a folder change. Unknown: whether `/cd` fires `CwdChanged`. Fix idea: also post the path from `CwdChanged` or UserPromptSubmit; `startSession` already ignores a repeated path.
+- [ ] ccw reliability: Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
+- [ ] ccw reliability: Too few logs to trace a failure. Verified: `.ccw-cache/reload.log` already has tab connected, refused and closed. Missing: the session path received (console only), tail started, lines read, items sent.
+- [ ] ccw reliability: A transcript line that fails `JSON.parse` in `itemsOf` throws and crashes the server. Verified in code. Inference: rare, a line could be read half written.
+- [ ] ccw reliability: Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
+- [ ] ccw reliability: Source maps: none, `vite.config.mjs` sets no `build.sourcemap`. Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
+- [ ] ccw reliability: Compression: none, sirv serves `dist/` uncompressed. Inference: not worth it on localhost.
+- [ ] Adhoc testing: Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
+- [ ] Adhoc testing: (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
+- [ ] Adhoc testing: Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
+- [ ] Adhoc testing: `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
 - [ ] Explore the conversation patterns in `docs/conversation-exploration/transcript.txt`, and how this project can use them.
 - [ ] Workflow: try Forster's FVP on the board. Proposal saved in `dev-workflow-ideation/fvp-workflow-proposal.md`.
 - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
@@ -54,24 +48,26 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Root cause of long replies: [reply-length-rca.md](reply-length-rca.md). Discussed with another AI instance.
 - [ ] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
 - [ ] Analyze the view implementation: does it need an upgrade, can it be simplified, what are the tradeoffs.
-- [ ] The popup follows the selected text when the page scrolls.
-- [ ] Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
-- [ ] Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
-- [ ] Submit: Ctrl+Enter clashes with right Ctrl, which is set to Handy (STT). Pick another key.
-- [ ] Keys spike (`docs/mockups/keys.html`). Low priority.
-- [ ] The reader pane is fully keyboard driven: every mouse action in it also has a key.
-- [ ] Global shortcuts: keys that work from either pane, such as sending the comments from the terminal pane.
-- [ ] Sentence select mode: a key marks each sentence in the reader pane with a letter. Typing a letter picks that sentence and starts the same flow as a click on it.
-- [ ] Esc on a picked sentence clears the pick and its popup. Nothing is lost, since no comment exists yet.
-- [ ] Atkinson Hyperlegible fonts
-- [ ] Tooltip on highlighted text
-- [ ] Click to unhighlight, with one color for commented text and another for not-yet-commented text
-- [ ] More options in the popup, beside Reply and Done
-- [ ] Keep the highlights of what was sent to Claude
-- [ ] Reply history: browse earlier replies, not only the last one. Also fixes data-loss case 3: a new reply clears unsent comments ([plans/data-loss.md](plans/data-loss.md)).
-- [ ] Intermediate logs as collapsed blocks
-- [ ] Mods: explore which dialogs Claude shows (`docs/mods/`)
-- [ ] Comment on any document the way you comment on replies, starting with the board
-- [ ] Maximize the terminal pane or the reader pane
-- [ ] Bookmarks: bookmark a reply, perhaps also selected text in it
+- [ ] UX bug: The popup follows the selected text when the page scrolls.
+- [ ] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
+- [ ] UX keys: Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
+- [ ] UX keys: Submit: Ctrl+Enter clashes with right Ctrl, which is set to Handy (STT). Pick another key.
+- [ ] UX keys: Keys spike (`docs/mockups/keys.html`). Low priority.
+- [ ] UX keys: The reader pane is fully keyboard driven: every mouse action in it also has a key.
+- [ ] UX keys: Global shortcuts: keys that work from either pane, such as sending the comments from the terminal pane.
+- [ ] UX keys: Sentence select mode: a key marks each sentence in the reader pane with a letter. Typing a letter picks that sentence and starts the same flow as a click on it.
+- [ ] UX keys: Esc on a picked sentence clears the pick and its popup. Nothing is lost, since no comment exists yet.
+- [ ] UX polish: Atkinson Hyperlegible fonts
+- [ ] UX polish: Tooltip on highlighted text
+- [ ] UX polish: Click to unhighlight, with one color for commented text and another for not-yet-commented text
+- [ ] UX feature: More options in the popup, beside Reply and Done
+- [ ] UX feature: Keep the highlights of what was sent to Claude
+- [ ] UX feature: Reply history: browse earlier replies, not only the last one. Also fixes data-loss case 3: a new reply clears unsent comments ([plans/data-loss.md](plans/data-loss.md)).
+- [ ] UX feature: Intermediate logs as collapsed blocks
+- [ ] UX feature: Mods: explore which dialogs Claude shows (`docs/mods/`)
+- [ ] UX feature: Comment on any document the way you comment on replies, starting with the board
+- [ ] UX feature: Maximize the terminal pane or the reader pane
+- [ ] UX feature: Bookmarks: bookmark a reply, perhaps also selected text in it
 - [ ] Weed list
+- [ ] Popup: an OK button beside Reply and Done.
+- [ ] Delete the old docs in `docs/` (Board, Board-pending, archives, plans, void and the rest) and drop them from the CLAUDE.md Files list. Tag `board-before-fvp` keeps them.
