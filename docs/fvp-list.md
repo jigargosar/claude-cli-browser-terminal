@@ -36,7 +36,6 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
 - [.] Prune the task list: ruthlessly delete tasks, and combine similar ones into a paragraph. Most tasks move to the dark log. Only the user pushes entries there.
 - [ ] Reply length: agree and apply the rule changes in `docs/reply-length-investigation.md`, then re-measure a later session. Measured: TLDR lines are 17 percent and table rows 39 percent of all reply words.
-- [.] Board archive: put the archive files in their own folder, so other docs are not hidden among them. Update the Workflow rule.
 - [ ] Links in replies: a file or file:line link opens in the editor, not in the tab.
 - [ ] Links in replies never affect this tab: every link opens outside it, whatever its href. Cause found: the new-tab hook in `web/markdown.js` (commented out) matched only http(s) hrefs, so a relative link such as `web/main.js#L83` opened in the same tab. Fix idea: `target="_blank"` on every `<a>`, or catch every link click and `window.open` it.
 - [ ] Clear all: once comments survive a reload, a way to delete every comment on purpose. Why: a reload was the only way to delete all comments, so it was used as one. To decide: undo, or is a confirmation enough?
