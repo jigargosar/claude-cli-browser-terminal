@@ -13,6 +13,8 @@ To resume: read this section, then take the first open task.
 
 ## Tasks
 
+- [ ] Workflow: try Forster's FVP on the board. Proposal saved in `dev-workflow-ideation/fvp-workflow-proposal.md`.
+- [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
 - [ ] Prune the task list: ruthlessly delete tasks, and combine similar ones into a paragraph. Most tasks move to the dark log. Only the user pushes entries there.
 - [ ] Reply length: agree and apply the rule changes in `docs/reply-length-investigation.md`, then re-measure a later session. Measured: TLDR lines are 17 percent and table rows 39 percent of all reply words.
 - [ ] Board archive: put the archive files in their own folder, so other docs are not hidden among them. Update the Workflow rule.
