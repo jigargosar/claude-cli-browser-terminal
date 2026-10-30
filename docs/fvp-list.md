@@ -2,41 +2,41 @@
 
 Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 
-- [ ] Reply length investigation, outside the project and exempt from Workflow: measurements, causes and proposed CLAUDE.md changes are in `docs/reply-length-investigation.md`. Next: agree the changes, apply them, re-measure.
-- [ ] Resolve [Board-pending.md](Board-pending.md): new tasks, the open UX tasks below regrouped and clarified, and the naming. Then rewrite them here.
+- [.] Reply length investigation, outside the project and exempt from Workflow: measurements, causes and proposed CLAUDE.md changes are in `docs/reply-length-investigation.md`. Next: agree the changes, apply them, re-measure.
+- [.] Resolve [Board-pending.md](Board-pending.md): new tasks, the open UX tasks below regrouped and clarified, and the naming. Then rewrite them here.
 - [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
-- [ ] All UX: Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
-- [ ] All UX: its finiky when switching between with clusy command name
-- [ ] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
+- [.] All UX: Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
+- [.] All UX: its finiky when switching between with clusy command name
+- [.] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
 - [ ] maximizing either pane maybe not?
 - [ ] Drawing tilde on arrow.
 - [ ] z-index for the dialog.
-- [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
+- [.] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
 - [ ] Keep sent answers. Easy once response histories are stored.
 - [ ] Board visibility.
-- [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
-- [ ] Draft the project's values and add them to `CLAUDE.md`. They say why we build what we build, beside what we build and how.
+- [.] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
+- [.] Draft the project's values and add them to `CLAUDE.md`. They say why we build what we build, beside what we build and how.
 - [ ] List the next goals under "Next Blaze" in `CLAUDE.md`.
-- [ ] ccw reliability: review the project, verify each ccw reliability issue, then fix the pragmatic ones. Found 2026-10-24.
-- [ ] ccw reliability: Live test of "No replies in a folder's first session": `pnpm test` in a new temp folder, haiku.
-- [ ] ccw reliability: No replies in a folder's first session. The transcript folder `~/.claude/projects/<folder>/` does not exist yet when `followTranscript` starts, and chokidar 5.0.0 never fires `add` for a file in a missing folder. Verified in isolation and by the folder's creation time; the code (`server.mjs:123`) watches only the file. Not yet reproduced live. Fix idea: create the parent folder before the watch.
-- [ ] ccw reliability: `/cd` moves the transcript to the new folder's `~/.claude/projects/` folder. No new path reaches the server, so it tails the old, deleted file and replies stop. Seen live. Verified: the server hooks only SessionStart, whose sources do not include a folder change. Unknown: whether `/cd` fires `CwdChanged`. Fix idea: also post the path from `CwdChanged` or UserPromptSubmit; `startSession` already ignores a repeated path.
+- [.] ccw reliability: review the project, verify each ccw reliability issue, then fix the pragmatic ones. Found 2026-10-24.
+- [.] ccw reliability: Live test of "No replies in a folder's first session": `pnpm test` in a new temp folder, haiku.
+- [.] ccw reliability: No replies in a folder's first session. The transcript folder `~/.claude/projects/<folder>/` does not exist yet when `followTranscript` starts, and chokidar 5.0.0 never fires `add` for a file in a missing folder. Verified in isolation and by the folder's creation time; the code (`server.mjs:123`) watches only the file. Not yet reproduced live. Fix idea: create the parent folder before the watch.
+- [.] ccw reliability: `/cd` moves the transcript to the new folder's `~/.claude/projects/` folder. No new path reaches the server, so it tails the old, deleted file and replies stop. Seen live. Verified: the server hooks only SessionStart, whose sources do not include a folder change. Unknown: whether `/cd` fires `CwdChanged`. Fix idea: also post the path from `CwdChanged` or UserPromptSubmit; `startSession` already ignores a repeated path.
 - [ ] ccw reliability: Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
-- [ ] ccw reliability: Too few logs to trace a failure. Verified: `.ccw-cache/reload.log` already has tab connected, refused and closed. Missing: the session path received (console only), tail started, lines read, items sent.
-- [ ] ccw reliability: A transcript line that fails `JSON.parse` in `itemsOf` throws and crashes the server. Verified in code. Inference: rare, a line could be read half written.
-- [ ] ccw reliability: Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
-- [ ] ccw reliability: Source maps: none, `vite.config.mjs` sets no `build.sourcemap`. Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
-- [ ] ccw reliability: Compression: none, sirv serves `dist/` uncompressed. Inference: not worth it on localhost.
+- [.] ccw reliability: Too few logs to trace a failure. Verified: `.ccw-cache/reload.log` already has tab connected, refused and closed. Missing: the session path received (console only), tail started, lines read, items sent.
+- [.] ccw reliability: A transcript line that fails `JSON.parse` in `itemsOf` throws and crashes the server. Verified in code. Inference: rare, a line could be read half written.
+- [.] ccw reliability: Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
+- [.] ccw reliability: Source maps: none, `vite.config.mjs` sets no `build.sourcemap`. Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
+- [.] ccw reliability: Compression: none, sirv serves `dist/` uncompressed. Inference: not worth it on localhost.
 - [ ] Adhoc testing: Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
 - [ ] Adhoc testing: (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
 - [ ] Adhoc testing: Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
 - [ ] Adhoc testing: `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
 - [ ] Explore the conversation patterns in `docs/conversation-exploration/transcript.txt`, and how this project can use them.
-- [ ] Workflow: try Forster's FVP on the board. Proposal saved in `dev-workflow-ideation/fvp-workflow-proposal.md`.
+- [.] Workflow: try Forster's FVP on the board. Proposal saved in `dev-workflow-ideation/fvp-workflow-proposal.md`.
 - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
-- [ ] Prune the task list: ruthlessly delete tasks, and combine similar ones into a paragraph. Most tasks move to the dark log. Only the user pushes entries there.
+- [.] Prune the task list: ruthlessly delete tasks, and combine similar ones into a paragraph. Most tasks move to the dark log. Only the user pushes entries there.
 - [ ] Reply length: agree and apply the rule changes in `docs/reply-length-investigation.md`, then re-measure a later session. Measured: TLDR lines are 17 percent and table rows 39 percent of all reply words.
-- [ ] Board archive: put the archive files in their own folder, so other docs are not hidden among them. Update the Workflow rule.
+- [.] Board archive: put the archive files in their own folder, so other docs are not hidden among them. Update the Workflow rule.
 - [ ] Links in replies: a file or file:line link opens in the editor, not in the tab.
 - [ ] Links in replies never affect this tab: every link opens outside it, whatever its href. Cause found: the new-tab hook in `web/markdown.js` (commented out) matched only http(s) hrefs, so a relative link such as `web/main.js#L83` opened in the same tab. Fix idea: `target="_blank"` on every `<a>`, or catch every link click and `window.open` it.
 - [ ] Clear all: once comments survive a reload, a way to delete every comment on purpose. Why: a reload was the only way to delete all comments, so it was used as one. To decide: undo, or is a confirmation enough?
@@ -44,14 +44,14 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [ ] Delete a comment explicitly. Today the only way is to empty its text. To decide: undo, or is a confirmation enough?
 - [ ] Rewind: decide what the reader pane and the comments do on a rewind. Today the pane keeps the last reply (CLAUDE.md, Known issues).
-- [ ] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
+- [.] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
 - [ ] Root cause of long replies: [reply-length-rca.md](reply-length-rca.md). Discussed with another AI instance.
-- [ ] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
+- [.] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
 - [ ] Analyze the view implementation: does it need an upgrade, can it be simplified, what are the tradeoffs.
 - [ ] UX bug: The popup follows the selected text when the page scrolls.
 - [ ] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
 - [ ] UX keys: Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
-- [ ] UX keys: Submit: Ctrl+Enter clashes with right Ctrl, which is set to Handy (STT). Pick another key.
+- [.] UX keys: Submit: Ctrl+Enter clashes with right Ctrl, which is set to Handy (STT). Pick another key.
 - [ ] UX keys: Keys spike (`docs/mockups/keys.html`). Low priority.
 - [ ] UX keys: The reader pane is fully keyboard driven: every mouse action in it also has a key.
 - [ ] UX keys: Global shortcuts: keys that work from either pane, such as sending the comments from the terminal pane.
@@ -70,4 +70,6 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] UX feature: Bookmarks: bookmark a reply, perhaps also selected text in it
 - [ ] Weed list
 - [ ] Popup: an OK button beside Reply and Done.
-- [ ] Delete the old docs in `docs/` (Board, Board-pending, archives, plans, void and the rest) and drop them from the CLAUDE.md Files list. Tag `board-before-fvp` keeps them.
+- [.] Delete the old docs in `docs/` (Board, Board-pending, archives, plans, void and the rest) and drop them from the CLAUDE.md Files list. Tag `board-before-fvp` keeps them.
+- [.] cleanup of all old pre fvp.
+- [ ] the last dotted item is not visible, therefor making the comparision difficult.
