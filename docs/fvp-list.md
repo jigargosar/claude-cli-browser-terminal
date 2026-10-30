@@ -67,3 +67,4 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] One key per mode (default, accept edits, plan). Claude Code has no set-mode action, only `chat:cycleMode` (Shift+Tab), so the page would send N Shift+Tabs and needs the current mode.
 - [ ] UX keys: Submit: Alt+Enter now sends the comments, beside Ctrl+Enter. Manual test that Chrome passes Alt+Enter to the page. If it fails, delete it from `web/views/comments.js`.
 - [ ] `web/views/comments.js` comments link `docs/plans/data-loss.md`, which is gone. Point them at tag `board-before-fvp` or drop the links.
+- [ ] Friction file: rename `docs/fvp-friction.md` properly, write down its purpose and how to use it, and link it from the places that need it (none link it today: not `CLAUDE.md`, the list or the rules).
