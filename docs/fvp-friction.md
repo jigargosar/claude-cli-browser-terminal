@@ -12,3 +12,4 @@ Problems with `docs/fvp-rules.md`, parked instead of fixed on the spot. Claude a
 - No step lets the user redo the dotted chain when it no longer fits (`fv-faq.md:162`). +
 - Claude names the next task by its line number. The user wants the task's text. +
 - Step 6 waits for the user to dot after each task. The user's default: Claude goes on through the dots unless the user asks about something. +
+- Step 1 is too strong: "never rewords or groups other lines". Rewording or merging tasks is fine when pragmatic, with the user's explicit permission and the change shown first. "Group" is the wrong word: the case is merging two tasks into one, or marking both done. +
