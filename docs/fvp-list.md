@@ -26,7 +26,6 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [.] ccw reliability: A transcript line that fails `JSON.parse` in `itemsOf` throws and crashes the server. Verified in code. Inference: rare, a line could be read half written.
 - [.] ccw reliability: Startup print of install path, cwd and version, so it is clear which copy runs. Deferred.
 - [.] ccw reliability: Source maps: none, `vite.config.mjs` sets no `build.sourcemap`. Inference: a page error's stack points into the minified bundle. Fix idea: `build.sourcemap: true`.
-- [.] ccw reliability: Compression: none, sirv serves `dist/` uncompressed. Inference: not worth it on localhost.
 - [ ] Adhoc testing: Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
 - [ ] Adhoc testing: (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
 - [ ] Adhoc testing: Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
