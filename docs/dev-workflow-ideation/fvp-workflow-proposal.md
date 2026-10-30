@@ -1,6 +1,6 @@
 # Proposal: Forster's FVP as the board workflow
 
-Status: proposal, saved 2026-10-30. Rules 1-4 of FVP are from Claude's memory, not a source. Verify them before use.
+Status: proposal, saved 2026-10-30. All FVP rules are quoted from Forster's sources, verified 2026-10-30.
 
 ## Revised root
 
@@ -20,13 +20,13 @@ Recommendation: FVP, the single-list system.
 
 ## FVP rules
 
-Rules 5-9 are verified from Forster's AF rules page and FV FAQ. Rules 1-4 are from memory, because the 2015 FVP post is offline.
+Rules 1-5 are quoted from Forster's 2015 FVP post (Wayback copy). Rules 6-9 are from his AF rules page and FV FAQ.
 
-1. Dot the first open task.
-2. Read down. Ask "What do I want to do more than <last dotted task>?" Dot each winner. That is the chain.
-3. Do the last dotted task.
-4. Scan again from that task down, against the now-last dotted task. Do the last dot. No dots left: back to step 1.
-5. Finished: cross it off. Not finished: cross it off and re-enter it at the end.
+1. "The chain always starts with the first unactioned task on the list. Mark this task with a dot to show that it's now been preselected. Don't take any action on the task at this stage."
+2. "You move through the list in order until you come to a task which you want to do more than [the benchmark]. This task is now selected by marking it with a dot and it becomes the benchmark for the next task." The question is "What do I want to do more than x?"
+3. The last dotted task "represents the task you most want to do at the moment. Do it."
+4. Next, ask "What do I want to do more than [the previous dotted task]?" again, "but you check only the tasks which come after the task you have just done." "Once you have worked your way back to the first task on the list and done it (this may never happen!), you take the next unactioned task as your root task."
+5. "you don't have to finish the task - only do some work on it. Of course if you do finish the task that's great, but if you don't then all you have to do is re-enter the task at the end of the list."
 6. New tasks go at the end, without evaluation.
 7. Urgent: "Just add it to the end of the list like any other task. If the task is so urgent that it can't wait…, put a dot in front of it and do it as soon as you have finished the task you are currently working on."
 8. Interruption: "deal with it and then return to where you were on the list."
@@ -91,5 +91,6 @@ Edge cases found in review:
 
 ## Sources
 
+- [The Final Version Perfected (FVP), 2015, Wayback copy](http://web.archive.org/web/20211006123422/http://markforster.squarespace.com/blog/2015/5/21/the-final-version-perfected-fvp.html)
 - [Autofocus rules](http://markforster.squarespace.com/autofocus-system/)
 - [Final Version FAQs](http://markforster.squarespace.com/final-version-faqs/)
