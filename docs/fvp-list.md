@@ -70,6 +70,11 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] UX feature: Bookmarks: bookmark a reply, perhaps also selected text in it
 - [ ] Weed list
 - [ ] Popup: an OK button beside Reply and Done.
-- [.] Delete the old docs in `docs/` (Board, Board-pending, archives, plans, void and the rest) and drop them from the CLAUDE.md Files list. Tag `board-before-fvp` keeps them.
+- [x] Delete the old docs in `docs/` (Board, Board-pending, archives, plans, void and the rest) and drop them from the CLAUDE.md Files list. Tag `board-before-fvp` keeps them.
 - [x] cleanup of all old pre fvp.
 - [ ] the last dotted item is not visible, therefor making the comparision difficult.
+- [ ] Line numbers in code blocks.
+- [ ] The user's prompt stays sticky at the top of the reply.
+- [ ] Inference is easy to tell apart from fact in a reply.
+- [ ] Claude's thinking shows in the reply pane, toggleable.
+- [ ] One key per mode (default, accept edits, plan). Claude Code has no set-mode action, only `chat:cycleMode` (Shift+Tab), so the page would send N Shift+Tabs and needs the current mode.

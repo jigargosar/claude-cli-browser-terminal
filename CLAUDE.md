@@ -45,8 +45,6 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - `docs/mockups/`: standalone HTML mockups that link the real stylesheets and open without a build. A mockup is approved before the page implements it.
 - `docs/mods/`: the plan and research for capturing each dialog claude shows and answering it in the browser.
 - `docs/focus-indicator.md`: how the page shows which pane gets the keys.
-- `docs/mode-keys-research.md`: research on one key per mode, instead of cycling with Shift+Tab.
-- `docs/Brain-dump-2026-10-13.md`: the user's verbatim brain dump. Some board tasks come from it.
 - `docs/Wings.md`: the user's wishes. Only the user writes here. Claude never does.
 
 ## Rules
