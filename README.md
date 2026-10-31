@@ -11,7 +11,7 @@ This package is not on npm. Every release is a tarball in [published-versions/](
 1. Install it:
 
    ```
-   pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.6.tgz
+   pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.7.tgz
    ```
 
 2. Add a script to the project's `package.json`:
