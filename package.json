@@ -20,11 +20,11 @@
     "watch:about": "echo Rebuilds dist/ on every change in web/. Run it first, in its own terminal. Why: scripts/build-watch/README.md",
     "ccw": "node scripts/build-watch/refuse-start-without-build-watch.mjs && node server.mjs",
     "ccw:about": "echo Starts a session. Refuses to start without pnpm watch, so the page is never stale. Why: scripts/build-watch/README.md",
-    "release:about": "echo Needs entries under Unreleased in CHANGELOG.md. Builds, bumps the patch version, stamps the changelog, commits and tags, packs into published-versions/, pushes.",
-    "release": "vite build && pnpm version patch && pnpm pack --pack-destination published-versions && pnpm pack --out published-versions/claude-cli-browser-terminal.tgz && git push --follow-tags",
+    "release:about": "echo Needs entries under Unreleased in CHANGELOG.md. Builds, bumps the patch version, stamps the changelog, packs one tarball into published-versions/, commits it all with a tag, pushes.",
+    "release": "vite build && pnpm version patch && git push --follow-tags",
     "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku",
     "preversion": "kacl prerelease",
-    "version": "kacl release && git add CHANGELOG.md"
+    "version": "kacl release && pnpm pack --pack-destination published-versions && git add CHANGELOG.md published-versions"
   },
   "keywords": [],
   "author": "",
@@ -73,6 +73,7 @@
     "marked-highlight": "2.2.4",
     "openskill": "5.0.1",
     "puppeteer-core": "25.14.0",
+    "replace-in-file": "9.0.0",
     "tabbable": "6.5.0",
     "vite": "8.3.4"
   }

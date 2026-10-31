@@ -3,6 +3,5 @@ node_modules
 .cc-web/replies
 .claude/settings.local.json
 dist
-published-versions
 
 docs/mods/raw/

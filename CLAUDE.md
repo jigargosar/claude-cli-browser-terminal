@@ -51,8 +51,8 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - No task may start before it is on `docs/fvp-list.md`.
 - Dev: `pnpm watch` in one terminal, then `pnpm ccw`; ccw refuses without the watch. Read `scripts/build-watch/README.md` when page changes don't show, or before touching the watch or ccw scripts.
 - Each change a user would notice adds one line under "Unreleased" in `CHANGELOG.md`, in the same commit. Format: Keep a Changelog, checked by `kacl`.
-- Release only with `pnpm release`, after a manual test. It builds, bumps the patch version, moves "Unreleased" under the new version (commit and tag), packs into `published-versions/`, and pushes. It stops if "Unreleased" is empty. Never pack by hand.
-- Other projects vendor the tarball: `README.md`, section "Use it in another project".
+- Release only with `pnpm release`, after a manual test. It builds, bumps the patch version, moves "Unreleased" under the new version, packs one tarball into `published-versions/`, commits it all with a tag, and pushes. It stops if "Unreleased" is empty. Never pack by hand.
+- `published-versions/` is committed. Other projects install a tarball by its GitHub URL: `README.md`, section "Use it in another project".
 - Testing in a browser: use `pnpm test` (port 7682, Haiku model). The user's live session runs on any other port, because the server picks a free one unless `CC_WEB_PORT` is set. Typing there types into their real Claude.
 - Claude tests the page itself with the `browser-test` skill (puppeteer-core over CDP, its own browser profile). Never attach to the user's browser. After the tab closes, a new socket gets the serialized screen, so a script can read the result from the server.
 - Any test that starts `claude` uses `--model haiku`. Never another model.

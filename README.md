@@ -6,28 +6,27 @@ The command is `ccw`. It runs the same `claude` command you would run in a termi
 
 ## Use it in another project
 
-This package is not on npm. Each project keeps its own copy of the tarball, so any clone installs it without this repo.
+This package is not on npm. Every release is a tarball in [published-versions/](https://github.com/jigargosar/claude-cli-browser-terminal/tree/main/published-versions). Take the highest version there.
 
-1. Copy the newest `claude-cli-browser-terminal-<version>.tgz` from this repo's `published-versions/` into the project's `vendor/` folder.
-2. Install it: `pnpm add -D ./vendor/claude-cli-browser-terminal-<version>.tgz`
-3. Add a script to the project's `package.json`: `"ccw": "ccw"`
-4. Commit the tarball, `package.json` and the lockfile.
-5. Start a session: `pnpm ccw`. Flags pass through to `claude`, for example `pnpm ccw --model sonnet`.
+1. Install it:
+
+   ```
+   pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-<version>.tgz
+   ```
+
+2. Add a script to the project's `package.json`:
+
+   ```json
+   "scripts": { "ccw": "ccw" }
+   ```
+
+3. Start a session: `pnpm ccw`. Flags pass through to `claude`, for example `pnpm ccw --model sonnet`.
 
 `ccw` opens the session in the browser. Claude starts when that tab opens. Closing the tab only disconnects: open the URL again to get back. The session ends when claude exits.
 
-Optional: add one line to the project's `CLAUDE.md`, so its Claude knows what the tarball is:
-
-```
-- `vendor/claude-cli-browser-terminal-*.tgz` is `ccw`, the browser view for Claude Code (`pnpm ccw`). To update it, follow `node_modules/claude-cli-browser-terminal/README.md`, section "Update".
-```
-
 ## Update
 
-1. Copy the newest tarball from this repo's `published-versions/` into `vendor/`.
-2. Install it: `pnpm add -D ./vendor/claude-cli-browser-terminal-<version>.tgz`
-3. Delete the old tarball from `vendor/`.
-4. What changed: `node_modules/claude-cli-browser-terminal/CHANGELOG.md`.
+Run the install command again with the newer version. What changed: [CHANGELOG.md](https://github.com/jigargosar/claude-cli-browser-terminal/blob/main/CHANGELOG.md).
 
 ## Settings and files
 
@@ -39,4 +38,4 @@ Optional: add one line to the project's `CLAUDE.md`, so its Claude knows what th
 
 - `pnpm watch` in one terminal, then `pnpm ccw` in another. See `scripts/build-watch/README.md`.
 - Each change a user would notice adds one line under "Unreleased" in `CHANGELOG.md`, in the same commit.
-- `pnpm release` builds, bumps the patch version, moves "Unreleased" under the new version, commits and tags, packs into `published-versions/`, and pushes. It stops if "Unreleased" is empty.
+- `pnpm release` builds, bumps the patch version, moves "Unreleased" under the new version, packs one tarball into `published-versions/`, commits it all with a tag, and pushes. It stops if "Unreleased" is empty.
