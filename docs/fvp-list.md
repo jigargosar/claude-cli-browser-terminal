@@ -54,3 +54,8 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] `web/views/comments.js` comments link `docs/plans/data-loss.md`, which is gone. Point them at tag `board-before-fvp` or drop the links.
 - [.] Friction file: rename `docs/fvp-friction.md` properly, write down its purpose and how to use it, and link it from the places that need it (none link it today: not `CLAUDE.md`, the list or the rules).
 - [.] figure out how to release and how will other projects will consume it.
+- [ ] Weed duplicates: each pair below is one task twice. Discuss how to merge them first. Pairs: Atkinson fonts (lines "Change the fonts…" and "UX polish: Atkinson…"), keys spike ("All UX: Spike…" and "UX keys: Keys spike"), intermediate logs ("Capture all intermediate logs…" and "UX feature: Intermediate logs…"), more popup options (the first "All UX" line and "UX feature: More options…").
+- [ ] Links in replies: decide the fate of the commented-out new-tab hook in `web/markdown.js:31-40`. Today every link renders as its text only (`web/markdown.js:24-26`), so no link can leave the tab, and the hook is dead code. Options: delete it, or bring links back with every link opening outside the tab.
+- [ ] Dead doc links: review every link to a deleted doc. Found: this list's "Reply history" line (`plans/data-loss.md`), `web/markdown.js:23` (`docs/plans/data-loss.md`), `web/markdown.js:31` (`docs/Board-pending.md`). The `comments.js` task above covers `web/views/comments.js:184` and `:191`. Also this list's FVP Workflow line gives `dev-workflow-ideation/…` without the `docs/` prefix.
+- [.] weed dups
+- [ ] weed useless
