@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Font duel: which terminal reads better?</title>
+<style>
+  :root {
+    --bench: #22252c;
+    --well: #16181d;
+    --ink: #dfe3ea;
+    --muted: #8d95a1;
+    --line: #353a44;
+    --pick: #cfd9ea;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; }
+  body { display: flex; flex-direction: column; gap: 12px; padding: 14px; background: var(--bench); color: var(--ink); font: 15px/1.4 system-ui, sans-serif; }
+  header { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; }
+  h1 { margin: 0; font-size: 24px; font-weight: 500; }
+  .status { color: var(--muted); }
+  .meter { width: 160px; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; align-self: center; }
+  .meter > div { height: 100%; background: var(--pick); transition: width 0.3s; }
+  header .spacer { flex: 1; }
+  button { font: inherit; color: var(--ink); background: none; border: 1px solid var(--line); border-radius: 5px; padding: 6px 12px; cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button:focus-visible { outline: 2px solid var(--pick); outline-offset: 2px; }
+  button.primary { background: var(--pick); color: var(--well); border-color: var(--pick); font-weight: 600; }
+  /* Two narrow panes next to each other in the middle, so the eyes travel little between them. */
+  .duel { flex: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 700px)); justify-content: center; gap: 6px; min-height: 0; }
+  .side { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .term { position: relative; flex: 1; min-height: 280px; background: var(--well); border-radius: 6px; border: 2px solid transparent; cursor: pointer; }
+  .term > .host { position: absolute; inset: 8px; overflow: hidden; }
+  .term:hover { border-color: var(--line); }
+  .actions { display: flex; gap: 8px; }
+  .actions .primary { flex: 1; }
+  .tie { display: flex; justify-content: center; }
+  body.done .tie { display: none; }
+  #results { display: none; }
+  body.done .duel { display: none; }
+  body.done #results { display: grid; grid-template-columns: minmax(320px, 1fr) 1.4fr; gap: 18px; flex: 1; min-height: 0; }
+  #results ol { margin: 0; padding-left: 22px; }
+  #results li { margin-bottom: 6px; }
+  #results h2 { margin: 0 0 8px; font-size: 18px; font-weight: 500; }
+  #results code { color: var(--pick); }
+  #results .term { cursor: default; }
+  .note { color: var(--muted); font-size: 13px; }
+  @media (max-width: 1000px) { .duel, body.done #results { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Which side reads better?</h1>
+  <span class="status" id="status"></span>
+  <div class="meter" title="How sure the test is about the winner"><div id="meter"></div></div>
+  <span class="status" id="sure"></span>
+  <span class="spacer"></span>
+  <span class="status">Size, both sides</span>
+  <button id="size-down" aria-label="Smaller text">−</button>
+  <span id="size"></span>
+  <button id="size-up" aria-label="Larger text">+</button>
+  <button id="show-results">See results</button>
+  <button id="restore" hidden>Restore dropped fonts</button>
+  <button id="restart">Start over</button>
+</header>
+
+<main class="duel">
+  <section class="side">
+    <div class="term" id="term-left"></div>
+    <div class="actions">
+      <button class="primary" id="pick-left">Left reads better (←)</button>
+      <button id="drop-left">Drop this font</button>
+    </div>
+  </section>
+  <section class="side">
+    <div class="term" id="term-right"></div>
+    <div class="actions">
+      <button class="primary" id="pick-right">Right reads better (→)</button>
+      <button id="drop-right">Drop this font</button>
+    </div>
+  </section>
+</main>
+<div class="tie"><button id="tie">Can't tell them apart (↓)</button></div>
+
+<section id="results">
+  <div>
+    <h2>Top five</h2>
+    <ol id="top"></ol>
+    <h2>Each setting on its own</h2>
+    <div id="dims"></div>
+    <p class="note">Ratings come from your picks only. Each pick rates the font and text weight that differ between the two sides. Size is yours to set.</p>
+    <div class="actions"><button class="primary" id="keep-picking">Keep picking</button></div>
+  </div>
+  <div class="side">
+    <div class="note" id="winner-label"></div>
+    <div class="term" id="term-winner"></div>
+  </div>
+</section>
+
+<script type="module" src="./font-duel.js"></script>
+</body>
+</html>

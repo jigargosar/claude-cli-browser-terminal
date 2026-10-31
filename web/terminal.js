@@ -4,14 +4,20 @@ import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
 import { WebglAddon } from "@xterm/addon-webgl";
 import { Unicode11Addon } from "@xterm/addon-unicode11";
+import "@fontsource/atkinson-hyperlegible-mono/300.css";
+import "@fontsource/atkinson-hyperlegible-mono/700.css";
+
+// Atkinson Hyperlegible Mono at 300, picked in docs/mockups/font-grid.html. The page waits for both faces, because
+// xterm measures the cell size once, and the first columns and rows must be the real ones (CLAUDE.md, Decision 1.2).
+await Promise.all([document.fonts.load('300 14px "Atkinson Hyperlegible Mono"'), document.fonts.load('700 14px "Atkinson Hyperlegible Mono"')]);
 
 // The Slice 5 look (448568e): xterm defaults on #16181d (--term-bg in base.css).
 const term = new Terminal({
   allowProposedApi: true,
   cursorBlink: true,
-  fontFamily: "Cascadia Mono, Consolas, monospace",
+  fontFamily: '"Atkinson Hyperlegible Mono", Consolas, monospace',
   fontSize: 14,
-  fontWeight: "normal",
+  fontWeight: "300",
   lineHeight: 1,
   theme: { background: "#16181d" },
 });

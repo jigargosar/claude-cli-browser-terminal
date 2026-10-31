@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terminal fonts, all at once</title>
+<style>
+  :root { --bench: #22252c; --well: #16181d; --ink: #dfe3ea; --muted: #8d95a1; --line: #353a44; --pick: #cfd9ea; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 12px; background: var(--bench); color: var(--ink); font: 15px/1.4 system-ui, sans-serif; }
+  header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  header .gap { width: 18px; }
+  .muted { color: var(--muted); }
+  button { font: inherit; color: var(--ink); background: none; border: 1px solid var(--line); border-radius: 5px; padding: 4px 11px; cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button:focus-visible { outline: 2px solid var(--pick); outline-offset: 2px; }
+  button[aria-pressed="true"] { background: var(--pick); color: var(--well); border-color: var(--pick); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(560px, 1fr)); gap: 12px; }
+  figure { margin: 0; }
+  figcaption { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .term { position: relative; height: 270px; background: var(--well); border-radius: 6px; }
+  /* xterm sits in an absolutely placed host, so its size never grows the box and refits in a loop. */
+  .term > .host { position: absolute; inset: 8px; overflow: hidden; }
+  #dropped:empty { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <span class="muted">Size</span>
+  <button id="size-down" aria-label="Smaller text">−</button>
+  <span id="size"></span>
+  <button id="size-up" aria-label="Larger text">+</button>
+  <span class="gap"></span>
+  <span class="muted">Weight</span>
+  <span id="weights"></span>
+  <span class="gap"></span>
+  <span class="muted">Text</span>
+  <span id="samples"></span>
+</header>
+<div class="grid" id="grid"></div>
+<p id="dropped"></p>
+<script type="module" src="./font-grid.js"></script>
+</body>
+</html>

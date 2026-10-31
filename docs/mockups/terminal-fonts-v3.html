@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: compare two terminal fonts</title>
+<link rel="stylesheet" href="../../node_modules/@xterm/xterm/css/xterm.css">
+<style>
+  :root {
+    --bench: #22252c;   /* page around the panes */
+    --well: #16181d;    /* terminal background, as in web/terminal.js */
+    --ink: #dfe3ea;
+    --muted: #8d95a1;
+    --line: #353a44;
+    --pick: #cfd9ea;    /* chosen option */
+    --pick-ink: #16181d;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 14px; background: var(--bench); color: var(--ink); font: 14px/1.4 system-ui, sans-serif; }
+  .side { display: flex; flex-direction: column; min-width: 0; gap: 10px; }
+  .side h2 { margin: 0; font-size: 26px; font-weight: 400; line-height: 1.1; letter-spacing: -0.01em; }
+  .warn { color: #f0b46b; font-size: 13px; min-height: 18px; }
+  .controls { display: grid; grid-template-columns: max-content 1fr; gap: 6px 12px; align-items: center; }
+  .controls > span { color: var(--muted); }
+  .opts { display: flex; flex-wrap: wrap; gap: 4px; }
+  .opts input { position: absolute; opacity: 0; pointer-events: none; }
+  .opts label { padding: 4px 10px; border: 1px solid var(--line); border-radius: 4px; cursor: pointer; user-select: none; }
+  .opts label:hover { border-color: var(--muted); }
+  .opts input:checked + label { background: var(--pick); color: var(--pick-ink); border-color: var(--pick); }
+  .opts input:focus-visible + label { outline: 2px solid var(--pick); outline-offset: 2px; }
+  .term { flex: 1; min-height: 300px; padding: 8px; background: var(--well); border-radius: 6px; }
+  @media (max-width: 1100px) { body { grid-template-columns: 1fr; height: auto; } .term { height: 420px; flex: none; } }
+</style>
+</head>
+<body>
+<section class="side" id="left"></section>
+<section class="side" id="right"></section>
+
+<script src="../../node_modules/@xterm/xterm/lib/xterm.js"></script>
+<script src="../../node_modules/@xterm/addon-fit/lib/addon-fit.js"></script>
+<script src="../../node_modules/@xterm/addon-webgl/lib/addon-webgl.js"></script>
+<script>
+  const FONTS = [
+    { name: "Cascadia Mono", label: "Cascadia Mono (today)", pkg: null },
+    { name: "Atkinson Hyperlegible Mono", label: "Atkinson Hyperlegible Mono", pkg: "atkinson-hyperlegible-mono" },
+    { name: "JetBrains Mono", label: "JetBrains Mono", pkg: "jetbrains-mono" },
+    { name: "Geist Mono", label: "Geist Mono", pkg: "geist-mono" },
+    { name: "IBM Plex Mono", label: "IBM Plex Mono", pkg: "ibm-plex-mono" },
+    { name: "Source Code Pro", label: "Source Code Pro", pkg: "source-code-pro" },
+  ];
+  const SETTINGS = {
+    font: { label: "Font", values: FONTS.map((f) => f.name), text: (v) => FONTS.find((f) => f.name === v).label },
+    weight: { label: "Text weight", values: ["200", "300", "400", "500"] },
+    bold: { label: "Bold weight", values: ["500", "600", "700"] },
+    size: { label: "Size", values: ["12", "13", "14", "15", "16"], text: (v) => `${v}px` },
+  };
+  const ALL_WEIGHTS = ["200", "300", "400", "500", "600", "700"];
+
+  for (const { pkg } of FONTS) {
+    if (!pkg) continue;
+    for (const wt of ALL_WEIGHTS) {
+      document.head.insertAdjacentHTML("beforeend", `<link rel="stylesheet" href="../../node_modules/@fontsource/${pkg}/${wt}.css">`);
+    }
+  }
+
+  const B = "\x1b[1m", N = "\x1b[22m", BLUE = "\x1b[38;2;110;168;254m", DIM = "\x1b[38;2;138;145;156m", R = "\x1b[0m";
+  const SAMPLE = [
+    `${B}2. The two tasks we're working on together${N}`,
+    "",
+    "- Font task (the last task in the list):",
+    "  - The goal is a thinner, better monospace font in the terminal.",
+    `  - The next step is a mockup page, ${BLUE}docs/mockups/terminal-fonts.html${R}, that`,
+    "    shows these five fonts in their light weights.",
+    `  - You pick one by eye. I then set it in ${BLUE}web/terminal.js${R}.`,
+    "- Release plan (the last dot):",
+    `  - What I know: ${BLUE}pnpm release${R} already builds, tags and packs, and the`,
+    "    last release is v0.1.6.",
+    "",
+    "0O 1lI| {}[]() => != === -> <= rn m",
+    "",
+    "TLDR: My font shortlist is Atkinson Hyperlegible Mono, JetBrains Mono, Geist",
+    "Mono, IBM Plex Mono and Source Code Pro.",
+    "",
+    `${DIM}✻ Sautéed for 6s · done 6:00 PM${R}`,
+    "",
+    "> ",
+  ].join("\r\n");
+
+  function buildSide(root, start) {
+    const state = { ...start };
+    const title = document.createElement("h2");
+    const warn = document.createElement("div");
+    warn.className = "warn";
+    const controls = document.createElement("div");
+    controls.className = "controls";
+    for (const [key, { label, values, text }] of Object.entries(SETTINGS)) {
+      const opts = document.createElement("div");
+      opts.className = "opts";
+      opts.setAttribute("role", "radiogroup");
+      opts.setAttribute("aria-label", label);
+      for (const value of values) {
+        const id = `${root.id}-${key}-${value.replace(/\W/g, "")}`;
+        const input = Object.assign(document.createElement("input"), { type: "radio", name: `${root.id}-${key}`, id, value, checked: state[key] === value });
+        const lab = Object.assign(document.createElement("label"), { htmlFor: id, textContent: text ? text(value) : value });
+        input.addEventListener("change", () => { state[key] = value; apply(); });
+        opts.append(input, lab);
+      }
+      const name = document.createElement("span");
+      name.textContent = label;
+      controls.append(name, opts);
+    }
+    const box = document.createElement("div");
+    box.className = "term";
+    root.append(title, controls, box, warn);
+
+    const term = new Terminal({ lineHeight: 1, theme: { background: "#16181d" } });
+    const fit = new FitAddon.FitAddon();
+    term.loadAddon(fit);
+    term.open(box);
+    term.loadAddon(new WebglAddon.WebglAddon());
+    term.write(SAMPLE);
+    new ResizeObserver(() => fit.fit()).observe(box);
+
+    function apply() {
+      term.options.fontFamily = `"${state.font}", monospace`;
+      term.options.fontSize = Number(state.size);
+      term.options.fontWeight = state.weight;
+      term.options.fontWeightBold = state.bold;
+      fit.fit();
+      title.textContent = state.font;
+      title.style.fontFamily = `"${state.font}", monospace`;
+      title.style.fontWeight = state.weight;
+      const loaded = document.fonts.check(`${state.weight} 14px "${state.font}"`);
+      warn.textContent = loaded ? "" : `${state.font} at weight ${state.weight} did not load. The terminal shows a fallback font.`;
+    }
+    apply();
+  }
+
+  // Load every face first, so xterm measures the real font, not the fallback.
+  Promise.all(
+    FONTS.filter((f) => f.pkg).flatMap(({ name }) => ALL_WEIGHTS.map((wt) => document.fonts.load(`${wt} 14px "${name}"`))),
+  ).then(() => {
+    buildSide(document.getElementById("left"), { font: "Cascadia Mono", weight: "400", bold: "700", size: "14" });
+    buildSide(document.getElementById("right"), { font: "Atkinson Hyperlegible Mono", weight: "300", bold: "600", size: "14" });
+  });
+</script>
+</body>
+</html>
