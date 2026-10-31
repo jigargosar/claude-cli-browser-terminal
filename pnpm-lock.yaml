@@ -197,6 +197,9 @@ importers:
         specifier: 8.22.0
         version: 8.22.0
     devDependencies:
+      '@brightcove/kacl':
+        specifier: 0.1.11
+        version: 0.1.11
       '@floating-ui/core':
         specifier: 1.8.0
         version: 1.8.0
@@ -256,7 +259,7 @@ importers:
         version: 2.2.4(marked@18.1.1)
       openskill:
         specifier: 5.0.1
-        version: 5.0.1
+        version: 5.0.1(supports-color@5.5.0)
       puppeteer-core:
         specifier: 25.14.0
         version: 25.14.0
@@ -268,6 +271,10 @@ importers:
         version: 8.3.4
 
 packages:
+
+  '@brightcove/kacl@0.1.11':
+    resolution: {integrity: sha512-1KdQpJKb6GhU5V6uAlmCIUvgVNcxyU8Wswzt2Gbe4O4sjnxCGWxNhDtbmkdvqyM0Qr+b5cvlw/Ophc9zzVl76w==}
+    hasBin: true
 
   '@epic-web/invariant@1.0.0':
     resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
@@ -1246,6 +1253,10 @@ packages:
     resolution: {integrity: sha512-KzTVk2tCWAHtYrvvvaP8bJKJq2pVinhLcGEQdtLIYPbmNGNyYe8QwNaTUYQp2J7/vIsUKt5QCqAfUkYyG9DkOw==}
     engines: {node: '>=12'}
 
+  ansi-styles@3.2.1:
+    resolution: {integrity: sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==}
+    engines: {node: '>=4'}
+
   ansi-styles@6.2.3:
     resolution: {integrity: sha512-4Dj6M28JB+oAH8kFkTLUo+a2jwOFkuqb3yucU0CANcRRUbxS0cP0nZYCGjcc3BNXwRIsUVmDGgzawme7zvJHvg==}
     engines: {node: '>=12'}
@@ -1253,6 +1264,14 @@ packages:
   bundle-name@4.1.1:
     resolution: {integrity: sha512-DdH81/zPLVS11EUgWq3tEu/xn+EzljlMYooDNdzWEnFha3R3NBMpMV1UqYIpjYHV/SgpFKMIX1Oh7o06SjM/oA==}
     engines: {node: '>=18'}
+
+  camelcase@5.3.1:
+    resolution: {integrity: sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==}
+    engines: {node: '>=6'}
+
+  chalk@2.4.2:
+    resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
+    engines: {node: '>=4'}
 
   chokidar@5.0.0:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
@@ -1277,6 +1296,12 @@ packages:
     resolution: {integrity: sha512-k7ndgKhwoQveBL+/1tqGJYNz097I7WOvwbmmU2AR5+magtbjPWQTS1C5vzGkBC8Ym8UWRzfKUzUUqFLypY4Q+w==}
     engines: {node: '>=20'}
 
+  color-convert@1.9.3:
+    resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
+
+  color-name@1.1.3:
+    resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==}
+
   cross-env@10.1.0:
     resolution: {integrity: sha512-GsYosgnACZTADcmEyJctkJIoqAhHjttw7RsFrVoJNXbsWWqaq6Ym+7kZjq6mS45O0jij6vtiReppKQEtqWy6Dw==}
     engines: {node: '>=20'}
@@ -1297,6 +1322,10 @@ packages:
     peerDependenciesMeta:
       supports-color:
         optional: true
+
+  decamelize@1.2.0:
+    resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
+    engines: {node: '>=0.10.0'}
 
   default-browser-id@5.0.1:
     resolution: {integrity: sha512-x1VCxdX4t+8wVfd1so/9w+vQ4vx7lKd2Qp5tDRutErwmR85OgmfX7RlLRMWafRMY7hbEiXIbudNrjOAPa/hL8Q==}
@@ -1330,6 +1359,10 @@ packages:
   escalade@3.2.0:
     resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
     engines: {node: '>=6'}
+
+  escape-string-regexp@1.0.5:
+    resolution: {integrity: sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==}
+    engines: {node: '>=0.8.0'}
 
   escape-string-regexp@5.0.0:
     resolution: {integrity: sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==}
@@ -1384,6 +1417,13 @@ packages:
     resolution: {integrity: sha512-kVCxPF3vQM/N0B1PmoqVUqgHP+EeVjmZSQn+1oCRPxd2P21P2F19lIgbR3HBosbB1PUhOAoctJnfEn2GbN2eZA==}
     engines: {node: '>=18'}
 
+  gitconfiglocal@2.1.0:
+    resolution: {integrity: sha512-qoerOEliJn3z+Zyn1HW2F6eoYJqKwS6MgC9cztTLUB/xLWX8gD/6T60pKn4+t/d6tP7JlybI7Z3z+I572CR/Vg==}
+
+  has-flag@3.0.0:
+    resolution: {integrity: sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==}
+    engines: {node: '>=4'}
+
   hasown@2.0.4:
     resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
@@ -1400,6 +1440,9 @@ packages:
     resolution: {integrity: sha512-eTePiNIf0OgAXl2XHUcq+Dkd6DmCawj3UQdYKdNvoP4pdk0/0NBx1FqdG+7rDZUnrSNU3E9TodGAJWIST1X70A==}
     engines: {node: '>=22.18.0'}
     hasBin: true
+
+  ini@1.3.8:
+    resolution: {integrity: sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==}
 
   is-core-module@2.17.0:
     resolution: {integrity: sha512-J/vG0zBCbIKOQFfufSwyXdMrsohyJIUNkrnmo6WZGzoM7tr/lsbfW5b2BvisL6zsyMzK9UxV9L6c7AoFbyXHOA==}
@@ -1453,6 +1496,10 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+
+  keep-a-changelog@0.10.4:
+    resolution: {integrity: sha512-egtoaVyuQD5xFfZ/q3prVZM0TF8YYHcuWxbLg6jlPNu/PVkJba2Bvl6QukY+InoN6uXElbopE/gCLS3hNunhLg==}
+    hasBin: true
 
   lightningcss-android-arm64@1.33.0:
     resolution: {integrity: sha512-gEpRTalKdosp4Bb8qWtc2iOgE5SeIHlpS1up9bFq2wAyYhl1UdTObYiHe98zEM9SQvSoqQZ1IQD0JNpg3Ml5pg==}
@@ -1707,6 +1754,10 @@ packages:
     resolution: {integrity: sha512-BWnYJElmHbYZ/zKevy+TG+SsyoFCmRPDHJbR1MzLxkPOv1Jp/4hGhVUtP98s+wZBsBsHwCXvPTP0x287/WMjGg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  supports-color@5.5.0:
+    resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
+    engines: {node: '>=4'}
+
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
@@ -1834,6 +1885,10 @@ packages:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
 
+  yargs-parser@18.1.3:
+    resolution: {integrity: sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==}
+    engines: {node: '>=6'}
+
   yargs-parser@22.0.0:
     resolution: {integrity: sha512-rwu/ClNdSMpkSrUb+d6BRsSkLUq1fmfsY6TOpYzTwvwkg1/NRG85KBy3kq++A8LKQwX6lsu+aWad+2khvuXrqw==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=23}
@@ -1850,6 +1905,11 @@ packages:
     resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
 
 snapshots:
+
+  '@brightcove/kacl@0.1.11':
+    dependencies:
+      chalk: 2.4.2
+      keep-a-changelog: 0.10.4
 
   '@epic-web/invariant@1.0.0': {}
 
@@ -2119,18 +2179,18 @@ snapshots:
     dependencies:
       '@stdlib/utils-native-class': 0.2.3
 
-  '@stdlib/assert-napi-equal-types@0.2.3':
+  '@stdlib/assert-napi-equal-types@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/assert-napi-status-ok': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/assert-napi-is-type@0.2.3':
+  '@stdlib/assert-napi-is-type@0.2.3(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/assert-napi-equal-types': 0.2.3
+      '@stdlib/assert-napi-equal-types': 0.2.3(supports-color@5.5.0)
       '@stdlib/assert-napi-status-ok': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -2264,168 +2324,168 @@ snapshots:
       '@stdlib/string-format': 0.2.3
       '@stdlib/utils-define-nonenumerable-read-only-property': 0.2.3
 
-  '@stdlib/math-base-assert-is-finite@0.2.3':
+  '@stdlib/math-base-assert-is-finite@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-ninf': 0.2.3
       '@stdlib/constants-float64-pinf': 0.2.3
       '@stdlib/napi-argv': 0.2.3
-      '@stdlib/napi-argv-double': 0.2.2
-      '@stdlib/napi-create-int32': 0.0.3
+      '@stdlib/napi-argv-double': 0.2.2(supports-color@5.5.0)
+      '@stdlib/napi-create-int32': 0.0.3(supports-color@5.5.0)
       '@stdlib/napi-export': 0.3.1
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-assert-is-finitef@0.2.3':
+  '@stdlib/math-base-assert-is-finitef@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float32-ninf': 0.2.3
       '@stdlib/constants-float32-pinf': 0.2.3
       '@stdlib/napi-argv': 0.2.3
-      '@stdlib/napi-argv-float': 0.2.3
-      '@stdlib/napi-create-int32': 0.0.3
+      '@stdlib/napi-argv-float': 0.2.3(supports-color@5.5.0)
+      '@stdlib/napi-create-int32': 0.0.3(supports-color@5.5.0)
       '@stdlib/napi-export': 0.3.1
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-assert-is-infinite@0.2.3':
+  '@stdlib/math-base-assert-is-infinite@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-ninf': 0.2.3
       '@stdlib/constants-float64-pinf': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-assert-is-nan@0.2.3':
+  '@stdlib/math-base-assert-is-nan@0.2.3(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-assert-is-nanf@0.2.3':
+  '@stdlib/math-base-assert-is-nanf@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/napi-argv': 0.2.3
-      '@stdlib/napi-argv-float': 0.2.3
-      '@stdlib/napi-create-int32': 0.0.3
+      '@stdlib/napi-argv-float': 0.2.3(supports-color@5.5.0)
+      '@stdlib/napi-create-int32': 0.0.3(supports-color@5.5.0)
       '@stdlib/napi-export': 0.3.1
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-napi-binary@0.3.3':
+  '@stdlib/math-base-napi-binary@0.3.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/complex-float32-ctor': 0.1.1
       '@stdlib/complex-float32-reim': 0.1.4
       '@stdlib/complex-float64-ctor': 0.1.2
       '@stdlib/complex-float64-reim': 0.1.4
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-napi-ternary@0.3.2':
+  '@stdlib/math-base-napi-ternary@0.3.2(supports-color@5.5.0)':
     dependencies:
       '@stdlib/complex-float32-ctor': 0.1.1
       '@stdlib/complex-float32-reim': 0.1.4
       '@stdlib/complex-float64-ctor': 0.1.2
       '@stdlib/complex-float64-reim': 0.1.4
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-napi-unary@0.2.7':
+  '@stdlib/math-base-napi-unary@0.2.7(supports-color@5.5.0)':
     dependencies:
       '@stdlib/complex-float32-ctor': 0.1.1
       '@stdlib/complex-float32-reim': 0.1.4
       '@stdlib/complex-float64-ctor': 0.1.2
       '@stdlib/complex-float64-reim': 0.1.4
-      '@stdlib/number-float16-base-to-float64': 0.1.2
-      '@stdlib/number-float16-ctor': 0.1.2
-      '@stdlib/number-float64-base-to-float16': 0.1.2
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/number-float16-base-to-float64': 0.1.2(supports-color@5.5.0)
+      '@stdlib/number-float16-ctor': 0.1.2(supports-color@5.5.0)
+      '@stdlib/number-float64-base-to-float16': 0.1.2(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-abs@0.2.3':
+  '@stdlib/math-base-special-abs@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-high-word-abs-mask': 0.2.3
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/number-float64-base-to-words': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/number-float64-base-to-words': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-absf@0.2.3':
+  '@stdlib/math-base-special-absf@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float32-abs-mask': 0.2.3
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/number-float32-base-to-word': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/number-float32-base-to-word': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-ceil@0.2.3':
+  '@stdlib/math-base-special-ceil@0.2.3(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-copysign@0.2.3':
+  '@stdlib/math-base-special-copysign@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-high-word-abs-mask': 0.2.3
       '@stdlib/constants-float64-high-word-sign-mask': 0.2.1
-      '@stdlib/math-base-napi-binary': 0.3.3
-      '@stdlib/number-float64-base-from-words': 0.2.3
-      '@stdlib/number-float64-base-get-high-word': 0.2.3
-      '@stdlib/number-float64-base-to-words': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-napi-binary': 0.3.3(supports-color@5.5.0)
+      '@stdlib/number-float64-base-from-words': 0.2.3(supports-color@5.5.0)
+      '@stdlib/number-float64-base-get-high-word': 0.2.3(supports-color@5.5.0)
+      '@stdlib/number-float64-base-to-words': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-erf@0.2.6':
+  '@stdlib/math-base-special-erf@0.2.6(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-ninf': 0.2.3
       '@stdlib/constants-float64-pinf': 0.2.3
-      '@stdlib/math-base-assert-is-nan': 0.2.3
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/math-base-special-exp': 0.2.5
-      '@stdlib/number-float64-base-set-low-word': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-assert-is-nan': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/math-base-special-exp': 0.2.5(supports-color@5.5.0)
+      '@stdlib/number-float64-base-set-low-word': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-erfinv@0.3.1':
+  '@stdlib/math-base-special-erfinv@0.3.1(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-ninf': 0.2.3
       '@stdlib/constants-float64-pinf': 0.2.3
-      '@stdlib/math-base-assert-is-nan': 0.2.3
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/math-base-special-ln': 0.2.5
-      '@stdlib/math-base-special-sqrt': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-assert-is-nan': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/math-base-special-ln': 0.2.5(supports-color@5.5.0)
+      '@stdlib/math-base-special-sqrt': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-exp@0.2.5':
+  '@stdlib/math-base-special-exp@0.2.5(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-ninf': 0.2.3
       '@stdlib/constants-float64-pinf': 0.2.3
-      '@stdlib/math-base-assert-is-nan': 0.2.3
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/math-base-special-ldexp': 0.2.5
-      '@stdlib/math-base-special-trunc': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-assert-is-nan': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/math-base-special-ldexp': 0.2.5(supports-color@5.5.0)
+      '@stdlib/math-base-special-trunc': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-floor@0.2.4':
+  '@stdlib/math-base-special-floor@0.2.4(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-ldexp@0.2.5':
+  '@stdlib/math-base-special-ldexp@0.2.5(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-exponent-bias': 0.2.3
       '@stdlib/constants-float64-max-base2-exponent': 0.2.3
@@ -2433,69 +2493,69 @@ snapshots:
       '@stdlib/constants-float64-min-base2-exponent-subnormal': 0.2.1
       '@stdlib/constants-float64-ninf': 0.2.3
       '@stdlib/constants-float64-pinf': 0.2.3
-      '@stdlib/math-base-assert-is-infinite': 0.2.3
-      '@stdlib/math-base-assert-is-nan': 0.2.3
-      '@stdlib/math-base-special-copysign': 0.2.3
-      '@stdlib/number-float64-base-exponent': 0.2.3
-      '@stdlib/number-float64-base-from-words': 0.2.3
-      '@stdlib/number-float64-base-normalize': 0.2.4
-      '@stdlib/number-float64-base-to-words': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-assert-is-infinite': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-assert-is-nan': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-special-copysign': 0.2.3(supports-color@5.5.0)
+      '@stdlib/number-float64-base-exponent': 0.2.3(supports-color@5.5.0)
+      '@stdlib/number-float64-base-from-words': 0.2.3(supports-color@5.5.0)
+      '@stdlib/number-float64-base-normalize': 0.2.4(supports-color@5.5.0)
+      '@stdlib/number-float64-base-to-words': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-ln@0.2.5':
+  '@stdlib/math-base-special-ln@0.2.5(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-exponent-bias': 0.2.3
       '@stdlib/constants-float64-ninf': 0.2.3
-      '@stdlib/math-base-assert-is-nan': 0.2.3
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/number-float64-base-get-high-word': 0.2.3
-      '@stdlib/number-float64-base-set-high-word': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-assert-is-nan': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/number-float64-base-get-high-word': 0.2.3(supports-color@5.5.0)
+      '@stdlib/number-float64-base-set-high-word': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-sqrt@0.2.3':
+  '@stdlib/math-base-special-sqrt@0.2.3(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/math-base-special-trunc@0.2.3':
+  '@stdlib/math-base-special-trunc@0.2.3(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/math-base-napi-unary': 0.2.7
-      '@stdlib/math-base-special-ceil': 0.2.3
-      '@stdlib/math-base-special-floor': 0.2.4
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-napi-unary': 0.2.7(supports-color@5.5.0)
+      '@stdlib/math-base-special-ceil': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-special-floor': 0.2.4(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/napi-argv-double@0.2.2':
+  '@stdlib/napi-argv-double@0.2.2(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/assert-napi-is-type': 0.2.3
+      '@stdlib/assert-napi-is-type': 0.2.3(supports-color@5.5.0)
       '@stdlib/assert-napi-status-ok': 0.2.3
       '@stdlib/napi-argv': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/napi-argv-float@0.2.3':
+  '@stdlib/napi-argv-float@0.2.3(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/assert-napi-is-type': 0.2.3
+      '@stdlib/assert-napi-is-type': 0.2.3(supports-color@5.5.0)
       '@stdlib/assert-napi-status-ok': 0.2.3
       '@stdlib/napi-argv': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/napi-argv-int32@0.2.3':
+  '@stdlib/napi-argv-int32@0.2.3(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/assert-napi-is-type': 0.2.3
+      '@stdlib/assert-napi-is-type': 0.2.3(supports-color@5.5.0)
       '@stdlib/assert-napi-status-ok': 0.2.3
       '@stdlib/napi-argv': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -2503,12 +2563,12 @@ snapshots:
     dependencies:
       '@stdlib/assert-napi-status-ok': 0.2.3
 
-  '@stdlib/napi-create-int32@0.0.3':
+  '@stdlib/napi-create-int32@0.0.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/assert-napi-status-ok': 0.2.3
       '@stdlib/napi-argv': 0.2.3
-      '@stdlib/napi-argv-int32': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/napi-argv-int32': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -2516,7 +2576,7 @@ snapshots:
 
   '@stdlib/number-ctor@0.2.3': {}
 
-  '@stdlib/number-float16-base-to-float32@0.1.2':
+  '@stdlib/number-float16-base-to-float32@0.1.2(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float16-exponent-bias': 0.3.1
       '@stdlib/constants-float16-exponent-mask': 0.1.1
@@ -2526,29 +2586,29 @@ snapshots:
       '@stdlib/constants-float32-exponent-bias': 0.2.3
       '@stdlib/constants-float32-exponent-mask': 0.2.3
       '@stdlib/constants-float32-num-significand-bits': 0.1.1
-      '@stdlib/number-float16-ctor': 0.1.2
-      '@stdlib/number-float32-base-to-float16': 0.1.1
-      '@stdlib/number-float64-base-to-float16': 0.1.2
+      '@stdlib/number-float16-ctor': 0.1.2(supports-color@5.5.0)
+      '@stdlib/number-float32-base-to-float16': 0.1.1(supports-color@5.5.0)
+      '@stdlib/number-float64-base-to-float16': 0.1.2(supports-color@5.5.0)
       '@stdlib/number-float64-base-to-float32': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float16-base-to-float64@0.1.2':
+  '@stdlib/number-float16-base-to-float64@0.1.2(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/number-float16-base-to-float32': 0.1.2
-      '@stdlib/number-float16-ctor': 0.1.2
-      '@stdlib/number-float64-base-to-float16': 0.1.2
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/number-float16-base-to-float32': 0.1.2(supports-color@5.5.0)
+      '@stdlib/number-float16-ctor': 0.1.2(supports-color@5.5.0)
+      '@stdlib/number-float64-base-to-float16': 0.1.2(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float16-ctor@0.1.2':
+  '@stdlib/number-float16-ctor@0.1.2(supports-color@5.5.0)':
     dependencies:
       '@stdlib/assert-has-to-primitive-symbol-support': 0.1.1
       '@stdlib/assert-is-number': 0.2.3
       '@stdlib/error-tools-fmtprodmsg': 0.2.3
-      '@stdlib/number-float64-base-to-float16': 0.1.2
+      '@stdlib/number-float64-base-to-float16': 0.1.2(supports-color@5.5.0)
       '@stdlib/string-format': 0.2.3
       '@stdlib/symbol-to-primitive': 0.1.2
       '@stdlib/utils-define-nonenumerable-read-only-property': 0.2.3
@@ -2556,16 +2616,16 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float32-base-exponent@0.2.4':
+  '@stdlib/number-float32-base-exponent@0.2.4(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float32-exponent-bias': 0.2.3
       '@stdlib/constants-float32-exponent-mask': 0.2.3
-      '@stdlib/number-float32-base-to-word': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/number-float32-base-to-word': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float32-base-to-float16@0.1.1':
+  '@stdlib/number-float32-base-to-float16@0.1.1(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float16-eps': 0.2.3
       '@stdlib/constants-float16-max': 0.2.3
@@ -2576,96 +2636,96 @@ snapshots:
       '@stdlib/constants-float32-pinf': 0.2.3
       '@stdlib/constants-float32-sign-mask': 0.2.3
       '@stdlib/constants-float32-significand-mask': 0.2.4
-      '@stdlib/math-base-assert-is-finitef': 0.2.3
-      '@stdlib/math-base-assert-is-nanf': 0.2.3
-      '@stdlib/math-base-special-absf': 0.2.3
-      '@stdlib/number-float16-ctor': 0.1.2
-      '@stdlib/number-float32-base-exponent': 0.2.4
+      '@stdlib/math-base-assert-is-finitef': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-assert-is-nanf': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-special-absf': 0.2.3(supports-color@5.5.0)
+      '@stdlib/number-float16-ctor': 0.1.2(supports-color@5.5.0)
+      '@stdlib/number-float32-base-exponent': 0.2.4(supports-color@5.5.0)
       '@stdlib/number-float64-base-to-float32': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float32-base-to-word@0.2.3':
+  '@stdlib/number-float32-base-to-word@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/array-float32': 0.2.3
       '@stdlib/array-uint32': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float64-base-exponent@0.2.3':
+  '@stdlib/number-float64-base-exponent@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-exponent-bias': 0.2.3
       '@stdlib/constants-float64-high-word-exponent-mask': 0.2.3
-      '@stdlib/number-float64-base-get-high-word': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/number-float64-base-get-high-word': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float64-base-from-words@0.2.3':
+  '@stdlib/number-float64-base-from-words@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/array-float64': 0.2.3
       '@stdlib/array-uint32': 0.2.3
       '@stdlib/assert-is-little-endian': 0.2.3
-      '@stdlib/number-float64-base-to-words': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/number-float64-base-to-words': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float64-base-get-high-word@0.2.3':
+  '@stdlib/number-float64-base-get-high-word@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/array-float64': 0.2.3
       '@stdlib/array-uint32': 0.2.3
       '@stdlib/assert-is-little-endian': 0.2.3
-      '@stdlib/number-float64-base-to-words': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/number-float64-base-to-words': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float64-base-normalize@0.2.4':
+  '@stdlib/number-float64-base-normalize@0.2.4(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-smallest-normal': 0.2.3
-      '@stdlib/math-base-assert-is-infinite': 0.2.3
-      '@stdlib/math-base-assert-is-nan': 0.2.3
-      '@stdlib/math-base-special-abs': 0.2.3
+      '@stdlib/math-base-assert-is-infinite': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-assert-is-nan': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-special-abs': 0.2.3(supports-color@5.5.0)
       '@stdlib/utils-define-nonenumerable-read-only-property': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float64-base-set-high-word@0.2.3':
+  '@stdlib/number-float64-base-set-high-word@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/array-float64': 0.2.3
       '@stdlib/array-uint32': 0.2.3
       '@stdlib/assert-is-little-endian': 0.2.3
-      '@stdlib/number-float64-base-to-words': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/number-float64-base-to-words': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float64-base-set-low-word@0.2.3':
+  '@stdlib/number-float64-base-set-low-word@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/array-float64': 0.2.3
       '@stdlib/array-uint32': 0.2.3
       '@stdlib/assert-is-little-endian': 0.2.3
-      '@stdlib/number-float64-base-to-words': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/number-float64-base-to-words': 0.2.3(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/number-float64-base-to-float16@0.1.2':
+  '@stdlib/number-float64-base-to-float16@0.1.2(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float16-eps': 0.2.3
       '@stdlib/constants-float16-max': 0.2.3
       '@stdlib/constants-float16-smallest-normal': 0.2.3
       '@stdlib/constants-float64-eps': 0.2.3
       '@stdlib/constants-float64-pinf': 0.2.3
-      '@stdlib/math-base-assert-is-finite': 0.2.3
-      '@stdlib/math-base-special-abs': 0.2.3
-      '@stdlib/number-float16-ctor': 0.1.2
-      '@stdlib/number-float32-base-to-float16': 0.1.1
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/math-base-assert-is-finite': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-special-abs': 0.2.3(supports-color@5.5.0)
+      '@stdlib/number-float16-ctor': 0.1.2(supports-color@5.5.0)
+      '@stdlib/number-float32-base-to-float16': 0.1.1(supports-color@5.5.0)
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -2673,7 +2733,7 @@ snapshots:
     dependencies:
       '@stdlib/array-float32': 0.2.3
 
-  '@stdlib/number-float64-base-to-words@0.2.3':
+  '@stdlib/number-float64-base-to-words@0.2.3(supports-color@5.5.0)':
     dependencies:
       '@stdlib/array-float64': 0.2.3
       '@stdlib/array-uint32': 0.2.3
@@ -2681,7 +2741,7 @@ snapshots:
       '@stdlib/os-byte-order': 0.2.3
       '@stdlib/os-float-word-order': 0.2.3
       '@stdlib/utils-define-nonenumerable-read-only-property': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -2706,27 +2766,27 @@ snapshots:
     dependencies:
       '@stdlib/utils-define-nonenumerable-read-only-property': 0.2.3
 
-  '@stdlib/stats-base-dists-degenerate-quantile@0.3.1':
+  '@stdlib/stats-base-dists-degenerate-quantile@0.3.1(supports-color@5.5.0)':
     dependencies:
-      '@stdlib/math-base-assert-is-nan': 0.2.3
-      '@stdlib/math-base-napi-binary': 0.3.3
+      '@stdlib/math-base-assert-is-nan': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-napi-binary': 0.3.3(supports-color@5.5.0)
       '@stdlib/utils-constant-function': 0.2.3
       '@stdlib/utils-define-nonenumerable-read-only-property': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
-  '@stdlib/stats-base-dists-normal-quantile@0.3.1':
+  '@stdlib/stats-base-dists-normal-quantile@0.3.1(supports-color@5.5.0)':
     dependencies:
       '@stdlib/constants-float64-sqrt-two': 0.2.3
-      '@stdlib/math-base-assert-is-nan': 0.2.3
-      '@stdlib/math-base-napi-ternary': 0.3.2
-      '@stdlib/math-base-special-erfinv': 0.3.1
-      '@stdlib/math-base-special-sqrt': 0.2.3
-      '@stdlib/stats-base-dists-degenerate-quantile': 0.3.1
+      '@stdlib/math-base-assert-is-nan': 0.2.3(supports-color@5.5.0)
+      '@stdlib/math-base-napi-ternary': 0.3.2(supports-color@5.5.0)
+      '@stdlib/math-base-special-erfinv': 0.3.1(supports-color@5.5.0)
+      '@stdlib/math-base-special-sqrt': 0.2.3(supports-color@5.5.0)
+      '@stdlib/stats-base-dists-degenerate-quantile': 0.3.1(supports-color@5.5.0)
       '@stdlib/utils-constant-function': 0.2.3
       '@stdlib/utils-define-nonenumerable-read-only-property': 0.2.3
-      '@stdlib/utils-library-manifest': 0.2.4
+      '@stdlib/utils-library-manifest': 0.2.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -2811,11 +2871,11 @@ snapshots:
       '@stdlib/error-tools-fmtprodmsg': 0.2.3
       '@stdlib/string-format': 0.2.3
 
-  '@stdlib/utils-library-manifest@0.2.4':
+  '@stdlib/utils-library-manifest@0.2.4(supports-color@5.5.0)':
     dependencies:
       '@stdlib/fs-resolve-parent-path': 0.2.3
       '@stdlib/utils-convert-path': 0.2.3
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@5.5.0)
       resolve: 1.22.13
     transitivePeerDependencies:
       - supports-color
@@ -2852,11 +2912,23 @@ snapshots:
 
   ansi-regex@6.4.0: {}
 
+  ansi-styles@3.2.1:
+    dependencies:
+      color-convert: 1.9.3
+
   ansi-styles@6.2.3: {}
 
   bundle-name@4.1.1:
     dependencies:
       run-applescript: 7.1.0
+
+  camelcase@5.3.1: {}
+
+  chalk@2.4.2:
+    dependencies:
+      ansi-styles: 3.2.1
+      escape-string-regexp: 1.0.5
+      supports-color: 5.5.0
 
   chokidar@5.0.0:
     dependencies:
@@ -2887,6 +2959,12 @@ snapshots:
       strip-ansi: 7.2.0
       wrap-ansi: 9.0.2
 
+  color-convert@1.9.3:
+    dependencies:
+      color-name: 1.1.3
+
+  color-name@1.1.3: {}
+
   cross-env@10.1.0:
     dependencies:
       '@epic-web/invariant': 1.0.0
@@ -2902,9 +2980,13 @@ snapshots:
     dependencies:
       type-fest: 1.4.0
 
-  debug@2.6.9:
+  debug@2.6.9(supports-color@5.5.0):
     dependencies:
       ms: 2.0.0
+    optionalDependencies:
+      supports-color: 5.5.0
+
+  decamelize@1.2.0: {}
 
   default-browser-id@5.0.1: {}
 
@@ -2928,6 +3010,8 @@ snapshots:
   es-errors@1.3.0: {}
 
   escalade@3.2.0: {}
+
+  escape-string-regexp@1.0.5: {}
 
   escape-string-regexp@5.0.0: {}
 
@@ -2984,6 +3068,12 @@ snapshots:
       '@sec-ant/readable-stream': 0.4.1
       is-stream: 4.0.1
 
+  gitconfiglocal@2.1.0:
+    dependencies:
+      ini: 1.3.8
+
+  has-flag@3.0.0: {}
+
   hasown@2.0.4:
     dependencies:
       function-bind: 1.1.2
@@ -2999,6 +3089,8 @@ snapshots:
       '@impeccable/cli-linux-arm64': 0.1.14
       '@impeccable/cli-linux-x64': 0.1.14
       '@impeccable/cli-windows-x64': 0.1.14
+
+  ini@1.3.8: {}
 
   is-core-module@2.17.0:
     dependencies:
@@ -3033,6 +3125,12 @@ snapshots:
       system-architecture: 0.1.0
 
   isexe@2.0.0: {}
+
+  keep-a-changelog@0.10.4:
+    dependencies:
+      gitconfiglocal: 2.1.0
+      semver: 7.8.5
+      yargs-parser: 18.1.3
 
   lightningcss-android-arm64@1.33.0:
     optional: true
@@ -3129,10 +3227,10 @@ snapshots:
       powershell-utils: 0.2.1
       wsl-utils: 1.0.1
 
-  openskill@5.0.1:
+  openskill@5.0.1(supports-color@5.5.0):
     dependencies:
-      '@stdlib/math-base-special-erf': 0.2.6
-      '@stdlib/stats-base-dists-normal-quantile': 0.3.1
+      '@stdlib/math-base-special-erf': 0.2.6(supports-color@5.5.0)
+      '@stdlib/stats-base-dists-normal-quantile': 0.3.1(supports-color@5.5.0)
       '@types/ramda': 0.31.1
       ramda: 0.32.0
       sort-unwind: 3.1.0
@@ -3264,6 +3362,10 @@ snapshots:
       escape-string-regexp: 5.0.0
       unique-string: 3.0.0
 
+  supports-color@5.5.0:
+    dependencies:
+      has-flag: 3.0.0
+
   supports-preserve-symlinks-flag@1.0.0: {}
 
   system-architecture@0.1.0: {}
@@ -3331,6 +3433,11 @@ snapshots:
       powershell-utils: 0.2.1
 
   y18n@5.0.8: {}
+
+  yargs-parser@18.1.3:
+    dependencies:
+      camelcase: 5.3.1
+      decamelize: 1.2.0
 
   yargs-parser@22.0.0: {}
 

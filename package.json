@@ -1,21 +1,30 @@
 {
   "name": "claude-cli-browser-terminal",
   "version": "0.1.6",
-  "description": "",
+  "description": "Run Claude Code in a browser tab: the terminal on the left, Claude's last reply on the right as readable markdown.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jigargosar/claude-cli-browser-terminal.git"
+  },
   "bin": {
     "ccw": "server.mjs"
   },
   "files": [
     "server.mjs",
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "watch": "node scripts/build-watch/start-build-watch-holding-port.mjs",
     "watch:about": "echo Rebuilds dist/ on every change in web/. Run it first, in its own terminal. Why: scripts/build-watch/README.md",
     "ccw": "node scripts/build-watch/refuse-start-without-build-watch.mjs && node server.mjs",
     "ccw:about": "echo Starts a session. Refuses to start without pnpm watch, so the page is never stale. Why: scripts/build-watch/README.md",
+    "release:about": "echo Needs entries under Unreleased in CHANGELOG.md. Builds, bumps the patch version, stamps the changelog, commits and tags, packs into published-versions/, pushes.",
     "release": "vite build && pnpm version patch && pnpm pack --pack-destination published-versions && pnpm pack --out published-versions/claude-cli-browser-terminal.tgz && git push --follow-tags",
-    "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku"
+    "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku",
+    "preversion": "kacl prerelease",
+    "version": "kacl release && git add CHANGELOG.md"
   },
   "keywords": [],
   "author": "",
@@ -42,6 +51,7 @@
     "ws": "8.22.0"
   },
   "devDependencies": {
+    "@brightcove/kacl": "0.1.11",
     "@floating-ui/core": "1.8.0",
     "@floating-ui/dom": "1.8.0",
     "@fontsource/atkinson-hyperlegible-mono": "5.3.0",
