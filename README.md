@@ -6,12 +6,12 @@ The command is `ccw`. It runs the same `claude` command you would run in a termi
 
 ## Use it in another project
 
-This package is not on npm. Every release is a tarball in [published-versions/](https://github.com/jigargosar/claude-cli-browser-terminal/tree/main/published-versions). Take the highest version there.
+This package is not on npm. Every release is a tarball in [published-versions/](https://github.com/jigargosar/claude-cli-browser-terminal/tree/main/published-versions). The command below always installs the latest one.
 
 1. Install it:
 
    ```
-   pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-<version>.tgz
+   pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.6.tgz
    ```
 
 2. Add a script to the project's `package.json`:
