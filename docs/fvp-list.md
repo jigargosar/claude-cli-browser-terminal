@@ -3,51 +3,39 @@
 Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 
 - [.] Reply length investigation, outside the project and exempt from Workflow: measurements, causes and proposed CLAUDE.md changes are in `docs/reply-length-investigation.md`. Next: agree the changes, apply them, re-measure.
-- [ ] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
-- [ ] All UX: Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
-- [ ] All UX: its finiky when switching between with clusy command name
+- [.] All UX: submit, switching, more options, yes/no style stuff. When the mouse hovers on highlighted content, show a tooltip, small font, ellipsized to the width. Clicking a highlighted line should unhighlight it. Careful: a highlighted line is overloaded, it can mean commented or not yet commented, so use different colors.
+- [.] All UX: Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
 - [ ] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
 - [ ] maximizing either pane maybe not?
 - [ ] Drawing tilde on arrow.
-- [ ] z-index for the dialog.
-- [ ] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
+- [.] z-index for the dialog.
+- [.] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
 - [ ] Keep sent answers. Easy once response histories are stored.
 - [ ] Board visibility.
-- [ ] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
-- [ ] List the next goals under "Next Blaze" in `CLAUDE.md`.
+- [.] Change the fonts to Atkinson Hyperlegible (Mono for the terminal and code).
 - [x] ccw reliability: review the project, verify each ccw reliability issue, then fix the pragmatic ones. Found 2026-10-24.
-- [ ] ccw reliability: Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
-- [ ] Adhoc testing: Tests of the reply pane: the user pastes a console script Claude writes, and pastes the log back; Claude never starts `claude` itself.
-- [ ] Adhoc testing: (On hold) Fixture page: a fake reply pane with a canned reply and the real `comments.js`, so Claude can test it headless without `claude` or the user's tab.
+- [.] ccw reliability: Resume replays every line as its own item. Each reply starts a View Transition, each skips the one before, and `web/views/last.js:53` rethrows the `AbortError`. Verified in code: `followTranscript` tails `fromBeginning` and sends one `item` per line; `main.js:36` calls `last.show` for each reply. Error spam; the swap still runs. Fix idea: tolerate `AbortError`, maybe send the replay as one batch.
 - [ ] Adhoc testing: Evaluate the browser-test skill change: launch headless by default, a visible window only on request. If visible, add `--disable-backgrounding-occluded-windows`, `--disable-renderer-backgrounding`, `--disable-background-timer-throttling` and minimize via CDP after each check, so a minimized window still renders.
 - [ ] Adhoc testing: `pnpm test` removes every `CLAUDE*` variable itself, so a test Claude starts gets a transcript.
 - [ ] Explore the conversation patterns in `docs/conversation-exploration/transcript.txt`, and how this project can use them.
 - [x] Workflow: try Forster's FVP on the board. Proposal saved in `dev-workflow-ideation/fvp-workflow-proposal.md`.
 - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
 - [ ] Reply length: agree and apply the rule changes in `docs/reply-length-investigation.md`, then re-measure a later session. Measured: TLDR lines are 17 percent and table rows 39 percent of all reply words.
-- [ ] Links in replies: a file or file:line link opens in the editor, not in the tab.
-- [ ] Links in replies never affect this tab: every link opens outside it, whatever its href. Cause found: the new-tab hook in `web/markdown.js` (commented out) matched only http(s) hrefs, so a relative link such as `web/main.js#L83` opened in the same tab. Fix idea: `target="_blank"` on every `<a>`, or catch every link click and `window.open` it.
-- [ ] Clear all: once comments survive a reload, a way to delete every comment on purpose. Why: a reload was the only way to delete all comments, so it was used as one. To decide: undo, or is a confirmation enough?
-- [ ] Loss scenarios: decide how to guard against data loss, by confirmation, by undo or by another design. Another option is continuous save that also keeps the content's undo and redo, so even Esc can close freely. This needs deep thought and analysis.
 - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
-- [ ] Delete a comment explicitly. Today the only way is to empty its text. To decide: undo, or is a confirmation enough?
-- [ ] Rewind: decide what the reader pane and the comments do on a rewind. Today the pane keeps the last reply (CLAUDE.md, Known issues).
 - [x] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
 - [ ] Root cause of long replies: [reply-length-rca.md](reply-length-rca.md). Discussed with another AI instance.
 - [x] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
-- [ ] Analyze the view implementation: does it need an upgrade, can it be simplified, what are the tradeoffs.
+- [.] Analyze the view implementation: does it need an upgrade, can it be simplified, what are the tradeoffs.
 - [ ] UX bug: The popup follows the selected text when the page scrolls.
 - [ ] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
 - [ ] UX keys: Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
-- [ ] UX keys: Keys spike (`docs/mockups/keys.html`). Low priority.
-- [ ] UX keys: The reader pane is fully keyboard driven: every mouse action in it also has a key.
-- [ ] UX keys: Global shortcuts: keys that work from either pane, such as sending the comments from the terminal pane.
+- [.] UX keys: Keys spike (`docs/mockups/keys.html`). Low priority.
 - [ ] UX keys: Sentence select mode: a key marks each sentence in the reader pane with a letter. Typing a letter picks that sentence and starts the same flow as a click on it.
 - [ ] UX keys: Esc on a picked sentence clears the pick and its popup. Nothing is lost, since no comment exists yet.
-- [ ] UX polish: Atkinson Hyperlegible fonts
+- [.] UX polish: Atkinson Hyperlegible fonts
 - [ ] UX polish: Tooltip on highlighted text
 - [ ] UX polish: Click to unhighlight, with one color for commented text and another for not-yet-commented text
-- [ ] UX feature: More options in the popup, beside Reply and Done
+- [.] UX feature: More options in the popup, beside Reply and Done
 - [ ] UX feature: Keep the highlights of what was sent to Claude
 - [ ] UX feature: Reply history: browse earlier replies, not only the last one. Also fixes data-loss case 3: a new reply clears unsent comments ([plans/data-loss.md](plans/data-loss.md)).
 - [ ] UX feature: Intermediate logs as collapsed blocks
@@ -55,16 +43,14 @@ Experiment, started 2026-10-30. Rules: `docs/fvp-rules.md`.
 - [ ] UX feature: Comment on any document the way you comment on replies, starting with the board
 - [ ] UX feature: Maximize the terminal pane or the reader pane
 - [ ] UX feature: Bookmarks: bookmark a reply, perhaps also selected text in it
-- [ ] Weed list
+- [ ] Weed list, recurring.
 - [ ] Popup: an OK button beside Reply and Done.
 - [x] Delete the old docs in `docs/` (Board, Board-pending, archives, plans, void and the rest) and drop them from the CLAUDE.md Files list. Tag `board-before-fvp` keeps them.
 - [x] cleanup of all old pre fvp.
-- [ ] the last dotted item is not visible, therefor making the comparision difficult.
-- [ ] Line numbers in code blocks.
 - [ ] The user's prompt stays sticky at the top of the reply.
 - [ ] Inference is easy to tell apart from fact in a reply.
 - [ ] Claude's thinking shows in the reply pane, toggleable.
-- [ ] One key per mode (default, accept edits, plan). Claude Code has no set-mode action, only `chat:cycleMode` (Shift+Tab), so the page would send N Shift+Tabs and needs the current mode.
 - [ ] UX keys: Submit: Alt+Enter now sends the comments, beside Ctrl+Enter. Manual test that Chrome passes Alt+Enter to the page. If it fails, delete it from `web/views/comments.js`.
 - [ ] `web/views/comments.js` comments link `docs/plans/data-loss.md`, which is gone. Point them at tag `board-before-fvp` or drop the links.
-- [ ] Friction file: rename `docs/fvp-friction.md` properly, write down its purpose and how to use it, and link it from the places that need it (none link it today: not `CLAUDE.md`, the list or the rules).
+- [.] Friction file: rename `docs/fvp-friction.md` properly, write down its purpose and how to use it, and link it from the places that need it (none link it today: not `CLAUDE.md`, the list or the rules).
+- [.] figure out how to release and how will other projects will consume it.
