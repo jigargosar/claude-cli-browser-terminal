@@ -64,3 +64,4 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [.] Since everything is working condition, we should first figure out a release plan 
 - [x] can we quickly change the font from bold to thinner monospace in xterm if yes we do it, else leave it for later.
 - [ ] try hyper on markdown pane.
+- [ ] clean up claude file, it is ridiclous. 
