@@ -62,4 +62,4 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [.] weed dups
 - [ ] weed useless
 - [.] Since everything is working condition, we should first figure out a release plan 
-- [ ] can we quickly change the font from bold to thinner monospace in xterm if yes we do it, else leave it for later.
+- [x] can we quickly change the font from bold to thinner monospace in xterm if yes we do it, else leave it for later.
