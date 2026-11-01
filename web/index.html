@@ -14,7 +14,9 @@
   <!-- Points into the pane that gets the keys (main.js); a diamond when nothing has focus. -->
   <div id="focus-mark" aria-hidden="true"></div>
 </div>
-<aside id="reply-pane" aria-label="Last reply">
+<!-- Stimulus controller "comments" (views/comments.js). Its open value shows the popup or the box (base.css). -->
+<aside id="reply-pane" aria-label="Last reply" data-controller="comments" data-comments-open-value="none"
+       data-action="mousedown@document->comments#press keydown->comments#key">
   <!-- One gear over the reply text: status and reading settings. These change rarely. Mouse only: it never gets
        keyboard focus. -->
   <button type="button" id="settings-button" class="bar-button" popovertarget="settings" aria-label="Settings" tabindex="-1">&#9881;</button>
@@ -45,18 +47,18 @@
     <button type="button" id="reader-reset" class="bar-button">Reset reading settings</button>
   </div>
   <!-- No Tab stop. Alt+` focuses it only when the pane has no button, so the keys can scroll it (main.js). -->
-  <article id="reply" class="md" tabindex="-1"><p class="empty">Replies from this session show up here.</p></article>
+  <article id="reply" class="md" tabindex="-1" data-action="mouseup->comments#pick"><p class="empty">Replies from this session show up here.</p></article>
   <!-- Comments on reply text (views/comments.js). Floating UI places the button and the box at the selection.
        Inside the pane, so they take the reading colors. -->
-  <button type="button" id="comment-submit" class="bar-button" hidden></button>
-  <div id="comment-pick" class="comment-float" hidden>
-    <button type="button" id="comment-reply" class="bar-button"><u>R</u>eply</button>
-    <button type="button" class="bar-button" data-word><u>Y</u>es</button>
-    <button type="button" class="bar-button" data-word><u>N</u>o</button>
+  <button type="button" id="comment-submit" class="bar-button" data-comments-target="submit" data-action="click->comments#sendAll" hidden></button>
+  <div id="comment-pick" class="comment-float" data-comments-target="pick">
+    <button type="button" class="bar-button" data-action="comments#reply"><u>R</u>eply</button>
+    <button type="button" class="bar-button" data-action="comments#word"><u>Y</u>es</button>
+    <button type="button" class="bar-button" data-action="comments#word"><u>N</u>o</button>
   </div>
-  <div id="comment-tip" class="comment-float" hidden></div>
-  <div id="comment-box" class="comment-float" hidden>
-    <textarea aria-label="Comment"></textarea>
+  <div id="comment-tip" class="comment-float" data-comments-target="tip" hidden></div>
+  <div id="comment-box" class="comment-float" data-comments-target="box">
+    <textarea aria-label="Comment" data-comments-target="input" data-action="keydown->comments#type"></textarea>
     <p>Enter saves · Alt+Enter sends all · Shift+Enter new line · Esc cancels · empty deletes</p>
   </div>
 </aside>
