@@ -39,9 +39,6 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 
 - `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`. On Windows the bytes are ConPTY's rendering of its own screen buffer, not claude's output.
 - `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `errors.js`, `sentence.js`, `settings.js`) and one file per reply view in `views/`. `settings.js` holds the page settings, which the server saves in `<project>/.ccw-cache/config.json`.
-- `README.md`: how another project installs and updates ccw.
-- `CHANGELOG.md`: changes per release, newest first.
-- `scripts/readme-version.mjs`: puts the release version into the README install command.
 - `docs/fvp-list.md`: the task list.
 - `docs/mockups/`: standalone HTML mockups that link the real stylesheets and open without a build. A mockup is approved before the page implements it.
 - `docs/mods/`: the plan and research for capturing each dialog claude shows and answering it in the browser.
@@ -53,9 +50,7 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - Before any edit, read the How we work section of `docs/fvp-list.md`.
 - No task may start before it is on `docs/fvp-list.md`.
 - Dev: `pnpm watch` in one terminal, then `pnpm ccw`; ccw refuses without the watch. Read `scripts/build-watch/README.md` when page changes don't show, or before touching the watch or ccw scripts.
-- Each change a user would notice adds one line under "Unreleased" in `CHANGELOG.md`, in the same commit. Format: Keep a Changelog, checked by `kacl`.
-- Release with `pnpm release`. Its steps are in `package.json`.
-- `published-versions/` is committed. Other projects install a tarball by its GitHub URL: `README.md`, section "Use it in another project".
+- Release with `pnpm release`. Its steps are in `package.json`. It stops if "Unreleased" in `CHANGELOG.md` is empty, so each change a user would notice adds a line there.
 - Testing in a browser: use `pnpm test` (port 7682, Haiku model). The user's live session runs on any other port, because the server picks a free one unless `CC_WEB_PORT` is set. Typing there types into their real Claude.
 - Claude tests the page itself with the `browser-test` skill (puppeteer-core over CDP, its own browser profile). Never attach to the user's browser. After the tab closes, a new socket gets the serialized screen, so a script can read the result from the server.
 - Any test that starts `claude` uses `--model haiku`. Never another model.
