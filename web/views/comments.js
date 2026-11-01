@@ -8,7 +8,7 @@ const pane = document.getElementById("reply-pane");
 const reply = document.getElementById("reply");
 const pick = document.getElementById("comment-pick");
 const replyButton = document.getElementById("comment-reply");
-const doneButton = document.getElementById("comment-done");
+const wordButtons = pick.querySelectorAll("[data-word]");
 const box = document.getElementById("comment-box");
 const input = box.querySelector("textarea");
 const submit = document.getElementById("comment-submit");
@@ -42,8 +42,8 @@ const hits = (range, { clientX: x, clientY: y }) =>
   [...range.getClientRects()].some((r) => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom);
 const same = (a, b) =>
   a.compareBoundaryPoints(Range.START_TO_START, b) === 0 && a.compareBoundaryPoints(Range.END_TO_END, b) === 0;
-// The one pick: a clicked sentence, or a selection in the reply. The highlight, the popup, Reply and Done read only
-// this. The browser selection is an input to it, and stays until Reply or Done, so Ctrl+C still copies it.
+// The one pick: a clicked sentence, or a selection in the reply. The highlight and the popup read only this. The
+// browser selection is an input to it, and stays until a popup button is pressed, so Ctrl+C still copies it.
 let current = null;
 
 // One floating element at a time follows one anchor. Floating UI places it and keeps it there while #reply scrolls.
@@ -122,13 +122,15 @@ const pickRange = (range, anchor) => {
     getSelection().removeAllRanges();
     return openBox(range, anchor);
   };
-  // Done: the picked text is handled. It is sent as a comment that says "Done", with no box to write in.
-  doneButton.onclick = () => {
-    getSelection().removeAllRanges();
-    comments.push({ range, text: range.toString(), comment: "Done" });
-    hideAll();
-    render();
-  };
+  // Yes, No: the button's word is the comment, with no box to write in.
+  for (const button of wordButtons) {
+    button.onclick = () => {
+      getSelection().removeAllRanges();
+      comments.push({ range, text: range.toString(), comment: button.textContent });
+      hideAll();
+      render();
+    };
+  }
   return show(pick, anchor);
 };
 
