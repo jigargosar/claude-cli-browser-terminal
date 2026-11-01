@@ -61,3 +61,8 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [ ] document how the release process works, perhaps in claude.md
 - [ ] make popup wider.
 - [ ] Bug: a drag pick shows the tan browser selection, not the blue pick. A sentence click makes no browser selection, so the two kinds of pick differ: one copies with Ctrl+C, one does not. Decide one behavior for both. Note: the comment box takes the browser selection when it gets the focus (`web/views/comments.js:20`).
+- [ ] Architecture: trial Stimulus on `web/views/comments.js`. State in `data-*-value` attributes, CSS shows the parts, `openValueChanged` does placement and focus. Check two things: value callbacks run as a microtask after the handler (MutationObserver, `string_map_observer.ts:20`), so focus must still win over the `main.js` setTimeout fallback; and that jsdom supports MutationObserver.
+- [ ] Architecture: DOM holds the state. One attribute per fact, CSS as the projection, one writer per fact that throws on a violation, an invariant check after every event in tests.
+- [ ] Architecture: decide where comment texts and their Ranges live: hidden data in the DOM (such as `<mark data-comment>`, which splits text nodes) or a JS Map keyed by Range.
+- [ ] Architecture: make the focus timing contract explicit. `comments.js` focuses after placement; `main.js` restores focus on a setTimeout after focusout. Write it down and test it.
+- [ ] Tests: unit tests with Vitest and jsdom, pure logic plus simulated DOM, and a few end-to-end tests with puppeteer-core over CDP.
