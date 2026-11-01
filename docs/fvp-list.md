@@ -60,3 +60,4 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [x] ensure that readme points to the latest version, during release process.
 - [ ] document how the release process works, perhaps in claude.md
 - [ ] make popup wider.
+- [ ] Bug: a drag pick shows the tan browser selection, not the blue pick. A sentence click makes no browser selection, so the two kinds of pick differ: one copies with Ctrl+C, one does not. Decide one behavior for both. Note: the comment box takes the browser selection when it gets the focus (`web/views/comments.js:20`).
