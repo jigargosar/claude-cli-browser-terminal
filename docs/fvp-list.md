@@ -61,7 +61,7 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [ ] Dead doc links: review every link to a deleted doc. Found: this list's "Reply history" line (`plans/data-loss.md`), `web/markdown.js:23` (`docs/plans/data-loss.md`), `web/markdown.js:31` (`docs/Board-pending.md`). The `comments.js` task above covers `web/views/comments.js:184` and `:191`. Also this list's FVP Workflow line gives `dev-workflow-ideation/…` without the `docs/` prefix.
 - [.] weed dups
 - [ ] weed useless
-- [.] Since everything is working condition, we should first figure out a release plan 
+- [.] Since everything is working condition, we should first figure out a release plan. README should show how to install this project and use it.
 - [x] can we quickly change the font from bold to thinner monospace in xterm if yes we do it, else leave it for later.
 - [ ] try hyper on markdown pane.
 - [ ] clean up claude file, it is ridiclous. 
