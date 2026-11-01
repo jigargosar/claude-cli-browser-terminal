@@ -113,6 +113,8 @@ body[data-focus="none"] #focus-mark {
 /* A sentence a single click picked, or a selection, before it has a comment. */
 ::highlight(picked) { background: var(--picked); color: var(--ink); }
 .comment-float { position: fixed; top: 0; left: 0; z-index: 5; }
+/* The comment under the mouse, on one line. JS caps its width at the pane's. */
+#comment-tip { pointer-events: none; font-size: 0.8em; padding: 2px 6px; border-radius: 4px; background: var(--ink); color: var(--paper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .comment-float[hidden], #comment-submit[hidden] { display: none; }
 /* Ink on paper, flipped, so the popup stands out from the sepia reply. */
 #comment-pick:not([hidden]) { display: flex; gap: 4px; }

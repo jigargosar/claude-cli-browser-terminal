@@ -10,6 +10,7 @@ const pick = document.getElementById("comment-pick");
 const replyButton = document.getElementById("comment-reply");
 const wordButtons = pick.querySelectorAll("[data-word]");
 const box = document.getElementById("comment-box");
+const tip = document.getElementById("comment-tip");
 const input = box.querySelector("textarea");
 const submit = document.getElementById("comment-submit");
 
@@ -49,8 +50,18 @@ let current = null;
 // One floating element at a time follows one anchor. Floating UI places it and keeps it there while #reply scrolls.
 // Resolves once it is first placed. Only then can it take focus.
 let stopFollowing = () => {};
+// The tooltip follows its own anchor, so it never stops the popup or the box. It hides when either opens.
+let stopTip = () => {};
+let tipFor = undefined;
+const hideTip = () => {
+  stopTip();
+  stopTip = () => {};
+  tip.hidden = true;
+  tipFor = undefined;
+};
 const show = (el, anchor) =>
   new Promise((placed) => {
+    hideTip();
     stopFollowing();
     // Invisible until placed, so it never shows at its last position and then jumps.
     el.style.visibility = "hidden";
@@ -66,6 +77,7 @@ const show = (el, anchor) =>
     });
   });
 const hideAll = () => {
+  hideTip();
   stopFollowing();
   picked.clear();
   pick.hidden = true;
@@ -83,6 +95,7 @@ const openBox = async (range, anchor, index) => {
 };
 
 const render = () => {
+  hideTip();
   highlight.clear();
   for (const c of comments) highlight.add(c.range);
   submit.hidden = comments.length === 0;
@@ -154,6 +167,28 @@ document.addEventListener("selectionchange", () => {
   const range = selected();
   if (range) return pickRange(range, near(range, Infinity, 0));
 });
+
+// Hovering over commented text shows its comment, while neither the popup nor the box is open.
+reply.addEventListener("mousemove", (event) => {
+  const hovered = pick.hidden && box.hidden ? comments.find((c) => hits(c.range, event)) : undefined;
+  if (hovered === tipFor) return;
+  hideTip();
+  if (!hovered) return;
+  tipFor = hovered;
+  tip.textContent = hovered.comment;
+  tip.style.maxWidth = `${pane.clientWidth - 16}px`;
+  const anchor = near(hovered.range, event.clientX, event.clientY);
+  tip.hidden = false;
+  stopTip = autoUpdate(anchor, tip, async () => {
+    const { x, y } = await computePosition(anchor, tip, {
+      placement: "top",
+      strategy: "fixed",
+      middleware: [inline(), offset(4), flip(), shift({ padding: 8 })],
+    });
+    Object.assign(tip.style, { left: `${x}px`, top: `${y}px` });
+  });
+});
+reply.addEventListener("mouseleave", hideTip);
 
 // A press on the blue pick undoes it (see the mousedown below). Its mouseup must not pick again, nor open the comment
 // the box just saved there. A drag from it still picks the new selection.
