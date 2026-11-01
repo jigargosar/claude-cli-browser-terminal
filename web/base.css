@@ -107,11 +107,11 @@ body[data-focus="none"] #focus-mark {
 ::view-transition-group(reply) { animation-duration: 0.4s; }
 #reply ::selection { background: var(--selection); color: var(--ink); }
 
-/* Comments on reply text (views/comments.js). Picked text looks like a selection; commented text turns blue. */
-#reply-pane { --comment: #bcd7f0; }
+/* Comments on reply text (views/comments.js). Picked text is blue; commented text turns yellow. */
+#reply-pane { --comment: #ffd86b80; --picked: #bcd7f0; }
 ::highlight(comment) { background: var(--comment); }
-/* A sentence a single click picked looks like a selection. */
-::highlight(picked) { background: var(--selection); color: var(--ink); }
+/* A sentence a single click picked, or a selection, before it has a comment. */
+::highlight(picked) { background: var(--picked); color: var(--ink); }
 .comment-float { position: fixed; top: 0; left: 0; z-index: 5; }
 .comment-float[hidden], #comment-submit[hidden] { display: none; }
 /* Ink on paper, flipped, so the popup stands out from the sepia reply. */
