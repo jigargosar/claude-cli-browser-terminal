@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - While the comment popup shows, the keys R, Y and N press Reply, Yes and No.
 - Esc closes the comment popup.
 - Each popup button underlines its key letter.
-- A click on picked (blue) text undoes the pick. It closes the buttons, or the comment box as before.
+- A second click on a highlight whose buttons or comment box are open closes them, as a click elsewhere does, and opens nothing again.
 - Hovering over commented text shows its comment in a one-line tooltip.
 
 ### Changed
