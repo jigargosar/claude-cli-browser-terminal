@@ -107,8 +107,8 @@ body[data-focus="none"] #focus-mark {
 ::view-transition-group(reply) { animation-duration: 0.4s; }
 #reply ::selection { background: var(--selection); color: var(--ink); }
 
-/* Comments on reply text (views/comments.js). Commented text keeps an amber highlight; selection stays blue. */
-#reply-pane { --comment: #ffd86b80; }
+/* Comments on reply text (views/comments.js). Picked text looks like a selection; commented text turns blue. */
+#reply-pane { --comment: #bcd7f0; }
 ::highlight(comment) { background: var(--comment); }
 /* A sentence a single click picked looks like a selection. */
 ::highlight(picked) { background: var(--selection); color: var(--ink); }
