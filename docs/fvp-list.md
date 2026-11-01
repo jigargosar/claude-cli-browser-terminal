@@ -66,6 +66,6 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [ ] try hyper on markdown pane.
 - [ ] clean up claude file, it is ridiclous. 
 - [x] clean up docs + archived folder. 
-- ensure that readme points to the latest version, during release process.
+- [ ] ensure that readme points to the latest version, during release process.
 - [ ] document how the release process works, perhaps in claude.md
 - [ ] make popup wider.
