@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- While the comment popup shows, the keys R, Y and N press Reply, Yes and No.
+
 ### Changed
 - The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. Done is gone.
 

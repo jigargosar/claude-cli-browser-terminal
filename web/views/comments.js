@@ -178,6 +178,17 @@ document.addEventListener("mousedown", (event) => {
   else hideAll();
 });
 
+// While the popup shows, R, Y and N press Reply, Yes and No: the key is the button's first letter. Only keys that
+// reach the pane, so a focused terminal keeps its keys.
+pane.addEventListener("keydown", (event) => {
+  if (pick.hidden || event.ctrlKey || event.altKey || event.metaKey) return;
+  const key = event.key.toLowerCase();
+  const button = [...pick.querySelectorAll("button")].find((b) => b.textContent[0].toLowerCase() === key);
+  if (!button) return;
+  event.preventDefault();
+  button.click();
+});
+
 input.addEventListener("keydown", (event) => {
   if (event.key === "Enter" && !event.shiftKey && !event.ctrlKey) {
     event.preventDefault();
