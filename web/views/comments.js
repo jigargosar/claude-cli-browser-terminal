@@ -179,9 +179,14 @@ document.addEventListener("mousedown", (event) => {
 });
 
 // While the popup shows, R, Y and N press Reply, Yes and No: the key is the button's first letter. Only keys that
-// reach the pane, so a focused terminal keeps its keys.
+// reach the pane, so a focused terminal keeps its keys. Esc closes the popup and drops the pick.
 pane.addEventListener("keydown", (event) => {
   if (pick.hidden || event.ctrlKey || event.altKey || event.metaKey) return;
+  if (event.key === "Escape") {
+    event.preventDefault();
+    getSelection().removeAllRanges();
+    return hideAll();
+  }
   const key = event.key.toLowerCase();
   const button = [...pick.querySelectorAll("button")].find((b) => b.textContent[0].toLowerCase() === key);
   if (!button) return;

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - While the comment popup shows, the keys R, Y and N press Reply, Yes and No.
+- Esc closes the comment popup.
 
 ### Changed
 - The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. Done is gone.
