@@ -35,7 +35,7 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [.] UX polish: Hovering over commented text shows its comment in a tooltip, in a small font, cut to the width with an ellipsis.
 - [.] UX polish: Clicking highlighted text removes its highlight.
 - [.] UX polish: Commented text and text picked but not yet commented get different highlight colors.
-- [.] UX feature: The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. While the popup shows, the keys R, Y and N press its buttons, and Esc closes it.
+- [.] UX feature: The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. While the popup shows, the keys R, Y and N press its buttons, and Esc closes it. Each button underlines its key letter.
 - [ ] UX feature: Keep the highlights of what was sent to Claude
 - [ ] UX feature: Reply history: browse earlier replies, not only the last one. Also fixes data-loss case 3: a new reply clears unsent comments ([plans/data-loss.md](plans/data-loss.md)).
 - [ ] UX feature: Mods: explore which dialogs Claude shows (`docs/mods/`)
