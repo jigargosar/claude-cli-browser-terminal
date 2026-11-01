@@ -116,13 +116,8 @@ body[data-focus="none"] #focus-mark {
 /* The comment under the mouse, on one line. JS caps its width at the pane's. */
 #comment-tip { pointer-events: none; font-size: 0.8em; padding: 2px 6px; border-radius: 4px; background: var(--ink); color: var(--paper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .comment-float[hidden], #comment-submit[hidden] { display: none; }
-/* The pane's open value (none, buttons, box) shows one part. A shown part stays invisible until placed, so it never
-   shows at its last position and then jumps. */
-#comment-pick, #comment-box { display: none; }
-[data-comments-open-value="buttons"] #comment-pick { display: flex; gap: 4px; }
-[data-comments-open-value="box"] #comment-box { display: block; }
-#comment-pick:not([data-placed]), #comment-box:not([data-placed]) { visibility: hidden; }
 /* Ink on paper, flipped, so the popup stands out from the sepia reply. */
+#comment-pick:not([hidden]) { display: flex; gap: 4px; }
 #comment-pick button { background: var(--ink); color: var(--paper); border-color: var(--ink); box-shadow: 0 4px 12px rgb(0 0 0 / 0.18); }
 #comment-pick button:hover { background: var(--quote); color: var(--paper); }
 #comment-box {
