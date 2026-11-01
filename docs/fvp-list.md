@@ -33,7 +33,7 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [ ] UX keys: Sentence select mode: a key marks each sentence in the reader pane with a letter. Typing a letter picks that sentence and starts the same flow as a click on it.
 - [ ] UX keys: Esc on a picked sentence clears the pick and its popup. Nothing is lost, since no comment exists yet.
 - [.] UX polish: Hovering over commented text shows its comment in a tooltip, in a small font, cut to the width with an ellipsis.
-- [.] UX polish: A click on picked (blue) text undoes the pick. It closes the buttons, or closes the comment box as today, and never starts a new pick. Other clicks stay as today.
+- [x] UX polish: A click on picked (blue) text undoes the pick. It closes the buttons, or closes the comment box as today, and never starts a new pick. Other clicks stay as today.
 - [x] UX polish: Commented text and text picked but not yet commented get different highlight colors.
 - [x] UX feature: The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. While the popup shows, the keys R, Y and N press its buttons, and Esc closes it. Each button underlines its key letter.
 - [ ] UX feature: Keep the highlights of what was sent to Claude
