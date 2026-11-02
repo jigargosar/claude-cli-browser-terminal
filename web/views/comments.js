@@ -52,8 +52,14 @@ let current = null;
 let stopFollowing = () => {};
 // The tooltip follows its own anchor, so it never stops the popup or the box. It hides when either opens.
 let stopTip = () => {};
+// The comment the tooltip shows, or waits to show.
 let tipFor = undefined;
+let showTimer;
+let graceTimer;
 const hideTip = () => {
+  clearTimeout(showTimer);
+  clearTimeout(graceTimer);
+  graceTimer = undefined;
   stopTip();
   stopTip = () => {};
   tip.hidden = true;
@@ -168,16 +174,17 @@ document.addEventListener("selectionchange", () => {
   if (range) return pickRange(range, near(range, Infinity, 0));
 });
 
-// Hovering over commented text shows its comment, while neither the popup nor the box is open.
-reply.addEventListener("mousemove", (event) => {
-  const hovered = pick.hidden && box.hidden ? comments.find((c) => hits(c.range, event)) : undefined;
-  if (hovered === tipFor) return;
-  hideTip();
-  if (!hovered) return;
-  tipFor = hovered;
-  tip.textContent = hovered.comment;
-  tip.style.maxWidth = `${pane.clientWidth - 16}px`;
-  const anchor = near(hovered.range, event.clientX, event.clientY);
+// Hovering over commented text shows its comment, while neither the popup nor the box is open. It shows after the
+// mouse stays on the comment for SHOW_DELAY, so reading past highlights flashes nothing. Moving within the comment
+// keeps the wait. Once shown, it stays for GRACE after the mouse leaves: that bridges the gaps between a comment's
+// lines, and a next comment reached in that time shows at once.
+const SHOW_DELAY = 500;
+const GRACE = 300;
+const showTip = (comment, clientX, clientY) => {
+  tip.textContent = comment.comment;
+  const anchor = near(comment.range, clientX, clientY);
+  // Laid out but invisible until placed, as in show(): Floating UI measures it, and it never shows at its last place.
+  tip.style.visibility = "hidden";
   tip.hidden = false;
   stopTip = autoUpdate(anchor, tip, async () => {
     const { x, y } = await computePosition(anchor, tip, {
@@ -185,10 +192,31 @@ reply.addEventListener("mousemove", (event) => {
       strategy: "fixed",
       middleware: [inline(), offset(4), flip(), shift({ padding: 8 })],
     });
-    Object.assign(tip.style, { left: `${x}px`, top: `${y}px` });
+    // A placement that resolves after the tooltip moved on, or hid, is stale.
+    if (tipFor !== comment) return;
+    Object.assign(tip.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
   });
+};
+const leaveTip = () => {
+  if (tip.hidden) return hideTip();
+  graceTimer ??= setTimeout(hideTip, GRACE);
+};
+reply.addEventListener("mousemove", (event) => {
+  const hovered = pick.hidden && box.hidden ? comments.find((c) => hits(c.range, event)) : undefined;
+  if (!hovered) return leaveTip();
+  clearTimeout(graceTimer);
+  graceTimer = undefined;
+  if (hovered === tipFor) return;
+  const shown = !tip.hidden;
+  hideTip();
+  tipFor = hovered;
+  const { clientX, clientY } = event;
+  if (shown) return showTip(hovered, clientX, clientY);
+  showTimer = setTimeout(() => showTip(hovered, clientX, clientY), SHOW_DELAY);
 });
-reply.addEventListener("mouseleave", hideTip);
+reply.addEventListener("mouseleave", leaveTip);
+// The anchor has no scroll context, so the tooltip would stay put while the text scrolls away. It hides instead.
+reply.addEventListener("scroll", hideTip, { passive: true });
 
 // A press on the open highlight closes it (see the mousedown below). Its mouseup must not pick again, nor open the
 // comment there. A drag from it still picks the new selection.
