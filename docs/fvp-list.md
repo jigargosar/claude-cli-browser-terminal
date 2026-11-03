@@ -62,5 +62,5 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [ ] Comments: look for simpler ways to bring back two deleted features. Implement one only if a simpler way turns up. 1) The tooltip on commented text: it cost about 74 lines (two timers, a second Floating UI follower, a stale-placement guard, three listeners on `#reply`, a CSS fade with a `[hidden]` override). 2) A second click on an open highlight closes it: it cost one `undone` flag that couples mousedown to mouseup. Without it, the click closes the highlight, then its mouseup opens it again (flicker).
 - [x] check if there is any code, partial or otherwise that is supposed to handle scroll with buttons group or popup box. We need to clean this up.
 - [x] need done button back
-- [x] Remove the blue feature and if multiple tan yellow colors, are complex, one more concept to juggle, so remove them too.
+- [x] Remove the blue feature and if multiple tan yellow colors, are complex, one more concept to juggle, so remove them too. Done: blue is now the selection tan. The two ways of painting a pick stay. See "Selection" in CLAUDE.md Known issues.
 - [ ] Global CLAUDE.md: "In your reply Use headings and numbered lists" pushes Claude to answer in steps. Rule wanted: give steps only when the user asks for them. And see how headings and numberd lists can be formatted well.

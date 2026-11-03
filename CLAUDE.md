@@ -70,6 +70,7 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - Dragging the divider turns the focus triangle into a tilted square.
 - A one-line note Claude writes mid-turn replaces the long reply on view.
 - The tab sometimes shows "disconnected" while the server still runs; a refresh brings it back. Rare, seen when idle, not while working. The page has no auto-reconnect. Postponed. Next step when it gets frequent: log the close code and time on both sides, then add auto-reconnect and a server heartbeat.
+- Selection: a pick is painted two ways in the same tan. A drag is the browser's own selection. The page only sets its color. A sentence click makes no browser selection, so the page paints its own highlight, and Ctrl+C does not copy it. After a drag both show, and their sizes differ slightly. Which is larger is unknown. A simpler model, where the page paints every pick after release, loses Ctrl+C on drags and needs a rule for Shift+arrow selection. Left as is.
 - Duplicate lines in terminal scrollback. Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so this happens in any terminal, Windows Terminal included. Not fixable here.
 
 ## Concerns
