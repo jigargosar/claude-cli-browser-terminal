@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Esc closes the comment popup.
 - Each popup button underlines its key letter.
 - A second click on a highlight whose buttons or comment box are open closes them, as a click elsewhere does, and opens nothing again.
-- Hovering over commented text shows its comment in a tooltip of up to two lines. It shows after the mouse rests on the comment for half a second, lingers briefly after the mouse leaves, and fades in and out. Scrolling the reply hides it.
 
 ### Changed
 - The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. Done is gone.

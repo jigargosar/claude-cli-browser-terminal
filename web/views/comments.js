@@ -10,7 +10,6 @@ const pick = document.getElementById("comment-pick");
 const replyButton = document.getElementById("comment-reply");
 const wordButtons = pick.querySelectorAll("[data-word]");
 const box = document.getElementById("comment-box");
-const tip = document.getElementById("comment-tip");
 const input = box.querySelector("textarea");
 const submit = document.getElementById("comment-submit");
 
@@ -50,24 +49,8 @@ let current = null;
 // One floating element at a time follows one anchor. Floating UI places it and keeps it there while #reply scrolls.
 // Resolves once it is first placed. Only then can it take focus.
 let stopFollowing = () => {};
-// The tooltip follows its own anchor, so it never stops the popup or the box. It hides when either opens.
-let stopTip = () => {};
-// The comment the tooltip shows, or waits to show.
-let tipFor = undefined;
-let showTimer;
-let graceTimer;
-const hideTip = () => {
-  clearTimeout(showTimer);
-  clearTimeout(graceTimer);
-  graceTimer = undefined;
-  stopTip();
-  stopTip = () => {};
-  tip.hidden = true;
-  tipFor = undefined;
-};
 const show = (el, anchor) =>
   new Promise((placed) => {
-    hideTip();
     stopFollowing();
     // Invisible until placed, so it never shows at its last position and then jumps.
     el.style.visibility = "hidden";
@@ -83,7 +66,6 @@ const show = (el, anchor) =>
     });
   });
 const hideAll = () => {
-  hideTip();
   stopFollowing();
   picked.clear();
   pick.hidden = true;
@@ -101,7 +83,6 @@ const openBox = async (range, anchor, index) => {
 };
 
 const render = () => {
-  hideTip();
   highlight.clear();
   for (const c of comments) highlight.add(c.range);
   submit.hidden = comments.length === 0;
@@ -173,50 +154,6 @@ document.addEventListener("selectionchange", () => {
   const range = selected();
   if (range) return pickRange(range, near(range, Infinity, 0));
 });
-
-// Hovering over commented text shows its comment, while neither the popup nor the box is open. It shows after the
-// mouse stays on the comment for SHOW_DELAY, so reading past highlights flashes nothing. Moving within the comment
-// keeps the wait. Once shown, it stays for GRACE after the mouse leaves: that bridges the gaps between a comment's
-// lines, and a next comment reached in that time shows at once.
-const SHOW_DELAY = 500;
-const GRACE = 300;
-const showTip = (comment, clientX, clientY) => {
-  tip.textContent = comment.comment;
-  const anchor = near(comment.range, clientX, clientY);
-  // Laid out but invisible until placed, as in show(): Floating UI measures it, and it never shows at its last place.
-  tip.style.visibility = "hidden";
-  tip.hidden = false;
-  stopTip = autoUpdate(anchor, tip, async () => {
-    const { x, y } = await computePosition(anchor, tip, {
-      placement: "top",
-      strategy: "fixed",
-      middleware: [inline(), offset(4), flip(), shift({ padding: 8 })],
-    });
-    // A placement that resolves after the tooltip moved on, or hid, is stale.
-    if (tipFor !== comment) return;
-    Object.assign(tip.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
-  });
-};
-const leaveTip = () => {
-  if (tip.hidden) return hideTip();
-  graceTimer ??= setTimeout(hideTip, GRACE);
-};
-reply.addEventListener("mousemove", (event) => {
-  const hovered = pick.hidden && box.hidden ? comments.find((c) => hits(c.range, event)) : undefined;
-  if (!hovered) return leaveTip();
-  clearTimeout(graceTimer);
-  graceTimer = undefined;
-  if (hovered === tipFor) return;
-  const shown = !tip.hidden;
-  hideTip();
-  tipFor = hovered;
-  const { clientX, clientY } = event;
-  if (shown) return showTip(hovered, clientX, clientY);
-  showTimer = setTimeout(() => showTip(hovered, clientX, clientY), SHOW_DELAY);
-});
-reply.addEventListener("mouseleave", leaveTip);
-// The anchor has no scroll context, so the tooltip would stay put while the text scrolls away. It hides instead.
-reply.addEventListener("scroll", hideTip, { passive: true });
 
 // A press on the open highlight closes it (see the mousedown below). Its mouseup must not pick again, nor open the
 // comment there. A drag from it still picks the new selection.
