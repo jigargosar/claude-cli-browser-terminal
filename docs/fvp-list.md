@@ -28,7 +28,7 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [x] UX feature: The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. While the popup shows, the keys R, Y and N press its buttons, and Esc closes it. Each button underlines its key letter.
 - [ ] UX feature: Reply history: browse earlier replies, not only the last one. Also fixes data-loss case 3: a new reply clears unsent comments ([plans/data-loss.md](plans/data-loss.md)).
 - [ ] UX feature: Mods: explore which dialogs Claude shows (`docs/mods/`)
-- [ ] UX feature: Comment on any document the way you comment on replies, starting with the board
+- [ ] UX feature: Bring any file into the page and collaborate on it the way we do on Claude's replies. Start with `docs/fvp-list.md`.
 - [ ] UX feature: Bookmarks: bookmark a reply, perhaps also selected text in it
 - [ ] Weed list, recurring: duplicates and useless tasks. When done, cut it and paste it at the end. Never tick it.
 - [ ] The user's prompt stays sticky at the top of the reply.
@@ -42,7 +42,7 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [ ] try hyper on markdown pane.
 - [ ] clean up claude file, it is ridiclous. 
 - [x] ensure that readme points to the latest version, during release process.
-- [ ] document how the release process works, perhaps in claude.md
+- [ ] Write the release steps in their own doc, next to the scripts, the way `scripts/build-watch/README.md` does for the watch. The README stays user-facing: how to install and use. Include the changelog process: a line goes in the same commit as the change, which section to use (Added, Changed, Removed), the Keep a Changelog format, and what `kacl` checks and stamps. CLAUDE.md then points to the doc.
 - [ ] make popup wider.
 - [ ] Comments: look for simpler ways to bring back two deleted features. Implement one only if a simpler way turns up. 1) The tooltip on commented text: it cost about 74 lines (two timers, a second Floating UI follower, a stale-placement guard, three listeners on `#reply`, a CSS fade with a `[hidden]` override). 2) A second click on an open highlight closes it: it cost one `undone` flag that couples mousedown to mouseup. Without it, the click closes the highlight, then its mouseup opens it again (flicker).
 - [x] check if there is any code, partial or otherwise that is supposed to handle scroll with buttons group or popup box. We need to clean this up.
