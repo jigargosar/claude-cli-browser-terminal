@@ -32,7 +32,6 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [ ] UX keys: Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
 - [ ] UX keys: Sentence select mode: a key marks each sentence in the reader pane with a letter. Typing a letter picks that sentence and starts the same flow as a click on it.
 - [ ] UX keys: Esc on a picked sentence clears the pick and its popup. Nothing is lost, since no comment exists yet.
-- [x] UX polish: A second click on an open highlight acts like a click elsewhere. Blue or yellow, whose buttons or comment box are open: the click closes them as today and opens nothing again. Found: a click on yellow text with its box open closes the box, then opens it again.
 - [x] UX polish: Commented text and text picked but not yet commented get different highlight colors.
 - [x] UX feature: The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. While the popup shows, the keys R, Y and N press its buttons, and Esc closes it. Each button underlines its key letter.
 - [ ] UX feature: Keep the highlights of what was sent to Claude
@@ -61,6 +60,5 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [ ] make popup wider.
 - [ ] Bug: a drag pick shows the tan browser selection, not the blue pick. A sentence click makes no browser selection, so the two kinds of pick differ: one copies with Ctrl+C, one does not. Decide one behavior for both. Note: the comment box takes the browser selection when it gets the focus (`web/views/comments.js:20`).
 - [ ] Comments: look for simpler ways to bring back two deleted features. Implement one only if a simpler way turns up. 1) The tooltip on commented text: it cost about 74 lines (two timers, a second Floating UI follower, a stale-placement guard, three listeners on `#reply`, a CSS fade with a `[hidden]` override). 2) A second click on an open highlight closes it: it cost one `undone` flag that couples mousedown to mouseup. Without it, the click closes the highlight, then its mouseup opens it again (flicker).
-- [.] Delete the second-click handling on an open highlight (the `undone` flag in `web/views/comments.js`). Esc already closes the popup and the comment box. Its "Unreleased" line in `CHANGELOG.md` goes in the same change.
-- [x] Delete the comment tooltip: its code in `web/views/comments.js`, `#comment-tip` in `web/base.css` and `web/index.html`, and its "Unreleased" line in `CHANGELOG.md`, in the same change.
 - [ ] check if there is any code, partial or otherwise that is supposed to handle scroll with buttons group or popup box. We need to clean this up.
+- [ ] need done button back

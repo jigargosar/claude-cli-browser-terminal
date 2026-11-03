@@ -155,14 +155,9 @@ document.addEventListener("selectionchange", () => {
   if (range) return pickRange(range, near(range, Infinity, 0));
 });
 
-// A press on the open highlight closes it (see the mousedown below). Its mouseup must not pick again, nor open the
-// comment there. A drag from it still picks the new selection.
-let undone = false;
-
 reply.addEventListener("mouseup", (event) => {
   const range = selected();
   if (range) return pickRange(range, near(range, event.clientX, event.clientY));
-  if (undone) return;
   const index = comments.findIndex((c) => hits(c.range, event));
   if (index !== -1) {
     const { range: commented } = comments[index];
@@ -175,13 +170,9 @@ reply.addEventListener("mouseup", (event) => {
 });
 
 // A press outside the floating elements closes them. An open comment box saves first, so a stray click never loses
-// what was typed. A press on the open highlight, the one whose buttons or box show (blue pick or yellow comment),
-// closes them the same way, and its mouseup opens nothing.
+// what was typed.
 document.addEventListener("mousedown", (event) => {
   if (pick.contains(event.target) || box.contains(event.target)) return;
-  const open = !pick.hidden ? current : !box.hidden ? editing.range : null;
-  undone = open !== null && hits(open, event);
-  if (undone) getSelection().removeAllRanges();
   if (!box.hidden) save();
   else hideAll();
 });

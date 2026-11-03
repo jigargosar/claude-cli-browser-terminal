@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - While the comment popup shows, the keys R, Y and N press Reply, Yes and No.
 - Esc closes the comment popup.
 - Each popup button underlines its key letter.
-- A second click on a highlight whose buttons or comment box are open closes them, as a click elsewhere does, and opens nothing again.
 
 ### Changed
 - The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. Done is gone.
