@@ -1,6 +1,10 @@
 # How we work
 
-The user keeps this list. Claude edits it when asked. New tasks go at the end. Work happens on the last dotted task.
+1. The user owns this list. Claude edits it only when asked, or to tick a done task.
+2. New tasks go at the end. Work happens on the last dotted task.
+3. A task is done when the user has tested or reviewed it, and Claude has committed it. The tick goes in the same commit.
+4. When changed files pile up mid-task, Claude suggests a commit.
+5. After a task is done, Claude moves to the new last dotted task on its own. It names the task by its text and shows a high-level plan in plain words, without file or line numbers. Then it waits for the user's go.
 
 # List
 
