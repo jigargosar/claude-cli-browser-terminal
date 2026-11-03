@@ -1,7 +1,7 @@
 // View "comments": select reply text, comment on it, repeat, then send all comments to claude as one message.
 // Approved mockup: docs/mockups/comments.html. Highlights use the CSS Custom Highlight API, so the reply's DOM is never
 // changed. A new reply replaces the DOM and clears the comments, sent or not.
-import { computePosition, autoUpdate, offset, flip, shift, inline } from "@floating-ui/dom";
+import { computePosition, offset, flip, shift, inline } from "@floating-ui/dom";
 import { sentenceAt } from "../sentence.js";
 
 const pane = document.getElementById("reply-pane");
@@ -21,21 +21,15 @@ CSS.highlights.set("comment", highlight);
 const picked = new Highlight();
 CSS.highlights.set("picked", picked);
 
-// Floating UI anchor: the box of the range under the mouse, at the mouse's x. Kept relative to that box, so it
-// follows the text while #reply scrolls. A line has one box per piece of inline markup (a link, code, bold), so the
-// box must hold the mouse's x too. A mouse off the range, e.g. at the end of a drag, takes its last box.
+// Floating UI anchor: the box of the range under the mouse, at the mouse's x, read once. A line has one box per piece
+// of inline markup (a link, code, bold), so the box must hold the mouse's x too. A mouse off the range, e.g. at the
+// end of a drag, takes its last box.
 const near = (range, x, y) => {
   const rects = [...range.getClientRects()];
   const found = rects.findIndex((r) => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom);
-  const line = found === -1 ? rects.length - 1 : found;
-  const dx = Math.min(Math.max(x - rects[line].left, 0), rects[line].width);
-  const rect = () => {
-    // A reflow, e.g. a divider drag, can leave the range fewer lines.
-    const now = range.getClientRects();
-    const r = now[Math.min(line, now.length - 1)];
-    return new DOMRect(r.left + dx, r.top, 0, r.height);
-  };
-  return { getBoundingClientRect: rect, getClientRects: () => [rect()] };
+  const r = rects[found === -1 ? rects.length - 1 : found];
+  const rect = new DOMRect(Math.min(Math.max(x, r.left), r.right), r.top, 0, r.height);
+  return { getBoundingClientRect: () => rect, getClientRects: () => [rect] };
 };
 
 const hits = (range, { clientX: x, clientY: y }) =>
@@ -46,27 +40,20 @@ const same = (a, b) =>
 // browser selection is an input to it, and stays until a popup button is pressed, so Ctrl+C still copies it.
 let current = null;
 
-// One floating element at a time follows one anchor. Floating UI places it and keeps it there while #reply scrolls.
-// Resolves once it is first placed. Only then can it take focus.
-let stopFollowing = () => {};
-const show = (el, anchor) =>
-  new Promise((placed) => {
-    stopFollowing();
-    // Invisible until placed, so it never shows at its last position and then jumps.
-    el.style.visibility = "hidden";
-    el.hidden = false;
-    stopFollowing = autoUpdate(anchor, el, async () => {
-      const { x, y } = await computePosition(anchor, el, {
-        placement: "top",
-        strategy: "fixed",
-        middleware: [inline(), offset(8), flip(), shift({ padding: 8 })],
-      });
-      Object.assign(el.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
-      placed();
-    });
+// Floating UI places the element at the anchor once. It stays there while #reply scrolls. Resolves once it is placed.
+// Only then can it take focus.
+const show = async (el, anchor) => {
+  // Invisible until placed, so it never shows at its last position and then jumps.
+  el.style.visibility = "hidden";
+  el.hidden = false;
+  const { x, y } = await computePosition(anchor, el, {
+    placement: "top",
+    strategy: "fixed",
+    middleware: [inline(), offset(8), flip(), shift({ padding: 8 })],
   });
+  Object.assign(el.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
+};
 const hideAll = () => {
-  stopFollowing();
   picked.clear();
   pick.hidden = true;
   box.hidden = true;
