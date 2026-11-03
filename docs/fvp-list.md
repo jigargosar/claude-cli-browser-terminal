@@ -4,14 +4,10 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 
 # List
 
-- [.] Reply length investigation, outside the project and exempt from Workflow: measurements, causes and proposed CLAUDE.md changes are in `docs/reply-length-investigation.md`. Next: agree the changes, apply them, re-measure.
+- [.] Reply length investigation, outside the project and exempt from Workflow: measurements, causes and proposed CLAUDE.md changes are in `docs/reply-length-investigation.md`. Next: agree the changes, apply them, re-measure. Measured: TLDR lines are 17 percent and table rows 39 percent of all reply words. Root cause, discussed with another AI instance: `docs/reply-length-rca.md`.
 - [.] All UX: Spike: `docs/mockups/keys.html`, a working prototype of the page with a real xterm (local echo). It switches between Today and Fixed focus rules, and logs where each key lands. Fixed: the mouse never moves the keys, the comment box borrows them and gives them back, and stray keys go to the terminal.
-- [ ] Bug: once text is selected, the Reply popup stays on top while the page scrolls. It does not follow the selected text.
-- [ ] maximizing either pane maybe not?
 - [ ] Drawing tilde on arrow.
-- [.] z-index for the dialog.
 - [.] Capture all intermediate logs. Show them perhaps as collapsed blocks, as other tools do, so they are easy to browse. Unlike Claude desktop and web.
-- [ ] Keep sent answers. Easy once response histories are stored.
 - [ ] Board visibility.
 - [.] Atkinson Hyperlegible Mono for code in the reader pane.
 - [x] ccw reliability: review the project, verify each ccw reliability issue, then fix the pragmatic ones. Found 2026-10-24.
@@ -21,44 +17,33 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [ ] Explore the conversation patterns in `docs/conversation-exploration/transcript.txt`, and how this project can use them.
 - [x] Workflow: try Forster's FVP on the board. Proposal saved in `dev-workflow-ideation/fvp-workflow-proposal.md`.
 - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
-- [ ] Reply length: agree and apply the rule changes in `docs/reply-length-investigation.md`, then re-measure a later session. Measured: TLDR lines are 17 percent and table rows 39 percent of all reply words.
 - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [x] CLAUDE.md Decision 2.2 says the reader pane may be blank after a refresh. Inference: outdated, since the server sends every item on connect (`server.mjs:244`).
-- [ ] Root cause of long replies: [reply-length-rca.md](reply-length-rca.md). Discussed with another AI instance.
 - [x] Revisit the global CLAUDE.md rule "when the work stops moving forward". Its intent was different from how Claude applied it.
 - [.] Analyze the view implementation: does it need an upgrade, can it be simplified, what are the tradeoffs.
-- [ ] UX bug: The popup follows the selected text when the page scrolls.
-- [ ] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
+- [.] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
 - [ ] UX keys: Pane switch: Alt+` is easy to confuse with the Chrome Alt+Q shortcut. Find a clearer key or cue.
 - [ ] UX keys: Sentence select mode: a key marks each sentence in the reader pane with a letter. Typing a letter picks that sentence and starts the same flow as a click on it.
-- [ ] UX keys: Esc on a picked sentence clears the pick and its popup. Nothing is lost, since no comment exists yet.
 - [x] UX polish: Commented text and text picked but not yet commented get different highlight colors.
 - [x] UX feature: The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. While the popup shows, the keys R, Y and N press its buttons, and Esc closes it. Each button underlines its key letter.
-- [ ] UX feature: Keep the highlights of what was sent to Claude
 - [ ] UX feature: Reply history: browse earlier replies, not only the last one. Also fixes data-loss case 3: a new reply clears unsent comments ([plans/data-loss.md](plans/data-loss.md)).
 - [ ] UX feature: Mods: explore which dialogs Claude shows (`docs/mods/`)
 - [ ] UX feature: Comment on any document the way you comment on replies, starting with the board
-- [ ] UX feature: Maximize the terminal pane or the reader pane
 - [ ] UX feature: Bookmarks: bookmark a reply, perhaps also selected text in it
 - [ ] Weed list, recurring: duplicates and useless tasks. When done, cut it and paste it at the end. Never tick it.
-- [x] Delete the old docs in `docs/` (Board, Board-pending, archives, plans, void and the rest) and drop them from the CLAUDE.md Files list. Tag `board-before-fvp` keeps them.
-- [x] cleanup of all old pre fvp.
 - [ ] The user's prompt stays sticky at the top of the reply.
 - [ ] Inference is easy to tell apart from fact in a reply.
 - [ ] Claude's thinking shows in the reply pane, toggleable.
-- [ ] `web/views/comments.js` comments link `docs/plans/data-loss.md`, which is gone. Point them at tag `board-before-fvp` or drop the links.
 - [x] Friction file: rename `docs/fvp-friction.md` properly, write down its purpose and how to use it, and link it from the places that need it (none link it today: not `CLAUDE.md`, the list or the rules).
 - [ ] Links in replies: decide the fate of the commented-out new-tab hook in `web/markdown.js:31-40`. Today every link renders as its text only (`web/markdown.js:24-26`), so no link can leave the tab, and the hook is dead code. Options: delete it, or bring links back with every link opening outside the tab.
-- [ ] Dead doc links: review every link to a deleted doc. Found: this list's "Reply history" line (`plans/data-loss.md`), `web/markdown.js:23` (`docs/plans/data-loss.md`), `web/markdown.js:31` (`docs/Board-pending.md`). The `comments.js` task above covers `web/views/comments.js:184` and `:191`. Also this list's FVP Workflow line gives `dev-workflow-ideation/…` without the `docs/` prefix.
+- [ ] Dead doc links: review every link to a deleted doc. Found: this list's "Reply history" line (`plans/data-loss.md`), `web/markdown.js:23` (`docs/plans/data-loss.md`), `web/markdown.js:31` (`docs/Board-pending.md`). Also `web/views/comments.js` comments link `docs/plans/data-loss.md`. Point them at tag `board-before-fvp` or drop the links. Also this list's FVP Workflow line gives `dev-workflow-ideation/…` without the `docs/` prefix.
 - [x] Since everything is working condition, we should first figure out a release plan. README should show how to install this project and use it.
 - [x] can we quickly change the font from bold to thinner monospace in xterm if yes we do it, else leave it for later.
 - [ ] try hyper on markdown pane.
 - [ ] clean up claude file, it is ridiclous. 
-- [x] clean up docs + archived folder. 
 - [x] ensure that readme points to the latest version, during release process.
 - [ ] document how the release process works, perhaps in claude.md
 - [ ] make popup wider.
-- [.] Bug: a drag pick shows the tan browser selection, not the blue pick. A sentence click makes no browser selection, so the two kinds of pick differ: one copies with Ctrl+C, one does not. Decide one behavior for both. Note: the comment box takes the browser selection when it gets the focus (`web/views/comments.js:20`).
 - [ ] Comments: look for simpler ways to bring back two deleted features. Implement one only if a simpler way turns up. 1) The tooltip on commented text: it cost about 74 lines (two timers, a second Floating UI follower, a stale-placement guard, three listeners on `#reply`, a CSS fade with a `[hidden]` override). 2) A second click on an open highlight closes it: it cost one `undone` flag that couples mousedown to mouseup. Without it, the click closes the highlight, then its mouseup opens it again (flicker).
 - [x] check if there is any code, partial or otherwise that is supposed to handle scroll with buttons group or popup box. We need to clean this up.
 - [x] need done button back
