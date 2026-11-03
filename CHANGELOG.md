@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - The comment popup shows Reply, Yes, No and Done. Yes, No and Done send their word as the comment.
-- Picked text is highlighted light blue, so it stands apart from the yellow of commented text.
+- Picked text is highlighted in the selection color, so it stands apart from the yellow of commented text.
 
 ## 0.1.7 - 2026-10-31
 ### Added
