@@ -34,7 +34,6 @@
 - [ ] UX feature: Mods: explore which dialogs Claude shows (`docs/mods/`)
 - [ ] UX feature: Bring any file into the page and collaborate on it the way we do on Claude's replies. Start with `docs/fvp-list.md`.
 - [ ] UX feature: Bookmarks: bookmark a reply, perhaps also selected text in it
-- [ ] Weed list, recurring: duplicates and useless tasks. When done, cut it and paste it at the end. Never tick it.
 - [ ] The user's prompt stays sticky at the top of the reply.
 - [ ] Inference is easy to tell apart from fact in a reply.
 - [ ] Claude's thinking shows in the reply pane, toggleable.
@@ -53,3 +52,4 @@
 - [x] need done button back
 - [x] Remove the blue feature and if multiple tan yellow colors, are complex, one more concept to juggle, so remove them too. Done: blue is now the selection tan. The two ways of painting a pick stay. See "Selection" in CLAUDE.md Known issues.
 - [ ] Global CLAUDE.md: "In your reply Use headings and numbered lists" pushes Claude to answer in steps. Rule wanted: give steps only when the user asks for them. And see how headings and numberd lists can be formatted well.
+- [ ] Weed the list, recurring. Merge or delete duplicates. Delete tasks that a decision settled, that are already done, or that point at things that are gone. Check done tasks for facts recorded nowhere else, and keep those facts. When done, move this task to the end instead of ticking it.
