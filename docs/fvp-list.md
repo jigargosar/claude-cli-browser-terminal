@@ -61,5 +61,5 @@ The user keeps this list. Claude edits it when asked. New tasks go at the end. W
 - [.] Bug: a drag pick shows the tan browser selection, not the blue pick. A sentence click makes no browser selection, so the two kinds of pick differ: one copies with Ctrl+C, one does not. Decide one behavior for both. Note: the comment box takes the browser selection when it gets the focus (`web/views/comments.js:20`).
 - [ ] Comments: look for simpler ways to bring back two deleted features. Implement one only if a simpler way turns up. 1) The tooltip on commented text: it cost about 74 lines (two timers, a second Floating UI follower, a stale-placement guard, three listeners on `#reply`, a CSS fade with a `[hidden]` override). 2) A second click on an open highlight closes it: it cost one `undone` flag that couples mousedown to mouseup. Without it, the click closes the highlight, then its mouseup opens it again (flicker).
 - [ ] check if there is any code, partial or otherwise that is supposed to handle scroll with buttons group or popup box. We need to clean this up.
-- [.] need done button back
+- [x] need done button back
 - [ ] remove the blue feature and if multiple tan yellow colors, are complex remove them too.
