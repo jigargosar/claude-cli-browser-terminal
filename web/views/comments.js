@@ -122,7 +122,7 @@ const pickRange = (range, anchor) => {
     getSelection().removeAllRanges();
     return openBox(range, anchor);
   };
-  // Yes, No: the button's word is the comment, with no box to write in.
+  // Yes, No, Done: the button's word is the comment, with no box to write in.
   for (const button of wordButtons) {
     button.onclick = () => {
       getSelection().removeAllRanges();
@@ -177,7 +177,7 @@ document.addEventListener("mousedown", (event) => {
   else hideAll();
 });
 
-// While the popup shows, R, Y and N press Reply, Yes and No: the key is the button's first letter. Only keys that
+// While the popup shows, R, Y, N and D press Reply, Yes, No and Done: the key is the button's first letter. Only keys that
 // reach the pane, so a focused terminal keeps its keys. Esc closes the popup and drops the pick.
 pane.addEventListener("keydown", (event) => {
   if (pick.hidden || event.ctrlKey || event.altKey || event.metaKey) return;

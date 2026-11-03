@@ -7,12 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- While the comment popup shows, the keys R, Y and N press Reply, Yes and No.
+- While the comment popup shows, the keys R, Y, N and D press Reply, Yes, No and Done.
 - Esc closes the comment popup.
 - Each popup button underlines its key letter.
 
 ### Changed
-- The comment popup shows Reply, Yes and No. Yes and No send their word as the comment. Done is gone.
+- The comment popup shows Reply, Yes, No and Done. Yes, No and Done send their word as the comment.
 - Picked text is highlighted light blue, so it stands apart from the yellow of commented text.
 
 ## 0.1.7 - 2026-10-31
