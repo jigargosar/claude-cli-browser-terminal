@@ -5,7 +5,7 @@
 3. A task is done when the user has tested or reviewed it, and Claude has committed it. The tick goes in the same commit.
 4. When changed files pile up mid-task, Claude suggests a commit.
 5. After a task is done, Claude moves to the new last dotted task on its own. It names the task by its text and shows a high-level plan in plain words, without file or line numbers. Then it waits for the user's go.
-- Following task should be part of setting up this file [ ] Weed the list. This weed task is a reminder, so it is never ticked. Merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else.
+- THIS ITEM NEEDS CLEANUP: Following task should be part of setting up this file [ ] Weed the list. This weed task is a reminder, so it is never ticked. Merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else.
 
 # List
 
