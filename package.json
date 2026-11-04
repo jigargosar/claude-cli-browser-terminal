@@ -23,6 +23,7 @@
     "release:about": "echo Needs entries under Unreleased in CHANGELOG.md. Builds, bumps the patch version, stamps the changelog, puts the version into the README install command, packs one tarball into published-versions/, commits it all with a tag, pushes.",
     "release": "vite build && pnpm version patch && git push --follow-tags",
     "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku",
+    "test:about": "deep investigation before we even think about running this test, so dont",
     "preversion": "kacl prerelease",
     "version": "kacl release && node scripts/readme-version.mjs && pnpm pack --pack-destination published-versions && git add CHANGELOG.md README.md published-versions"
   },

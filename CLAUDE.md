@@ -51,9 +51,6 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - No task may start before it is on `docs/fvp-list.md`.
 - Dev: `pnpm watch` in one terminal, then `pnpm ccw`; ccw refuses without the watch. Read `scripts/build-watch/README.md` when page changes don't show, or before touching the watch or ccw scripts.
 - Release with `pnpm release`. Its steps are in `package.json`. It stops if "Unreleased" in `CHANGELOG.md` is empty, so each change a user would notice adds a line there.
-- Testing in a browser: use `pnpm test` (port 7682, Haiku model). The user's live session runs on any other port, because the server picks a free one unless `CC_WEB_PORT` is set. Typing there types into their real Claude.
-- Claude tests the page itself with the `browser-test` skill (puppeteer-core over CDP, its own browser profile). Never attach to the user's browser. After the tab closes, a new socket gets the serialized screen, so a script can read the result from the server.
-- Any test that starts `claude` uses `--model haiku`. Never another model.
 - A `claude` started from inside a Claude Code session writes no transcript. A test started by Claude must remove every `CLAUDE*` variable from the environment it gives the server, or the transcript feed stays empty.
 - Browser libraries come from `node_modules`, not a CDN.
 - Test trip wires:
@@ -63,6 +60,17 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
   - Stopping the shell that ran `pnpm test` leaves node and its `claude` running on 7682.
   - A puppeteer drag in the reply pane selects nothing. A drag needs a manual test.
 - Cleanup after a test: close every tab the script opened, then kill the process tree on 7682 (`taskkill //T //F //PID <pid>`). Kill only what this session started.
+
+# Testing
+
+Testing is currently paused in browser need to fix some issues first
+
+- Testing in a browser: use `pnpm test` (port 7682, Haiku model). The user's live session runs on any other port,
+  because the server picks a free one unless `CC_WEB_PORT` is set. Typing there types into their real Claude.
+- Claude tests the page itself with the `browser-test` skill (puppeteer-core over CDP, its own browser profile). Never
+  attach to the user's browser. After the tab closes, a new socket gets the serialized screen, so a script can read the
+  result from the server.
+- Any test that starts `claude` uses `--model haiku`. Never another model.
 
 ## Known issues
 
