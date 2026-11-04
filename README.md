@@ -5,7 +5,7 @@ Claude Code in a browser tab. The terminal is on the left, and Claude's last rep
 ## Install
 
 ```
-pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.7.tgz
+pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.8.tgz
 ```
 
 ## Use
