@@ -63,7 +63,7 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 
 # Testing
 
-Testing is currently paused in browser need to fix some issues first
+NOTE: Testing is currently paused in browser need to fix some issues first
 
 - Testing in a browser: use `pnpm test` (port 7682, Haiku model). The user's live session runs on any other port,
   because the server picks a free one unless `CC_WEB_PORT` is set. Typing there types into their real Claude.
