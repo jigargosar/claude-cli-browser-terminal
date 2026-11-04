@@ -4,7 +4,7 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 Scope: developer experience (DX) when working with AI tools. That covers the tooling around the conversation, how Claude's replies read, and how the user's input reaches Claude. Why: the features built so far are small, and many are details you notice only after trying other tools. Each one serves this scope.
 
-## Primary Goal
+# Primary Goal
 
 - [x] Goal 1: when you use this daily instead of the plain terminal.
 - [x] Goal 2: select text in a reply, comment on it, repeat, then send all to Claude with context included.
@@ -14,7 +14,7 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 
 - Hold your horses
 
-## Decisions
+# Decisions
 
 1. Start works like the terminal.
    1. The server runs the same `claude` command, with the flags given to the server.
@@ -31,11 +31,11 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
    3. The session ends only when claude exits (it stops the server), or the server is stopped (it stops claude).
    4. Why: a tab closes by accident easily; a lost tab must not lose the session.
 
-## Concurrent editing facts (for a later feature)
+# Concurrent editing facts (for a later feature)
 - Fact: a file change the user saves between Claude's turns reaches Claude with the user's next message, as the changed lines with line numbers. Verified 2026-10-15.
 - Fact: after that notice, Claude's Edit on the file passes without a re-read. Verified 2026-10-15.
 
-## Files
+# Files
 
 - `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`. On Windows the bytes are ConPTY's rendering of its own screen buffer, not claude's output.
 - `web/`: the page. `index.html` is markup only; `main.js` wires the modules; one module per part (`terminal.js`, `divider.js`, `socket.js`, `markdown.js`, `reader.js`, `errors.js`, `sentence.js`, `settings.js`) and one file per reply view in `views/`. `settings.js` holds the page settings, which the server saves in `<project>/.ccw-cache/config.json`.
@@ -45,14 +45,22 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - `docs/focus-indicator.md`: how the page shows which pane gets the keys.
 - `docs/Wings.md`: the user's wishes. Only the user writes here. Claude never does.
 
-## Rules
+# Rules
 
 - Before any edit, read the How we work section of `docs/fvp-list.md`.
 - No task may start before it is on `docs/fvp-list.md`.
 - Dev: `pnpm watch` in one terminal, then `pnpm ccw`; ccw refuses without the watch. Read `scripts/build-watch/README.md` when page changes don't show, or before touching the watch or ccw scripts.
 - Release with `pnpm release`. Its steps are in `package.json`. It stops if "Unreleased" in `CHANGELOG.md` is empty, so each change a user would notice adds a line there.
-- A `claude` started from inside a Claude Code session writes no transcript. A test started by Claude must remove every `CLAUDE*` variable from the environment it gives the server, or the transcript feed stays empty.
 - Browser libraries come from `node_modules`, not a CDN.
+
+# Testing
+
+NOTE: Testing is currently paused in browser need to fix some issues first
+
+- Testing in a browser: use `pnpm test` (port 7682, Haiku model). The user's live session runs on any other port, because the server picks a free one unless `CC_WEB_PORT` is set. Typing there types into their real Claude.
+- Claude tests the page itself with the `browser-test` skill (puppeteer-core over CDP, its own browser profile). Never attach to the user's browser. After the tab closes, a new socket gets the serialized screen, so a script can read the result from the server.
+- Any test that starts `claude` uses `--model haiku`. Never another model.
+- A `claude` started from inside a Claude Code session writes no transcript. A test started by Claude must remove every `CLAUDE*` variable from the environment it gives the server, or the transcript feed stays empty.
 - Test trip wires:
   - The terminal draws with WebGL. Its text is not in the DOM, so read the screen from the server.
   - A tab left open, such as one from a crashed script, makes the server refuse every new socket (4000). Close the page in a `finally`.
@@ -61,22 +69,6 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
   - A puppeteer drag in the reply pane selects nothing. A drag needs a manual test.
 - Cleanup after a test: close every tab the script opened, then kill the process tree on 7682 (`taskkill //T //F //PID <pid>`). Kill only what this session started.
 
-# Testing
-
-NOTE: Testing is currently paused in browser need to fix some issues first
-
-- Testing in a browser: use `pnpm test` (port 7682, Haiku model). The user's live session runs on any other port,
-  because the server picks a free one unless `CC_WEB_PORT` is set. Typing there types into their real Claude.
-- Claude tests the page itself with the `browser-test` skill (puppeteer-core over CDP, its own browser profile). Never
-  attach to the user's browser. After the tab closes, a new socket gets the serialized screen, so a script can read the
-  result from the server.
-- Any test that starts `claude` uses `--model haiku`. Never another model.
-
-## Known issues
-
-- Rewind leaves the reply pane hanging. Low priority.
-- Dragging the divider turns the focus triangle into a tilted square.
-- A one-line note Claude writes mid-turn replaces the long reply on view.
 - The tab sometimes shows "disconnected" while the server still runs; a refresh brings it back. Rare, seen when idle, not while working. The page has no auto-reconnect. Postponed. Next step when it gets frequent: log the close code and time on both sides, then add auto-reconnect and a server heartbeat.
 - The comment popup and box stay where they opened while the reply scrolls. A little clunky, but not worth another concept in the code.
 - Selection: a pick is painted two ways in the same tan. A drag is the browser's own selection. The page only sets its color. A sentence click makes no browser selection, so the page paints its own highlight, and Ctrl+C does not copy it. After a drag both show, and their sizes differ slightly. Which is larger is unknown. A simpler model, where the page paints every pick after release, loses Ctrl+C on drags and needs a rule for Shift+arrow selection. Left as is.
