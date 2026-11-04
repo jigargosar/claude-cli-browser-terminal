@@ -185,14 +185,14 @@ input.addEventListener("keydown", (event) => {
     event.preventDefault();
     save();
   } else if (event.key === "Escape") {
-    // Esc cancels. Changed text asks first, so it is never lost by accident (docs/plans/data-loss.md, case 1).
+    // Esc cancels. Changed text asks first, so it is never lost by accident.
     if (input.value.trim() !== editing.before.trim() && !confirm("Discard this comment's changes?")) return;
     editing = null;
     hideAll();
   }
 });
 
-// Every reload or close asks first. Comments live only in page memory (docs/plans/data-loss.md).
+// Every reload or close asks first. Comments live only in page memory.
 window.addEventListener("beforeunload", (event) => event.preventDefault());
 
 export const clear = () => {
