@@ -24,6 +24,6 @@
 - [ ] simple prev next response navigation.
 - [.] create skill, global for this fvp style workflow
 - [.] Recurring Release, how to ensure? trigger?
-- [ ] CLAUDE.md: unwrap the Testing bullets to one line each, like every other bullet in the file.
-- [ ] CLAUDE.md: move all testing guidance under Testing. Today the `CLAUDE*` variable rule, the test trip wires and the cleanup rule sit under Rules.
-- [ ] CLAUDE.md: make every `##` heading a `#` heading.
+- [.] CLAUDE.md: unwrap the Testing bullets to one line each, like every other bullet in the file.
+- [.] CLAUDE.md: move all testing guidance under Testing. Today the `CLAUDE*` variable rule, the test trip wires and the cleanup rule sit under Rules.
+- [.] CLAUDE.md: make every `##` heading a `#` heading.
