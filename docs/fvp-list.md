@@ -22,3 +22,4 @@
 - [.] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay. Since comments are page based, they clear as page changes.
 - [ ] simple prev next response navigation.
 - [.] create skill, global for this fvp style workflow
+- [.] Recurring Release, how to ensure? trigger?
