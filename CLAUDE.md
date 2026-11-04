@@ -4,6 +4,10 @@ Run Claude Code in a browser tab: the terminal on the left, Claude's last reply 
 
 Scope: developer experience (DX) when working with AI tools. That covers the tooling around the conversation, how Claude's replies read, and how the user's input reaches Claude. Why: the features built so far are small, and many are details you notice only after trying other tools. Each one serves this scope.
 
+# Session start
+
+- Read `docs/handoff.md` first. It holds the last session's summary.
+
 # Primary Goal
 
 - [x] Goal 1: when you use this daily instead of the plain terminal.
