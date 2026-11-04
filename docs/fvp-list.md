@@ -24,7 +24,7 @@
 - [ ] Weed the list. This weed task is a reminder, so it is never ticked. Merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else.
 - [.] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay. Since comments are page based, they clear as page changes.
 - [ ] simple prev next response navigation.
-- [.] create skill, global for this fvp style workflow
+- [x] create skill, global for this fvp style workflow
 - [x] Recurring Release, how to ensure? trigger?
 - [x] CLAUDE.md: unwrap the Testing bullets to one line each, like every other bullet in the file.
 - [x] CLAUDE.md: move all testing guidance under Testing. Today the `CLAUDE*` variable rule, the test trip wires and the cleanup rule sit under Rules.
@@ -44,3 +44,4 @@
   - The harness text Claude gets after a rejected tool call: "STOP what you are doing and wait for the user to tell you how to proceed."
 - [ ] Visibility of thinking is really important because I keep switching back and forth between terminal and response. So, some way of looking at the thinking part is not essential, but at least it's very curious because not only curious, but it also might help you know how you think about things 
 - [ ] small gestures, like trackpad touch is causing focus to swtch either we stick to shortcut only switch, or we put some threshold for pointer event.
+- [.] Global skill `install-ccw` in `~/.claude/skills/`: Claude in any project can install ccw and knows its trip wires (random port, one tab per session, transcript saving off when started from inside Claude Code). Without it, other projects have to figure out how to use this one.

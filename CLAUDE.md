@@ -35,6 +35,12 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - Fact: a file change the user saves between Claude's turns reaches Claude with the user's next message, as the changed lines with line numbers. Verified 2026-10-15.
 - Fact: after that notice, Claude's Edit on the file passes without a re-read. Verified 2026-10-15.
 
+# Environment facts (maybe a precursor to resuming browser tests, see Testing)
+- Fact: a `claude` started by ccw from inside a Claude Code session shows the warning "Transcript saving is off — inherited CLAUDE_CODE_CHILD_SESS…", cut off in the terminal. The only inherited variable with that prefix was `CLAUDE_CODE_CHILD_SESSION`. Seen 2026-11-04, with ccw 0.1.8 installed from its tarball.
+- Fact: in that session the SessionStart hook still reported a transcript path. After the session ended, no file existed at that path.
+- Fact: the server gives `claude` its whole environment (`...process.env` in `server.mjs`).
+- Unknown: what removing `CLAUDE_CODE_CHILD_SESSION`, or any other `CLAUDE*` variable, does.
+
 # Files
 
 - `server.mjs`: starts `claude` in a pty, relays its terminal bytes to the one browser tab, and tails claude's transcript (path from a SessionStart hook) into items that the page shows. The socket protocol is written once, in the header of `web/socket.js`. On Windows the bytes are ConPTY's rendering of its own screen buffer, not claude's output.
