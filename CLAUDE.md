@@ -81,7 +81,3 @@ NOTE: Testing is currently paused in browser need to fix some issues first
 - The comment popup and box stay where they opened while the reply scrolls. A little clunky, but not worth another concept in the code.
 - Selection: a pick is painted two ways in the same tan. A drag is the browser's own selection. The page only sets its color. A sentence click makes no browser selection, so the page paints its own highlight, and Ctrl+C does not copy it. After a drag both show, and their sizes differ slightly. Which is larger is unknown. A simpler model, where the page paints every pick after release, loses Ctrl+C on drags and needs a rule for Shift+arrow selection. Left as is.
 - Duplicate lines in terminal scrollback. Claude Code (Ink) redraws its live region in place and can only erase inside the viewport, so this happens in any terminal, Windows Terminal included. Not fixable here.
-
-## Concerns
-
-- Adding a feature often breaks another. Tally of issues hit: ++
