@@ -44,4 +44,4 @@
   - The harness text Claude gets after a rejected tool call: "STOP what you are doing and wait for the user to tell you how to proceed."
 - [ ] Visibility of thinking is really important because I keep switching back and forth between terminal and response. So, some way of looking at the thinking part is not essential, but at least it's very curious because not only curious, but it also might help you know how you think about things 
 - [ ] small gestures, like trackpad touch is causing focus to swtch either we stick to shortcut only switch, or we put some threshold for pointer event.
-- [.] Global skill `install-ccw` in `~/.claude/skills/`: Claude in any project can install ccw and knows its trip wires (random port, one tab per session, transcript saving off when started from inside Claude Code). Without it, other projects have to figure out how to use this one.
+- [.] Global skill `install-ccw` in `~/.claude/skills/`: Claude in any project can install ccw. Also one project description, tagline plus description, in every place that holds one: the skill, `package.json`, the README and the GitHub About field.

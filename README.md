@@ -1,6 +1,8 @@
 # claude-cli-browser-terminal
 
-Claude Code in a browser tab. The terminal is on the left, and Claude's last reply is on the right as readable markdown. Select text in a reply, comment on it, and send all comments to Claude as one message.
+Claude CLI finally has a reply button.
+
+Read replies like a book, with your terminal beside them in one browser page. Click any sentence to reply, then send everything with one shortcut.
 
 ## Install
 

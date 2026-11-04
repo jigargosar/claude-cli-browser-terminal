@@ -1,7 +1,7 @@
 {
   "name": "claude-cli-browser-terminal",
   "version": "0.1.8",
-  "description": "Run Claude Code in a browser tab: the terminal on the left, Claude's last reply on the right as readable markdown.",
+  "description": "Claude CLI finally has a reply button. Read replies like a book, with your terminal beside them in one browser page. Click any sentence to reply, then send everything with one shortcut.",
   "repository": {
     "type": "git",
     "url": "https://github.com/jigargosar/claude-cli-browser-terminal.git"
