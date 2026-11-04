@@ -9,6 +9,7 @@
 7. Before work starts on a task, understand its gist. The task text, and any solution it names, may be an XY problem. Find the real need first. Even when the need is clear, double-check the solution. A solution stated as fact is still not taken for granted.
 8. Changelog trigger: a commit with a change a user would notice adds its line under Unreleased in `CHANGELOG.md`, in that same commit.
 9. Release trigger: after a task is ticked, if Unreleased in `CHANGELOG.md` has lines, Claude runs `pnpm release`. A release stamps the changelog, tags the version, and publishes the tarball in `published-versions/`, which the README install command points at.
+10. Finish the current task before starting the next. When its scope grows, write the new scope into the task first.
 
 # List
 
@@ -45,3 +46,4 @@
 - [ ] Visibility of thinking is really important because I keep switching back and forth between terminal and response. So, some way of looking at the thinking part is not essential, but at least it's very curious because not only curious, but it also might help you know how you think about things 
 - [ ] small gestures, like trackpad touch is causing focus to swtch either we stick to shortcut only switch, or we put some threshold for pointer event.
 - [x] Global skill `install-ccw` in `~/.claude/skills/`: Claude in any project can install ccw. Also one project description, tagline plus description, in every place that holds one: the skill, `package.json`, the README and the GitHub About field.
+- [.] Session wrap-up: write the 2026-11-04 session summary as is to `docs/handoff.md`. Then add to global CLAUDE.md: every reply stands on its own, and corrections get fixed, not dramatized. Then add to How we work: finish the current task first, and any scope growth is written into the task.
