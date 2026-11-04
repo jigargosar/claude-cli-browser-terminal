@@ -18,8 +18,11 @@
 - [.] Dead doc links: review every link to a deleted doc. Found: this list's "Reply history" line (`plans/data-loss.md`), `web/markdown.js:23` (`docs/plans/data-loss.md`), `web/markdown.js:31` (`docs/Board-pending.md`). Also `web/views/comments.js` comments link `docs/plans/data-loss.md`. Point them at tag `board-before-fvp` or drop the links. Also this list's FVP Workflow line gives `dev-workflow-ideation/…` without the `docs/` prefix.
 - [ ] Write the release steps in their own doc, next to the scripts, the way `scripts/build-watch/README.md` does for the watch. The README stays user-facing: how to install and use. Include the changelog process: a line goes in the same commit as the change, which section to use (Added, Changed, Removed), the Keep a Changelog format, and what `kacl` checks and stamps. CLAUDE.md then points to the doc.
 - [ ] Global CLAUDE.md: "In your reply Use headings and numbered lists" pushes Claude to answer in steps. Rule wanted: give steps only when the user asks for them. And see how headings and numberd lists can be formatted well.
-- [ ] Weed the list. This weed task is a reminder, so it is never ticked. Merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else. After each weeding, move this weed task to the bottom of the list.
+- [ ] Weed the list. This weed task is a reminder, so it is never ticked. Merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else.
 - [.] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay. Since comments are page based, they clear as page changes.
 - [ ] simple prev next response navigation.
 - [.] create skill, global for this fvp style workflow
 - [.] Recurring Release, how to ensure? trigger?
+- [ ] CLAUDE.md: unwrap the Testing bullets to one line each, like every other bullet in the file.
+- [ ] CLAUDE.md: move all testing guidance under Testing. Today the `CLAUDE*` variable rule, the test trip wires and the cleanup rule sit under Rules.
+- [ ] CLAUDE.md: make every `##` heading a `#` heading.
