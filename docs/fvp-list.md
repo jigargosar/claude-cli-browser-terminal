@@ -7,6 +7,8 @@
 5. After a task is done, Claude moves to the new last dotted task on its own. It names the task by its text and shows a high-level plan in plain words, without file or line numbers. Then it waits for the user's go.
 6. The list always holds the weed task. If it goes missing, add it back at the end with this text: "Weed the list. This weed task is a reminder, so it is never ticked. Merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else."
 7. Before work starts on a task, understand its gist. The task text, and any solution it names, may be an XY problem. Find the real need first. Even when the need is clear, double-check the solution. A solution stated as fact is still not taken for granted.
+8. Changelog trigger: a commit with a change a user would notice adds its line under Unreleased in `CHANGELOG.md`, in that same commit.
+9. Release trigger: after a task is ticked, if Unreleased in `CHANGELOG.md` has lines, Claude runs `pnpm release`. A release stamps the changelog, tags the version, and publishes the tarball in `published-versions/`, which the README install command points at.
 
 # List
 
@@ -17,13 +19,13 @@
 - [.] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
 - [ ] Claude's thinking shows in the reply pane, toggleable.
 - [x] Dead doc links: review every link to a deleted doc. Found: this list's "Reply history" line (`plans/data-loss.md`), `web/markdown.js:23` (`docs/plans/data-loss.md`), `web/markdown.js:31` (`docs/Board-pending.md`). Also `web/views/comments.js` comments link `docs/plans/data-loss.md`. Point them at tag `board-before-fvp` or drop the links. Also this list's FVP Workflow line gives `dev-workflow-ideation/…` without the `docs/` prefix.
-- [ ] Write the release steps in their own doc, next to the scripts, the way `scripts/build-watch/README.md` does for the watch. The README stays user-facing: how to install and use. Include the changelog process: a line goes in the same commit as the change, which section to use (Added, Changed, Removed), the Keep a Changelog format, and what `kacl` checks and stamps. CLAUDE.md then points to the doc.
+- [ ] Write the release steps in their own doc, next to the scripts, the way `scripts/build-watch/README.md` does for the watch. The README stays user-facing: how to install and use. Include the changelog process: a line goes in the same commit as the change, which section to use (Added, Changed, Removed), the Keep a Changelog format, and what `kacl` checks and stamps. Also the `[Unreleased]: …/compare/v0.1.7...HEAD` link at the bottom of `CHANGELOG.md`: it makes the Unreleased heading open GitHub's compare of the last tag to `HEAD`, so it lists every unreleased commit. Use it to check Unreleased before a release. It first appeared in the 0.1.7 release commit `f6b380d`. Inference: `kacl release` wrote it. CLAUDE.md then points to the doc.
 - [ ] Global CLAUDE.md: "In your reply Use headings and numbered lists" pushes Claude to answer in steps. Rule wanted: give steps only when the user asks for them. And see how headings and numberd lists can be formatted well.
 - [ ] Weed the list. This weed task is a reminder, so it is never ticked. Merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else.
 - [.] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay. Since comments are page based, they clear as page changes.
 - [ ] simple prev next response navigation.
 - [.] create skill, global for this fvp style workflow
-- [.] Recurring Release, how to ensure? trigger?
+- [x] Recurring Release, how to ensure? trigger?
 - [x] CLAUDE.md: unwrap the Testing bullets to one line each, like every other bullet in the file.
 - [x] CLAUDE.md: move all testing guidance under Testing. Today the `CLAUDE*` variable rule, the test trip wires and the cleanup rule sit under Rules.
 - [x] CLAUDE.md: make every `##` heading a `#` heading.
@@ -41,3 +43,4 @@
     - The gap: the "no action on a question" rule does not say whether a read-only lookup needed to answer counts as an action. I read it as yes, and that produced the inference.
   - The harness text Claude gets after a rejected tool call: "STOP what you are doing and wait for the user to tell you how to proceed."
 - [ ] Visibility of thinking is really important because I keep switching back and forth between terminal and response. So, some way of looking at the thinking part is not essential, but at least it's very curious because not only curious, but it also might help you know how you think about things 
+- [ ] small gestures, like trackpad touch is causing focus to swtch either we stick to shortcut only switch, or we put some threshold for pointer event.
