@@ -23,4 +23,4 @@
 - [.] simple prev next response navigation.
     - [ ] Claude's thinking shows in the reply pane, toggleable.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
-- [.] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): comment popup 5, focus arrow 6, error banner 10, settings button and Send button 1. Inference: the focus arrow can draw over the comment popup.
+- [x] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): 

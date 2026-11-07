@@ -112,7 +112,8 @@ body[data-focus="none"] #focus-mark {
 ::highlight(comment) { background: var(--comment); }
 /* A sentence a single click picked, or a selection, before it has a comment. */
 ::highlight(picked) { background: var(--selection); color: var(--ink); }
-.comment-float { position: fixed; top: 0; left: 0; z-index: 5; }
+/* Above the focus arrow (6): shift() can push the popup and the box over the divider. */
+.comment-float { position: fixed; top: 0; left: 0; z-index: 7; }
 .comment-float[hidden], #comment-submit[hidden] { display: none; }
 /* Ink on paper, flipped, so the popup stands out from the sepia reply. */
 #comment-pick:not([hidden]) { display: flex; gap: 4px; }
