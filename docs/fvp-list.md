@@ -39,3 +39,4 @@
   - The harness text Claude gets after a rejected tool call: "STOP what you are doing and wait for the user to tell you how to proceed."
 - [ ] Visibility of thinking is really important because I keep switching back and forth between terminal and response. So, some way of looking at the thinking part is not essential, but at least it's very curious because not only curious, but it also might help you know how you think about things 
 - [ ] small gestures, like trackpad touch is causing focus to swtch either we stick to shortcut only switch, or we put some threshold for pointer event.
+- [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
