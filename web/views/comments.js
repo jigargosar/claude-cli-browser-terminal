@@ -39,6 +39,8 @@ const same = (a, b) =>
 // The one pick: a clicked sentence, or a selection in the reply. The highlight and the popup read only this. The
 // browser selection is an input to it, and stays until a popup button is pressed, so Ctrl+C still copies it.
 let current = null;
+// True while an older page is open (setReadOnly).
+let readOnly = false;
 
 // Floating UI places the element at the anchor once. It stays there while #reply scrolls. Resolves once it is placed.
 // Only then can it take focus.
@@ -72,7 +74,7 @@ const openBox = async (range, anchor, index) => {
 const render = () => {
   highlight.clear();
   for (const c of comments) highlight.add(c.range);
-  submit.hidden = comments.length === 0;
+  submit.hidden = readOnly || comments.length === 0;
   submit.textContent = `Send ${comments.length} comment${comments.length === 1 ? "" : "s"} · Alt+Enter`;
 };
 
@@ -137,12 +139,13 @@ let pressed = false;
 document.addEventListener("mousedown", () => (pressed = true), true);
 window.addEventListener("mouseup", () => (pressed = false), true);
 document.addEventListener("selectionchange", () => {
-  if (pressed) return;
+  if (pressed || readOnly) return;
   const range = selected();
   if (range) return pickRange(range, near(range, Infinity, 0));
 });
 
 reply.addEventListener("mouseup", (event) => {
+  if (readOnly) return;
   const range = selected();
   if (range) return pickRange(range, near(range, event.clientX, event.clientY));
   const index = comments.findIndex((c) => hits(c.range, event));
@@ -195,7 +198,14 @@ input.addEventListener("keydown", (event) => {
 // Every reload or close asks first. Comments live only in page memory.
 window.addEventListener("beforeunload", (event) => event.preventDefault());
 
-export const count = () => comments.length;
+// An older page is read-only (views/last.js): no picks, no Send. The comments stay on the latest page, which is only
+// hidden, so nothing is lost.
+export const setReadOnly = (flag) => {
+  readOnly = flag;
+  if (!box.hidden) save();
+  hideAll();
+  render();
+};
 
 export const clear = () => {
   comments.length = 0;
@@ -206,7 +216,7 @@ export const clear = () => {
 
 export const init = ({ send }) => {
   const sendAll = () => {
-    if (comments.length === 0) return;
+    if (readOnly || comments.length === 0) return;
     send(message());
     comments.length = 0;
     render();

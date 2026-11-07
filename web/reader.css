@@ -5,6 +5,8 @@
   font-family: var(--reader-font); font-size: var(--reader-size); line-height: var(--reader-leading);
 }
 .md > :first-child { margin-top: 0; }
+/* #reply holds its pages in wrapper divs (views/last.js). */
+#reply > div > :first-child { margin-top: 0; }
 .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
   font-family: var(--reader-heading-font); font-weight: 600; line-height: 1.25; margin: 1.7em 0 0.5em; text-wrap: balance;
 }

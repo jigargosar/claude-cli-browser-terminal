@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- Step back and forward through the turns with ‹ › beside the gear, or ← → in the reply. An older page stays put while Claude works, and "new" marks newer output.
+- Step back and forward through the turns with ‹ › beside the gear, or ← → in the reply. An older page stays put while Claude works, and "new" marks newer output. Older pages are read-only, and the latest page keeps its comments while you look back.
 
 ### Changed
 - The reply pane shows the whole last turn as one page. Thinking, tool calls with their results, and hooks are collapsed blocks. The answer follows below a rule.

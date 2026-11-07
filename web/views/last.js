@@ -5,10 +5,18 @@ const reply = document.getElementById("reply");
 const status = document.getElementById("reply-status");
 const timeFormat = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
 
+// Two pages inside #reply, which stays the scroller. live follows the latest turn and holds the comments. old shows
+// an older turn, read-only. Stepping back only hides live, so its text nodes, and the comments on them, survive.
+const live = document.createElement("div");
+const old = document.createElement("div");
+old.hidden = true;
+live.innerHTML = reply.innerHTML;
+reply.replaceChildren(live, old);
+
 // Each code block gets a bar with Wrap and Copy. Blocks start wrapped. marked has no extension for this
 // (marked.js.org, Known Extensions).
-const addCodeBars = () => {
-  for (const pre of reply.querySelectorAll("pre")) {
+const addCodeBars = (root) => {
+  for (const pre of root.querySelectorAll("pre")) {
     pre.classList.add("wrap");
     const block = document.createElement("div");
     block.className = "code-block";
@@ -94,10 +102,10 @@ reply.addEventListener(
   },
   true,
 );
-const draw = (html) => {
-  reply.innerHTML = html;
-  for (const el of reply.querySelectorAll("details[data-id]")) el.open = opened.has(el.dataset.id);
-  addCodeBars();
+const draw = (root, html) => {
+  root.innerHTML = html;
+  for (const el of root.querySelectorAll("details[data-id]")) el.open = opened.has(el.dataset.id);
+  addCodeBars(root);
 };
 
 // Back and forward: ‹ › beside the gear, or ← → while the reply has focus. viewing is the open page's index, or null
@@ -111,36 +119,46 @@ let turns = [];
 let viewing = null;
 // The latest output's id when the reader left the latest page. Newer output turns on "new".
 let leftAt = null;
-// Asked before a step. False keeps the page, e.g. when the reader keeps its comments (main.js).
-let mayLeave = () => true;
+// live's scroll while an older page is open, restored on the way back.
+let liveScroll = 0;
+// Tells the comments whether the open page is read-only (main.js).
+let setReadOnly = () => {};
 // The turn's first item names it on the page, so new output can tell growth from a new turn.
 let shownTurn = null;
 
 const latestId = () => turns.at(-1)?.findLast((i) => OUTPUT.has(i.kind)).id ?? null;
+// The open page's turn, e.g. "Turn 5 of 12".
+const turnLabel = () => (turns.length ? `Turn ${(viewing ?? turns.length - 1) + 1} of ${turns.length}` : "");
 const updateNav = () => {
   const at = viewing ?? turns.length - 1;
-  label.textContent = turns.length ? `Turn ${at + 1} of ${turns.length}` : "";
+  label.textContent = turnLabel();
   prevButton.disabled = at <= 0;
   nextButton.disabled = at >= turns.length - 1;
   newBadge.hidden = viewing === null || latestId() === leftAt;
 };
 
-// Draws a turn's page. Returns true when the visible page changed.
-const showTurn = (turn, { follow }) => {
+// live follows the latest turn, on view or hidden. Returns true when it changed, so main.js clears the comments.
+const drawLive = (turn) => {
   const last = turn.findLast((i) => OUTPUT.has(i.kind));
   const html = pageHtml(turn);
   status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
   // The same turn grew: the page updates in place and keeps its scroll, so reading goes on undisturbed.
-  if (follow && turn[0].id === shownTurn) {
-    draw(html);
+  if (turn[0].id === shownTurn) {
+    draw(live, html);
     return true;
   }
   opened.clear();
   shownTurn = turn[0].id;
-  // Another turn starts at its top. The swap runs in a view transition, so the old page crossfades into the new one
+  // Hidden behind an older page: no crossfade, and the older page keeps its scroll. live starts at its top on return.
+  if (viewing !== null) {
+    draw(live, html);
+    liveScroll = 0;
+    return true;
+  }
+  // A new turn starts at its top. The swap runs in a view transition, so the old page crossfades into the new one
   // (base.css) and the text never slides past the eye.
   const swap = () => {
-    draw(html);
+    draw(live, html);
     reply.scrollTop = 0;
   };
   if (document.hidden) {
@@ -155,18 +173,28 @@ const showTurn = (turn, { follow }) => {
   return true;
 };
 
-// Called on every new item. Returns true when the visible page changed, so main.js clears the comments only then.
+// Back to live: old empties, live shows at the scroll it had, and comments work again.
+const followLatest = () => {
+  viewing = null;
+  old.hidden = true;
+  old.replaceChildren();
+  live.hidden = false;
+  reply.scrollTop = liveScroll;
+  setReadOnly(false);
+};
+
+// Called on every new item. Returns true when live changed, so main.js clears the comments only then.
 export const show = (items) => {
   turns = turnsOf(items);
-  if (viewing !== null && viewing >= turns.length) viewing = null;
-  let changed = false;
+  if (viewing !== null && viewing >= turns.length - 1) followLatest();
+  let changed;
   if (!turns.length) {
     shownTurn = null;
-    reply.innerHTML = '<p class="empty">Replies from this session show up here.</p>';
+    live.innerHTML = '<p class="empty">Replies from this session show up here.</p>';
     status.textContent = "Waiting for the first reply";
     changed = true;
-  } else if (viewing === null) {
-    changed = showTurn(turns.at(-1), { follow: true });
+  } else {
+    changed = drawLive(turns.at(-1));
   }
   updateNav();
   return changed;
@@ -174,20 +202,31 @@ export const show = (items) => {
 
 // A new session, e.g. /clear: its turns are not the old ones, so the page follows the latest again.
 export const reset = () => {
-  viewing = null;
+  if (viewing !== null) followLatest();
 };
 
 const go = (to) => {
   const at = viewing ?? turns.length - 1;
-  if (to < 0 || to >= turns.length || to === at || !mayLeave()) return;
-  if (viewing === null) leftAt = latestId();
-  viewing = to === turns.length - 1 ? null : to;
-  showTurn(turns[to], { follow: false });
+  if (to < 0 || to >= turns.length || to === at) return;
+  if (to === turns.length - 1) {
+    followLatest();
+  } else {
+    if (viewing === null) {
+      leftAt = latestId();
+      liveScroll = reply.scrollTop;
+      setReadOnly(true);
+    }
+    viewing = to;
+    draw(old, pageHtml(turns[to]));
+    live.hidden = true;
+    old.hidden = false;
+    reply.scrollTop = 0;
+  }
   updateNav();
 };
 
-export const init = ({ leave }) => {
-  mayLeave = leave;
+export const init = ({ readOnly }) => {
+  setReadOnly = readOnly;
 };
 
 prevButton.addEventListener("click", () => go((viewing ?? turns.length - 1) - 1));

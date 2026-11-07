@@ -40,7 +40,7 @@ const server = connect({
     items.push(item);
     // Every part of Claude's output shows on the response page (views/last.js). A tool call also moves the text before
     // it from the answer up into the work section.
-    // Comments clear only when the visible page changed; an older open page keeps them.
+    // Comments live on the latest page, so they clear when it changes, even while an older page is open.
     if (["reply", "thinking", "tool_use", "tool_result", "hook"].includes(item.kind) && last.show(items)) {
       comments.clear();
     }
@@ -74,15 +74,8 @@ comments.init({
     terminal.focus();
   },
 });
-// Stepping to another page clears the comments, so it asks first when there are any.
-last.init({
-  leave: () => {
-    const n = comments.count();
-    if (n && !confirm(`This page has ${n} comment${n === 1 ? "" : "s"}. Leaving it clears them. Leave?`)) return false;
-    comments.clear();
-    return true;
-  },
-});
+// An older page is read-only. The latest page, and its comments, wait hidden until the reader steps back to it.
+last.init({ readOnly: comments.setReadOnly });
 terminal.focus();
 
 // Focus: Alt+` is the only way between the panes (capture phase, so xterm never sees the key). Into the reply pane,
