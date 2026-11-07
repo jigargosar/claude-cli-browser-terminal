@@ -26,6 +26,7 @@
     - [x] One response page per turn: every reply text block of the turn shows together, as a single unit. Today the pane shows only the turn's last text block. Each text block is its own `reply` item (`server.mjs`).
         - Scope grown 2026-11-07: one rule splits the text written around tool calls from the answer. The page shows the whole turn in transcript order: thinking, text, tool calls with their results, hooks fired. Thinking, tool calls and hooks start collapsed; the answer stays open below the rule. The server emits two more item kinds, `thinking` and `hook`. The transcript holds all of these; the server drops thinking and hooks today.
     - [.] Step back and forward through turns. Live chunks don't pull an older page back to the latest. Leaving a page with comments asks first.
+    - [ ] Keep comments per page. Stepping away from a page keeps its comments; coming back shows them again. Replaces the ask-first on leaving.
 - [ ] Response page display, after prev next.
     - [ ] Append each chunk, never redraw. Today every new item replaces the whole page and clears the comments, so a growing turn wipes them. A tool result fills its tool call's block in place; the one rule moves; comments clear only on a new turn. Decision 2026-11-07: no hot reload of `server.mjs`. A server change needs a restart, and the session resumes with `--continue`.
     - [ ] Fix the UI before this task wraps up.
