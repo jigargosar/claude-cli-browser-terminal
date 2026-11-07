@@ -71,6 +71,16 @@ body[data-focus="none"] #focus-mark {
 /* The gear floats over the top right corner of the reply text, so the pane has no bar. */
 #settings-button { position: absolute; top: 8px; right: 10px; z-index: 1; font-size: 17px; line-height: 1; padding: 6px 8px; anchor-name: --settings; }
 
+/* Back and forward through the turns, left of the gear (views/last.js). "new": newer output while an older page is open. */
+#turn-nav { position: absolute; top: 8px; right: 48px; z-index: 1; display: flex; align-items: center; gap: 2px;
+  font: 13px/1.4 var(--sans); color: var(--ink-muted); }
+#turn-nav .bar-button { font-size: 17px; line-height: 1; padding: 4px 8px; }
+#turn-nav .bar-button:disabled { opacity: 0.35; cursor: default; background: none; }
+#turn-label { min-width: 92px; text-align: center; font-variant-numeric: tabular-nums; }
+#turn-new { margin-left: 4px; padding: 1px 8px; border: 0; border-radius: 10px; font: 600 12px/1.6 var(--sans);
+  background: var(--ink); color: var(--paper); cursor: pointer; }
+#turn-new[hidden] { display: none; }
+
 /* The settings panel, anchored under the gear. */
 .panel {
   position-anchor: --settings; inset: auto; top: anchor(bottom); right: anchor(right); margin: 6px 0 0;

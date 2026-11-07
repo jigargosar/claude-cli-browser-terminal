@@ -195,6 +195,8 @@ input.addEventListener("keydown", (event) => {
 // Every reload or close asks first. Comments live only in page memory.
 window.addEventListener("beforeunload", (event) => event.preventDefault());
 
+export const count = () => comments.length;
+
 export const clear = () => {
   comments.length = 0;
   editing = null;

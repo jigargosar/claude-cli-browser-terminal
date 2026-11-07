@@ -29,16 +29,19 @@ const server = connect({
   },
   onOutput: terminal.write,
   onError: showError,
+  // The whole list: on connect, and when the session changes (e.g. /clear). The old comments point at gone text.
   onItems: (list) => {
     items = list;
+    last.reset();
     last.show(items);
+    comments.clear();
   },
   onItem: (item) => {
     items.push(item);
     // Every part of Claude's output shows on the response page (views/last.js). A tool call also moves the text before
     // it from the answer up into the work section.
-    if (["reply", "thinking", "tool_use", "tool_result", "hook"].includes(item.kind)) {
-      last.show(items);
+    // Comments clear only when the visible page changed; an older open page keeps them.
+    if (["reply", "thinking", "tool_use", "tool_result", "hook"].includes(item.kind) && last.show(items)) {
       comments.clear();
     }
     if (item.kind === "turn_end" && reloadPending) {
@@ -69,6 +72,15 @@ comments.init({
     terminal.paste(text);
     server.input("\r");
     terminal.focus();
+  },
+});
+// Stepping to another page clears the comments, so it asks first when there are any.
+last.init({
+  leave: () => {
+    const n = comments.count();
+    if (n && !confirm(`This page has ${n} comment${n === 1 ? "" : "s"}. Leaving it clears them. Leave?`)) return false;
+    comments.clear();
+    return true;
   },
 });
 terminal.focus();

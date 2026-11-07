@@ -34,16 +34,17 @@ reply.addEventListener("click", async (event) => {
   }
 });
 
-// The response page: the whole turn that holds Claude's latest output, in transcript order. A turn runs from its prompt
-// to the next. Claude's output is text (reply), thinking and tool calls; a new turn's page starts with the first of
-// these, so a fresh prompt keeps the previous page until Claude answers.
+// A response page is one turn, in transcript order. A turn runs from its prompt to the next. Claude's output is text
+// (reply), thinking and tool calls; a turn without output has no page, so a fresh prompt keeps the previous page until
+// Claude answers.
 const OUTPUT = new Set(["reply", "thinking", "tool_use"]);
-const lastTurn = (items) => {
-  const end = items.findLastIndex((i) => OUTPUT.has(i.kind));
-  if (end < 0) return [];
-  const start = items.findLastIndex((i, at) => at < end && i.kind === "prompt");
-  const next = items.findIndex((i, at) => at > end && i.kind === "prompt");
-  return items.slice(start + 1, next < 0 ? items.length : next);
+const turnsOf = (items) => {
+  const turns = [[]];
+  for (const i of items) {
+    if (i.kind === "prompt") turns.push([]);
+    else turns.at(-1).push(i);
+  }
+  return turns.filter((turn) => turn.some((i) => OUTPUT.has(i.kind)));
 };
 
 const escape = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -99,42 +100,103 @@ const draw = (html) => {
   addCodeBars();
 };
 
+// Back and forward: ‹ › beside the gear, or ← → while the reply has focus. viewing is the open page's index, or null
+// while the page follows the latest turn. An older page stays put while new output arrives; "new" then shows, and
+// clicking it, or stepping past the last page, follows the latest again.
+const prevButton = document.getElementById("turn-prev");
+const nextButton = document.getElementById("turn-next");
+const label = document.getElementById("turn-label");
+const newBadge = document.getElementById("turn-new");
+let turns = [];
+let viewing = null;
+// The latest output's id when the reader left the latest page. Newer output turns on "new".
+let leftAt = null;
+// Asked before a step. False keeps the page, e.g. when the reader keeps its comments (main.js).
+let mayLeave = () => true;
 // The turn's first item names it on the page, so new output can tell growth from a new turn.
 let shownTurn = null;
 
-export const show = (items) => {
-  const turnItems = lastTurn(items);
-  const last = turnItems.findLast((i) => OUTPUT.has(i.kind));
-  if (last) {
-    const turn = turnItems[0].id;
-    const html = pageHtml(turnItems);
-    // The same turn grew: the page updates in place and keeps its scroll, so reading goes on undisturbed.
-    if (turn === shownTurn) {
-      draw(html);
-      status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
-      return;
-    }
-    opened.clear();
-    shownTurn = turn;
-    // A new turn starts at its top. The swap runs in a view transition, so the old page crossfades into the new one
-    // (base.css) and the text never slides past the eye.
-    const swap = () => {
-      draw(html);
-      reply.scrollTop = 0;
-    };
-    if (document.hidden) {
-      swap();
-    } else {
-      // The browser aborts the transition when the tab hides before it starts. The swap still runs, so only the crossfade
-      // is lost. Any other failure goes on to the error banner.
-      document.startViewTransition(swap).ready.catch((error) => {
-        if (error.name !== "InvalidStateError") throw error;
-      });
-    }
-    status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
+const latestId = () => turns.at(-1)?.findLast((i) => OUTPUT.has(i.kind)).id ?? null;
+const updateNav = () => {
+  const at = viewing ?? turns.length - 1;
+  label.textContent = turns.length ? `Turn ${at + 1} of ${turns.length}` : "";
+  prevButton.disabled = at <= 0;
+  nextButton.disabled = at >= turns.length - 1;
+  newBadge.hidden = viewing === null || latestId() === leftAt;
+};
+
+// Draws a turn's page. Returns true when the visible page changed.
+const showTurn = (turn, { follow }) => {
+  const last = turn.findLast((i) => OUTPUT.has(i.kind));
+  const html = pageHtml(turn);
+  status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
+  // The same turn grew: the page updates in place and keeps its scroll, so reading goes on undisturbed.
+  if (follow && turn[0].id === shownTurn) {
+    draw(html);
+    return true;
+  }
+  opened.clear();
+  shownTurn = turn[0].id;
+  // Another turn starts at its top. The swap runs in a view transition, so the old page crossfades into the new one
+  // (base.css) and the text never slides past the eye.
+  const swap = () => {
+    draw(html);
+    reply.scrollTop = 0;
+  };
+  if (document.hidden) {
+    swap();
   } else {
+    // The browser aborts the transition when the tab hides before it starts. The swap still runs, so only the crossfade
+    // is lost. Any other failure goes on to the error banner.
+    document.startViewTransition(swap).ready.catch((error) => {
+      if (error.name !== "InvalidStateError") throw error;
+    });
+  }
+  return true;
+};
+
+// Called on every new item. Returns true when the visible page changed, so main.js clears the comments only then.
+export const show = (items) => {
+  turns = turnsOf(items);
+  if (viewing !== null && viewing >= turns.length) viewing = null;
+  let changed = false;
+  if (!turns.length) {
     shownTurn = null;
     reply.innerHTML = '<p class="empty">Replies from this session show up here.</p>';
     status.textContent = "Waiting for the first reply";
+    changed = true;
+  } else if (viewing === null) {
+    changed = showTurn(turns.at(-1), { follow: true });
   }
+  updateNav();
+  return changed;
 };
+
+// A new session, e.g. /clear: its turns are not the old ones, so the page follows the latest again.
+export const reset = () => {
+  viewing = null;
+};
+
+const go = (to) => {
+  const at = viewing ?? turns.length - 1;
+  if (to < 0 || to >= turns.length || to === at || !mayLeave()) return;
+  if (viewing === null) leftAt = latestId();
+  viewing = to === turns.length - 1 ? null : to;
+  showTurn(turns[to], { follow: false });
+  updateNav();
+};
+
+export const init = ({ leave }) => {
+  mayLeave = leave;
+};
+
+prevButton.addEventListener("click", () => go((viewing ?? turns.length - 1) - 1));
+nextButton.addEventListener("click", () => go((viewing ?? turns.length - 1) + 1));
+newBadge.addEventListener("click", () => go(turns.length - 1));
+reply.addEventListener("keydown", (e) => {
+  if (e.ctrlKey || e.altKey || e.metaKey || e.shiftKey) return;
+  const step = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
+  if (!step) return;
+  e.preventDefault();
+  go((viewing ?? turns.length - 1) + step);
+});

@@ -17,6 +17,13 @@
 <aside id="reply-pane" aria-label="Last reply">
   <!-- One gear over the reply text: status and reading settings. These change rarely. Mouse only: it never gets
        keyboard focus. -->
+  <!-- Back and forward through the turns (views/last.js). Mouse only, like the gear; the keys are ← → in the reply. -->
+  <nav id="turn-nav" aria-label="Turns">
+    <button type="button" id="turn-prev" class="bar-button" aria-label="Previous turn" tabindex="-1">&lsaquo;</button>
+    <span id="turn-label"></span>
+    <button type="button" id="turn-next" class="bar-button" aria-label="Next turn" tabindex="-1">&rsaquo;</button>
+    <button type="button" id="turn-new" tabindex="-1" hidden>new</button>
+  </nav>
   <button type="button" id="settings-button" class="bar-button" popovertarget="settings" aria-label="Settings" tabindex="-1">&#9881;</button>
   <div id="settings" class="panel" popover aria-label="Settings">
     <p id="reply-status" class="label">Waiting for the first reply</p>
