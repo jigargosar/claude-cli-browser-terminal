@@ -25,4 +25,3 @@
 - [.] simple prev next response navigation.
     - [ ] Claude's thinking shows in the reply pane, toggleable.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
-- [x] UX bug: Overlay stacking: the focus arrow can show above the comment popup. Overlays and their z-index (`web/base.css`): 
