@@ -1,4 +1,4 @@
-// View "last": the last reply of the conversation, rendered as markdown.
+// View "last": the response page of the last turn, rendered as markdown.
 import { render } from "../markdown.js";
 
 const reply = document.getElementById("reply");
@@ -34,13 +34,37 @@ reply.addEventListener("click", async (event) => {
   }
 });
 
+// The response page: every reply text block of the turn that holds the last one. Each text block is its own item
+// (server.mjs), so a turn with tool calls between its texts has several. A turn starts at its prompt.
+const lastTurnReplies = (items) => {
+  const end = items.findLastIndex((i) => i.kind === "reply");
+  if (end < 0) return [];
+  const start = items.findLastIndex((i, at) => at < end && i.kind === "prompt");
+  return items.slice(start + 1, end + 1).filter((i) => i.kind === "reply");
+};
+
+// The first reply's id names the turn on the page, so a new text block can tell growth from a new turn.
+let shownTurn = null;
+
 export const show = (items) => {
-  const last = items.findLast((i) => i.kind === "reply");
+  const replies = lastTurnReplies(items);
+  const last = replies.at(-1);
   if (last) {
-    // A new reply starts at its top. The swap runs in a view transition, so the old reply crossfades into the new one
+    const turn = replies[0].id;
+    // Each block renders on its own, so an unclosed code fence in one cannot swallow the next.
+    const html = replies.map((r) => render(r.text)).join("");
+    // The same turn grew: the page updates in place and keeps its scroll, so reading goes on undisturbed.
+    if (turn === shownTurn) {
+      reply.innerHTML = html;
+      addCodeBars();
+      status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
+      return;
+    }
+    shownTurn = turn;
+    // A new turn starts at its top. The swap runs in a view transition, so the old page crossfades into the new one
     // (base.css) and the text never slides past the eye.
     const swap = () => {
-      reply.innerHTML = render(last.text);
+      reply.innerHTML = html;
       addCodeBars();
       reply.scrollTop = 0;
     };
@@ -55,6 +79,7 @@ export const show = (items) => {
     }
     status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
   } else {
+    shownTurn = null;
     reply.innerHTML = '<p class="empty">Replies from this session show up here.</p>';
     status.textContent = "Waiting for the first reply";
   }
