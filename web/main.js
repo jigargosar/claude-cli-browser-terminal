@@ -40,7 +40,7 @@ const server = connect({
     items.push(item);
     // Every part of Claude's output shows on the response page (views/last.js). A tool call also moves the text before
     // it from the answer up into the work section.
-    // Comments live on the latest page, so they clear when it changes, even while an older page is open.
+    // Comments live on the latest page. A growing turn only appends, so they clear only when a new turn starts.
     if (["reply", "thinking", "tool_use", "tool_result", "hook"].includes(item.kind) && last.show(items)) {
       comments.clear();
     }

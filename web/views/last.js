@@ -17,6 +17,8 @@ reply.replaceChildren(live, old);
 // (marked.js.org, Known Extensions).
 const addCodeBars = (root) => {
   for (const pre of root.querySelectorAll("pre")) {
+    // A page grows by appending, so a block may already have its bar.
+    if (pre.parentElement.classList.contains("code-block")) continue;
     pre.classList.add("wrap");
     const block = document.createElement("div");
     block.className = "code-block";
@@ -59,53 +61,73 @@ const escape = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": 
 const pre = (s) => (s ? `<pre>${escape(s)}</pre>` : "");
 const resultText = (content) =>
   typeof content === "string" ? content : Array.isArray(content) ? content.map((b) => b.text ?? `[${b.type}]`).join("\n") : "";
-// One collapsed block per thinking, tool call or hook. data-id keeps it open across redraws.
-const fold = (item, cls, summary, body) =>
-  `<details class="${cls}" data-id="${escape(item.id)}"><summary>${escape(summary)}</summary>${body}</details>`;
 // A one-line hint for a tool call: what Claude said it does, or its main argument.
 const toolHint = ({ input = {} }) => input.description ?? input.command ?? input.file_path ?? input.pattern ?? input.skill ?? "";
+const nodeOf = (html) => {
+  const template = document.createElement("template");
+  template.innerHTML = html;
+  return template.content.firstElementChild;
+};
+// One collapsed block per thinking, tool call or hook.
+const fold = (cls, summary, body) => nodeOf(`<details class="${cls}"><summary>${escape(summary)}</summary>${body}</details>`);
 
-// Two sections, split by one rule: the work (thinking, tool calls with their results, hooks, and the text written
-// around tool calls), then the answer, the text after the last tool call. Each text block renders on its own, so an
-// unclosed code fence in one cannot swallow the next.
-const pageHtml = (turn) => {
-  const lastTool = turn.findLastIndex((i) => i.kind === "tool_use");
-  const isAnswer = (i, at) => i.kind === "reply" && at > lastTool;
-  const results = new Map(turn.filter((i) => i.kind === "tool_result").flatMap((i) => i.results).map((r) => [r.toolUseId, r]));
-  const work = turn.map((i, at) => {
-    if (isAnswer(i, at)) return "";
-    if (i.kind === "reply") return render(i.text);
-    if (i.kind === "thinking") return fold(i, "turn-thinking", "Thinking", render(i.text));
-    if (i.kind === "tool_use") {
-      const hint = toolHint(i);
-      const result = results.get(i.toolUseId);
-      return fold(i, "turn-tool", hint ? `${i.name}: ${hint}` : i.name,
-        pre(JSON.stringify(i.input, null, 2)) + (result ? pre(resultText(result.content)) : ""));
-    }
-    if (i.kind === "hook") {
-      const failed = i.exitCode ? ` (exit ${i.exitCode})` : "";
-      return fold(i, "turn-hook", `Hook ${i.event}: ${i.name ?? i.command}${failed}`, pre(i.command) + pre(i.output) + pre(i.stderr));
-    }
-    return "";
-  });
-  const answer = turn.filter(isAnswer).map((i) => render(i.text));
-  return [work.join(""), answer.join("")].filter(Boolean).join("<hr>");
+// One node per item. Text renders block by block, so an unclosed code fence in one cannot swallow the next.
+const itemNode = (item) => {
+  if (item.kind === "reply") {
+    const node = document.createElement("div");
+    node.className = "turn-text";
+    node.innerHTML = render(item.text);
+    return node;
+  }
+  if (item.kind === "thinking") return fold("turn-thinking", "Thinking", render(item.text));
+  if (item.kind === "tool_use") {
+    const hint = toolHint(item);
+    return fold("turn-tool", hint ? `${item.name}: ${hint}` : item.name, pre(JSON.stringify(item.input, null, 2)));
+  }
+  if (item.kind === "hook") {
+    const failed = item.exitCode ? ` (exit ${item.exitCode})` : "";
+    return fold("turn-hook", `Hook ${item.event}: ${item.name ?? item.command}${failed}`, pre(item.command) + pre(item.output) + pre(item.stderr));
+  }
+  return null;
 };
 
-// Blocks the reader opened. A redraw replaces the HTML, so it reopens them. toggle does not bubble, hence capture.
-const opened = new Set();
-reply.addEventListener(
-  "toggle",
-  (event) => {
-    const id = event.target.dataset?.id;
-    if (id) event.target.open ? opened.add(id) : opened.delete(id);
-  },
-  true,
-);
-const draw = (root, html) => {
-  root.innerHTML = html;
-  for (const el of root.querySelectorAll("details[data-id]")) el.open = opened.has(el.dataset.id);
-  addCodeBars(root);
+// A page grows only by appending: a new item adds its node at the end, and a tool result goes into its tool call's
+// block. No node already on the page is replaced or moved, so the comments on its text survive. Only the one rule moves.
+const newPage = (root) => {
+  root.replaceChildren();
+  return { root, rule: document.createElement("hr"), seen: new Set(), tools: new Map(), lastTool: null };
+};
+const append = (page, item) => {
+  if (page.seen.has(item.id)) return;
+  page.seen.add(item.id);
+  if (item.kind === "tool_result") {
+    for (const r of item.results) {
+      const block = page.tools.get(r.toolUseId);
+      if (!block) continue;
+      block.insertAdjacentHTML("beforeend", pre(resultText(r.content)));
+      addCodeBars(block);
+    }
+    return;
+  }
+  const node = itemNode(item);
+  if (!node) return;
+  page.root.append(node);
+  addCodeBars(node);
+  if (item.kind === "tool_use") {
+    page.tools.set(item.toolUseId, node);
+    page.lastTool = node;
+  }
+};
+// The rule splits the work from the answer: it sits right after the last tool call, once text follows it.
+const placeRule = (page) => {
+  let next = page.lastTool?.nextElementSibling;
+  while (next && (next === page.rule || !next.classList.contains("turn-text"))) next = next.nextElementSibling;
+  if (next) page.lastTool.after(page.rule);
+  else page.rule.remove();
+};
+const fill = (page, turn) => {
+  for (const item of turn) append(page, item);
+  placeRule(page);
 };
 
 // Back and forward: ‹ › beside the gear, or ← → while the reply has focus. viewing is the open page's index, or null
@@ -137,28 +159,34 @@ const updateNav = () => {
   newBadge.hidden = viewing === null || latestId() === leftAt;
 };
 
-// live follows the latest turn, on view or hidden. Returns true when it changed, so main.js clears the comments.
+// The live page. Null until a turn is drawn, and while a new turn's crossfade waits to swap.
+let livePage = null;
+
+// live follows the latest turn, on view or hidden. Returns true only for a new turn, so main.js clears the comments
+// then and never while the turn grows.
 const drawLive = (turn) => {
   const last = turn.findLast((i) => OUTPUT.has(i.kind));
-  const html = pageHtml(turn);
   status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
-  // The same turn grew: the page updates in place and keeps its scroll, so reading goes on undisturbed.
+  // The same turn grew: append, so the text on the page, its comments and its scroll stay as they are. During a
+  // pending crossfade there is no page yet; the swap draws the turn as it is by then.
   if (turn[0].id === shownTurn) {
-    draw(live, html);
-    return true;
+    if (livePage) fill(livePage, turn);
+    return false;
   }
-  opened.clear();
   shownTurn = turn[0].id;
+  livePage = null;
   // Hidden behind an older page: no crossfade, and the older page keeps its scroll. live starts at its top on return.
   if (viewing !== null) {
-    draw(live, html);
+    livePage = newPage(live);
+    fill(livePage, turn);
     liveScroll = 0;
     return true;
   }
   // A new turn starts at its top. The swap runs in a view transition, so the old page crossfades into the new one
-  // (base.css) and the text never slides past the eye.
+  // (base.css) and the text never slides past the eye. It draws the latest turn, which may have grown meanwhile.
   const swap = () => {
-    draw(live, html);
+    livePage = newPage(live);
+    fill(livePage, turns.at(-1));
     reply.scrollTop = 0;
   };
   if (document.hidden) {
@@ -183,13 +211,14 @@ const followLatest = () => {
   setReadOnly(false);
 };
 
-// Called on every new item. Returns true when live changed, so main.js clears the comments only then.
+// Called on every new item. Returns true when live shows a new turn, so main.js clears the comments only then.
 export const show = (items) => {
   turns = turnsOf(items);
   if (viewing !== null && viewing >= turns.length - 1) followLatest();
   let changed;
   if (!turns.length) {
     shownTurn = null;
+    livePage = null;
     live.innerHTML = '<p class="empty">Replies from this session show up here.</p>';
     status.textContent = "Waiting for the first reply";
     changed = true;
@@ -217,7 +246,7 @@ const go = (to) => {
       setReadOnly(true);
     }
     viewing = to;
-    draw(old, pageHtml(turns[to]));
+    fill(newPage(old), turns[to]);
     live.hidden = true;
     old.hidden = false;
     reply.scrollTop = 0;

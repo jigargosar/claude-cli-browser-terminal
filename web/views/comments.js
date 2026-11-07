@@ -1,6 +1,7 @@
 // View "comments": select reply text, comment on it, repeat, then send all comments to claude as one message.
 // Approved mockup: docs/mockups/comments.html. Highlights use the CSS Custom Highlight API, so the reply's DOM is never
-// changed. A new reply replaces the DOM and clears the comments, sent or not.
+// changed. A growing turn only appends to the page (views/last.js). A new turn replaces it and clears the comments,
+// sent or not.
 import { computePosition, offset, flip, shift, inline } from "@floating-ui/dom";
 import { sentenceAt } from "../sentence.js";
 

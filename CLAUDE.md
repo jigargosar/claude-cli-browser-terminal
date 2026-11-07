@@ -88,6 +88,14 @@ NOTE: Testing is currently paused in browser need to fix some issues first
   - A puppeteer drag in the reply pane selects nothing. A drag needs a manual test.
 - Cleanup after a test: close every tab the script opened, then kill the process tree on 7682 (`taskkill //T //F //PID <pid>`). Kill only what this session started.
 
+# Known issues
+
+- The reply pane shows a turn's text, thinking, tool calls with results, and hooks. It leaves out these transcript lines (types seen in one session's transcript, 2026-11-07):
+  - Not built yet: the prompt itself; `attachment/queued_command` (a message sent mid-turn); image blocks in a prompt; `attachment/edited_text_file` (a file the user changed); `system/away_summary` (the recap after being away); `system/local_command` (slash command output).
+  - Claude Code bookkeeping, nothing to read: `api-request`, `api-request-blob`, `api-request-shape`, `atis-latch`, `session-owner`, `last-prompt`, `tools-used`, `queue-operation`, `attachment/prompt_snapshot`.
+  - Context Claude Code injects at start and per turn: `attachment/environment`, `instructions`, `skill_listing`, `session_context`, `model`, `credential_org`, `command_permissions`, `mcp_instructions_delta`, `deferred_tools_delta`, `deferred_tools_record`, `output_style`, `output_style_instructions`, `date`, `silent_turn_reminder`, and user lines marked `isMeta`.
+  - Mode changes: `mode`, `permission-mode`, `attachment/auto_mode`, `auto_mode_exit`, `plan_mode_exit`.
+  - Titles: `ai-title`, `custom-title`, `agent-name`.
 - The tab sometimes shows "disconnected" while the server still runs; a refresh brings it back. Rare, seen when idle, not while working. The page has no auto-reconnect. Postponed. Next step when it gets frequent: log the close code and time on both sides, then add auto-reconnect and a server heartbeat.
 - The comment popup and box stay where they opened while the reply scrolls. A little clunky, but not worth another concept in the code.
 - Selection: a pick is painted two ways in the same tan. A drag is the browser's own selection. The page only sets its color. A sentence click makes no browser selection, so the page paints its own highlight, and Ctrl+C does not copy it. After a drag both show, and their sizes differ slightly. Which is larger is unknown. A simpler model, where the page paints every pick after release, loses Ctrl+C on drags and needs a rule for Shift+arrow selection. Left as is.

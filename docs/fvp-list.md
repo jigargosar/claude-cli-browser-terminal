@@ -27,7 +27,7 @@
 - [x] Step back and forward through turns. Live chunks don't pull an older page back to the latest. Older pages are read-only, so leaving a page loses nothing.
 - [x] Keep the current page's comments while viewing older pages. Older pages only need to be readable. Comments on older pages, and a turn number in sent comments, wait until the need arises. Code only what is essential.
 - [x] Response page display, after prev next.
-- [.] Append each chunk, never redraw. Today every new item replaces the whole page and clears the comments, so a growing turn wipes them.
+- [x] Append each chunk, never redraw. The response page shows the whole turn in transcript order: text, thinking, tool calls with their results, and hooks. Thinking, tool calls and hooks are collapsed blocks. A new item appends its node, and a tool result goes into its tool call's block. Nothing on the page is replaced or moved, so comments survive until a new turn. One rule sits after the last tool call once text follows it. What the page leaves out: CLAUDE.md, Known issues.
 - [x] Claude's thinking shows in the reply pane, toggleable.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
 - [ ] Rewind in the terminal puts the reply pane out of sync. Items carry `parentId`, and the page ignores it. Inference: a rewind continues from an earlier message, so the page still shows the turns that were rewound away.
