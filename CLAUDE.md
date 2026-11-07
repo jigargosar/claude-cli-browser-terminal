@@ -6,7 +6,7 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 
 # Session start
 
-- Read `docs/handoff.md` first. It holds the last session's summary.
+- If present read `docs/handoff.md` first. It holds the last session's summary.
 
 # Primary Goal
 
