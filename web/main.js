@@ -35,8 +35,9 @@ const server = connect({
   },
   onItem: (item) => {
     items.push(item);
-    // A tool call moves the text before it from the answer to the tool call section (views/last.js).
-    if (item.kind === "reply" || item.kind === "tool_use") {
+    // Every part of Claude's output shows on the response page (views/last.js). A tool call also moves the text before
+    // it from the answer up into the work section.
+    if (["reply", "thinking", "tool_use", "tool_result", "hook"].includes(item.kind)) {
       last.show(items);
       comments.clear();
     }

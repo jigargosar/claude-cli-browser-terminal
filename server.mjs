@@ -90,6 +90,18 @@ const itemsOf = (line) => {
   const o = JSON.parse(line);
   const base = { id: o.uuid, parentId: o.parentUuid, at: o.timestamp };
   if (o.type === "system" && o.subtype === "turn_duration") return [{ ...base, kind: "turn_end" }];
+  // Hooks fired. Each hook run is an attachment line whose type starts with "hook_"; the Stop hooks come as one
+  // summary line instead, with one entry per hook.
+  if (o.type === "attachment" && o.attachment?.type?.startsWith("hook_")) {
+    const a = o.attachment;
+    const output = a.stdout ?? (Array.isArray(a.content) ? a.content.join("\n") : a.content);
+    return [{ ...base, kind: "hook", type: a.type, event: a.hookEvent, name: a.hookName, command: a.command,
+      output: output && clip(output), stderr: a.stderr && clip(a.stderr), exitCode: a.exitCode, durationMs: a.durationMs }];
+  }
+  if (o.type === "system" && o.subtype === "stop_hook_summary") {
+    return (o.hookInfos ?? []).map((h, i) => ({ ...base, id: `${base.id}:${i}`, kind: "hook", type: o.subtype, event: "Stop",
+      command: h.command, durationMs: h.durationMs, errors: o.hookErrors }));
+  }
   if (o.type === "user" && !o.isMeta) {
     const c = o.message?.content;
     const blocks = typeof c === "string" ? [{ type: "text", text: c }] : Array.isArray(c) ? c : [];
@@ -106,6 +118,7 @@ const itemsOf = (line) => {
     return blocks.flatMap((b, i) => {
       const id = i === 0 ? base.id : `${base.id}:${i}`;
       if (b.type === "text") return [{ ...base, id, kind: "reply", text: b.text, stopReason: o.message.stop_reason }];
+      if (b.type === "thinking" && b.thinking) return [{ ...base, id, kind: "thinking", text: b.thinking }];
       if (b.type === "tool_use") return [{ ...base, id, kind: "tool_use", toolUseId: b.id, name: b.name, input: b.input }];
       return [];
     });
