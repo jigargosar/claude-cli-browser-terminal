@@ -35,7 +35,8 @@ const server = connect({
   },
   onItem: (item) => {
     items.push(item);
-    if (item.kind === "reply") {
+    // A tool call moves the text before it from the answer to the tool call section (views/last.js).
+    if (item.kind === "reply" || item.kind === "tool_use") {
       last.show(items);
       comments.clear();
     }

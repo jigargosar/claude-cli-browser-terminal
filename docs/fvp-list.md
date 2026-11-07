@@ -24,5 +24,6 @@
     - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [.] simple prev next response navigation.
     - [.] One response page per turn: every reply text block of the turn shows together, as a single unit. Today the pane shows only the turn's last text block. Each text block is its own `reply` item (`server.mjs`).
+        - Scope grown 2026-11-07: one rule splits the text written around tool calls from the answer. The page shows the whole turn in transcript order: thinking, text, tool calls with their results, hooks fired. Thinking, tool calls and hooks start collapsed; the answer stays open below the rule. The server emits two more item kinds, `thinking` and `hook`. The transcript holds all of these; the server drops thinking and hooks today.
 - [ ] Claude's thinking shows in the reply pane, toggleable.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.

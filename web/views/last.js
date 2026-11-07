@@ -35,24 +35,32 @@ reply.addEventListener("click", async (event) => {
 });
 
 // The response page: every reply text block of the turn that holds the last one. Each text block is its own item
-// (server.mjs), so a turn with tool calls between its texts has several. A turn starts at its prompt.
-const lastTurnReplies = (items) => {
+// (server.mjs), so a turn with tool calls between its texts has several. A turn runs from its prompt to the next.
+// Two sections: the text written around tool calls, then the answer, the text after the last tool call.
+const lastTurn = (items) => {
   const end = items.findLastIndex((i) => i.kind === "reply");
-  if (end < 0) return [];
+  if (end < 0) return { steps: [], answer: [] };
   const start = items.findLastIndex((i, at) => at < end && i.kind === "prompt");
-  return items.slice(start + 1, end + 1).filter((i) => i.kind === "reply");
+  const next = items.findIndex((i, at) => at > end && i.kind === "prompt");
+  const turn = items.slice(start + 1, next < 0 ? items.length : next);
+  const lastTool = turn.findLastIndex((i) => i.kind === "tool_use");
+  const replies = (part) => part.filter((i) => i.kind === "reply");
+  return { steps: replies(turn.slice(0, lastTool + 1)), answer: replies(turn.slice(lastTool + 1)) };
 };
 
 // The first reply's id names the turn on the page, so a new text block can tell growth from a new turn.
 let shownTurn = null;
 
 export const show = (items) => {
-  const replies = lastTurnReplies(items);
+  const { steps, answer } = lastTurn(items);
+  const replies = [...steps, ...answer];
   const last = replies.at(-1);
   if (last) {
     const turn = replies[0].id;
-    // Each block renders on its own, so an unclosed code fence in one cannot swallow the next.
-    const html = replies.map((r) => render(r.text)).join("");
+    // Each block renders on its own, so an unclosed code fence in one cannot swallow the next. One rule splits the
+    // tool call section from the answer, so each reads as what it is.
+    const section = (part) => part.map((r) => render(r.text)).join("");
+    const html = [steps, answer].filter((part) => part.length).map(section).join("<hr>");
     // The same turn grew: the page updates in place and keeps its scroll, so reading goes on undisturbed.
     if (turn === shownTurn) {
       reply.innerHTML = html;
