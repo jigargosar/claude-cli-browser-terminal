@@ -60,8 +60,17 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - Before any edit, read the How we work section of `docs/fvp-list.md`.
 - No task may start before it is on `docs/fvp-list.md`.
 - Dev: `pnpm watch` in one terminal, then `pnpm ccw`; ccw refuses without the watch. Read `scripts/build-watch/README.md` when page changes don't show, or before touching the watch or ccw scripts.
-- Release with `pnpm release`. Its steps are in `package.json`. It stops if "Unreleased" in `CHANGELOG.md` is empty, so each change a user would notice adds a line there.
 - Browser libraries come from `node_modules`, not a CDN.
+
+# Release
+
+No single doc holds the release process yet. The task to write one is on `docs/fvp-list.md`. Until then, the pieces are:
+
+- Release with `pnpm release`. It stops if "Unreleased" in `CHANGELOG.md` is empty.
+- Steps: the `release` and `version` scripts in `package.json`, summed up in `release:about`.
+- When to add a changelog line: rule 8 of How we work in `docs/fvp-list.md`.
+- When to release: rule 9 of How we work. Claude asks for permission with AskUserQuestion first.
+- The release writes notes only to `CHANGELOG.md`. No step creates a GitHub Release.
 
 # Testing
 
