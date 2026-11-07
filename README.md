@@ -7,7 +7,7 @@ Read replies like a book, with your terminal beside them in one browser page. Cl
 ## Install
 
 ```
-pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.9.tgz
+pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.10.tgz
 ```
 
 ## Use

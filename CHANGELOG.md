@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.10] - 2026-11-07
 ### Added
 - Step back and forward through the turns with ‹ › beside the gear, or ← → in the reply. An older page stays put while Claude works, and "new" marks newer output. Older pages are read-only, and the latest page keeps its comments while you look back.
 
@@ -36,6 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The terminal font is Atkinson Hyperlegible Mono at weight 300, with bold at 500. The font ships inside the package.
 - Links in a reply show as plain text, so a click can no longer leave the page and lose the comments.
 
-[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.9...HEAD
+[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.10...HEAD
+[0.1.10]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.9...v0.1.10
 [0.1.9]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.8...v0.1.9
 [0.1.8]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.7...v0.1.8
