@@ -23,4 +23,5 @@
     - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
     - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
-- [ ] Rewind in the terminal puts the reply pane out of sync. Items carry `parentId`, and the page ignores it. Inference: a rewind continues from an earlier message, so the page still shows the turns that were rewound away.
+- [ ] Rewind in the terminal puts the reply pane out of sync.
+- [.] markdown pane UX sucks. need better UX.
