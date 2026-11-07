@@ -22,17 +22,12 @@
 - [ ] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay. Since comments are page based, they clear as page changes.
     - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
     - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
-- [.] simple prev next response navigation.
-    - [x] One response page per turn: every reply text block of the turn shows together, as a single unit. Today the pane shows only the turn's last text block. Each text block is its own `reply` item (`server.mjs`).
-        - Scope grown 2026-11-07: one rule splits the text written around tool calls from the answer. The page shows the whole turn in transcript order: thinking, text, tool calls with their results, hooks fired. Thinking, tool calls and hooks start collapsed; the answer stays open below the rule. The server emits two more item kinds, `thinking` and `hook`. The transcript holds all of these; the server drops thinking and hooks today.
-    - [x] Step back and forward through turns. Live chunks don't pull an older page back to the latest. Leaving a page with comments asks first.
-    - [x] Keep the current page's comments while viewing older pages. Older pages only need to be readable. Comments on older pages, and a turn number in sent comments, wait until the need arises. Code only what is essential.
-- [ ] Response page display, after prev next.
-    - [ ] Append each chunk, never redraw. Today every new item replaces the whole page and clears the comments, so a growing turn wipes them. A tool result fills its tool call's block in place; the one rule moves; comments clear only on a new turn. Decision 2026-11-07: no hot reload of `server.mjs`. A server change needs a restart, and the session resumes with `--continue`.
-    - [ ] Fix the UI before this task wraps up.
-    - [ ] Format tool calls on the response page. Today a tool block shows its input as raw JSON and its result as raw text. Show every field of the input and the result, formatted: a Bash command unescaped in a highlighted code block, with its description as the block's title; any other field as a label and its value; a result whose lines all have the same number of tab-separated columns as a table. Per-tool views (Edit as old and new text, Read, and so on) come one at a time.
-    - [ ] Claude's thinking shows in the reply pane, toggleable.
+- [x] simple prev next response navigation.
+- [x] One response page per turn: every reply text block of the turn shows together, as a single unit. 
+- [x] Step back and forward through turns. Live chunks don't pull an older page back to the latest. Older pages are read-only, so leaving a page loses nothing.
+- [x] Keep the current page's comments while viewing older pages. Older pages only need to be readable. Comments on older pages, and a turn number in sent comments, wait until the need arises. Code only what is essential.
+- [x] Response page display, after prev next.
+- [.] Append each chunk, never redraw. Today every new item replaces the whole page and clears the comments, so a growing turn wipes them.
+- [x] Claude's thinking shows in the reply pane, toggleable.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
-- [.] Rewind in the terminal puts the reply pane out of sync. Items carry `parentId`, and the page ignores it. Inference: a rewind continues from an earlier message, so the page still shows the turns that were rewound away.
-- [ ] Local images in a reply show in the reply pane. Today `![alt](file:///C:/…/x.png)` renders empty: DOMPurify strips the `file:` src, and a localhost page cannot load `file:///` anyway. Fix: a server route `GET /local?path=<absolute path>` that serves only existing image files (png, jpg, gif, webp, svg), and a marked image renderer that rewrites local paths to it. Needs a server restart with `--resume`.
-- [ ] Tool call rendering ideas from Claude.ai (screenshot shared 2026-11-07): one summary line for a run of tool calls ("Used Clock, searched the web, ran a command"); each call a one-line row in plain words; an open row shows a Request box (the command, highlighted) and a Response box (raw output, mono); per-tool result views, e.g. web search as icon, title and domain; all rows in one card.
+- [ ] Rewind in the terminal puts the reply pane out of sync. Items carry `parentId`, and the page ignores it. Inference: a rewind continues from an earlier message, so the page still shows the turns that were rewound away.
