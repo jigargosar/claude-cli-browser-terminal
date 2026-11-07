@@ -23,5 +23,6 @@
     - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
     - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [.] simple prev next response navigation.
-    - [ ] Claude's thinking shows in the reply pane, toggleable.
+    - [.] One response page per turn: every reply text block of the turn shows together, as a single unit. Today the pane shows only the turn's last text block. Each text block is its own `reply` item (`server.mjs`).
+- [ ] Claude's thinking shows in the reply pane, toggleable.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
