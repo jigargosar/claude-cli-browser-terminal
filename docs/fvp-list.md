@@ -23,7 +23,7 @@
     - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
     - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [.] simple prev next response navigation.
-    - [.] One response page per turn: every reply text block of the turn shows together, as a single unit. Today the pane shows only the turn's last text block. Each text block is its own `reply` item (`server.mjs`).
+    - [x] One response page per turn: every reply text block of the turn shows together, as a single unit. Today the pane shows only the turn's last text block. Each text block is its own `reply` item (`server.mjs`).
         - Scope grown 2026-11-07: one rule splits the text written around tool calls from the answer. The page shows the whole turn in transcript order: thinking, text, tool calls with their results, hooks fired. Thinking, tool calls and hooks start collapsed; the answer stays open below the rule. The server emits two more item kinds, `thinking` and `hook`. The transcript holds all of these; the server drops thinking and hooks today.
     - [ ] Append each chunk, never redraw. Today every new item replaces the whole page and clears the comments, so a growing turn wipes them. A tool result fills its tool call's block in place; the one rule moves; comments clear only on a new turn. Decision 2026-11-07: no hot reload of `server.mjs`. A server change needs a restart, and the session resumes with `--continue`.
 - [ ] Claude's thinking shows in the reply pane, toggleable.

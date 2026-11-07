@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- The reply pane shows the whole last turn as one page. Thinking, tool calls with their results, and hooks are collapsed blocks. The answer follows below a rule.
 
 ## [0.1.9] - 2026-11-07
 ### Fixed
