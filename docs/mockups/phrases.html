@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: phrase popup, grid and ring</title>
+<link rel="stylesheet" href="../../web/base.css">
+<link rel="stylesheet" href="../../web/reader.css">
+<style>
+  /* Mockup only: the terminal pane holds the switch and the notes. */
+  #terminal-pane { padding: 14px 16px; box-sizing: border-box; overflow: auto; color: #c9ced6; font: 13px/1.6 var(--sans); }
+  #terminal-pane h3 { margin: 0 0 8px; font: 600 14px/1.5 var(--sans); }
+  #terminal-pane label { display: block; margin: 0 0 6px; cursor: pointer; }
+
+  /* No panel behind the buttons. Each button is today's ink button, raised off the page by its own shadow. */
+  #menu { position: fixed; z-index: 7; }
+  #menu[hidden] { display: none; }
+  #menu button {
+    font: 13px/1.4 var(--sans); padding: 5px 10px; border: 0; border-radius: 6px; white-space: nowrap;
+    background: var(--ink); color: var(--paper); cursor: pointer;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 6px 16px rgb(0 0 0 / 0.22);
+  }
+  #menu button:hover, #menu button:focus-visible { background: var(--quote); outline: none; }
+
+  /* Grid: 4 equal columns, each as wide as the longest label, so every gap is the same and no label is cut. */
+  #menu.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  #menu.grid[hidden] { display: none; }
+  #menu.grid button { text-align: center; }
+
+  /* Ring: the buttons on an ellipse, Reply in the middle, centered on the mouse. */
+  #menu.ring button { position: absolute; transform: translate(-50%, -50%); }
+
+  /* Icons: one icon per cell, its key tiny at the bottom right. 2 rows: 6, then 5. */
+  #menu.icons { display: grid; grid-template-columns: repeat(6, 34px); gap: 4px; }
+  #menu.icons[hidden] { display: none; }
+  #menu.icons button { position: relative; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; }
+  #menu.icons svg { width: 18px; height: 18px; }
+  #menu.icons .key { position: absolute; right: 3px; bottom: 2px; font: 600 9px/1 var(--sans); opacity: 0.75; }
+</style>
+</head>
+<body>
+<main id="terminal-pane">
+  <h3>Pick an example, then click any sentence on the right.</h3>
+  <label><input type="radio" name="layout" value="icons" checked> Icons, 2 rows</label>
+  <label><input type="radio" name="layout" value="grid"> Grid</label>
+  <label><input type="radio" name="layout" value="ring"> Ring</label>
+  <p>The grid opens right above the sentence, at the mouse, and never covers it. The ring opens centered on the mouse, over the sentence.</p>
+  <p>Press a key, or click. Hover for the full text. Esc closes. Alt+Enter shows what would be sent.</p>
+</main>
+<div id="divider"></div>
+<aside id="reply-pane" aria-label="Last reply">
+  <article id="reply" class="md" tabindex="0">
+    <h2>Plan for the cache</h2>
+    <p>The cache holds the last 50 replies in memory. A refresh drops it, which matches Decision 2.2: the right panel may be blank after a refresh.</p>
+    <ol>
+      <li>Keep replies in a <code>Map</code> keyed by message id.</li>
+      <li>Evict the oldest entry once the map passes 50.</li>
+      <li>Write nothing to disk. The transcript already holds every reply.</li>
+    </ol>
+    <p>Two risks remain. A very long reply may be slow to render, and a rewind leaves stale entries behind.</p>
+    <p>Click any sentence. Then press a key, or click. Esc closes.</p>
+  </article>
+  <pre id="sent" hidden style="position: absolute; left: 16px; right: 16px; bottom: 60px; max-height: 40%; overflow: auto; margin: 0; padding: 10px 12px; background: var(--term-bg); color: var(--code-fg); font: 12px/1.5 var(--mono); white-space: pre-wrap; border-radius: 8px;"></pre>
+  <button type="button" id="comment-submit" class="bar-button" hidden></button>
+  <div id="menu" hidden></div>
+  <div id="comment-box" class="comment-float" hidden>
+    <textarea aria-label="Comment"></textarea>
+    <p>Enter saves · Alt+Enter sends all · Shift+Enter new line · Esc cancels · empty deletes</p>
+  </div>
+</aside>
+
+<script src="../../node_modules/@floating-ui/core/dist/floating-ui.core.umd.js"></script>
+<script src="../../node_modules/@floating-ui/dom/dist/floating-ui.dom.umd.js"></script>
+<script src="../../node_modules/lucide/dist/umd/lucide.js"></script>
+<script>
+const { computePosition, offset, flip, shift } = FloatingUIDOM;
+
+// The phrase list, as in ~/.ccw/phrases.json. Grid order: row 1 agrees, row 2 pushes back, row 3 digs in.
+const PHRASES = [
+  { label: "Yes", key: "y", text: "Yes" },
+  { label: "Ok", key: "o", text: "ok" },
+  { label: "Go ahead", key: "g", text: "go ahead" },
+  { label: "Done", key: "d", text: "Done" },
+  { label: "No", key: "n", text: "No" },
+  { label: "Fix it", key: "f", text: "fix it" },
+  { label: "Too noisy", key: "t", text: "too much noise no signal, relevant information is drowned in your response, rephrase." },
+  { label: "Bad", key: "b", text: "can't tolerate this. bad." },
+  { label: "Reply", key: "r" },
+  { label: "Explain", key: "e", text: "explain" },
+  { label: "Double check", key: "c", text: "double check" },
+  { label: "Research", key: "s", text: "do thorough unbiased research" },
+];
+// Ring order, clockwise from the right: dig in on the right, push back along the bottom, agree along the top. Long
+// labels sit at the sides, where the ellipse has the most room. Reply is in the middle.
+const RING = ["c", "s", "f", "n", "b", "t", "g", "y", "o", "d", "e"];
+const RX = 145;
+const RY = 72;
+
+// Icons example only: the final list, in screen order. No/wrong sits at the end of the bottom row. An icon Lucide
+// does not have falls back to a plain circle.
+const FINAL = [
+  { label: "Fix it", key: "f", text: "fix it", icon: "Wrench" },
+  { label: "Explain", key: "e", text: "explain", icon: "CircleHelp" },
+  { label: "Double check", key: "c", text: "double check", icon: "CheckCheck" },
+  { label: "Too noisy", key: "t", text: "too much noise no signal, relevant information is drowned in your response, rephrase.", icon: "VolumeX" },
+  { label: "Remove", key: "x", text: "remove", icon: "Trash2" },
+  { label: "Research", key: "s", text: "do thorough unbiased research", icon: "Search" },
+  { label: "Reply", key: "r", icon: "MessageSquare" },
+  { label: "Yes/ok", key: "y", text: "yes/ok", icon: "Check" },
+  { label: "No/wrong", key: "n", text: "no/wrong", icon: "X" },
+  { label: "Go ahead", key: "g", text: "go ahead", icon: "Play" },
+  { label: "Done", key: "d", text: "done", icon: "CircleCheck" },
+];
+
+const byKey = Object.fromEntries(PHRASES.map((p) => [p.key, p]));
+const pane = document.getElementById("reply-pane");
+const reply = document.getElementById("reply");
+const menu = document.getElementById("menu");
+const box = document.getElementById("comment-box");
+const input = box.querySelector("textarea");
+const submit = document.getElementById("comment-submit");
+const sent = document.getElementById("sent");
+const layout = () => document.querySelector("input[name=layout]:checked").value;
+
+const comments = [];
+const highlight = new Highlight();
+CSS.highlights.set("comment", highlight);
+const picked = new Highlight();
+CSS.highlights.set("picked", picked);
+
+const render = () => {
+  highlight.clear();
+  for (const c of comments) highlight.add(c.range);
+  submit.hidden = comments.length === 0;
+  submit.textContent = `Send ${comments.length} comment${comments.length === 1 ? "" : "s"} · Alt+Enter`;
+};
+const hideAll = () => { picked.clear(); menu.hidden = true; box.hidden = true; };
+
+let range = null;
+let mouse = { x: 0, y: 0 };
+let actions = {};
+
+const comment = (p) => {
+  comments.push({ range, text: range.toString(), comment: p.text });
+  hideAll();
+  render();
+};
+
+// The anchor: the mouse's x, and the sentence's full height. So the popup sits right above the sentence (or right
+// below it), at the mouse, and never covers any of the sentence's lines.
+const anchor = () => {
+  const sentence = range.getBoundingClientRect();
+  const rect = new DOMRect(mouse.x, sentence.top, 0, sentence.height);
+  return { getBoundingClientRect: () => rect };
+};
+
+const openBox = async () => {
+  menu.hidden = true;
+  input.value = "";
+  box.style.visibility = "hidden";
+  box.hidden = false;
+  const { x, y } = await computePosition(anchor(), box, { placement: "top", strategy: "fixed", middleware: [offset(8), flip(), shift({ padding: 8 })] });
+  Object.assign(box.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
+  input.focus();
+};
+
+const button = (p) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  const i = p.label.toLowerCase().indexOf(p.key);
+  b.innerHTML = `${p.label.slice(0, i)}<u>${p.label[i]}</u>${p.label.slice(i + 1)}`;
+  b.title = p.text ?? "Write a comment";
+  const run = p.text ? () => comment(p) : openBox;
+  b.onclick = run;
+  actions[p.key] = run;
+  return b;
+};
+
+const iconButton = (p, icon, keyText) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.title = p.text ? `${p.label}: ${p.text}` : p.label;
+  b.append(lucide.createElement(lucide.icons[icon] ?? lucide.icons.Circle));
+  b.append(Object.assign(document.createElement("span"), { className: "key", textContent: keyText }));
+  return b;
+};
+
+const showIcons = async () => {
+  menu.className = "icons";
+  const cells = FINAL.filter((p) => !p.hidden).map((p) => {
+    const b = iconButton(p, p.icon, p.key.toUpperCase());
+    b.onclick = p.text ? () => comment(p) : openBox;
+    return b;
+  });
+  for (const p of FINAL) actions[p.key] = p.text ? () => comment(p) : openBox;
+  menu.replaceChildren(...cells);
+  menu.style.visibility = "hidden";
+  menu.hidden = false;
+  const { x, y } = await computePosition(anchor(), menu, {
+    placement: "top", strategy: "fixed",
+    middleware: [offset(8), flip({ boundary: pane }), shift({ padding: 8, boundary: pane })],
+  });
+  Object.assign(menu.style, { left: `${x}px`, top: `${y}px`, width: "", height: "", visibility: "" });
+};
+
+const showGrid = async () => {
+  menu.className = "grid";
+  menu.replaceChildren(...PHRASES.map(button));
+  menu.style.visibility = "hidden";
+  menu.hidden = false;
+  const { x, y } = await computePosition(anchor(), menu, {
+    placement: "top", strategy: "fixed",
+    middleware: [offset(8), flip({ boundary: pane }), shift({ padding: 8, boundary: pane })],
+  });
+  Object.assign(menu.style, { left: `${x}px`, top: `${y}px`, width: "", height: "", visibility: "" });
+};
+
+const showRing = () => {
+  menu.className = "ring";
+  const center = button(byKey.r);
+  const around = RING.map((k) => button(byKey[k]));
+  menu.replaceChildren(center, ...around);
+  menu.style.visibility = "hidden";
+  menu.hidden = false;
+  // The ring's box: the ellipse plus half of the widest button on each side.
+  const half = Math.max(...around.map((b) => b.offsetWidth)) / 2;
+  const h = center.offsetHeight;
+  const width = 2 * (RX + half);
+  const height = 2 * RY + h;
+  menu.style.width = `${width}px`;
+  menu.style.height = `${height}px`;
+  center.style.left = `${width / 2}px`;
+  center.style.top = `${height / 2}px`;
+  around.forEach((b, k) => {
+    const angle = (k * 2 * Math.PI) / around.length;
+    b.style.left = `${width / 2 + RX * Math.cos(angle)}px`;
+    b.style.top = `${height / 2 + RY * Math.sin(angle)}px`;
+  });
+  // Centered exactly on the mouse: Reply sits under the pointer. It covers the sentence.
+  Object.assign(menu.style, { left: `${mouse.x - width / 2}px`, top: `${mouse.y - height / 2}px`, visibility: "" });
+};
+
+const open = () => {
+  actions = {};
+  if (layout() === "icons") return showIcons();
+  return layout() === "grid" ? showGrid() : showRing();
+};
+
+// A copy of web/sentence.js: the mockup opens from file://, where a module import is blocked.
+const BLOCKS = "p, li, td, th, h1, h2, h3, h4, h5, h6, blockquote, dt, dd, pre";
+const segmenter = new Intl.Segmenter(undefined, { granularity: "sentence" });
+const sentenceAt = (x, y) => {
+  const caret = document.caretPositionFromPoint(x, y);
+  if (!caret || caret.offsetNode.nodeType !== Node.TEXT_NODE) return null;
+  const block = caret.offsetNode.parentElement.closest(BLOCKS);
+  if (!block) return null;
+  const nodes = [];
+  let text = "";
+  const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (node.parentElement.closest(BLOCKS) !== block) continue;
+    nodes.push({ node, start: text.length });
+    text += node.data;
+  }
+  const own = nodes.find((n) => n.node === caret.offsetNode);
+  if (!own) return null;
+  const at = own.start + caret.offset;
+  const all = [...segmenter.segment(text)];
+  const hit = all.find((s) => at < s.index + s.segment.length) ?? all.at(-1);
+  if (!hit || !hit.segment.trim()) return null;
+  const start = hit.index + (hit.segment.length - hit.segment.trimStart().length);
+  const end = hit.index + hit.segment.trimEnd().length;
+  const point = (offset, isEnd) => {
+    const n = nodes.findLast((n) => (isEnd ? n.start < offset : n.start <= offset));
+    return [n.node, offset - n.start];
+  };
+  const r = document.createRange();
+  r.setStart(...point(start, false));
+  r.setEnd(...point(end, true));
+  const on = [...r.getClientRects()].some((b) => x >= b.left && x <= b.right && y >= b.top && y <= b.bottom);
+  return on ? r : null;
+};
+
+const pickAt = (x, y) => {
+  hideAll();
+  const sentence = sentenceAt(x, y);
+  if (!sentence) return;
+  mouse = { x, y };
+  range = sentence;
+  picked.add(range);
+  return open();
+};
+reply.addEventListener("click", (event) => pickAt(event.clientX, event.clientY));
+
+document.addEventListener("keydown", (event) => {
+  if (menu.hidden || event.ctrlKey || event.altKey || event.metaKey) return;
+  const run = actions[event.key.toLowerCase()];
+  if (run) {
+    event.preventDefault();
+    return run();
+  }
+  if (event.key === "Escape") hideAll();
+});
+document.addEventListener("mousedown", (event) => {
+  if (menu.contains(event.target) || box.contains(event.target) || reply.contains(event.target)) return;
+  hideAll();
+});
+
+input.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey && !event.altKey) {
+    event.preventDefault();
+    const text = input.value.trim();
+    if (text) comments.push({ range, text: range.toString(), comment: text });
+    hideAll();
+    render();
+  } else if (event.key === "Escape") hideAll();
+});
+
+const sendAll = () => {
+  if (comments.length === 0) return;
+  sent.textContent = comments
+    .map((c, i) => `${i + 1}. ${c.text.trim().split("\n").map((line) => `> ${line}`).join("\n   ")}\n   ${c.comment}`)
+    .join("\n\n");
+  sent.hidden = false;
+  comments.length = 0;
+  render();
+};
+submit.addEventListener("click", sendAll);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && event.altKey) { event.preventDefault(); sendAll(); }
+});
+for (const radio of document.querySelectorAll("input[name=layout]")) radio.addEventListener("change", hideAll);
+
+// For screenshots: #grid or #ring opens that example on the sentence "Write nothing to disk."
+if (location.hash) {
+  document.querySelector(`input[value=${location.hash.slice(1)}]`).checked = true;
+  const li = reply.querySelectorAll("li")[2];
+  const r = document.createRange();
+  r.setStart(li.firstChild, 3);
+  r.setEnd(li.firstChild, 4);
+  const b = r.getBoundingClientRect();
+  pickAt(b.left + b.width / 2, b.top + b.height / 2);
+}
+</script>
+</body>
+</html>
