@@ -32,4 +32,4 @@
 - [ ] properly title each top level message during append response, and collapse stuff in it. 
 - [ ] format response and show images. 
 - [ ] migrate to zx instead of silly scripts which doent have any documentations!!!
-- [.] using trackpad to select sentences for adding comments causes friction.
+- [.] using trackpad/mouse to select sentences for adding comments causes friction.
