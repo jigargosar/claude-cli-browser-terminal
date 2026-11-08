@@ -26,12 +26,5 @@
 - [ ] Rewind in the terminal puts the reply pane out of sync.
 - [.] markdown pane UX sucks. need better UX.
 - [x] README: npm install and run lines next to pnpm. npm 12 needs `--allow-remote=all` to install a tarball URL, and `npx --no ccw` never downloads a registry package. The install-ccw skill fetches the README and runs its Install command, with no grep and no version of its own.
-- [.] fix: there is no bottom padding. perhaps when appending new blocks in md pane.
-- [.] need options like go, fix, on button bar. While keeping it short.
-    - Direction so far: a ring of reply buttons replaces the bar. Each button has a one-letter hotkey, underlined in its label as today. A More button opens an outer ring for rare replies: More, then the letter. Replies are data (label, key, text), later settings entries. Everything else works as today: sentence pick, keyboard selection, the comment batch, Alt+Enter.
-    - Mockup, not approved: `docs/mockups/reply-ring.html`.
-    - User complaints about the mockup:
-        - The ring is too far from the center. There is a big gap.
-        - A mouse click on Esc in the center does nothing. Drop Esc from the center, there is no point. Perhaps put More there instead.
-        - It breaks the UI of the current buttons. Look at how the current buttons render and behave, besides the ring shape, before drawing anything.
-        - First the user had to ask to remove the separate single letter. Now the hover style must change too. The mockup does not help as it is.
+- [.] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
+- [.] Typing common words in comment popup has lots of UX friction.
