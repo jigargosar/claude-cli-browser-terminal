@@ -181,9 +181,6 @@ importers:
       get-port:
         specifier: 7.2.0
         version: 7.2.0
-      lucide:
-        specifier: 1.70.0
-        version: 1.70.0
       open:
         specifier: 11.0.4
         version: 11.0.4
@@ -242,6 +239,9 @@ importers:
       is-port-reachable:
         specifier: 4.0.0
         version: 4.0.0
+      lucide:
+        specifier: 1.70.0
+        version: 1.70.0
       marked:
         specifier: 18.1.1
         version: 18.1.1

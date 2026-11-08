@@ -56,12 +56,8 @@
   <!-- Comments on reply text (views/comments.js). Floating UI places the button and the box at the selection.
        Inside the pane, so they take the reading colors. -->
   <button type="button" id="comment-submit" class="bar-button" hidden></button>
-  <div id="comment-pick" class="comment-float" hidden>
-    <button type="button" id="comment-reply" class="bar-button"><u>R</u>eply</button>
-    <button type="button" class="bar-button" data-word><u>Y</u>es</button>
-    <button type="button" class="bar-button" data-word><u>N</u>o</button>
-    <button type="button" class="bar-button" data-word><u>D</u>one</button>
-  </div>
+  <!-- The phrase grid: one icon button per entry in phrases.js, built by views/comments.js. -->
+  <div id="comment-pick" class="comment-float" hidden></div>
   <div id="comment-box" class="comment-float" hidden>
     <textarea aria-label="Comment"></textarea>
     <p>Enter saves · Alt+Enter sends all · Shift+Enter new line · Esc cancels · empty deletes</p>

@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Picking a sentence opens a grid of 11 reply icons right above it, at the mouse, instead of Reply, Yes, No and Done. One key sends each: F fix it, E explain, C double check, T too noisy, X remove, S research, R reply, Y yes/ok, N no/wrong, G go ahead, D done. Hover an icon for the text it sends.
 
 ## [0.1.11] - 2026-11-08
 ### Added

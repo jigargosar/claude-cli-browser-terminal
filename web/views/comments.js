@@ -3,13 +3,13 @@
 // changed. A growing turn only appends to the page (views/last.js). A new turn replaces it and clears the comments,
 // sent or not.
 import { computePosition, offset, flip, shift, inline } from "@floating-ui/dom";
+import { createElement } from "lucide";
 import { sentenceAt } from "../sentence.js";
+import { PHRASES } from "../phrases.js";
 
 const pane = document.getElementById("reply-pane");
 const reply = document.getElementById("reply");
 const pick = document.getElementById("comment-pick");
-const replyButton = document.getElementById("comment-reply");
-const wordButtons = pick.querySelectorAll("[data-word]");
 const box = document.getElementById("comment-box");
 const input = box.querySelector("textarea");
 const submit = document.getElementById("comment-submit");
@@ -101,27 +101,47 @@ const message = () =>
     .map((c, i) => `${i + 1}. ${c.text.trim().split("\n").map((line) => `> ${line}`).join("\n   ")}\n   ${c.comment}`)
     .join("\n\n");
 
+// The grid's buttons, built once. Each one acts on the current pick: its text becomes the comment, with no box to write
+// in; an entry with no text (Reply) opens the box. The key, tiny in the corner, does the same (see the keydown below).
+const run = (phrase) => {
+  getSelection().removeAllRanges();
+  if (!phrase.text) return openBox(current, pickAnchor);
+  comments.push({ range: current, text: current.toString(), comment: phrase.text });
+  hideAll();
+  render();
+};
+const byKey = new Map(PHRASES.map((p) => [p.key, p]));
+for (const phrase of PHRASES) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.title = phrase.text ? `${phrase.label}: ${phrase.text}` : phrase.label;
+  button.setAttribute("aria-label", phrase.label);
+  const key = document.createElement("span");
+  key.className = "key";
+  key.textContent = phrase.key.toUpperCase();
+  button.append(createElement(phrase.icon), key);
+  button.onclick = () => run(phrase);
+  pick.append(button);
+}
+
+// The grid sits right above the picked sentence (or right below it), at the mouse's x: its anchor spans the
+// sentence's full height, so the grid never covers any of its lines.
+const span = (range, x) => {
+  const bounds = range.getBoundingClientRect();
+  const rect = new DOMRect(x, bounds.top, 0, bounds.height);
+  return { getBoundingClientRect: () => rect, getClientRects: () => [rect] };
+};
+let pickAnchor = null;
+
 // The pick changes only here. A pick that is already on view keeps its popup where it is.
 const pickRange = (range, anchor) => {
   if (!pick.hidden && same(range, current)) return;
   if (!box.hidden) save();
   current = range;
+  pickAnchor = anchor;
   picked.clear();
   picked.add(range);
-  replyButton.onclick = () => {
-    getSelection().removeAllRanges();
-    return openBox(range, anchor);
-  };
-  // Yes, No, Done: the button's word is the comment, with no box to write in.
-  for (const button of wordButtons) {
-    button.onclick = () => {
-      getSelection().removeAllRanges();
-      comments.push({ range, text: range.toString(), comment: button.textContent });
-      hideAll();
-      render();
-    };
-  }
-  return show(pick, anchor);
+  return show(pick, span(range, anchor.getBoundingClientRect().x));
 };
 
 // The browser selection, when it is text in the reply.
@@ -168,8 +188,8 @@ document.addEventListener("mousedown", (event) => {
   else hideAll();
 });
 
-// While the popup shows, R, Y, N and D press Reply, Yes, No and Done: the key is the button's first letter. Only keys that
-// reach the pane, so a focused terminal keeps its keys. Esc closes the popup and drops the pick.
+// While the grid shows, each entry's key presses it. Only keys that reach the pane, so a focused terminal keeps its
+// keys. Esc closes the grid and drops the pick.
 pane.addEventListener("keydown", (event) => {
   if (pick.hidden || event.ctrlKey || event.altKey || event.metaKey) return;
   if (event.key === "Escape") {
@@ -177,11 +197,10 @@ pane.addEventListener("keydown", (event) => {
     getSelection().removeAllRanges();
     return hideAll();
   }
-  const key = event.key.toLowerCase();
-  const button = [...pick.querySelectorAll("button")].find((b) => b.textContent[0].toLowerCase() === key);
-  if (!button) return;
+  const phrase = byKey.get(event.key.toLowerCase());
+  if (!phrase) return;
   event.preventDefault();
-  button.click();
+  return run(phrase);
 });
 
 input.addEventListener("keydown", (event) => {
