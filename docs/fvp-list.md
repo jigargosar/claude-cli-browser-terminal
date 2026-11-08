@@ -26,5 +26,9 @@
 - [ ] Rewind in the terminal puts the reply pane out of sync.
 - [.] markdown pane UX sucks. need better UX.
 - [x] README: npm install and run lines next to pnpm. npm 12 needs `--allow-remote=all` to install a tarball URL, and `npx --no ccw` never downloads a registry package. The install-ccw skill fetches the README and runs its Install command, with no grep and no version of its own.
-- [.] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
-- [.] Typing common words in comment popup has lots of UX friction.
+- [ ] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
+- [x] Typing common words in comment popup has lots of UX friction. Exploring solutions, in mock and with evals.
+- [ ] show images inline.
+- [ ] properly title each top level message during append response, and collapse stuff in it. 
+- [ ] format response and show images. 
+- [ ] migrate to zx instead of silly scripts which doent have any documentations!!!
