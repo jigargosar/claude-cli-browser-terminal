@@ -26,3 +26,4 @@
 - [ ] Rewind in the terminal puts the reply pane out of sync.
 - [.] markdown pane UX sucks. need better UX.
 - [x] README: npm install and run lines next to pnpm. npm 12 needs `--allow-remote=all` to install a tarball URL, and `npx --no ccw` never downloads a registry package. The install-ccw skill fetches the README and runs its Install command, with no grep and no version of its own.
+- [.] need options like go, fix, on button bar. While keeping it short.
