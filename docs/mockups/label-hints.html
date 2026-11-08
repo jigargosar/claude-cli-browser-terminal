@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: label hints to pick a sentence</title>
+<link rel="stylesheet" href="../../web/base.css">
+<link rel="stylesheet" href="../../web/reader.css">
+<style>
+  /* Mockup only: the terminal pane holds the notes. */
+  #terminal-pane { padding: 14px 16px; box-sizing: border-box; overflow: auto; color: #c9ced6; font: 13px/1.6 var(--sans); }
+  #terminal-pane h3 { margin: 0 0 8px; font: 600 14px/1.5 var(--sans); }
+  #terminal-pane kbd { padding: 0 5px; border: 1px solid #3a3f4b; border-radius: 4px; font: 12px var(--sans); }
+
+  /* One label at the start of each sentence in view: a mid-tone tag, darker than the page, lighter than ink. */
+  .hint {
+    position: fixed; z-index: 8; transform: translate(-3px, -55%);
+    padding: 0 4px; border-radius: 3px; background: var(--thumb); color: var(--ink);
+    font: 600 10.5px/15px var(--sans); pointer-events: none;
+  }
+  .hint b { font-weight: 600; color: var(--link); }
+  .hint.out { display: none; }
+
+  /* The phrase grid, as shipped in web/base.css. */
+  #comment-pick:not([hidden]) { display: grid; grid-template-columns: repeat(6, 34px); gap: 4px; }
+  #comment-pick button {
+    position: relative; display: grid; place-items: center; width: 34px; height: 34px; padding: 0;
+    border: 0; border-radius: 6px; background: var(--ink); color: var(--paper); cursor: pointer;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 6px 16px rgb(0 0 0 / 0.22);
+  }
+  #comment-pick button:hover { background: var(--quote); }
+  #comment-pick svg { width: 18px; height: 18px; }
+  #comment-pick .key { position: absolute; right: 3px; bottom: 2px; font: 600 9px/1 var(--sans); opacity: 0.75; }
+</style>
+</head>
+<body>
+<main id="terminal-pane">
+  <h3>Pick a sentence with no trackpad.</h3>
+  <p>1. Press <kbd>F</kbd> in the reply. Every sentence in view gets a label. <kbd>F</kbd> again ends it.</p>
+  <p>2. Type a label. Its sentence is picked and the phrase grid opens.</p>
+  <p>3. Press a phrase key. The comment is added.</p>
+  <p><kbd>Esc</kbd> hides the labels. <kbd>Alt+Enter</kbd> shows what would be sent.</p>
+</main>
+<div id="divider"></div>
+<aside id="reply-pane" aria-label="Last reply">
+  <article id="reply" class="md" tabindex="0">
+    <!-- Shaped like a real turn (web/views/last.js): folds for thinking, tools and hooks, then the answer below a rule. -->
+    <details class="turn-thinking"><summary>Thinking</summary>
+      <p>The user wants the reply pane to stay fast on long turns. The transcript is the source of truth, so the cache only has to survive one page session.</p>
+      <p>A Map keeps insertion order. That makes evicting the oldest entry a single delete on the first key.</p>
+      <p>I should measure before adding eviction. A long reply may be slow for reasons the cache does not touch.</p>
+    </details>
+    <details class="turn-tool"><summary>Read: web/views/last.js</summary>
+      <pre>{
+  "file_path": "web/views/last.js",
+  "offset": 60,
+  "limit": 40
+}</pre>
+    </details>
+    <details class="turn-tool"><summary>Grep: render\(</summary>
+      <pre>web/views/last.js:75:const render = (text) =&gt; markdown(text);
+web/views/last.js:82:  if (item.kind === "thinking") return fold(...);
+web/views/last.js:140:  page.append(...items.map(render));</pre>
+    </details>
+    <details class="turn-hook"><summary>Hook PostToolUse: prettier</summary>
+      <pre>prettier --write web/views/last.js
+web/views/last.js 41ms (unchanged)</pre>
+    </details>
+    <hr>
+    <h2>Plan for the cache</h2>
+    <p>The cache holds the last 50 replies in memory. A refresh drops it, which matches Decision 2.2. The right panel may be blank after a refresh.</p>
+    <ol>
+      <li>Keep replies in a <code>Map</code> keyed by message id.</li>
+      <li>Evict the oldest entry once the map passes 50.</li>
+      <li>Write nothing to disk. The transcript already holds every reply.</li>
+    </ol>
+    <p>Two risks remain. A very long reply may be slow to render. A rewind leaves stale entries behind.</p>
+    <p>Rendering is the bigger risk. Most replies are short, but a few run past 200 lines. Those few are the ones you read most closely.</p>
+    <h3>How a lookup works</h3>
+    <p>The page asks the cache for a message id. A hit returns the rendered node at once. A miss renders the markdown and stores the result.</p>
+    <pre><code>const cache = new Map();
+const lookup = (id, text) =&gt; {
+  if (cache.has(id)) return cache.get(id);
+  const node = render(text);
+  cache.set(id, node);
+  return node;
+};</code></pre>
+    <p>Each line of the code block above counts as one sentence. You can comment on a single line.</p>
+    <details class="turn-tool"><summary>Bash: pnpm exec vite build</summary>
+      <pre>vite v8.3.4 building for production...
+✓ 42 modules transformed.
+✓ built in 977ms</pre>
+    </details>
+    <h3>Eviction</h3>
+    <p>Eviction runs after each insert. When the map passes 50 entries, the first key goes. Map iteration order makes that key the oldest.</p>
+    <p>A rewind is the hard case. The transcript drops entries, but the cache still holds their nodes. Those nodes never show again, so they only cost memory.</p>
+    <ul>
+      <li>Option one: clear the whole cache on a rewind. It is simple and always correct.</li>
+      <li>Option two: drop only the entries after the rewind point. It keeps more hits, but it needs the rewind point.</li>
+      <li>Option three: ignore it. The 50-entry limit pushes stale nodes out within a few turns.</li>
+    </ul>
+    <p>I lean toward option three. It needs no code, and the cost is bounded.</p>
+    <blockquote>Open question: should a rewind clear the whole cache, or only the entries after the rewind point?</blockquote>
+    <h3>Measuring</h3>
+    <p>I'll time a 200-line reply with and without the cache. The number decides whether eviction is worth its code.</p>
+    <p>If the uncached render is under 16 ms, the cache is not needed at all. If it is above 50 ms, the cache should ship with eviction.</p>
+    <p>I'll add the map first. Then I'll measure a long reply before adding eviction.</p>
+  </article>
+  <pre id="sent" hidden style="position: absolute; left: 16px; right: 16px; bottom: 60px; max-height: 40%; overflow: auto; margin: 0; padding: 10px 12px; background: var(--term-bg); color: var(--code-fg); font: 12px/1.5 var(--mono); white-space: pre-wrap; border-radius: 8px;"></pre>
+  <button type="button" id="comment-submit" class="bar-button" hidden></button>
+  <div id="comment-pick" class="comment-float" hidden></div>
+  <div id="comment-box" class="comment-float" hidden>
+    <textarea aria-label="Comment"></textarea>
+    <p>Enter saves · Alt+Enter sends all · Shift+Enter new line · Esc cancels · empty deletes</p>
+  </div>
+</aside>
+
+<script src="../../node_modules/@floating-ui/core/dist/floating-ui.core.umd.js"></script>
+<script src="../../node_modules/@floating-ui/dom/dist/floating-ui.dom.umd.js"></script>
+<script src="../../node_modules/lucide/dist/umd/lucide.js"></script>
+<script>
+const { computePosition, offset, flip, shift } = FloatingUIDOM;
+
+// The shipped list, web/phrases.js.
+const PHRASES = [
+  { label: "Fix it", key: "f", icon: "Wrench", text: "fix it" },
+  { label: "Explain", key: "e", icon: "CircleHelp", text: "explain" },
+  { label: "Double check", key: "c", icon: "CheckCheck", text: "double check" },
+  { label: "Too noisy", key: "t", icon: "VolumeX", text: "too much noise no signal, relevant information is drowned in your response, rephrase." },
+  { label: "Remove", key: "x", icon: "Trash2", text: "remove" },
+  { label: "Research", key: "s", icon: "Search", text: "do thorough unbiased research" },
+  { label: "Reply", key: "r", icon: "MessageSquare" },
+  { label: "Yes/ok", key: "y", icon: "Check", text: "yes/ok" },
+  { label: "No/wrong", key: "n", icon: "X", text: "no/wrong" },
+  { label: "Go ahead", key: "g", icon: "Play", text: "go ahead" },
+  { label: "Done", key: "d", icon: "CircleCheck", text: "done" },
+];
+const byKey = new Map(PHRASES.map((p) => [p.key, p]));
+
+const pane = document.getElementById("reply-pane");
+const reply = document.getElementById("reply");
+const pick = document.getElementById("comment-pick");
+const box = document.getElementById("comment-box");
+const input = box.querySelector("textarea");
+const submit = document.getElementById("comment-submit");
+const sent = document.getElementById("sent");
+
+const comments = [];
+const highlight = new Highlight();
+CSS.highlights.set("comment", highlight);
+const picked = new Highlight();
+CSS.highlights.set("picked", picked);
+let current = null;
+
+const render = () => {
+  highlight.clear();
+  for (const c of comments) highlight.add(c.range);
+  submit.hidden = comments.length === 0;
+  submit.textContent = `Send ${comments.length} comment${comments.length === 1 ? "" : "s"} · Alt+Enter`;
+};
+const hideAll = () => { picked.clear(); pick.hidden = true; box.hidden = true; };
+
+// The grid, as shipped: right above the sentence, at x, never over it.
+const span = (range, x) => {
+  const b = range.getBoundingClientRect();
+  const rect = new DOMRect(x, b.top, 0, b.height);
+  return { getBoundingClientRect: () => rect };
+};
+const show = async (el, anchor) => {
+  el.style.visibility = "hidden";
+  el.hidden = false;
+  const { x, y } = await computePosition(anchor, el, { placement: "top", strategy: "fixed", middleware: [offset(8), flip(), shift({ padding: 8 })] });
+  Object.assign(el.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
+};
+const run = async (p) => {
+  if (!p.text) {
+    pick.hidden = true;
+    input.value = "";
+    await show(box, span(current, current.getClientRects()[0].left));
+    return input.focus();
+  }
+  comments.push({ range: current, text: current.toString(), comment: p.text });
+  hideAll();
+  render();
+};
+for (const p of PHRASES) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.title = p.text ? `${p.label}: ${p.text}` : p.label;
+  const key = Object.assign(document.createElement("span"), { className: "key", textContent: p.key.toUpperCase() });
+  b.append(lucide.createElement(lucide.icons[p.icon] ?? lucide.icons.Circle), key);
+  b.onclick = () => run(p);
+  pick.append(b);
+}
+const pickRange = (range) => {
+  current = range;
+  picked.clear();
+  picked.add(range);
+  const first = range.getClientRects()[0];
+  return show(pick, span(range, first.left + 8));
+};
+
+// Every sentence in the reply, as Ranges: the same split as web/sentence.js (Intl.Segmenter per block).
+const BLOCKS = "p, li, td, th, h1, h2, h3, h4, h5, h6, blockquote, dt, dd, pre";
+const segmenter = new Intl.Segmenter(undefined, { granularity: "sentence" });
+const sentences = () => {
+  const out = [];
+  for (const block of reply.querySelectorAll(BLOCKS)) {
+    // A closed fold still lays out its content for the browser, so skip it outright.
+    if (block.closest("details:not([open])")) continue;
+    const nodes = [];
+    let text = "";
+    const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      if (node.parentElement.closest(BLOCKS) !== block) continue;
+      nodes.push({ node, start: text.length });
+      text += node.data;
+    }
+    const point = (offset, isEnd) => {
+      const n = nodes.findLast((n) => (isEnd ? n.start < offset : n.start <= offset));
+      return [n.node, offset - n.start];
+    };
+    // A code block counts each line as one sentence, as in web/sentence.js.
+    const segments = block.matches("pre")
+      ? text.split("\n").reduce((acc, segment) => (acc.push({ index: acc.at(-1) ? acc.at(-1).index + acc.at(-1).segment.length + 1 : 0, segment }), acc), [])
+      : segmenter.segment(text);
+    for (const s of segments) {
+      if (!s.segment.trim()) continue;
+      const start = s.index + (s.segment.length - s.segment.trimStart().length);
+      const end = s.index + s.segment.trimEnd().length;
+      const r = document.createRange();
+      r.setStart(...point(start, false));
+      r.setEnd(...point(end, true));
+      out.push(r);
+    }
+  }
+  return out;
+};
+
+// Labels: home row first, without f, which starts and ends the mode. One letter each when they suffice; otherwise two
+// letters each, so no label is the start
+// of another.
+const LETTERS = "asdjklghqwertyuiopzxcvbnm";
+const labelsFor = (n) => {
+  if (n <= LETTERS.length) return [...LETTERS.slice(0, n)];
+  const out = [];
+  for (const a of LETTERS) for (const b of LETTERS) out.push(a + b);
+  return out.slice(0, n);
+};
+
+let hints = null;
+let typed = "";
+const hideHints = () => {
+  for (const h of hints ?? []) h.el.remove();
+  hints = null;
+  typed = "";
+};
+const showHints = () => {
+  hideAll();
+  const view = pane.getBoundingClientRect();
+  const inView = sentences().filter((r) => {
+    const first = r.getClientRects()[0];
+    return first && first.width > 0 && first.bottom > view.top && first.top < view.bottom;
+  });
+  const labels = labelsFor(inView.length);
+  hints = inView.map((range, i) => {
+    const first = range.getClientRects()[0];
+    const el = Object.assign(document.createElement("span"), { className: "hint", textContent: labels[i].toUpperCase() });
+    Object.assign(el.style, { left: `${first.left}px`, top: `${first.top}px` });
+    document.body.append(el);
+    return { range, label: labels[i], el };
+  });
+};
+const typeHint = (key) => {
+  typed += key;
+  const left = hints.filter((h) => h.label.startsWith(typed));
+  if (left.length === 0) return hideHints();
+  if (left.length === 1 && left[0].label === typed) {
+    const { range } = left[0];
+    hideHints();
+    return pickRange(range);
+  }
+  for (const h of hints) {
+    const on = h.label.startsWith(typed);
+    h.el.classList.toggle("out", !on);
+    if (on) h.el.innerHTML = `<b>${typed.toUpperCase()}</b>${h.label.slice(typed.length).toUpperCase()}`;
+  }
+};
+
+document.addEventListener("keydown", (event) => {
+  if (!box.hidden || event.ctrlKey || event.metaKey) return;
+  if (event.key === "Enter" && event.altKey) {
+    event.preventDefault();
+    return sendAll();
+  }
+  if (event.altKey) return;
+  const key = event.key.toLowerCase();
+  if (hints) {
+    event.preventDefault();
+    if (key === "escape" || key === "f") return hideHints();
+    if (LETTERS.includes(key)) return typeHint(key);
+    return;
+  }
+  // F starts find mode, when no grid is open. With the grid open, F is Fix it.
+  if (key === "f" && pick.hidden) {
+    event.preventDefault();
+    return showHints();
+  }
+  if (pick.hidden) return;
+  if (key === "escape") return hideAll();
+  const p = byKey.get(key);
+  if (!p) return;
+  event.preventDefault();
+  return run(p);
+});
+// Scrolling, or opening or closing a fold, moves the sentences: the labels go.
+reply.addEventListener("scroll", () => { if (hints) hideHints(); });
+reply.addEventListener("toggle", () => { if (hints) hideHints(); }, true);
+
+input.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey && !event.altKey) {
+    event.preventDefault();
+    const text = input.value.trim();
+    if (text) comments.push({ range: current, text: current.toString(), comment: text });
+    hideAll();
+    render();
+  } else if (event.key === "Escape") hideAll();
+});
+
+const sendAll = () => {
+  if (comments.length === 0) return;
+  sent.textContent = comments
+    .map((c, i) => `${i + 1}. ${c.text.trim().split("\n").map((line) => `> ${line}`).join("\n   ")}\n   ${c.comment}`)
+    .join("\n\n");
+  sent.hidden = false;
+  comments.length = 0;
+  render();
+};
+submit.addEventListener("click", sendAll);
+reply.focus();
+</script>
+</body>
+</html>
