@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.12] - 2026-11-08
 ### Changed
 - Picking a sentence opens a grid of 11 reply icons right above it, at the mouse, instead of Reply, Yes, No and Done. One key sends each: F fix it, E explain, C double check, T too noisy, X remove, S research, R reply, Y yes/ok, N no/wrong, G go ahead, D done. Hover an icon for the text it sends.
 
@@ -44,7 +46,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The terminal font is Atkinson Hyperlegible Mono at weight 300, with bold at 500. The font ships inside the package.
 - Links in a reply show as plain text, so a click can no longer leave the page and lose the comments.
 
-[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.11...HEAD
+[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.12...HEAD
+[0.1.12]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.11...v0.1.12
 [0.1.11]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.10...v0.1.11
 [0.1.10]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.9...v0.1.10
 [0.1.9]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.8...v0.1.9
