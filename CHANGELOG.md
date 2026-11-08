@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Pick a sentence without the mouse. F in the reply puts a short label on every sentence in view. Type a label to pick its sentence and open the reply icons. F or Esc ends it.
 
 ## [0.1.12] - 2026-11-08
 ### Changed

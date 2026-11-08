@@ -6,6 +6,7 @@ import { computePosition, offset, flip, shift, inline } from "@floating-ui/dom";
 import { createElement } from "lucide";
 import { sentenceAt } from "../sentence.js";
 import { PHRASES } from "../phrases.js";
+import * as hints from "./hints.js";
 
 const pane = document.getElementById("reply-pane");
 const reply = document.getElementById("reply");
@@ -60,6 +61,7 @@ const hideAll = () => {
   picked.clear();
   pick.hidden = true;
   box.hidden = true;
+  hints.hide();
 };
 
 // The comment being written: a new one (no index) or an existing one.
@@ -188,19 +190,34 @@ document.addEventListener("mousedown", (event) => {
   else hideAll();
 });
 
-// While the grid shows, each entry's key presses it. Only keys that reach the pane, so a focused terminal keeps its
-// keys. Esc closes the grid and drops the pick.
+// A label names a sentence: pick it as a click near its start would.
+const pickLabeled = (range) => {
+  getSelection().removeAllRanges();
+  const first = range.getClientRects()[0];
+  return pickRange(range, near(range, first.left + 8, first.top + first.height / 2));
+};
+
+// Every key checks the mode first, and each mode owns its keys. Only keys that reach the pane, so a focused terminal
+// keeps its keys. Box: the textarea owns every key (below). Find: the labels show (views/hints.js). Grid: a sentence
+// is picked; each entry's key presses it, and Esc closes the grid and drops the pick. Reading: F starts find mode.
 pane.addEventListener("keydown", (event) => {
-  if (pick.hidden || event.ctrlKey || event.altKey || event.metaKey) return;
-  if (event.key === "Escape") {
+  if (readOnly || !box.hidden || event.ctrlKey || event.altKey || event.metaKey) return;
+  if (hints.active()) return hints.key(event);
+  const key = event.key.toLowerCase();
+  if (!pick.hidden) {
+    if (key === "escape") {
+      event.preventDefault();
+      getSelection().removeAllRanges();
+      return hideAll();
+    }
+    const phrase = byKey.get(key);
+    if (!phrase) return;
     event.preventDefault();
-    getSelection().removeAllRanges();
-    return hideAll();
+    return run(phrase);
   }
-  const phrase = byKey.get(event.key.toLowerCase());
-  if (!phrase) return;
+  if (key !== "f") return;
   event.preventDefault();
-  return run(phrase);
+  return hints.show(pickLabeled);
 });
 
 input.addEventListener("keydown", (event) => {
