@@ -27,6 +27,14 @@
 - [ ] Rewind in the terminal puts the reply pane out of sync.
 - [.] markdown pane UX sucks. need better UX.
 - [.] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
-- [.] response is now cluttered with more content which is not required all the time. Thinking block is something I tent to look at most.
+- [x] response is now cluttered with more content which is not required all the time. Thinking block is something I tent to look at most.
 - [ ] format response and show images. 
 - [ ] move divider with keyboard
+- [ ] worktree: Problem: we can't see what reaches a session's transcript and when. During a run the page showed a Bash group of 4 while the content had 5 tool calls, then jumped to 11 in an instant.
+    - Goal: know, with timestamps, what was added and when.
+    - Maybe: a standalone tool that watches the transcript in several ways side by side and logs each line's arrival.
+    - Maybe: hooks that record each tool event with a timestamp, compared against the transcript afterwards.
+    - Maybe: replay a recorded transcript through the server's parsing and compare counts. This only tests parsing, not timing.
+    - Measured once: a 20 ms probe saw up to six lines land in the file at once, one of them 7.5 s after its own timestamp. JSON parsing took under 0.2 ms per line.
+    - Unknown: whether our parsing misses anything, and what triggers a write.
+- [ ] What: Get more information in comments pane. thinking, tool calls.
