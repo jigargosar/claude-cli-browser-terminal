@@ -11,14 +11,14 @@ Read replies like a book, with your terminal beside them in one browser page. Cl
 pnpm:
 
 ```
-pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.13.tgz
+pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.14.tgz
 ```
 
 <!-- npm 12 needs --allow-remote=all to install a tarball URL. -->
 npm:
 
 ```
-npm install -D --allow-remote=all https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.13.tgz
+npm install -D --allow-remote=all https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.14.tgz
 ```
 
 ## Use
