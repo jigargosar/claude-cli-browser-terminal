@@ -27,8 +27,6 @@
 - [ ] Rewind in the terminal puts the reply pane out of sync.
 - [.] markdown pane UX sucks. need better UX.
 - [.] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
-- [.] properly title each top level message during append response, and collapse stuff in it. 
+- [.] response is now cluttered with more content which is not required all the time. Thinking block is something I tent to look at most.
 - [ ] format response and show images. 
-- [ ] migrate to zx instead of silly scripts which doent have any documentations!!!
-- [ ] stream line DX for managing the processes of this project.
 - [ ] move divider with keyboard
