@@ -116,12 +116,6 @@ body[data-focus="none"] #focus-mark {
 #reply { view-transition-name: reply; }
 ::view-transition-group(reply) { animation-duration: 0.4s; }
 #reply ::selection { background: var(--selection); color: var(--ink); }
-/* The response page's work section (views/last.js): thinking, tool calls and hooks, each a collapsed one-line block,
-   quieter than the text so the answer stays the main read. */
-#reply details { margin: 6px 0; font: 13px/1.45 var(--sans); color: var(--ink-muted); }
-#reply summary { cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-#reply details[open] > summary { white-space: normal; margin-bottom: 6px; }
-#reply details pre { max-height: 24em; overflow: auto; }
 
 /* Comments on reply text (views/comments.js). Picked text looks like a selection; commented text turns yellow. */
 #reply-pane { --comment: #ffd86b80; }

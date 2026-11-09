@@ -1,4 +1,4 @@
-// View "last": the response page of the last turn: thinking, tool calls, hooks and text, rendered as markdown.
+// View "last": the response page of the last turn: Claude's text, rendered as markdown.
 import { render } from "../markdown.js";
 
 const reply = document.getElementById("reply");
@@ -44,10 +44,9 @@ reply.addEventListener("click", async (event) => {
   }
 });
 
-// A response page is one turn, in transcript order. A turn runs from its prompt to the next. Claude's output is text
-// (reply), thinking and tool calls; a turn without output has no page, so a fresh prompt keeps the previous page until
-// Claude answers.
-const OUTPUT = new Set(["reply", "thinking", "tool_use"]);
+// A response page is one turn's text, in transcript order. A turn runs from its prompt to the next. A turn without text
+// has no page, so a fresh prompt keeps the previous page until Claude answers.
+const OUTPUT = new Set(["reply"]);
 const turnsOf = (items) => {
   const turns = [[]];
   for (const i of items) {
@@ -57,77 +56,28 @@ const turnsOf = (items) => {
   return turns.filter((turn) => turn.some((i) => OUTPUT.has(i.kind)));
 };
 
-const escape = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-const pre = (s) => (s ? `<pre>${escape(s)}</pre>` : "");
-const resultText = (content) =>
-  typeof content === "string" ? content : Array.isArray(content) ? content.map((b) => b.text ?? `[${b.type}]`).join("\n") : "";
-// A one-line hint for a tool call: what Claude said it does, or its main argument.
-const toolHint = ({ input = {} }) => input.description ?? input.command ?? input.file_path ?? input.pattern ?? input.skill ?? "";
-const nodeOf = (html) => {
-  const template = document.createElement("template");
-  template.innerHTML = html;
-  return template.content.firstElementChild;
-};
-// One collapsed block per thinking, tool call or hook.
-const fold = (cls, summary, body) => nodeOf(`<details class="${cls}"><summary>${escape(summary)}</summary>${body}</details>`);
-
-// One node per item. Text renders block by block, so an unclosed code fence in one cannot swallow the next.
-const itemNode = (item) => {
-  if (item.kind === "reply") {
-    const node = document.createElement("div");
-    node.className = "turn-text";
-    node.innerHTML = render(item.text);
-    return node;
-  }
-  if (item.kind === "thinking") return fold("turn-thinking", "Thinking", render(item.text));
-  if (item.kind === "tool_use") {
-    const hint = toolHint(item);
-    return fold("turn-tool", hint ? `${item.name}: ${hint}` : item.name, pre(JSON.stringify(item.input, null, 2)));
-  }
-  if (item.kind === "hook") {
-    const failed = item.exitCode ? ` (exit ${item.exitCode})` : "";
-    return fold("turn-hook", `Hook ${item.event}: ${item.name ?? item.command}${failed}`, pre(item.command) + pre(item.output) + pre(item.stderr));
-  }
-  return null;
+// One node per text block, so an unclosed code fence in one cannot swallow the next.
+const replyNode = (item) => {
+  const node = document.createElement("div");
+  node.className = "turn-text";
+  node.innerHTML = render(item.text);
+  return node;
 };
 
-// A page grows only by appending: a new item adds its node at the end, and a tool result goes into its tool call's
-// block. No node already on the page is replaced or moved, so the comments on its text survive. Only the one rule moves.
+// A page grows only by appending. No node already on the page is replaced or moved, so the comments on its text survive.
 const newPage = (root) => {
   root.replaceChildren();
-  return { root, rule: document.createElement("hr"), seen: new Set(), tools: new Map(), lastTool: null };
+  return { root, seen: new Set() };
 };
 const append = (page, item) => {
-  if (page.seen.has(item.id)) return;
+  if (item.kind !== "reply" || page.seen.has(item.id)) return;
   page.seen.add(item.id);
-  if (item.kind === "tool_result") {
-    for (const r of item.results) {
-      const block = page.tools.get(r.toolUseId);
-      if (!block) continue;
-      block.insertAdjacentHTML("beforeend", pre(resultText(r.content)));
-      addCodeBars(block);
-    }
-    return;
-  }
-  const node = itemNode(item);
-  if (!node) return;
+  const node = replyNode(item);
   page.root.append(node);
   addCodeBars(node);
-  if (item.kind === "tool_use") {
-    page.tools.set(item.toolUseId, node);
-    page.lastTool = node;
-  }
-};
-// The rule splits the work from the answer: it sits right after the last tool call, once text follows it.
-const placeRule = (page) => {
-  let next = page.lastTool?.nextElementSibling;
-  while (next && (next === page.rule || !next.classList.contains("turn-text"))) next = next.nextElementSibling;
-  if (next) page.lastTool.after(page.rule);
-  else page.rule.remove();
 };
 const fill = (page, turn) => {
   for (const item of turn) append(page, item);
-  placeRule(page);
 };
 
 // Back and forward: ‹ › beside the gear, or ← → while the reply has focus. viewing is the open page's index, or null

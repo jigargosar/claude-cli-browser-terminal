@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Removed
+- The reply pane shows only Claude's text. Thinking, tool calls, hooks and the rule above the answer no longer show.
 
 ## [0.1.13] - 2026-11-08
 ### Added
