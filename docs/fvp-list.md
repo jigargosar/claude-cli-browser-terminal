@@ -32,7 +32,6 @@
 - [ ] format response and show images. 
 - [ ] move divider with keyboard
 - [.] Pain Point: Need all response information in md pane. We implemented it, but removed it rather than patching it. Understand the process of how and when we should capture the transcripts and which info to show.
-- [ ] What: Get more information in comments pane. thinking, tool calls.
 - [x] Solve all cases of the page not following the correct transcript file.
     - Pain: `/cd` does not work in the current setup. Rewind puts the reply pane out of sync. A worktree has a similar problem. `/resume` perhaps has it too.
     - Done when: in each case below, the reply pane shows what the terminal shows. The switch does not disorient.
