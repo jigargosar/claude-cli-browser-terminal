@@ -16,18 +16,28 @@ import { WebSocketServer } from "ws";
 // The page and its browser libraries, built by Vite from web/ into dist/.
 const DIST_DIR = `${import.meta.dirname}/dist`;
 const HTML_PATH = `${DIST_DIR}/index.html`;
-// Hook of our claude only, passed with --settings so it runs in any directory. See CLAUDE.md.
-// SessionStart (startup, /clear, resume, compact) POSTs the transcript path; the server reads the conversation from that file.
+// Hooks of our claude only, passed with --settings so they run in any directory. See CLAUDE.md.
+// Each POSTs the session ID and transcript path; the server reads the conversation from that file.
+// Three hooks cover every switch of file. See docs/transcript-following.md.
+// - SessionStart: startup, /clear, /resume, fork, compact.
+// - UserPromptSubmit: /cd moves the file and fires no hook; the next prompt carries the new path.
+// - PostToolUse on EnterWorktree and ExitWorktree: they move the file mid-turn.
 // One line, single quotes only, and no $ ` ! so it runs the same in bash and cmd.
 const hookScript = [
   "import { readFileSync } from 'node:fs';",
   "const input = JSON.parse(readFileSync(0, 'utf8'));",
-  "const body = JSON.stringify({ transcriptPath: input.transcript_path, source: input.source });",
+  "const body = JSON.stringify({ sessionId: input.session_id, transcriptPath: input.transcript_path, event: input.hook_event_name, source: input.source });",
   "const res = await fetch(process.env.CC_WEB_SESSION_URL, { method: 'POST', body, signal: AbortSignal.timeout(2000) });",
   "if (res.status >= 300) throw new Error(process.env.CC_WEB_SESSION_URL + ' responded ' + res.status);",
 ].join(" ");
-const hookCommand = `node --input-type=module -e "${hookScript}"`;
-const HOOK_SETTINGS = JSON.stringify({ hooks: { SessionStart: [{ hooks: [{ type: "command", command: hookCommand }] }] } });
+const hook = { type: "command", command: `node --input-type=module -e "${hookScript}"` };
+const HOOK_SETTINGS = JSON.stringify({
+  hooks: {
+    SessionStart: [{ hooks: [hook] }],
+    UserPromptSubmit: [{ hooks: [hook] }],
+    PostToolUse: [{ matcher: "EnterWorktree|ExitWorktree", hooks: [hook] }],
+  },
+});
 
 // Usage: node server.mjs [claude args]. All args pass through to claude as is.
 // Port: CC_WEB_PORT if set (pnpm test uses 7682), else a free one.
@@ -75,7 +85,11 @@ const sessionPath = `/session/${randomUUID()}`;
 // The page gets the whole list on connect and each new item after that.
 const TOOL_RESULT_MAX = 2000;
 let items = [];
-let transcriptPath = null;
+// Item IDs already in items. A moved file holds the lines read before the move; they are skipped, not shown twice.
+let seen = new Set();
+// The file followed, and the one waited for until it exists.
+let followed = { sessionId: null, path: null };
+let waitingFor = null;
 let transcriptWait = null;
 let tail = null;
 
@@ -128,16 +142,28 @@ const itemsOf = (line) => {
 
 const itemsMessage = () => JSON.stringify({ t: "items", items });
 
-// Follow the transcript from its first line. The file may not exist yet on startup; chokidar waits for it.
-const followTranscript = (path) => {
-  tail?.unwatch();
+// Follow a transcript from its first line, once the file exists; chokidar waits for it.
+// The old file stays followed until then: a SessionStart can name a file that never comes (issue #78455).
+// A new session clears the page. The same session at a new path is a move, so the page keeps its items.
+// A moved-away file just stops growing; the tail reads by size and does not fail on it.
+const followTranscript = (sessionId, path) => {
   transcriptWait?.close();
-  tail = null;
+  waitingFor = path;
   transcriptWait = chokidar.watch(path, { usePolling: true, interval: 200 }).on("add", () => {
     transcriptWait.close();
+    waitingFor = null;
+    tail?.unwatch();
+    if (sessionId !== followed.sessionId) {
+      items = [];
+      seen = new Set();
+      broadcast(itemsMessage());
+    }
+    followed = { sessionId, path };
     tail = new Tail(path, { fromBeginning: true, useWatchFile: true, fsWatchOptions: { interval: 200 } });
     tail.on("line", (line) => {
       for (const item of itemsOf(line)) {
+        if (seen.has(item.id)) continue;
+        seen.add(item.id);
         items.push(item);
         broadcast(JSON.stringify({ t: "item", item }));
       }
@@ -148,13 +174,10 @@ const followTranscript = (path) => {
   });
 };
 
-const startSession = ({ transcriptPath: path, source }) => {
-  console.log(`session ${source}: ${path}`);
-  if (path === transcriptPath) return;
-  transcriptPath = path;
-  items = [];
-  broadcast(itemsMessage());
-  followTranscript(path);
+const onHook = ({ sessionId, transcriptPath: path, event, source }) => {
+  if (path === (waitingFor ?? followed.path)) return;
+  console.log(`${event}${source ? ` ${source}` : ""}: ${path}`);
+  followTranscript(sessionId, path);
 };
 
 // Dev loop: a rebuild rewrites index.html, so open tabs reload. See scripts/build-watch/README.md.
@@ -170,7 +193,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "POST" && req.url === sessionPath) {
     let body = "";
     for await (const chunk of req) body += chunk;
-    startSession(JSON.parse(body));
+    onHook(JSON.parse(body));
     res.writeHead(204).end();
     return;
   }
