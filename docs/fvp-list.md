@@ -25,10 +25,8 @@
     - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
     - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
-- [ ] Rewind in the terminal puts the reply pane out of sync.
 - [.] markdown pane UX sucks. need better UX.
 - [.] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
-- [x] response is now cluttered with more content which is not required all the time. Thinking block is something I tent to look at most.
 - [ ] format response and show images. 
 - [ ] move divider with keyboard
 - [.] Pain Point: Need all response information in md pane. We implemented it, but removed it rather than patching it. Understand the process of how and when we should capture the transcripts and which info to show.
@@ -39,4 +37,4 @@
 - [ ] Mark dead turns after a rewind.
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
     - Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat.
-- [ ] remove plan mode from the list of shift+tab list.
+- [.] remove plan mode from the list of shift+tab list.
