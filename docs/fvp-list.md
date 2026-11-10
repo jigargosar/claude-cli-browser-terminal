@@ -11,6 +11,7 @@
 9. Release trigger: after a task is ticked, if Unreleased in `CHANGELOG.md` has lines, Claude runs `pnpm release`. A release stamps the changelog, tags the version, and publishes the tarball in `published-versions/`, which the README install command points at.
 10. Finish the current task before starting the next. When its scope grows, write the new scope into the task first.
 11. Experiment: parallel work in work tree is under consideration. This might conflict with other rules. So we need to resolve the conflicts as we move along. But rules will be updated by me alone. I want to make sure we dont be overly specific, or cause ambugities with existing process.
+12. Before testing changes, Claude makes a WIP commit.
 
 # List
 
