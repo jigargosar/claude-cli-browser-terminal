@@ -1,6 +1,6 @@
 {
   "name": "claude-cli-browser-terminal",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Claude CLI finally has a reply button. Read replies like a book, with your terminal beside them in one browser page. Click any sentence to reply, then send everything with one shortcut.",
   "repository": {
     "type": "git",
