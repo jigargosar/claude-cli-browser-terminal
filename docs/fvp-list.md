@@ -41,11 +41,11 @@
 - [.] Solve all cases of the page not following the correct transcript file.
     - Pain: `/cd` does not work in the current setup. Rewind puts the reply pane out of sync. A worktree has a similar problem. `/resume` perhaps has it too.
     - Done when: in each case below, the reply pane shows what the terminal shows. The switch does not disorient.
-    - [ ] `/cd`. Verified 2026-11-10 in 3 past sessions: the transcript file sits in the new folder's project directory, with the lines from before the move. One old folder kept a 4-line stub under the same file name. The server follows only the path that SessionStart gave it. Unknown: which hook fires on `/cd`, and whether it names the new path.
-    - [ ] `/resume`. Not tested. The docs of 2026-10-18 say SessionStart fires on `--resume`, `--continue` and `/resume` with the transcript path.
-    - [ ] Worktree. Not tested. This project's transcripts hold no line written inside a worktree, and no project directory is named for one.
-    - [ ] Rewind. Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead. Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat. Unknown: what tells the page at the moment of the rewind. The hook list in the docs of 2026-10-18 has no rewind event.
-    - Idea: every hook gets `transcript_path`, `session_id` and `cwd`. More events than SessionStart could report them, such as `CwdChanged` and `UserPromptSubmit`. The server then follows the path of the latest event.
+    - [ ] `/cd`. Tested 2026-11-10: no hook fires at `/cd`. The file moves to the new folder's project directory with the same session ID. The next `UserPromptSubmit` carries the new path.
+    - [ ] `/resume`. Tested 2026-11-10: `SessionStart` with source `resume` carries the resumed session's ID and path. `/clear` works the same way, with source `clear`.
+    - [ ] Worktree. Tested 2026-11-10: `PostToolUse` for `EnterWorktree` and `ExitWorktree` carries the new path mid-turn. Not tested: a session launched with `--worktree`.
+    - [ ] Rewind. Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead. Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat. No hook fires on rewind. It keeps the session ID and the file, so following the file is unaffected.
+    - Result: three hooks: `SessionStart`, `UserPromptSubmit`, and `PostToolUse` matched to `EnterWorktree|ExitWorktree`. The server follows the latest path. Research and caveats: `docs/transcript-following.md`.
     - Unknown: what disoriented in a switch. Record it before the switch is designed.
 - [ ] Extract a skill that handles our process in other projects.
     - Pain: not recorded yet.
