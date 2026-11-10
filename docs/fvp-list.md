@@ -12,6 +12,7 @@
 10. Finish the current task before starting the next. When its scope grows, write the new scope into the task first.
 11. Experiment: parallel work in work tree is under consideration. This might conflict with other rules. So we need to resolve the conflicts as we move along. But rules will be updated by me alone. I want to make sure we dont be overly specific, or cause ambugities with existing process.
 12. Before testing changes, Claude makes a WIP commit.
+13. Experiment: keep tasks small. A task's plan stays in the task on this list, in a few lines: its pain points first, then its solutions. A folder `docs/tasks/<task>/` is made only when the user asks for one, and it holds research material only.
 
 # List
 
@@ -38,3 +39,9 @@
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
     - Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat.
 - [.] remove plan mode from the list of shift+tab list.
+- [ ] Collaboration: put in place the ideas of 2026-11-10 on how the user and Claude work together. Plan: `docs/tasks/collaboration/plan.md`.
+- need recommendation button for quick comments.
+- [ ] Reorganize tasks and docs, as agreed 2026-11-10.
+    - Split the collaboration plan into 8 top-level tasks, each with pain, solution and done-when. Then delete its file.
+    - Move research docs into `docs/research/`, flat, with an index of one-line summaries. Update rule 13 to match.
+    - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.

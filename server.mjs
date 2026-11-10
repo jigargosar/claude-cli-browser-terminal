@@ -18,7 +18,7 @@ const DIST_DIR = `${import.meta.dirname}/dist`;
 const HTML_PATH = `${DIST_DIR}/index.html`;
 // Hooks of our claude only, passed with --settings so they run in any directory. See CLAUDE.md.
 // Each POSTs the session ID and transcript path; the server reads the conversation from that file.
-// Three hooks cover every switch of file. See docs/transcript-following.md.
+// Three hooks cover every switch of file. See docs/tasks/transcript-following/research.md.
 // - SessionStart: startup, /clear, /resume, fork, compact.
 // - UserPromptSubmit: /cd moves the file and fires no hook; the next prompt carries the new path.
 // - PostToolUse on EnterWorktree and ExitWorktree: they move the file mid-turn.
