@@ -50,3 +50,4 @@
     - Unknown: what disoriented in a switch. Record it before the switch is designed.
 - [ ] Extract a skill that handles our process in other projects.
     - Pain: not recorded yet.
+- Bug: AbortError: Transition was skipped. New ViewTransition started
