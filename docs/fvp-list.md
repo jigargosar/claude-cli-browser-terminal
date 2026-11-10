@@ -7,7 +7,7 @@
 5. After a task is done, Claude moves to the new last dotted task on its own. It names the task by its text and shows a high-level plan in plain words, without file or line numbers. Then it waits for the user's go.
 6. The list always holds the weed task. If it goes missing, add it back at the end with this text: "Weed the list. This weed task is a reminder, so it is never ticked. Merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else."
 7. Before work starts on a task, inorder to understand its gist always ask about pain points. Get absoloute clarity. The task text, and any solution it names, may be an XY problem. Find the real need first. Even when the need is clear, double-check the solution. A solution stated as fact is still not taken for granted.
-8. Changelog trigger: a commit with a change a user would notice adds its line under Unreleased in `CHANGELOG.md`, in that same commit. The line is written only after the user has tested the change.
+8. Changelog trigger: ticking a task. When the task holds a change a user would notice, its line goes under Unreleased in `CHANGELOG.md`, in the same commit as the tick.
 9. Release trigger: after a task is ticked, if Unreleased in `CHANGELOG.md` has lines, Claude runs `pnpm release`. A release stamps the changelog, tags the version, and publishes the tarball in `published-versions/`, which the README install command points at.
 10. Finish the current task before starting the next. When its scope grows, write the new scope into the task first.
 11. Experiment: parallel work in work tree is under consideration. This might conflict with other rules. So we need to resolve the conflicts as we move along. But rules will be updated by me alone. I want to make sure we dont be overly specific, or cause ambugities with existing process.
@@ -39,15 +39,19 @@
     - Measured once: a 20 ms probe saw up to six lines land in the file at once, one of them 7.5 s after its own timestamp. JSON parsing took under 0.2 ms per line.
     - Unknown: whether our parsing misses anything, and what triggers a write.
 - [ ] What: Get more information in comments pane. thinking, tool calls.
-- [.] Solve all cases of the page not following the correct transcript file.
+- [x] Solve all cases of the page not following the correct transcript file.
     - Pain: `/cd` does not work in the current setup. Rewind puts the reply pane out of sync. A worktree has a similar problem. `/resume` perhaps has it too.
     - Done when: in each case below, the reply pane shows what the terminal shows. The switch does not disorient.
-    - [ ] `/cd`. Tested 2026-11-10: no hook fires at `/cd`. The file moves to the new folder's project directory with the same session ID. The next `UserPromptSubmit` carries the new path.
-    - [ ] `/resume`. Tested 2026-11-10: `SessionStart` with source `resume` carries the resumed session's ID and path. `/clear` works the same way, with source `clear`.
-    - [ ] Worktree. Tested 2026-11-10: `PostToolUse` for `EnterWorktree` and `ExitWorktree` carries the new path mid-turn. Not tested: a session launched with `--worktree`.
-    - [ ] Rewind. Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead. Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat. No hook fires on rewind. It keeps the session ID and the file, so following the file is unaffected.
+    - [x] `/cd`. Tested 2026-11-10: no hook fires at `/cd`. The file moves to the new folder's project directory with the same session ID. The next `UserPromptSubmit` carries the new path, so the page catches up at the next prompt.
+    - [x] `/resume`. Tested 2026-11-10: `SessionStart` with source `resume` carries the resumed session's ID and path. `/clear` works the same way, with source `clear`.
+    - [x] Worktree. Tested 2026-11-10: `PostToolUse` for `EnterWorktree` and `ExitWorktree` carries the new path mid-turn. Not tested: a session launched with `--worktree`.
+    - [x] Rewind. Checked by the user 2026-11-10: the page stays in sync, since a rewind adds a new turn to the same file. No hook fires on rewind. Marking dead turns is its own task.
     - Result: three hooks: `SessionStart`, `UserPromptSubmit`, and `PostToolUse` matched to `EnterWorktree|ExitWorktree`. The server follows the latest path. Research and caveats: `docs/transcript-following.md`.
     - Unknown: what disoriented in a switch. Record it before the switch is designed.
 - [ ] Extract a skill that handles our process in other projects.
     - Pain: not recorded yet.
-- Bug: AbortError: Transition was skipped. New ViewTransition started
+- [ ] Bug: AbortError: Transition was skipped. New ViewTransition started
+- [ ] switching between panes is still clumsy. Happens unintentally by using trackpad.
+- [ ] Mark dead turns after a rewind.
+    - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
+    - Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat.
