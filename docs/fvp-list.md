@@ -30,7 +30,7 @@
 - [x] response is now cluttered with more content which is not required all the time. Thinking block is something I tent to look at most.
 - [ ] format response and show images. 
 - [ ] move divider with keyboard
-- [ ] worktree: Problem: we can't see what reaches a session's transcript and when. During a run the page showed a Bash group of 4 while the content had 5 tool calls, then jumped to 11 in an instant.
+- [.] worktree: Problem: we can't see what reaches a session's transcript and when. During a run the page showed a Bash group of 4 while the content had 5 tool calls, then jumped to 11 in an instant.
     - Goal: know, with timestamps, what was added and when.
     - Maybe: a standalone tool that watches the transcript in several ways side by side and logs each line's arrival.
     - Maybe: hooks that record each tool event with a timestamp, compared against the transcript afterwards.
@@ -38,3 +38,14 @@
     - Measured once: a 20 ms probe saw up to six lines land in the file at once, one of them 7.5 s after its own timestamp. JSON parsing took under 0.2 ms per line.
     - Unknown: whether our parsing misses anything, and what triggers a write.
 - [ ] What: Get more information in comments pane. thinking, tool calls.
+- [.] Solve all cases of the page not following the correct transcript file.
+    - Pain: `/cd` does not work in the current setup. Rewind puts the reply pane out of sync. A worktree has a similar problem. `/resume` perhaps has it too.
+    - Done when: in each case below, the reply pane shows what the terminal shows. The switch does not disorient.
+    - [ ] `/cd`. Verified 2026-11-10 in 3 past sessions: the transcript file sits in the new folder's project directory, with the lines from before the move. One old folder kept a 4-line stub under the same file name. The server follows only the path that SessionStart gave it. Unknown: which hook fires on `/cd`, and whether it names the new path.
+    - [ ] `/resume`. Not tested. The docs of 2026-10-18 say SessionStart fires on `--resume`, `--continue` and `/resume` with the transcript path.
+    - [ ] Worktree. Not tested. This project's transcripts hold no line written inside a worktree, and no project directory is named for one.
+    - [ ] Rewind. Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead. Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat. Unknown: what tells the page at the moment of the rewind. The hook list in the docs of 2026-10-18 has no rewind event.
+    - Idea: every hook gets `transcript_path`, `session_id` and `cwd`. More events than SessionStart could report them, such as `CwdChanged` and `UserPromptSubmit`. The server then follows the path of the latest event.
+    - Unknown: what disoriented in a switch. Record it before the switch is designed.
+- [ ] Extract a skill that handles our process in other projects.
+    - Pain: not recorded yet.
