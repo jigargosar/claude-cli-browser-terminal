@@ -6,7 +6,7 @@
 4. When changed files pile up mid-task, Claude suggests a commit.
 5. After a task is done, Claude moves to the new last dotted task on its own. It names the task by its text and shows a high-level plan in plain words, without file or line numbers. Then it waits for the user's go.
 6. The list always holds the weed task. If it goes missing, add it back at the end with this text: "Weed the list. This weed task is a reminder, so it is never ticked. Merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else."
-7. Before work starts on a task, understand its gist. The task text, and any solution it names, may be an XY problem. Find the real need first. Even when the need is clear, double-check the solution. A solution stated as fact is still not taken for granted.
+7. Before work starts on a task, inorder to understand its gist always ask about pain points. Get absoloute clarity. The task text, and any solution it names, may be an XY problem. Find the real need first. Even when the need is clear, double-check the solution. A solution stated as fact is still not taken for granted.
 8. Changelog trigger: a commit with a change a user would notice adds its line under Unreleased in `CHANGELOG.md`, in that same commit.
 9. Release trigger: after a task is ticked, if Unreleased in `CHANGELOG.md` has lines, Claude runs `pnpm release`. A release stamps the changelog, tags the version, and publishes the tarball in `published-versions/`, which the README install command points at.
 10. Finish the current task before starting the next. When its scope grows, write the new scope into the task first.
