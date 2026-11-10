@@ -55,3 +55,4 @@
 - [ ] Mark dead turns after a rewind.
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
     - Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat.
+- [ ] remove plan mode from the list of shift+tab list.
