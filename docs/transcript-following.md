@@ -6,11 +6,11 @@ Research for the task "Solve all cases of the page not following the correct tra
 
 The server needs three hooks, each sending `session_id` and `transcript_path`. It follows the path that came last.
 
-| Hook | Matcher | Covers | Tested |
-| :- | :- | :- | :- |
-| `SessionStart` | any | startup, `/resume`, `/clear`, fork | startup, `/clear`, `/resume` |
-| `UserPromptSubmit` | any | `/cd`, at the next prompt | yes |
-| `PostToolUse` | `EnterWorktree\|ExitWorktree` | worktree moves mid-turn | yes |
+| Hook               | Matcher                       | Covers                             | Tested                       |
+|:-------------------|:------------------------------|:-----------------------------------|:-----------------------------|
+| `SessionStart`     | any                           | startup, `/resume`, `/clear`, fork | startup, `/clear`, `/resume` |
+| `UserPromptSubmit` | any                           | `/cd`, at the next prompt          | yes                          |
+| `PostToolUse`      | `EnterWorktree\|ExitWorktree` | worktree moves mid-turn            | yes                          |
 
 On a switch, the server reads the new file from the start.
 
