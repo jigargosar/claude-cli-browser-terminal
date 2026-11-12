@@ -56,9 +56,18 @@ export const onInput = (cb) => {
     return true;
   });
   term.onData((d) => {
-    if (d !== SHIFT_TAB || footerShows(PLAN_FOOTER)) return cb(d);
+    if (d !== SHIFT_TAB) return cb(d);
+    if (footerShows(PLAN_FOOTER)) {
+      console.info("plan-skip: Shift+Tab from plan mode, sent once");
+      return cb(d);
+    }
     skipPlanUntil = performance.now() + SKIP_PLAN_WINDOW_MS;
-    cb(footerShows(ACCEPT_EDITS_FOOTER) ? SHIFT_TAB + SHIFT_TAB : d);
+    if (footerShows(ACCEPT_EDITS_FOOTER)) {
+      console.info("plan-skip: Shift+Tab from accept-edits mode, sent twice");
+      return cb(SHIFT_TAB + SHIFT_TAB);
+    }
+    console.info("plan-skip: Shift+Tab from another mode, sent once, fallback armed");
+    cb(d);
   });
   term.onWriteParsed(() => {
     if (performance.now() > skipPlanUntil || !footerShows(PLAN_FOOTER)) return;
