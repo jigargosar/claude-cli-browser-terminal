@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.16] - 2026-11-12
 ### Fixed
 - The end of a reply scrolls up to the middle of the pane, instead of stopping at its bottom edge.
 - Resuming a session no longer shows an "AbortError: Transition was skipped" banner.
@@ -61,7 +63,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The terminal font is Atkinson Hyperlegible Mono at weight 300, with bold at 500. The font ships inside the package.
 - Links in a reply show as plain text, so a click can no longer leave the page and lose the comments.
 
-[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.15...HEAD
+[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.16...HEAD
+[0.1.16]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.15...v0.1.16
 [0.1.15]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.14...v0.1.15
 [0.1.14]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.13...v0.1.14
 [0.1.13]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.12...v0.1.13
