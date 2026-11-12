@@ -1,5 +1,7 @@
-// View "last": the response page of the last turn: Claude's text, rendered as markdown.
+// View "last": the page of the last turn: the prompt, Claude's text rendered as markdown, and what Claude did between
+// the texts (views/turn.js).
 import { render } from "../markdown.js";
+import { newTurnPage } from "./turn.js";
 
 const reply = document.getElementById("reply");
 const status = document.getElementById("reply-status");
@@ -44,16 +46,22 @@ reply.addEventListener("click", async (event) => {
   }
 });
 
-// A response page is one turn's text, in transcript order. A turn runs from its prompt to the next. A turn without text
-// has no page, so a fresh prompt keeps the previous page until Claude answers.
-const OUTPUT = new Set(["reply"]);
+// A page is one turn, in transcript order. A turn runs from its prompt to the next, prompt included, so a fresh prompt
+// opens its page at once. Items before the first prompt, e.g. session start hooks, have no page unless Claude acted.
+// Each turn also carries the permission mode and the session cost as they stood at its end.
+const SHOWN = new Set(["prompt", "reply", "thinking", "tool_use"]);
 const turnsOf = (items) => {
   const turns = [[]];
+  let mode = null;
+  let cost = null;
   for (const i of items) {
     if (i.kind === "prompt") turns.push([]);
-    else turns.at(-1).push(i);
+    turns.at(-1).push(i);
+    if (i.kind === "mode") mode = i.mode;
+    if (i.kind === "cost") cost = i.usd;
+    Object.assign(turns.at(-1), { mode, cost });
   }
-  return turns.filter((turn) => turn.some((i) => OUTPUT.has(i.kind)));
+  return turns.filter((turn) => turn.some((i) => SHOWN.has(i.kind)));
 };
 
 // One node per text block, so an unclosed code fence in one cannot swallow the next.
@@ -61,23 +69,15 @@ const replyNode = (item) => {
   const node = document.createElement("div");
   node.className = "turn-text";
   node.innerHTML = render(item.text);
+  addCodeBars(node);
   return node;
 };
 
-// A page grows only by appending. No node already on the page is replaced or moved, so the comments on its text survive.
-const newPage = (root) => {
-  root.replaceChildren();
-  return { root, seen: new Set() };
-};
-const append = (page, item) => {
-  if (item.kind !== "reply" || page.seen.has(item.id)) return;
-  page.seen.add(item.id);
-  const node = replyNode(item);
-  page.root.append(node);
-  addCodeBars(node);
-};
-const fill = (page, turn) => {
-  for (const item of turn) append(page, item);
+// A page grows only by appending. No text node already on the page is replaced or moved, so its comments survive.
+const newPage = (root) => newTurnPage(root, { replyNode });
+const fill = (page, turn, latest) => {
+  for (const item of turn) page.add(item);
+  page.update({ latest, mode: turn.mode, cost: turn.cost });
 };
 
 // Back and forward: ‹ › beside the gear, or ← → while the reply has focus. viewing is the open page's index, or null
@@ -98,7 +98,7 @@ let setReadOnly = () => {};
 // The turn's first item names it on the page, so new output can tell growth from a new turn.
 let shownTurn = null;
 
-const latestId = () => turns.at(-1)?.findLast((i) => OUTPUT.has(i.kind)).id ?? null;
+const latestId = () => turns.at(-1)?.findLast((i) => i.at).id ?? null;
 // The open page's turn, e.g. "Turn 5 of 12".
 const turnLabel = () => (turns.length ? `Turn ${(viewing ?? turns.length - 1) + 1} of ${turns.length}` : "");
 const updateNav = () => {
@@ -115,12 +115,12 @@ let livePage = null;
 // live follows the latest turn, on view or hidden. Returns true only for a new turn, so main.js clears the comments
 // then and never while the turn grows.
 const drawLive = (turn) => {
-  const last = turn.findLast((i) => OUTPUT.has(i.kind));
+  const last = turn.findLast((i) => i.at);
   status.textContent = `Updated ${timeFormat.format(new Date(last.at))}`;
   // The same turn grew: append, so the text on the page, its comments and its scroll stay as they are. During a
   // pending crossfade there is no page yet; the swap draws the turn as it is by then.
   if (turn[0].id === shownTurn) {
-    if (livePage) fill(livePage, turn);
+    if (livePage) fill(livePage, turn, true);
     return false;
   }
   shownTurn = turn[0].id;
@@ -128,7 +128,7 @@ const drawLive = (turn) => {
   // Hidden behind an older page: no crossfade, and the older page keeps its scroll. live starts at its top on return.
   if (viewing !== null) {
     livePage = newPage(live);
-    fill(livePage, turn);
+    fill(livePage, turn, true);
     liveScroll = 0;
     return true;
   }
@@ -136,7 +136,7 @@ const drawLive = (turn) => {
   // (base.css) and the text never slides past the eye. It draws the latest turn, which may have grown meanwhile.
   const swap = () => {
     livePage = newPage(live);
-    fill(livePage, turns.at(-1));
+    fill(livePage, turns.at(-1), true);
     reply.scrollTop = 0;
   };
   document.startViewTransition(swap).ready.catch(() => {
@@ -192,13 +192,19 @@ const go = (to) => {
       setReadOnly(true);
     }
     viewing = to;
-    fill(newPage(old), turns[to]);
+    fill(newPage(old), turns[to], false);
     live.hidden = true;
     old.hidden = false;
     reply.scrollTop = 0;
   }
   updateNav();
 };
+
+// The running turn's elapsed time ticks.
+setInterval(() => {
+  const turn = turns.at(-1);
+  if (livePage && turn) livePage.update({ latest: true, mode: turn.mode, cost: turn.cost });
+}, 1000);
 
 export const init = ({ readOnly }) => {
   setReadOnly = readOnly;

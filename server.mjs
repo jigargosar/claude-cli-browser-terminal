@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import http from "node:http";
 import { spawn } from "@lydell/node-pty";
@@ -80,8 +80,10 @@ const broadcast = (msg) => {
 // Our claude's hook POSTs its transcript path here; the path is unique to this server's claude.
 const sessionPath = `/session/${randomUUID()}`;
 
-// The conversation: items made from the transcript (one JSON line per event), in file order.
-// Kinds: prompt (text), reply (text), tool_use (name, input), tool_result (results), turn_end.
+// The conversation: items made from the transcript (one JSON line per event), in file order. Every line makes at least
+// one item. Kinds: prompt (text), reply (text), thinking (text), tool_use (name, input), tool_result (results, allowed),
+// api (model, usage of one API call), hook, mode (permission mode), cost (session totals), turn_end (durationMs), and
+// raw (any other line, its JSON clipped). Inventory of line types: docs/tasks/response-info/transcript-inventory.md.
 // The page gets the whole list on connect and each new item after that.
 const TOOL_RESULT_MAX = 2000;
 let items = [];
@@ -100,10 +102,36 @@ const clip = (content) =>
       ? content.map((b) => (b.type === "text" ? { ...b, text: b.text.slice(0, TOOL_RESULT_MAX) } : { type: b.type }))
       : content;
 
+// Long strings in a tool's input are clipped like its result, e.g. the content of a Write.
+const clipInput = (input) =>
+  Object.fromEntries(Object.entries(input ?? {}).map(([k, v]) => [k, typeof v === "string" ? v.slice(0, TOOL_RESULT_MAX) : v]));
+
+// Some lines have no uuid, e.g. cost-state and permission-mode. Their ID is a hash of the line and how often the same
+// line came before it in the file. A moved file repeats the old lines in the same order, so they get the same IDs.
+let lineCounts = new Map();
+const lineId = (line) => {
+  const hash = createHash("sha1").update(line).digest("hex").slice(0, 16);
+  const n = lineCounts.get(hash) ?? 0;
+  lineCounts.set(hash, n + 1);
+  return `${hash}:${n}`;
+};
+
 const itemsOf = (line) => {
   const o = JSON.parse(line);
-  const base = { id: o.uuid, parentId: o.parentUuid, at: o.timestamp };
-  if (o.type === "system" && o.subtype === "turn_duration") return [{ ...base, kind: "turn_end" }];
+  const base = { id: o.uuid ?? lineId(line), parentId: o.parentUuid, at: o.timestamp };
+  const known = knownItemsOf(o, base);
+  if (known.length) return known;
+  const type = [o.type, o.subtype ?? o.attachment?.type].filter(Boolean).join("/");
+  return [{ ...base, kind: "raw", type, json: line.slice(0, TOOL_RESULT_MAX) }];
+};
+
+const knownItemsOf = (o, base) => {
+  if (o.type === "system" && o.subtype === "turn_duration") return [{ ...base, kind: "turn_end", durationMs: o.durationMs }];
+  if (o.type === "permission-mode") return [{ ...base, kind: "mode", mode: o.permissionMode }];
+  if (o.type === "cost-state") {
+    return [{ ...base, kind: "cost", usd: o.totalCostUSD, apiMs: o.totalAPIDuration, toolMs: o.totalToolDuration,
+      linesAdded: o.totalLinesAdded, linesRemoved: o.totalLinesRemoved }];
+  }
   // Hooks fired. Each hook run is an attachment line whose type starts with "hook_"; the Stop hooks come as one
   // summary line instead, with one entry per hook.
   if (o.type === "attachment" && o.attachment?.type?.startsWith("hook_")) {
@@ -121,7 +149,8 @@ const itemsOf = (line) => {
     const blocks = typeof c === "string" ? [{ type: "text", text: c }] : Array.isArray(c) ? c : [];
     const results = blocks.filter((b) => b.type === "tool_result");
     if (results.length) {
-      return [{ ...base, kind: "tool_result", results: results.map((r) => ({ toolUseId: r.tool_use_id, content: clip(r.content) })) }];
+      return [{ ...base, kind: "tool_result", allowed: o.permissionDecision,
+        results: results.map((r) => ({ toolUseId: r.tool_use_id, content: clip(r.content), isError: r.is_error === true })) }];
     }
     const text = blocks.filter((b) => b.type === "text").map((b) => b.text).join("\n");
     // Slash commands and their output are logged as user lines wrapped in <command-...> and <local-command-...> tags.
@@ -129,13 +158,20 @@ const itemsOf = (line) => {
   }
   if (o.type === "assistant") {
     const blocks = Array.isArray(o.message?.content) ? o.message.content : [];
-    return blocks.flatMap((b, i) => {
+    // One API call writes one line per content block, each with the call's usage. The page keeps one per requestId.
+    const u = o.message?.usage;
+    const api = u
+      ? [{ ...base, id: `${base.id}:api`, kind: "api", requestId: o.requestId, model: o.message.model, stopReason: o.message.stop_reason,
+          usage: { input: u.input_tokens, output: u.output_tokens, thinking: u.output_tokens_details?.thinking_tokens,
+            cacheRead: u.cache_read_input_tokens, cacheWrite: u.cache_creation_input_tokens } }]
+      : [];
+    return [...api, ...blocks.flatMap((b, i) => {
       const id = i === 0 ? base.id : `${base.id}:${i}`;
       if (b.type === "text") return [{ ...base, id, kind: "reply", text: b.text, stopReason: o.message.stop_reason }];
       if (b.type === "thinking" && b.thinking) return [{ ...base, id, kind: "thinking", text: b.thinking }];
-      if (b.type === "tool_use") return [{ ...base, id, kind: "tool_use", toolUseId: b.id, name: b.name, input: b.input }];
+      if (b.type === "tool_use") return [{ ...base, id, kind: "tool_use", toolUseId: b.id, name: b.name, input: clipInput(b.input) }];
       return [];
-    });
+    })];
   }
   return [];
 };
@@ -159,6 +195,7 @@ const followTranscript = (sessionId, path) => {
       broadcast(itemsMessage());
     }
     followed = { sessionId, path };
+    lineCounts = new Map();
     tail = new Tail(path, { fromBeginning: true, useWatchFile: true, fsWatchOptions: { interval: 200 } });
     tail.on("line", (line) => {
       for (const item of itemsOf(line)) {

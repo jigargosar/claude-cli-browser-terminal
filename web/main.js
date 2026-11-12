@@ -38,9 +38,8 @@ const server = connect({
   },
   onItem: (item) => {
     items.push(item);
-    // Only Claude's text shows on the response page (views/last.js).
     // Comments live on the latest page. A growing turn only appends, so they clear only when a new turn starts.
-    if (item.kind === "reply" && last.show(items)) {
+    if (last.show(items)) {
       comments.clear();
     }
     if (item.kind === "turn_end" && reloadPending) {

@@ -1,0 +1,55 @@
+/* What Claude did in a turn (views/turn.js). Approved mockup: docs/mockups/turn-insight.html. */
+/* Note: the CSS below is not idiomatic. Use your own judgment; do not infer conventions from it. */
+
+/* The turn's status, pinned at the top of the reply. -32px: #reply's top padding. */
+#reply .turn-status {
+  position: sticky; top: -32px; z-index: 1; margin: -32px 0 20px; padding: 10px 0 8px;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+  display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; font: 13px/1.4 var(--sans); color: var(--ink-muted);
+}
+#reply .turn-status span { font-variant-numeric: tabular-nums; }
+#reply .turn-status .state { font-weight: 600; color: var(--ink); }
+#reply .pulse::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%;
+  background: #2f8a4c; animation: turn-pulse 1.2s infinite; }
+@keyframes turn-pulse { 50% { opacity: 0.3; } }
+
+#reply .prompt { padding: 10px 14px; border-radius: 8px; background: var(--tint); white-space: pre-wrap; }
+#reply .prompt-meta { margin: 4px 0 1.2em; font: 12px/1.4 var(--sans); color: var(--ink-muted); }
+
+/* Every level shares one collapser look: a muted line with a chevron after it. */
+#reply details > summary { list-style: none; cursor: pointer; }
+#reply details > summary::-webkit-details-marker { display: none; }
+#reply .line { display: flex; gap: 8px; align-items: baseline; font: 14px/1.5 var(--sans); color: var(--ink-muted); }
+#reply .line .title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#reply .line .meta { flex: none; font-size: 12px; font-variant-numeric: tabular-nums; }
+#reply .line .bad { color: #b3261e; }
+#reply details > summary.line::after { content: "›"; flex: none; transition: rotate 0.12s; }
+#reply details[open] > summary.line::after { rotate: 90deg; }
+#reply details > summary:hover { color: var(--ink); }
+#reply details > summary:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 4px; }
+
+/* Level 1: the group line. Chips name the tools in it. */
+#reply .group { margin: 0 0 1em; }
+#reply .chips { display: flex; gap: 4px; flex-wrap: wrap; min-width: 0; }
+#reply .chip { padding: 0 6px; border-radius: 4px; background: var(--tint); font-size: 11.5px; line-height: 18px; color: var(--ink-muted); }
+#reply .chip.bad { color: #b3261e; }
+
+/* Level 2: one row per item, in a bordered box. */
+#reply .rows { margin-top: 6px; border: 1px solid var(--rule); border-radius: 8px; }
+#reply .rows > * + * { border-top: 1px solid var(--rule); }
+#reply .row { padding: 7px 12px; }
+#reply .row.thinking, #reply .row.thinking .line { font-style: italic; font-size: 14px; line-height: 1.5; color: var(--ink-muted); }
+#reply .thinking-text { margin: 6px 0 2px; white-space: pre-wrap; font: 13px/1.5 var(--sans); }
+#reply .rows details .rows { margin: 6px 0 2px; }
+
+/* Level 3: Request, Response and the other blocks. */
+#reply .block { margin: 8px 0 2px; padding: 8px 12px; border-radius: 6px; background: var(--tint); }
+#reply .block h4 { margin: 0 0 4px; font: 600 12px/1.4 var(--sans); color: var(--ink-muted); }
+#reply .block dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 16px; margin: 0; font: 13px/1.5 var(--sans); }
+#reply .block dt { color: var(--ink-muted); }
+#reply .block dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+#reply .block pre { margin: 0; max-height: 240px; overflow: auto; padding: 0; border-radius: 0; background: none; color: var(--ink);
+  font: 12.5px/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; scrollbar-color: var(--thumb) transparent; }
+#reply .block pre ::selection, #reply .block pre::selection { background: var(--selection); }
+#reply .block .del { color: #b3261e; }
+#reply .block .add { color: #2f7a43; }
