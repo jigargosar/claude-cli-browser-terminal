@@ -47,7 +47,6 @@ export const onResize = (cb) => term.onResize(cb);
 // Ctrl+Backspace deletes the previous word in claude instead.
 // Ctrl+V pastes text, as in Windows Terminal: xterm skips the key, so the browser fires paste and xterm sends the text.
 export const onInput = (cb) => {
-  sendInput = cb;
   term.attachCustomKeyEventHandler((e) => {
     if (e.key === "Enter" && e.shiftKey) {
       if (e.type === "keydown") cb("\n");
@@ -59,6 +58,10 @@ export const onInput = (cb) => {
   term.onData((d) => {
     if (d !== SHIFT_TAB) return cb(d);
     const from = readMode();
+    if (from.mode === NO_MODE) {
+      console.info("plan-skip: Shift+Tab with no mode line, passed through", footerRows().join(" | "));
+      return cb(d);
+    }
     let send = d;
     if (from.mode !== "plan") {
       skipPlanUntil = performance.now() + SKIP_PLAN_WINDOW_MS;
@@ -91,7 +94,11 @@ const MODES = [
   ["accept-edits", /accept edits on/i],
   ["auto", /auto mode on/i],
   ["bypass", /bypass permissions on/i],
+  ["manual", /manual mode on/i],
 ];
+// No mode line on the footer means claude's prompt input does not have the keys, e.g. a permission dialog is open
+// (seen 2026-11-12). The page then leaves Shift+Tab alone.
+const NO_MODE = "no-mode-line";
 let skipPlanUntil = 0;
 let settleTimer = 0;
 let settleFrom = "";
@@ -106,12 +113,11 @@ const footerRows = () => {
   }
   return rows;
 };
-// "unlabeled" is any footer without a mode label. Inference, not verified: claude's manual mode shows no label.
 const readMode = () => {
   for (const row of footerRows()) {
     for (const [mode, pattern] of MODES) if (pattern.test(row)) return { mode, row };
   }
-  return { mode: "unlabeled", row: "" };
+  return { mode: NO_MODE, row: "" };
 };
 // Logs the mode once claude has stopped redrawing for SETTLE_MS after a Shift+Tab.
 const logModeWhenSettled = (from) => {
@@ -119,60 +125,8 @@ const logModeWhenSettled = (from) => {
   clearTimeout(settleTimer);
   settleTimer = setTimeout(() => {
     settleTimer = 0;
-    console.info(`plan-skip: ${from} -> ${readMode().mode}`, footerRows().join(" | "));
+    const now = readMode().mode;
+    console.info(`plan-skip: ${from} -> ${now}`, footerRows().join(" | "));
   }, SETTLE_MS);
 };
 
-// The manual-mode key (main.js binds it). From any other mode it remembers that mode and steps Shift+Tab until the
-// footer shows manual mode. From manual mode it steps back to the remembered mode. Each step waits for claude to
-// redraw, so the footer it reads is current. Accept-edits mode steps twice at once, so plan mode never draws on the
-// way, unless plan mode is the target.
-const MANUAL = "unlabeled";
-const MAX_STEPS = 6;
-const STEP_TIMEOUT_MS = 2000;
-let sendInput = () => {
-  throw new Error("toggleManualMode before onInput");
-};
-let rememberedMode = "";
-let stepping = false;
-const settled = () =>
-  new Promise((resolve) => {
-    let quiet = setTimeout(done, SETTLE_MS);
-    const cap = setTimeout(done, STEP_TIMEOUT_MS);
-    const sub = term.onWriteParsed(() => {
-      clearTimeout(quiet);
-      quiet = setTimeout(done, SETTLE_MS);
-    });
-    function done() {
-      clearTimeout(quiet);
-      clearTimeout(cap);
-      sub.dispose();
-      resolve();
-    }
-  });
-export const toggleManualMode = async () => {
-  if (stepping) return console.info("mode-key: already stepping, key ignored");
-  const from = readMode().mode;
-  const target = from === MANUAL ? rememberedMode : MANUAL;
-  if (!target) return console.info("mode-key: in manual mode, no remembered mode to go back to");
-  if (from !== MANUAL) rememberedMode = from;
-  stepping = true;
-  skipPlanUntil = 0;
-  console.info(`mode-key: ${from} -> target ${target}`, footerRows().join(" | "));
-  let steps = 0;
-  try {
-    for (let mode = from; mode !== target; mode = readMode().mode) {
-      if (steps >= MAX_STEPS) {
-        console.warn(`mode-key: gave up after ${steps} steps, now ${mode}, target ${target}`, footerRows().join(" | "));
-        return;
-      }
-      const twice = mode === "accept-edits" && target !== "plan";
-      sendInput(twice ? SHIFT_TAB + SHIFT_TAB : SHIFT_TAB);
-      steps += twice ? 2 : 1;
-      await settled();
-    }
-    console.info(`mode-key: reached ${target} after ${steps} Shift+Tabs`, footerRows().join(" | "));
-  } finally {
-    stepping = false;
-  }
-};
