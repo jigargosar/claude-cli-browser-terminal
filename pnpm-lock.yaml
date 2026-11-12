@@ -166,6 +166,9 @@ importers:
 
   .:
     dependencies:
+      '@discoveryjs/json-ext':
+        specifier: ^1.1.0
+        version: 1.1.0
       '@lydell/node-pty':
         specifier: 1.2.0-beta.15
         version: 1.2.0-beta.15
@@ -187,9 +190,6 @@ importers:
       sirv:
         specifier: 3.0.2
         version: 3.0.2
-      tail:
-        specifier: 2.2.6
-        version: 2.2.6
       write-file-atomic:
         specifier: 8.0.0
         version: 8.0.0
@@ -269,6 +269,10 @@ packages:
   '@brightcove/kacl@0.1.11':
     resolution: {integrity: sha512-1KdQpJKb6GhU5V6uAlmCIUvgVNcxyU8Wswzt2Gbe4O4sjnxCGWxNhDtbmkdvqyM0Qr+b5cvlw/Ophc9zzVl76w==}
     hasBin: true
+
+  '@discoveryjs/json-ext@1.1.0':
+    resolution: {integrity: sha512-Xc3VhU02wqZ1HvHRJUwL09HkZSTvidqY5Ya0NXBSYOxAp+Ln9dcJr9fySI+CkONzP3PekQo9WdzCv0PGER/mOA==}
+    engines: {node: '>=14.17.0'}
 
   '@epic-web/invariant@1.0.0':
     resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
@@ -1014,10 +1018,6 @@ packages:
   tabbable@6.5.0:
     resolution: {integrity: sha512-wieBHXygIm7OyQOu5hQlkk62/WyCFYGlWg7L6/ZCUZwx0o398Zkn4pVmMyfYhfMG8kGrj/Krt8eIk6UKC6VzwA==}
 
-  tail@2.2.6:
-    resolution: {integrity: sha512-IQ6G4wK/t8VBauYiGPLx+d3fA5XjSVagjWV5SIYzvEvglbQjwEcukeYI68JOPpdydjxhZ9sIgzRlSmwSpphHyw==}
-    engines: {node: '>= 6.0.0'}
-
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
@@ -1149,6 +1149,8 @@ snapshots:
     dependencies:
       chalk: 2.4.2
       keep-a-changelog: 0.10.4
+
+  '@discoveryjs/json-ext@1.1.0': {}
 
   '@epic-web/invariant@1.0.0': {}
 
@@ -1737,8 +1739,6 @@ snapshots:
   system-architecture@0.1.0: {}
 
   tabbable@6.5.0: {}
-
-  tail@2.2.6: {}
 
   tinyglobby@0.2.17:
     dependencies:

@@ -9,9 +9,9 @@ import chokidar from "chokidar";
 import getPort from "get-port";
 import open from "open";
 import sirv from "sirv";
-import { Tail } from "tail";
 import writeFileAtomic from "write-file-atomic";
 import { WebSocketServer } from "ws";
+import { followJsonl } from "./follow-jsonl.mjs";
 
 // The page and its browser libraries, built by Vite from web/ into dist/.
 const DIST_DIR = `${import.meta.dirname}/dist`;
@@ -89,11 +89,11 @@ const TOOL_RESULT_MAX = 2000;
 let items = [];
 // Item IDs already in items. A moved file holds the lines read before the move; they are skipped, not shown twice.
 let seen = new Set();
-// The file followed, and the one waited for until it exists.
+// The file followed, and the one waited for until it exists, each with its follower.
 let followed = { sessionId: null, path: null };
 let waitingFor = null;
-let transcriptWait = null;
-let tail = null;
+let follower = null;
+let pending = null;
 
 const clip = (content) =>
   typeof content === "string"
@@ -112,8 +112,8 @@ const lineId = (line) => {
   return `${hash}:${n}`;
 };
 
-const itemsOf = (line) => {
-  const o = JSON.parse(line);
+const itemsOf = (o) => {
+  const line = JSON.stringify(o);
   const base = { id: o.uuid ?? lineId(line), parentId: o.parentUuid, at: o.timestamp };
   const known = knownItemsOf(o, base);
   if (known.length) return known;
@@ -174,37 +174,36 @@ const knownItemsOf = (o, base) => {
 
 const itemsMessage = () => JSON.stringify({ t: "items", items });
 
-// Follow a transcript from its first line, once the file exists; chokidar waits for it.
+// Follow a transcript from its first line, once the file exists (follow-jsonl.mjs).
 // The old file stays followed until then: a SessionStart can name a file that never comes (issue #78455).
 // A new session clears the page. The same session at a new path is a move, so the page keeps its items.
-// tail reads new lines on each change the OS reports (fs.watch), with no polling delay.
 const followTranscript = (sessionId, path) => {
-  transcriptWait?.close();
+  pending?.close();
   waitingFor = path;
-  transcriptWait = chokidar.watch(path, { usePolling: true, interval: 200 }).on("add", () => {
-    transcriptWait.close();
-    waitingFor = null;
-    tail?.unwatch();
-    if (sessionId !== followed.sessionId) {
-      items = [];
-      seen = new Set();
-      broadcast(itemsMessage());
-    }
-    followed = { sessionId, path };
-    lineCounts = new Map();
-    tail = new Tail(path, { fromBeginning: true });
-    tail.on("line", (line) => {
-      for (const item of itemsOf(line)) {
+  const next = followJsonl(path, {
+    onStart: () => {
+      pending = null;
+      waitingFor = null;
+      follower?.close();
+      follower = next;
+      if (sessionId !== followed.sessionId) {
+        items = [];
+        seen = new Set();
+        broadcast(itemsMessage());
+      }
+      followed = { sessionId, path };
+      lineCounts = new Map();
+    },
+    onValue: (o) => {
+      for (const item of itemsOf(o)) {
         if (seen.has(item.id)) continue;
         seen.add(item.id);
         items.push(item);
         broadcast(JSON.stringify({ t: "item", item }));
       }
-    });
-    tail.on("error", (err) => {
-      throw err;
-    });
+    },
   });
+  pending = next;
 };
 
 const onHook = ({ sessionId, transcriptPath: path, event, source }) => {
