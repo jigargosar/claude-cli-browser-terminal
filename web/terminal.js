@@ -55,5 +55,31 @@ export const onInput = (cb) => {
     if (e.ctrlKey && !e.shiftKey && !e.altKey && e.key.toLowerCase() === "v") return false;
     return true;
   });
-  term.onData(cb);
+  term.onData((d) => {
+    if (d === SHIFT_TAB && !footerShowsPlan()) skipPlanUntil = performance.now() + SKIP_PLAN_WINDOW_MS;
+    cb(d);
+  });
+  term.onWriteParsed(() => {
+    if (performance.now() > skipPlanUntil || !footerShowsPlan()) return;
+    skipPlanUntil = 0;
+    cb(SHIFT_TAB);
+  });
+};
+
+// Shift+Tab cycles claude's permission modes, and claude has no setting that drops plan mode from the cycle.
+// So when the user's Shift+Tab lands on plan mode, the page sends one more Shift+Tab to step past it.
+// The window opens only on the user's own Shift+Tab, and only outside plan mode. Plan mode entered any other
+// way (/plan, claude's EnterPlanMode) stays, and Shift+Tab from inside plan mode moves one step as usual.
+const SHIFT_TAB = "\x1b[Z";
+const SKIP_PLAN_WINDOW_MS = 1000;
+const FOOTER_ROWS = 6;
+const PLAN_FOOTER = /plan mode on/i;
+let skipPlanUntil = 0;
+const footerShowsPlan = () => {
+  const buffer = term.buffer.active;
+  const last = buffer.baseY + term.rows - 1;
+  for (let y = last; y > last - FOOTER_ROWS && y >= 0; y--) {
+    if (PLAN_FOOTER.test(buffer.getLine(y)?.translateToString(true) ?? "")) return true;
+  }
+  return false;
 };

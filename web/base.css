@@ -102,11 +102,13 @@ body[data-focus="none"] #focus-mark {
 .seg output { flex: 1; align-self: center; text-align: center; font-variant-numeric: tabular-nums; }
 #reader-reset { width: 100%; margin-top: 2px; }
 /* #reply is the scroller and spans the pane, so its scrollbar sits at the window edge. The right padding takes the
-   width beyond the reading measure; it replaces the max-width of .md here. --gutter: the side padding. */
+   width beyond the reading measure; it replaces the max-width of .md here. --gutter: the side padding.
+   --end-space: empty room after the last line, so the end of a reply scrolls up to the middle of the pane. */
 #reply {
   --gutter: 48px;
+  --end-space: 50vh;
   flex: 1; overflow-y: auto; max-width: none;
-  padding: 32px max(var(--gutter), calc(100% - var(--reader-measure) - var(--gutter))) 72px var(--gutter);
+  padding: 32px max(var(--gutter), calc(100% - var(--reader-measure) - var(--gutter))) max(72px, var(--end-space)) var(--gutter);
   scrollbar-width: thin; scrollbar-color: var(--thumb) transparent;
 }
 /* A new reply crossfades with the old one, which also hides its jump to the top (views/last.js). Only the reply
@@ -162,5 +164,5 @@ body[data-focus="none"] #focus-mark {
   #terminal-pane { flex: 1 1 55%; min-width: 0; min-height: 0; }
   #reply-pane { flex: 1 1 45%; min-width: 0; min-height: 0; }
   #divider { display: none; }
-  #reply { --gutter: 20px; }
+  #reply { --gutter: 20px; --end-space: 20vh; }
 }

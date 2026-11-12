@@ -142,10 +142,11 @@ const drawLive = (turn) => {
   if (document.hidden) {
     swap();
   } else {
-    // The browser aborts the transition when the tab hides before it starts. The swap still runs, so only the crossfade
-    // is lost. Any other failure goes on to the error banner.
+    // The browser aborts the transition when the tab hides before it starts (InvalidStateError), and when a newer
+    // transition starts before this one is ready (AbortError). The swap still runs, so only the crossfade is lost.
+    // Any other failure goes on to the error banner.
     document.startViewTransition(swap).ready.catch((error) => {
-      if (error.name !== "InvalidStateError") throw error;
+      if (error.name !== "InvalidStateError" && error.name !== "AbortError") throw error;
     });
   }
   return true;
