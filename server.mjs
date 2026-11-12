@@ -101,6 +101,8 @@ const clip = (content) =>
     : Array.isArray(content)
       ? content.map((b) => (b.type === "text" ? { ...b, text: b.text.slice(0, TOOL_RESULT_MAX) } : { type: b.type }))
       : content;
+// A tool's result goes out whole. Only non-text blocks, such as an image's data, are reduced to their type.
+const textOnly = (content) => (Array.isArray(content) ? content.map((b) => (b.type === "text" ? b : { type: b.type })) : content);
 
 // Some lines have no uuid, e.g. cost-state and permission-mode. Their ID is a hash of the line and how often the same
 // line came before it in the file. A moved file repeats the old lines in the same order, so they get the same IDs.
@@ -146,7 +148,7 @@ const knownItemsOf = (o, base) => {
     const results = blocks.filter((b) => b.type === "tool_result");
     if (results.length) {
       return [{ ...base, kind: "tool_result", allowed: o.permissionDecision,
-        results: results.map((r) => ({ toolUseId: r.tool_use_id, content: clip(r.content), isError: r.is_error === true })) }];
+        results: results.map((r) => ({ toolUseId: r.tool_use_id, content: textOnly(r.content), isError: r.is_error === true })) }];
     }
     const text = blocks.filter((b) => b.type === "text").map((b) => b.text).join("\n");
     // Slash commands and their output are logged as user lines wrapped in <command-...> and <local-command-...> tags.
