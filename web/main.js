@@ -94,6 +94,17 @@ document.addEventListener(
   },
   true,
 );
+// F8 toggles claude's manual mode from either pane (terminal.js). Capture phase, so xterm never sends the key to claude.
+document.addEventListener(
+  "keydown",
+  (e) => {
+    if (e.key !== "F8" || e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (!e.repeat) terminal.toggleManualMode();
+  },
+  true,
+);
 // Tab and Shift+Tab cycle the reply pane's stops and wrap at either end, so focus stays trapped in the pane. The
 // reply text is no stop. From it, or from nowhere, Tab picks the first stop and Shift+Tab the last. With no stop,
 // Tab does nothing. The terminal keeps Tab for claude.

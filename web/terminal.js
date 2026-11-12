@@ -47,6 +47,7 @@ export const onResize = (cb) => term.onResize(cb);
 // Ctrl+Backspace deletes the previous word in claude instead.
 // Ctrl+V pastes text, as in Windows Terminal: xterm skips the key, so the browser fires paste and xterm sends the text.
 export const onInput = (cb) => {
+  sendInput = cb;
   term.attachCustomKeyEventHandler((e) => {
     if (e.key === "Enter" && e.shiftKey) {
       if (e.type === "keydown") cb("\n");
@@ -120,4 +121,58 @@ const logModeWhenSettled = (from) => {
     settleTimer = 0;
     console.info(`plan-skip: ${from} -> ${readMode().mode}`, footerRows());
   }, SETTLE_MS);
+};
+
+// The manual-mode key (main.js binds it). From any other mode it remembers that mode and steps Shift+Tab until the
+// footer shows manual mode. From manual mode it steps back to the remembered mode. Each step waits for claude to
+// redraw, so the footer it reads is current. Accept-edits mode steps twice at once, so plan mode never draws on the
+// way, unless plan mode is the target.
+const MANUAL = "unlabeled";
+const MAX_STEPS = 6;
+const STEP_TIMEOUT_MS = 2000;
+let sendInput = () => {
+  throw new Error("toggleManualMode before onInput");
+};
+let rememberedMode = "";
+let stepping = false;
+const settled = () =>
+  new Promise((resolve) => {
+    let quiet = setTimeout(done, SETTLE_MS);
+    const cap = setTimeout(done, STEP_TIMEOUT_MS);
+    const sub = term.onWriteParsed(() => {
+      clearTimeout(quiet);
+      quiet = setTimeout(done, SETTLE_MS);
+    });
+    function done() {
+      clearTimeout(quiet);
+      clearTimeout(cap);
+      sub.dispose();
+      resolve();
+    }
+  });
+export const toggleManualMode = async () => {
+  if (stepping) return console.info("mode-key: already stepping, key ignored");
+  const from = readMode().mode;
+  const target = from === MANUAL ? rememberedMode : MANUAL;
+  if (!target) return console.info("mode-key: in manual mode, no remembered mode to go back to");
+  if (from !== MANUAL) rememberedMode = from;
+  stepping = true;
+  skipPlanUntil = 0;
+  console.info(`mode-key: ${from} -> target ${target}`, footerRows());
+  let steps = 0;
+  try {
+    for (let mode = from; mode !== target; mode = readMode().mode) {
+      if (steps >= MAX_STEPS) {
+        console.warn(`mode-key: gave up after ${steps} steps, now ${mode}, target ${target}`, footerRows());
+        return;
+      }
+      const twice = mode === "accept-edits" && target !== "plan";
+      sendInput(twice ? SHIFT_TAB + SHIFT_TAB : SHIFT_TAB);
+      steps += twice ? 2 : 1;
+      await settled();
+    }
+    console.info(`mode-key: reached ${target} after ${steps} Shift+Tabs`, footerRows());
+  } finally {
+    stepping = false;
+  }
 };
