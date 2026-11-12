@@ -63,6 +63,7 @@ export const onInput = (cb) => {
   term.onWriteParsed(() => {
     if (performance.now() > skipPlanUntil || !footerShows(PLAN_FOOTER)) return;
     skipPlanUntil = 0;
+    console.warn("plan-skip: fallback fired, plan mode was drawn");
     cb(SHIFT_TAB);
   });
 };
