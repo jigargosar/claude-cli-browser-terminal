@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: live insight into a turn</title>
+<link rel="stylesheet" href="../../web/base.css">
+<link rel="stylesheet" href="../../web/reader.css">
+<style>
+  /* Mockup only: the terminal is a placeholder. */
+  #terminal-pane { color: #6b7380; font: 13px/1.5 var(--mono); }
+
+  /* The turn's status, pinned at the top of the pane. */
+  #turn-status {
+    position: sticky; top: -32px; z-index: 1; margin: -32px 0 20px; padding: 10px 0 8px;
+    background: var(--paper); border-bottom: 1px solid var(--rule);
+    display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; font: 13px/1.4 var(--sans); color: var(--ink-muted);
+  }
+  #turn-status span { font-variant-numeric: tabular-nums; }
+  #turn-status .state { font-weight: 600; color: var(--ink); }
+  .pulse::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: #2f8a4c; animation: pulse 1.2s infinite; }
+  @keyframes pulse { 50% { opacity: 0.3; } }
+
+  .prompt { padding: 10px 14px; border-radius: 8px; background: var(--tint); white-space: pre-wrap; }
+  .prompt-meta { margin: 4px 0 1.2em; font: 12px/1.4 var(--sans); color: var(--ink-muted); }
+
+  /* All levels share one collapser look: a muted line with a chevron after it. */
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  .line { display: flex; gap: 8px; align-items: baseline; font: 14px/1.5 var(--sans); color: var(--ink-muted); }
+  .line .title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .line .meta { flex: none; font-size: 12px; font-variant-numeric: tabular-nums; }
+  .line .bad { color: #b3261e; }
+  details > summary.line::after { content: "›"; flex: none; transition: rotate 0.12s; }
+  details[open] > summary.line::after { rotate: 90deg; }
+  details > summary:hover { color: var(--ink); }
+  details > summary:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; border-radius: 4px; }
+
+  /* Level 1: the group line. Chips name the tools in it. */
+  .group { margin: 0 0 1em; }
+  .chips { display: flex; gap: 4px; flex-wrap: wrap; }
+  .chip { padding: 0 6px; border-radius: 4px; background: var(--tint); font-size: 11.5px; line-height: 18px; color: var(--ink-muted); }
+  .chip.bad { color: #b3261e; }
+
+  /* Level 2: one row per item, in a bordered box. */
+  .rows { margin-top: 6px; border: 1px solid var(--rule); border-radius: 8px; }
+  .rows > * + * { border-top: 1px solid var(--rule); }
+  .row { padding: 7px 12px; }
+  .row.thinking { font: italic 14px/1.5 var(--sans); color: var(--ink-muted); }
+
+  /* Level 3: Request and Response blocks. */
+  .block { margin: 8px 0 2px; padding: 8px 12px; border-radius: 6px; background: var(--tint); }
+  .block h4 { margin: 0 0 4px; font: 600 12px/1.4 var(--sans); color: var(--ink-muted); }
+  .block dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 16px; margin: 0; font: 13px/1.5 var(--sans); }
+  .block dt { color: var(--ink-muted); }
+  .block dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+  .block pre { margin: 0; max-height: 240px; overflow: auto; padding: 0; background: none; color: var(--ink);
+    font: 12.5px/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .block .del { color: #b3261e; } .block .add { color: #2f7a43; }
+  .rows details .rows { margin: 6px 0 2px; }
+
+  .say { margin: 0 0 1em; }
+</style>
+</head>
+<body>
+<main id="terminal-pane">Terminal (placeholder)</main>
+<div id="divider"></div>
+<aside id="reply-pane" aria-label="Turn">
+  <article id="reply" class="md" tabindex="0"></article>
+</aside>
+
+<script>
+// Mockup data: a flat list in transcript order, the shape the server would send. Short, one of each kind.
+const turn = {
+  status: { running: true, elapsed: "1 m 12 s", api: "4 API calls · 8.1k out · 712k cache read", model: "opus-5-5 · auto mode", cost: "session $8.72" },
+  prompt: { text: "now check another large transcript file, and see what results you get", time: "23:17:27" },
+  items: [
+    { kind: "hook", title: "UserPromptSubmit", ms: 103, detail: { output: "Thu Nov 12 23:17:27 IST 2026" } },
+    { kind: "thinking", text: "Find the largest transcript and run the same jq summary on it.", ms: 4200 },
+    { kind: "tool", name: "Bash", ms: 400, allowed: "config · classifier",
+      input: { command: "ls -S ~/.claude/projects/*/*.jsonl | head -5 | xargs ls -la", description: "List the largest transcript files", timeout: 20000 },
+      result: "-rw-r--r-- 1 jigar 7457690 Oct 18 17:04 …/0a311023.jsonl\n-rw-r--r-- 1 jigar 9798592 Oct 16 01:48 …/b1ba673f.jsonl" },
+    { kind: "api", title: "claude-opus-5-5 · tool_use", detail: { input: 2, output: 212, thinking: 96, "cache read": 177063, "cache write": 1603 } },
+    { kind: "tool", name: "Read", ms: 20, allowed: "config · mode", input: { file_path: "docs/fvp-list.md" }, result: "1\t# How we work\n2\t\n3\t1. The user owns this list. …" },
+    { kind: "say", text: "The largest is 9.8 MB, from quick-notes-v2. I'll summarize it the same way." },
+    { kind: "tool", name: "Edit", ms: 30, allowed: "config · mode",
+      input: { file_path: "docs/fvp-list.md", old_string: "- [.] Pain Point: …", new_string: "- [.] Pain Point: …\n    - Pain: …", replace_all: false },
+      diff: ["  - [.] Pain Point: …", "+     - Pain: the page gives no insight while a turn runs."] },
+    { kind: "tool", name: "WebFetch", ms: 800, error: true, input: { url: "https://code.claude.com/docs/en/hooks", prompt: "List the hook events" }, result: "Request failed with status code 404" },
+    { kind: "tool", name: "AskUserQuestion", ms: 41000, input: { question: "Should I put this table and the pain points into the task?" }, result: "now check another large transcript file" },
+    { kind: "mode", title: "default → auto", detail: { "permission-mode": "auto" } },
+    { kind: "raw", title: "file-history-delta", detail: { json: '{"type":"file-history-delta","trackingPath":"…/repro-new.ps1"}' } },
+    { kind: "say", text: "Same core in both files. Running the per-type samples now." },
+    { kind: "thinking", text: "Sample the line types new in this transcript.", ms: 2100 },
+    { kind: "tool", name: "Bash", ms: 12000, live: true, input: { command: "jq -r '.type' $F | sort | uniq -c", description: "Summarize the largest transcript with jq" } },
+  ],
+};
+
+const HOUSEKEEPING = new Set(["hook", "api", "mode", "files", "raw"]);
+
+/** @param {string} tag @param {object} [props] @param {...(Node|string)} kids */
+function h(tag, props = {}, ...kids) {
+  const el = Object.assign(document.createElement(tag), props);
+  el.append(...kids.filter((k) => k != null));
+  return el;
+}
+const seconds = (ms) => (ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(ms < 10000 ? 1 : 0)} s`);
+const label = (key) => key.replace(/_/g, " ").replace(/^./, (c) => c.toUpperCase());
+const isLong = (v) => typeof v === "string" && (v.includes("\n") || v.length > 70);
+
+// Generic: any object becomes a key/value table. Long values become monospace.
+function table(obj) {
+  return h("dl", {}, ...Object.entries(obj).flatMap(([k, v]) => [
+    h("dt", {}, label(k)),
+    h("dd", {}, isLong(v) ? h("pre", {}, v) : typeof v === "number" ? v.toLocaleString() : String(v)),
+  ]));
+}
+const block = (title, ...kids) => h("div", { className: "block" }, h("h4", {}, title), ...kids);
+const collapser = (summaryKids, ...body) => h("details", {}, h("summary", { className: "line" }, ...summaryKids), ...body);
+const meta = (text, bad) => h("span", { className: bad ? "meta bad" : "meta" }, text);
+
+function toolTitle(t) {
+  const first = t.input.description ?? Object.values(t.input).find((v) => typeof v === "string");
+  return `${t.name} · ${first}`;
+}
+
+// Level 2 rows, each opening to level 3.
+function toolRow(t) {
+  const response = t.diff
+    ? block("Response", h("pre", {}, ...t.diff.map((l) => h("span", { className: l[0] === "+" ? "add" : l[0] === "-" ? "del" : "" }, l + "\n"))))
+    : block("Response", h("pre", {}, t.result ?? "(running)"));
+  return h("div", { className: "row" }, collapser(
+    [h("span", { className: t.live ? "title pulse" : "title" }, toolTitle(t)), meta(t.error ? "Failed" : seconds(t.ms), t.error)],
+    block("Request", table(t.input)),
+    response,
+    t.allowed ? block("Allowed by", h("pre", {}, t.allowed)) : null,
+  ));
+}
+function housekeepingRow(items) {
+  return h("div", { className: "row" }, collapser(
+    [h("span", { className: "title" }, `${items.length} housekeeping`), meta(items.map((i) => i.kind).join(", "))],
+    h("div", { className: "rows" }, ...items.map((i) => h("div", { className: "row" }, collapser(
+      [h("span", { className: "title" }, `${label(i.kind)} · ${i.title}`), i.ms ? meta(seconds(i.ms)) : null],
+      block("Detail", i.detail.json ? h("pre", {}, i.detail.json) : table(i.detail)),
+    )))),
+  ));
+}
+
+// Level 1: a run of non-text items between two pieces of Claude's text.
+function group(items) {
+  const tools = items.filter((i) => i.kind === "tool");
+  const live = tools.find((t) => t.live);
+  const failed = tools.filter((t) => t.error).length;
+  const ms = items.reduce((sum, i) => sum + (i.ms ?? 0), 0);
+  const counts = Object.entries(Object.groupBy(tools, (t) => t.name)).map(([name, ts]) =>
+    h("span", { className: ts.some((t) => t.error) ? "chip bad" : "chip" }, ts.length > 1 ? `${name} ×${ts.length}` : name));
+  const head = live
+    ? [h("span", { className: "title pulse" }, `Running ${toolTitle(live)}`)]
+    : [h("span", { className: "title" }, `Used ${tools.length} tools`), meta(seconds(ms)), failed ? meta(`${failed} failed`, true) : null, h("span", { className: "chips" }, ...counts)];
+  const rows = items.filter((i) => !HOUSEKEEPING.has(i.kind)).map((i) =>
+    i.kind === "thinking" ? h("div", { className: "row thinking" }, i.text) : toolRow(i));
+  const chores = items.filter((i) => HOUSEKEEPING.has(i.kind));
+  if (chores.length) rows.push(housekeepingRow(chores));
+  const d = collapser(head, h("div", { className: "rows" }, ...rows));
+  d.className = "group";
+  return d;
+}
+
+function render() {
+  const reply = document.getElementById("reply");
+  const s = turn.status;
+  reply.append(
+    h("div", { id: "turn-status" },
+      h("span", { className: s.running ? "state pulse" : "state" }, s.running ? "Running" : "Done"),
+      h("span", {}, s.elapsed), h("span", {}, s.api), h("span", {}, s.model), h("span", {}, s.cost)),
+    h("div", { className: "prompt" }, turn.prompt.text),
+    h("p", { className: "prompt-meta" }, turn.prompt.time),
+  );
+  let run = [];
+  const flush = () => { if (run.length) reply.append(group(run)); run = []; };
+  for (const item of turn.items) {
+    if (item.kind === "say") { flush(); reply.append(h("p", { className: "say" }, item.text)); }
+    else run.push(item);
+  }
+  flush();
+}
+render();
+</script>
+</body>
+</html>
