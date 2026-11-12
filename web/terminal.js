@@ -64,7 +64,7 @@ export const onInput = (cb) => {
       skipPlanUntil = performance.now() + SKIP_PLAN_WINDOW_MS;
       if (from.mode === "accept-edits") send = SHIFT_TAB + SHIFT_TAB;
     }
-    console.info(`plan-skip: Shift+Tab in ${from.mode}, sending ${send.length / SHIFT_TAB.length}`, footerRows());
+    console.info(`plan-skip: Shift+Tab in ${from.mode}, sending ${send.length / SHIFT_TAB.length}`, footerRows().join(" | "));
     logModeWhenSettled(from.mode);
     cb(send);
   });
@@ -119,7 +119,7 @@ const logModeWhenSettled = (from) => {
   clearTimeout(settleTimer);
   settleTimer = setTimeout(() => {
     settleTimer = 0;
-    console.info(`plan-skip: ${from} -> ${readMode().mode}`, footerRows());
+    console.info(`plan-skip: ${from} -> ${readMode().mode}`, footerRows().join(" | "));
   }, SETTLE_MS);
 };
 
@@ -158,12 +158,12 @@ export const toggleManualMode = async () => {
   if (from !== MANUAL) rememberedMode = from;
   stepping = true;
   skipPlanUntil = 0;
-  console.info(`mode-key: ${from} -> target ${target}`, footerRows());
+  console.info(`mode-key: ${from} -> target ${target}`, footerRows().join(" | "));
   let steps = 0;
   try {
     for (let mode = from; mode !== target; mode = readMode().mode) {
       if (steps >= MAX_STEPS) {
-        console.warn(`mode-key: gave up after ${steps} steps, now ${mode}, target ${target}`, footerRows());
+        console.warn(`mode-key: gave up after ${steps} steps, now ${mode}, target ${target}`, footerRows().join(" | "));
         return;
       }
       const twice = mode === "accept-edits" && target !== "plan";
@@ -171,7 +171,7 @@ export const toggleManualMode = async () => {
       steps += twice ? 2 : 1;
       await settled();
     }
-    console.info(`mode-key: reached ${target} after ${steps} Shift+Tabs`, footerRows());
+    console.info(`mode-key: reached ${target} after ${steps} Shift+Tabs`, footerRows().join(" | "));
   } finally {
     stepping = false;
   }
