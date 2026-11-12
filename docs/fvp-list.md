@@ -31,6 +31,9 @@
 - [ ] format response and show images. 
 - [ ] move divider with keyboard
 - [.] Pain Point: Need response information in page, to track what is actually going on.
+    - Pain: the page gives no insight while a turn runs. Which tools ran, with what request and response, is only in the terminal, which is ugly to read.
+    - Need: live insight into the turn: prompt, tool calls with input and result, Claude's text, status, time, tokens.
+    - Solution: a live timeline of the turn, built from the transcript. Each item sits in a collapser. Research: `docs/tasks/response-info/transcript-inventory.md`.
 - [ ] Extract a skill that handles our process in other projects.
     - Pain: not recorded yet.
 - [x] Bug: AbortError: Transition was skipped. New ViewTransition started
