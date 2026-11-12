@@ -27,13 +27,13 @@
     - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
 - [.] markdown pane UX sucks. need better UX.
-- [.] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
+- [x] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
 - [ ] format response and show images. 
 - [ ] move divider with keyboard
 - [.] Pain Point: Need all response information in md pane. We implemented it, but removed it rather than patching it. Understand the process of how and when we should capture the transcripts and which info to show.
 - [ ] Extract a skill that handles our process in other projects.
     - Pain: not recorded yet.
-- [ ] Bug: AbortError: Transition was skipped. New ViewTransition started
+- [x] Bug: AbortError: Transition was skipped. New ViewTransition started
 - [ ] switching between panes is still clumsy. Happens unintentally by using trackpad.
 - [ ] Mark dead turns after a rewind.
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
