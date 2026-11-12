@@ -30,7 +30,7 @@
 - [x] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
 - [ ] format response and show images. 
 - [ ] move divider with keyboard
-- [.] Pain Point: Need all response information in md pane. We implemented it, but removed it rather than patching it. Understand the process of how and when we should capture the transcripts and which info to show.
+- [.] Pain Point: Need response information in page, to track what is actually going on.
 - [ ] Extract a skill that handles our process in other projects.
     - Pain: not recorded yet.
 - [x] Bug: AbortError: Transition was skipped. New ViewTransition started
