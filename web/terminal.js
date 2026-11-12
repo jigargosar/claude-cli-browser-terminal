@@ -57,22 +57,21 @@ export const onInput = (cb) => {
   });
   term.onData((d) => {
     if (d !== SHIFT_TAB) return cb(d);
-    if (footerShows(PLAN_FOOTER)) {
-      console.info("plan-skip: Shift+Tab from plan mode, sent once");
-      return cb(d);
+    const from = readMode();
+    let send = d;
+    if (from.mode !== "plan") {
+      skipPlanUntil = performance.now() + SKIP_PLAN_WINDOW_MS;
+      if (from.mode === "accept-edits") send = SHIFT_TAB + SHIFT_TAB;
     }
-    skipPlanUntil = performance.now() + SKIP_PLAN_WINDOW_MS;
-    if (footerShows(ACCEPT_EDITS_FOOTER)) {
-      console.info("plan-skip: Shift+Tab from accept-edits mode, sent twice");
-      return cb(SHIFT_TAB + SHIFT_TAB);
-    }
-    console.info("plan-skip: Shift+Tab from another mode, sent once, fallback armed");
-    cb(d);
+    console.info(`plan-skip: Shift+Tab in ${from.mode}, sending ${send.length / SHIFT_TAB.length}`, footerRows());
+    logModeWhenSettled(from.mode);
+    cb(send);
   });
   term.onWriteParsed(() => {
-    if (performance.now() > skipPlanUntil || !footerShows(PLAN_FOOTER)) return;
+    if (settleTimer) logModeWhenSettled(settleFrom);
+    if (performance.now() > skipPlanUntil || readMode().mode !== "plan") return;
     skipPlanUntil = 0;
-    console.warn("plan-skip: fallback fired, plan mode was drawn");
+    console.warn("plan-skip: fallback fired, plan mode was drawn, sending 1");
     cb(SHIFT_TAB);
   });
 };
@@ -82,17 +81,43 @@ export const onInput = (cb) => {
 // one write, and claude never draws plan mode. If plan mode still shows within the window after the user's own
 // Shift+Tab, the page sends one more Shift+Tab to step past it. Plan mode entered any other way (/plan, claude's
 // EnterPlanMode) stays, and Shift+Tab from inside plan mode moves one step as usual.
-const SHIFT_TAB = "\x1b[Z";
+const SHIFT_TAB = "[Z";
 const SKIP_PLAN_WINDOW_MS = 1000;
+const SETTLE_MS = 300;
 const FOOTER_ROWS = 6;
-const PLAN_FOOTER = /plan mode on/i;
-const ACCEPT_EDITS_FOOTER = /accept edits on/i;
+const MODES = [
+  ["plan", /plan mode on/i],
+  ["accept-edits", /accept edits on/i],
+  ["auto", /auto mode on/i],
+  ["bypass", /bypass permissions on/i],
+];
 let skipPlanUntil = 0;
-const footerShows = (pattern) => {
+let settleTimer = 0;
+let settleFrom = "";
+// The bottom rows of the screen, last row first, without blank rows.
+const footerRows = () => {
   const buffer = term.buffer.active;
   const last = buffer.baseY + term.rows - 1;
+  const rows = [];
   for (let y = last; y > last - FOOTER_ROWS && y >= 0; y--) {
-    if (pattern.test(buffer.getLine(y)?.translateToString(true) ?? "")) return true;
+    const text = buffer.getLine(y)?.translateToString(true).trim() ?? "";
+    if (text) rows.push(text);
   }
-  return false;
+  return rows;
+};
+// "unlabeled" is any footer without a mode label. Inference, not verified: claude's manual mode shows no label.
+const readMode = () => {
+  for (const row of footerRows()) {
+    for (const [mode, pattern] of MODES) if (pattern.test(row)) return { mode, row };
+  }
+  return { mode: "unlabeled", row: "" };
+};
+// Logs the mode once claude has stopped redrawing for SETTLE_MS after a Shift+Tab.
+const logModeWhenSettled = (from) => {
+  settleFrom = from;
+  clearTimeout(settleTimer);
+  settleTimer = setTimeout(() => {
+    settleTimer = 0;
+    console.info(`plan-skip: ${from} -> ${readMode().mode}`, footerRows());
+  }, SETTLE_MS);
 };

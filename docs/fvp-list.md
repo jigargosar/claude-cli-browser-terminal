@@ -39,6 +39,11 @@
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
     - Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat.
 - [.] remove plan mode from the list of shift+tab list.
+    - Pain: skipping plan mode flickers, because plan mode is drawn before the skip.
+    - Pain: no single key goes straight to manual mode as a quick stop.
+    - Pain: the page acts on every Shift+Tab, not only when claude's prompt input has the keys.
+    - Pain: the logs don't name the current and next mode, so a missing log can hide a bug.
+    - Solution: log the mode before and after each Shift+Tab, with the footer line it was read from. Then use those footer texts to detect manual mode and the prompt input. The key for manual mode is not chosen yet.
 - [ ] Collaboration: put in place the ideas of 2026-11-10 on how the user and Claude work together. Plan: `docs/tasks/collaboration/plan.md`.
 - need recommendation button for quick comments.
 - [ ] Reorganize tasks and docs, as agreed 2026-11-10.
