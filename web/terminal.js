@@ -81,7 +81,7 @@ export const onInput = (cb) => {
 // one write, and claude never draws plan mode. If plan mode still shows within the window after the user's own
 // Shift+Tab, the page sends one more Shift+Tab to step past it. Plan mode entered any other way (/plan, claude's
 // EnterPlanMode) stays, and Shift+Tab from inside plan mode moves one step as usual.
-const SHIFT_TAB = "[Z";
+const SHIFT_TAB = "\x1b[Z";
 const SKIP_PLAN_WINDOW_MS = 1000;
 const SETTLE_MS = 300;
 const FOOTER_ROWS = 6;
