@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- The reply pane shows what Claude does during a turn, live. A status bar shows running or done, time, tool calls, tokens, model and mode. Your prompt and Claude's text show as is. Thinking, tool calls and housekeeping fold into one line per group. Open a group for one row per tool, and a row for its request, response and why it was allowed.
+### Changed
+- New lines from the transcript reach the page in milliseconds, instead of up to 200 ms.
 
 ## [0.1.16] - 2026-11-12
 ### Fixed
