@@ -56,30 +56,33 @@ export const onInput = (cb) => {
     return true;
   });
   term.onData((d) => {
-    if (d === SHIFT_TAB && !footerShowsPlan()) skipPlanUntil = performance.now() + SKIP_PLAN_WINDOW_MS;
-    cb(d);
+    if (d !== SHIFT_TAB || footerShows(PLAN_FOOTER)) return cb(d);
+    skipPlanUntil = performance.now() + SKIP_PLAN_WINDOW_MS;
+    cb(footerShows(ACCEPT_EDITS_FOOTER) ? SHIFT_TAB + SHIFT_TAB : d);
   });
   term.onWriteParsed(() => {
-    if (performance.now() > skipPlanUntil || !footerShowsPlan()) return;
+    if (performance.now() > skipPlanUntil || !footerShows(PLAN_FOOTER)) return;
     skipPlanUntil = 0;
     cb(SHIFT_TAB);
   });
 };
 
 // Shift+Tab cycles claude's permission modes, and claude has no setting that drops plan mode from the cycle.
-// So when the user's Shift+Tab lands on plan mode, the page sends one more Shift+Tab to step past it.
-// The window opens only on the user's own Shift+Tab, and only outside plan mode. Plan mode entered any other
-// way (/plan, claude's EnterPlanMode) stays, and Shift+Tab from inside plan mode moves one step as usual.
+// Plan mode always comes right after accept-edits mode. So a Shift+Tab from accept-edits mode goes out twice in
+// one write, and claude never draws plan mode. If plan mode still shows within the window after the user's own
+// Shift+Tab, the page sends one more Shift+Tab to step past it. Plan mode entered any other way (/plan, claude's
+// EnterPlanMode) stays, and Shift+Tab from inside plan mode moves one step as usual.
 const SHIFT_TAB = "\x1b[Z";
 const SKIP_PLAN_WINDOW_MS = 1000;
 const FOOTER_ROWS = 6;
 const PLAN_FOOTER = /plan mode on/i;
+const ACCEPT_EDITS_FOOTER = /accept edits on/i;
 let skipPlanUntil = 0;
-const footerShowsPlan = () => {
+const footerShows = (pattern) => {
   const buffer = term.buffer.active;
   const last = buffer.baseY + term.rows - 1;
   for (let y = last; y > last - FOOTER_ROWS && y >= 0; y--) {
-    if (PLAN_FOOTER.test(buffer.getLine(y)?.translateToString(true) ?? "")) return true;
+    if (pattern.test(buffer.getLine(y)?.translateToString(true) ?? "")) return true;
   }
   return false;
 };
