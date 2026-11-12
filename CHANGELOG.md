@@ -6,8 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.17] - 2026-11-12
 ### Added
 - The reply pane shows what Claude does during a turn, live. A status bar shows running or done, time, tool calls, tokens, model and mode. Your prompt and Claude's text show as is. Thinking, tool calls and housekeeping fold into one line per group. Open a group for one row per tool, and a row for its request, response and why it was allowed.
+
 ### Changed
 - New lines from the transcript reach the page in milliseconds, instead of up to 200 ms.
 
@@ -67,7 +70,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The terminal font is Atkinson Hyperlegible Mono at weight 300, with bold at 500. The font ships inside the package.
 - Links in a reply show as plain text, so a click can no longer leave the page and lose the comments.
 
-[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.16...HEAD
+[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.17...HEAD
+[0.1.17]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.16...v0.1.17
 [0.1.16]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.15...v0.1.16
 [0.1.15]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.14...v0.1.15
 [0.1.14]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.13...v0.1.14
