@@ -7,11 +7,14 @@
 // Rendering is generic: any object becomes a key/value table. Only an input with old_string and new_string gets a diff.
 // A page only appends or updates in place, so open folds stay open and comments on Claude's text survive.
 
+// null and false kids are skipped. replaceChildren would turn them into the text "null".
+const present = (kids) => kids.filter((k) => k != null && k !== false);
 const h = (tag, props = {}, ...kids) => {
   const el = Object.assign(document.createElement(tag), props);
-  el.append(...kids.filter((k) => k != null && k !== false));
+  el.append(...present(kids));
   return el;
 };
+const fill = (el, ...kids) => el.replaceChildren(...present(kids));
 
 const duration = (ms) => {
   if (ms < 1000) return `${Math.round(ms)} ms`;
@@ -115,7 +118,7 @@ export const newTurnPage = (root, { replyNode }) => {
       h("span", { className: ts.some((t) => t.isError) ? "chip bad" : "chip" }, ts.length > 1 ? `${name} ×${ts.length}` : name)));
     const what = g.tools.length ? `Used ${g.tools.length} tool${g.tools.length > 1 ? "s" : ""}`
       : g.thoughts ? "Thought" : `${g.chores.length} housekeeping`;
-    g.summary.replaceChildren(
+    fill(g.summary, 
       ...(live
         ? [title(`Running ${toolTitle(live.item)}`, true)]
         : [title(what), g.first && g.last !== g.first ? meta(duration(since(g.first, g.last))) : null,
@@ -132,7 +135,7 @@ export const newTurnPage = (root, { replyNode }) => {
   // --- Tools ---
   const drawTool = (t) => {
     const live = running() && !t.done;
-    t.summary.replaceChildren(
+    fill(t.summary, 
       title(toolTitle(t.item), live),
       t.done ? meta(t.isError ? "Failed" : duration(since(t.item.at, t.doneAt)), t.isError) : null,
     );
@@ -181,11 +184,11 @@ export const newTurnPage = (root, { replyNode }) => {
   // --- Housekeeping ---
   const drawChores = (g) => {
     const counts = Object.entries(Object.groupBy(g.chores, (c) => c.item.kind)).map(([k, cs]) => (cs.length > 1 ? `${k} ×${cs.length}` : k));
-    g.choreSummary.replaceChildren(title(`${g.chores.length} housekeeping`), meta(counts.join(", ")));
+    fill(g.choreSummary, title(`${g.chores.length} housekeeping`), meta(counts.join(", ")));
   };
   const drawChore = (c) => {
-    c.summary.replaceChildren(title(choreTitle(c.item)), choreMeta(c.item));
-    c.detail.replaceChildren(choreDetail(c.item));
+    fill(c.summary, title(choreTitle(c.item)), choreMeta(c.item));
+    fill(c.detail, choreDetail(c.item));
   };
   const addChore = (item) => {
     group ??= newGroup();
@@ -224,7 +227,7 @@ export const newTurnPage = (root, { replyNode }) => {
         : since(promptAt, running() ? new Date() : (lastAt ?? promptAt));
     const state = running() ? "Running" : ended ? "Done" : "Stopped";
     const model = calls.at(-1)?.model;
-    status.replaceChildren(
+    fill(status, 
       h("span", { className: running() ? "state pulse" : "state" }, state),
       elapsed != null ? h("span", {}, duration(elapsed)) : null,
       h("span", {}, `${tools.size} tool calls`),

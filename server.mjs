@@ -102,10 +102,6 @@ const clip = (content) =>
       ? content.map((b) => (b.type === "text" ? { ...b, text: b.text.slice(0, TOOL_RESULT_MAX) } : { type: b.type }))
       : content;
 
-// Long strings in a tool's input are clipped like its result, e.g. the content of a Write.
-const clipInput = (input) =>
-  Object.fromEntries(Object.entries(input ?? {}).map(([k, v]) => [k, typeof v === "string" ? v.slice(0, TOOL_RESULT_MAX) : v]));
-
 // Some lines have no uuid, e.g. cost-state and permission-mode. Their ID is a hash of the line and how often the same
 // line came before it in the file. A moved file repeats the old lines in the same order, so they get the same IDs.
 let lineCounts = new Map();
@@ -169,7 +165,7 @@ const knownItemsOf = (o, base) => {
       const id = i === 0 ? base.id : `${base.id}:${i}`;
       if (b.type === "text") return [{ ...base, id, kind: "reply", text: b.text, stopReason: o.message.stop_reason }];
       if (b.type === "thinking" && b.thinking) return [{ ...base, id, kind: "thinking", text: b.thinking }];
-      if (b.type === "tool_use") return [{ ...base, id, kind: "tool_use", toolUseId: b.id, name: b.name, input: clipInput(b.input) }];
+      if (b.type === "tool_use") return [{ ...base, id, kind: "tool_use", toolUseId: b.id, name: b.name, input: b.input }];
       return [];
     })];
   }
@@ -181,7 +177,7 @@ const itemsMessage = () => JSON.stringify({ t: "items", items });
 // Follow a transcript from its first line, once the file exists; chokidar waits for it.
 // The old file stays followed until then: a SessionStart can name a file that never comes (issue #78455).
 // A new session clears the page. The same session at a new path is a move, so the page keeps its items.
-// A moved-away file just stops growing; the tail reads by size and does not fail on it.
+// tail reads new lines on each change the OS reports (fs.watch), with no polling delay.
 const followTranscript = (sessionId, path) => {
   transcriptWait?.close();
   waitingFor = path;
@@ -196,7 +192,7 @@ const followTranscript = (sessionId, path) => {
     }
     followed = { sessionId, path };
     lineCounts = new Map();
-    tail = new Tail(path, { fromBeginning: true, useWatchFile: true, fsWatchOptions: { interval: 200 } });
+    tail = new Tail(path, { fromBeginning: true });
     tail.on("line", (line) => {
       for (const item of itemsOf(line)) {
         if (seen.has(item.id)) continue;
