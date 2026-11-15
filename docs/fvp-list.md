@@ -12,7 +12,12 @@
 10. Finish the current task before starting the next. When its scope grows, write the new scope into the task first.
 11. Experiment: parallel work in work tree is under consideration. This might conflict with other rules. So we need to resolve the conflicts as we move along. But rules will be updated by me alone. I want to make sure we dont be overly specific, or cause ambugities with existing process.
 12. Before testing changes, Claude makes a WIP commit.
-13. Experiment: keep tasks small. A task's plan stays in the task on this list, in a few lines: its pain points first, then its solutions. A folder `docs/tasks/<task>/` is made only when the user asks for one, and it holds research material only.
+13. Keep tasks small. A task's plan stays in the task on this list, in a few lines. Every new task follows this shape, title included:
+
+        - [ ] Pain: <the problem, in the user's words>
+            - Solution: <a few lines>
+
+    The title states the pain, never the fix. Older tasks that don't match predate this rule. Don't copy their shape. A folder `docs/tasks/<task>/` is made only when the user asks for one, and it holds research material only.
 
 # List
 
@@ -47,3 +52,6 @@
     - Split the collaboration plan into 8 top-level tasks, each with pain, solution and done-when. Then delete its file.
     - Move research docs into `docs/research/`, flat, with an index of one-line summaries. Update rule 13 to match.
     - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.
+- [.] Pain: installing ccw needs a Claude session, because install-ccw is a skill. Without it, I have to remember a long command in every new project.
+    - Solution: an `install-ccw` function in the pwsh `$PROFILE`, outside this project. It checks for `pnpm-lock.yaml` and `package-lock.json` and prints each result. One keypress picks the manager: `p` for pnpm, `n` for npm. It fetches the README and runs that manager's Install line. Each step prints a line before it starts. No dry run.
+    - Decided: only the user's pain. Other users would copy a shortcut from the README, which is the same effort as copying the install command.
