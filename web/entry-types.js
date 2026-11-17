@@ -46,6 +46,34 @@ export const ENTRY_TYPES = [
   { type: "attachment/date", example: "2026-11-17", description: "Today's date, once per session.", active: true },
   { type: "attachment/credential_org", example: "organization ID", description: "The organization, once per session.", active: true },
   { type: "attachment/prompt_snapshot", example: "the system prompt", description: "The full system prompt.", active: true },
+  // Seen in this project's other transcripts, not in this session.
+  { type: "attachment/total_tokens_reminder", example: "15000000 tokens left", description: "Tokens left in the budget.", active: true },
+  { type: "file-history-snapshot", example: "messageId, snapshot", description: "A snapshot of edited files, for rewind (inferred).", active: true },
+  { type: "file-history-delta", example: "messageId, snapshotMessageId", description: "Changes since that snapshot (inferred).", active: true },
+  { type: "relocated", example: "relocatedCwd", description: "The session moved to another directory.", active: true },
+  { type: "system/away_summary", example: "a summary of the session", description: "A recap shown when you come back after being away (inferred).", active: true },
+  { type: "attachment/command_permissions", example: "allowedTools: []", description: "Tools a command allows.", active: true },
+  { type: "agent-setting", example: "claude", description: "The agent the session runs as.", active: true },
+  { type: "agent-color", example: "red", description: "The agent's color.", active: true },
+  { type: "worktree-state", example: "originalCwd, worktree path", description: "The worktree the session runs in.", active: true },
+  { type: "attachment/batching_reminder_sent", example: "First privately list what you need next…", description: "A reminder to Claude to batch its requests.", active: true },
+  { type: "attachment/task_reminder", example: "itemCount: 0", description: "A reminder of Claude's task list.", active: true },
+  { type: "attachment/bash_output_audience_note", example: "toolUseID", description: "A note on who sees a Bash output.", active: true },
+  { type: "attachment/async_hook_response", example: "PreToolUse:Bash", description: "An async hook's response.", active: true },
+  { type: "attachment/goal_status", example: "met: false", description: "/goal: whether the goal is met.", active: true },
+  { type: "attachment/file", example: "CLAUDE.md, with content", description: "A file attached to a prompt.", active: true },
+  { type: "attachment/directory", example: "a directory path", description: "A directory attached to a prompt.", active: true },
+  { type: "attachment/nested_memory", example: "a subdirectory's CLAUDE.md", description: "A CLAUDE.md from a subdirectory, loaded.", active: true },
+  { type: "attachment/already_read_file", example: "CLAUDE.md", description: "A file Claude had already read.", active: true },
+  { type: "attachment/opened_file_in_ide", example: "docs/Board.md", description: "A file opened in the IDE.", active: true },
+  { type: "attachment/skill_mention", example: "install-ccw", description: "A skill named in the prompt.", active: true },
+  { type: "attachment/unknown_command_fallback", example: "vscode-pet", description: "An unknown slash command.", active: true },
+  { type: "attachment/plan_mode", example: "reminderType: full", description: "The plan mode reminder.", active: true },
+  { type: "attachment/thinking_drop", example: "requestId, model", description: "Thinking dropped from a response (inferred).", active: true },
+  { type: "system/model_refusal_no_fallback", example: "a refusal", description: "The model refused, with no fallback.", active: true },
+  { type: "attachment/remote_session_change", example: "a claude.ai/code session URL", description: "The session moved to or from the cloud.", active: true },
+  { type: "bridge-session", example: "bridgeSessionId", description: "A Remote Control bridge session (inferred).", active: true },
+  { type: "system/bridge_status", example: "bridge status", description: "Remote Control bridge status.", active: true },
 ];
 
 // The table's key for an item. mode and cost are renamed, so they do not clash with the raw "mode" line.
@@ -54,3 +82,5 @@ export const entryType = (item) =>
 
 const inactive = new Set(ENTRY_TYPES.filter((t) => !t.active).map((t) => t.type));
 export const isShown = (item) => !inactive.has(entryType(item));
+const known = new Set(ENTRY_TYPES.map((t) => t.type));
+export const isKnown = (item) => known.has(entryType(item));

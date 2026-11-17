@@ -8,7 +8,7 @@
 // Rendering is generic: any object becomes a key/value table. Only an input with old_string and new_string gets a diff.
 // A page only appends or updates in place, so open folds stay open and comments on Claude's text survive.
 
-import { isShown } from "../entry-types.js";
+import { isKnown, isShown } from "../entry-types.js";
 
 // null and false kids are skipped. replaceChildren would turn them into the text "null".
 const present = (kids) => kids.filter((k) => k != null && k !== false);
@@ -64,7 +64,8 @@ const choreTitle = (i) => {
   if (i.kind === "api") return `API call · ${i.model} · ${i.stopReason ?? "streaming"}`;
   if (i.kind === "mode") return `Mode · ${i.mode}`;
   if (i.kind === "cost") return `Session cost · $${i.usd.toFixed(2)}`;
-  if (i.kind === "raw") return i.type;
+  // A type missing from entry-types.js says so, so it gets noticed and added.
+  if (i.kind === "raw") return isKnown(i) ? i.type : `Unknown · ${i.type}`;
   return i.kind;
 };
 const choreMeta = (i) => {
