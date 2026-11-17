@@ -1,23 +1,37 @@
 # How we work
 
-1. The user owns this list. Claude edits it only when asked, or to tick a done task.
-2. New tasks go at the end. Work happens on the last dotted task.
-3. A task is done when Claude has reviewed it, then the user has tested or reviewed it, and the user has asked for the commit. The tick goes in that commit. Claude's review also names any unrelated issues it found. The user decides which ones become tasks.
-4. When changed files pile up mid-task, Claude suggests a commit.
-5. After a task is done, Claude moves to the new last dotted task on its own. It names the task by its text and shows a high-level plan in plain words, without file or line numbers. Then it waits for the user's go.
-6. Claude suggests a weed regularly. On the user's go: merge or delete duplicates. Delete done tasks, and tasks that a decision settled or that point at things that are gone. Before deleting a done task, keep any fact it holds that is recorded nowhere else, and name any pending issue it leaves. The user decides which ones become tasks.
-7. Before work starts on a task, inorder to understand its gist always ask about pain points. Get absoloute clarity. The task text, and any solution it names, may be an XY problem. Find the real need first. Even when the need is clear, double-check the solution. A solution stated as fact is still not taken for granted.
-8. Changelog trigger: ticking a task. When the task holds a change a user would notice, its line goes under Unreleased in `CHANGELOG.md`, in the same commit as the tick.
-9. Release trigger: after a task is ticked, if Unreleased in `CHANGELOG.md` has lines, Claude runs `pnpm release`. A release stamps the changelog, tags the version, and publishes the tarball in `published-versions/`, which the README install command points at.
-10. Finish the current task before starting the next. When its scope grows, write the new scope into the task first.
-11. Experiment: parallel work in work tree is under consideration. This might conflict with other rules. So we need to resolve the conflicts as we move along. But rules will be updated by me alone. I want to make sure we dont be overly specific, or cause ambugities with existing process.
-12. Before testing changes, Claude makes a WIP commit.
-13. Keep tasks small. A task's plan stays in the task on this list, in a few lines. Every new task follows this shape, title included:
+1. The user owns this list. Claude edits it only when asked.
+2. New tasks go at the end.
+3. Weeding merges duplicates and drops done or stale tasks. Before a task goes, Claude seeks out its unrecorded facts and open issues.
 
-        - [ ] Pain: <the problem, in the user's words>
-            - Solution: <a few lines>
+## Task shape
 
-    The title states the pain, never the fix. Older tasks that don't match predate this rule. Don't copy their shape. A folder `docs/tasks/<task>/` is made only when the user asks for one, and it holds research material only.
+        - [.] Pain: <the problem, in the user's words>
+            - Solution: <the plan, in a few lines>
+
+Get the pain clear before work starts. It may be an XY problem.
+
+## Working a task
+
+Claude works the last dotted task:
+
+1. Shape the task.
+2. Implement it. Commit WIP generously.
+3. Review it.
+4. Provide the user a checklist to test it.
+5. Propose the commit with the tick.
+
+## Releasing
+
+After the tick:
+
+1. If an end user would notice the change, add a line under Unreleased in `CHANGELOG.md`.
+2. If Unreleased has lines, propose a release with `pnpm release`.
+3. Move to the new last dotted task.
+
+## Experiment
+
+Parallel work in worktrees. Conflicts with this workflow get resolved as they come up.
 
 # List
 
@@ -66,3 +80,7 @@
 - [ ] How should we group info in reading pane.
 - [x] Pain: the probe-001 spike sits in `.claude/skills/`, so its probe command stays live in every session.
     - Solution: move it to `docs/spikes/probe-001/`. It is a plugin that exercises the mod features. To use it again, copy it back.
+- [ ] remvoe noise from my response.  
+- [ ] transcript: replace running to waiting on prompt the blibnking green part.
+      e.g. Running Bash · Show changes beyond the workflow section
+- [ ] what is housekeeping?
