@@ -3,7 +3,8 @@
 //   level 1, the group line: tool count, time, failures, tool chips; or the tool running now.
 //   level 2, the open group: one row per item, in arrival order: tools, thoughts, and housekeeping (hooks, API
 //            calls, mode, cost, and any line the server does not know).
-//   level 3, an open row: a tool's Request (its input as a table), Response and Allowed by; or a housekeeping detail.
+//   level 3, an open row: a tool call's Request (its input as a table); a result's Response and Allowed by; or a
+//            housekeeping detail.
 // Rendering is generic: any object becomes a key/value table. Only an input with old_string and new_string gets a diff.
 // A page only appends or updates in place, so open folds stay open and comments on Claude's text survive.
 
@@ -133,22 +134,15 @@ export const newTurnPage = (root, { replyNode }) => {
   };
 
   // --- Tools ---
-  const drawTool = (t) => {
-    const live = running() && !t.done;
-    fill(t.summary, 
-      title(toolTitle(t.item), live),
-      t.done ? meta(t.isError ? "Failed" : duration(since(t.item.at, t.doneAt)), t.isError) : null,
-    );
-  };
+  // A tool call and its result are two rows, each where it arrived. The call's row only shows whether it still runs.
+  const drawTool = (t) => fill(t.summary, title(toolTitle(t.item), running() && !t.done));
   const addTool = (item) => {
     const summary = h("summary", { className: "line" });
-    const response = h("pre", {}, "(running)");
     const input = item.input;
     const fold = h("details", {}, summary,
       block("Request", table(input)),
-      typeof input.old_string === "string" && typeof input.new_string === "string" ? block("Diff", diff(input)) : null,
-      block("Response", response));
-    const t = { item, summary, response, fold, done: false, isError: false, doneAt: null, group: null };
+      typeof input.old_string === "string" && typeof input.new_string === "string" ? block("Diff", diff(input)) : null);
+    const t = { item, summary, done: false, isError: false, group: null };
     t.group = addRow(h("div", { className: "row" }, fold));
     t.group.tools.push(t);
     tools.set(item.toolUseId, t);
@@ -162,19 +156,22 @@ export const newTurnPage = (root, { replyNode }) => {
         addChore({ id: `${item.id}:${r.toolUseId}`, kind: "raw", type: "tool_result", json: JSON.stringify(r), at: item.at });
         continue;
       }
-      Object.assign(t, { done: true, isError: r.isError, doneAt: item.at });
-      t.response.textContent = resultText(r.content);
-      if (item.allowed) t.fold.append(block("Allowed by", h("pre", {}, allowedText(item.allowed))));
+      Object.assign(t, { done: true, isError: r.isError });
       drawTool(t);
-      touch(t.group, item.at);
+      const summary = h("summary", { className: "line" },
+        title(`Result · ${toolTitle(t.item)}`),
+        meta(r.isError ? "Failed" : duration(since(t.item.at, item.at)), r.isError));
+      addRow(h("div", { className: "row" }, h("details", {}, summary,
+        block("Response", h("pre", {}, resultText(r.content))),
+        item.allowed ? block("Allowed by", h("pre", {}, allowedText(item.allowed))) : null)));
       drawGroup(t.group);
     }
   };
 
   // --- Thinking ---
   const addThinking = (item) => {
-    const first = item.text.trim().split("\n")[0];
-    const row = first === item.text.trim()
+    const first = item.text.trim().split("\n")[0] || "Thinking, no text in the transcript";
+    const row = first === item.text.trim() || !item.text.trim()
       ? h("div", { className: "row thinking" }, first)
       : h("div", { className: "row thinking" },
         h("details", {}, h("summary", { className: "line" }, title(first)), h("div", { className: "thinking-text" }, item.text)));
@@ -192,14 +189,8 @@ export const newTurnPage = (root, { replyNode }) => {
     drawChore(c);
     return c;
   };
-  // An API call writes one line per content block. The first makes its row; later ones update it.
+  // An API call writes one line per content block. Each line is its own row; the status counts each call once.
   const addApi = (item) => {
-    const known = apis.get(item.requestId);
-    if (known) {
-      known.item = item;
-      drawChore(known);
-      return;
-    }
     apis.set(item.requestId, addChore(item));
   };
 
@@ -248,7 +239,7 @@ export const newTurnPage = (root, { replyNode }) => {
     else if (item.kind === "thinking") addThinking(item);
     else if (item.kind === "api") addApi(item);
     else addChore(item);
-    if (group && item.kind !== "tool_result") {
+    if (group) {
       touch(group, item.at);
       drawGroup(group);
     }

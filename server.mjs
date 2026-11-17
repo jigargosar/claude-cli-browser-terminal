@@ -163,13 +163,15 @@ const knownItemsOf = (o, base) => {
           usage: { input: u.input_tokens, output: u.output_tokens, thinking: u.output_tokens_details?.thinking_tokens,
             cacheRead: u.cache_read_input_tokens, cacheWrite: u.cache_creation_input_tokens } }]
       : [];
-    return [...api, ...blocks.flatMap((b, i) => {
+    // The line's parts first, then its API call: the page shows them in this order.
+    return [...blocks.flatMap((b, i) => {
       const id = i === 0 ? base.id : `${base.id}:${i}`;
       if (b.type === "text") return [{ ...base, id, kind: "reply", text: b.text, stopReason: o.message.stop_reason }];
-      if (b.type === "thinking" && b.thinking) return [{ ...base, id, kind: "thinking", text: b.thinking }];
+      // Thinking without text is kept, so the page shows that it happened.
+      if (b.type === "thinking") return [{ ...base, id, kind: "thinking", text: b.thinking ?? "" }];
       if (b.type === "tool_use") return [{ ...base, id, kind: "tool_use", toolUseId: b.id, name: b.name, input: b.input }];
       return [];
-    })];
+    }), ...api];
   }
   return [];
 };
