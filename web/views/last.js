@@ -75,9 +75,11 @@ const replyNode = (item) => {
 
 // A page grows only by appending. No text node already on the page is replaced or moved, so its comments survive.
 const newPage = (root) => newTurnPage(root, { replyNode });
+// True while claude waits on a dialog (server.mjs). Only the latest turn can wait.
+let waiting = false;
 const fill = (page, turn, latest) => {
   for (const item of turn) page.add(item);
-  page.update({ latest, mode: turn.mode, cost: turn.cost });
+  page.update({ latest, mode: turn.mode, cost: turn.cost, waiting: latest && waiting });
 };
 
 // Back and forward: ‹ › beside the gear, or ← → while the reply has focus. viewing is the open page's index, or null
@@ -202,10 +204,16 @@ const go = (to) => {
 };
 
 // The running turn's elapsed time ticks.
-setInterval(() => {
+const tick = () => {
   const turn = turns.at(-1);
-  if (livePage && turn) livePage.update({ latest: true, mode: turn.mode, cost: turn.cost });
-}, 1000);
+  if (livePage && turn) livePage.update({ latest: true, mode: turn.mode, cost: turn.cost, waiting });
+};
+setInterval(tick, 1000);
+
+export const setWaiting = (next) => {
+  waiting = next;
+  tick();
+};
 
 export const init = ({ readOnly }) => {
   setReadOnly = readOnly;

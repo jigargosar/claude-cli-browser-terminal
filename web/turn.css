@@ -40,6 +40,8 @@
 #reply .row { padding: 7px 12px; }
 #reply .row.thinking, #reply .row.thinking .line { font-style: italic; font-size: 14px; line-height: 1.5; color: var(--ink-muted); }
 #reply .thinking-text { margin: 6px 0 2px; white-space: pre-wrap; font: 13px/1.5 var(--sans); }
+/* Thinking with no text in the transcript: why is unknown, so it shows loud. */
+#reply .row.thinking.empty { color: #fff; background: #b3261e; font-weight: 600; font-style: normal; padding: 4px 8px; border-radius: 4px; }
 #reply .rows details .rows { margin: 6px 0 2px; }
 
 /* Level 3: Request, Response and the other blocks. */

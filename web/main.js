@@ -47,6 +47,7 @@ const server = connect({
       location.reload();
     }
   },
+  onWaiting: last.setWaiting,
   onReload: () => {
     if (midTurn()) {
       reloadPending = true;

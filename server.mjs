@@ -36,6 +36,9 @@ const HOOK_SETTINGS = JSON.stringify({
     SessionStart: [{ hooks: [hook] }],
     UserPromptSubmit: [{ hooks: [hook] }],
     PostToolUse: [{ matcher: "EnterWorktree|ExitWorktree", hooks: [hook] }],
+    // Claude waits on the user: a permission dialog or a question. The page then says Waiting, not Running.
+    PermissionRequest: [{ hooks: [hook] }],
+    Notification: [{ matcher: "permission_prompt|elicitation_dialog", hooks: [hook] }],
   },
 });
 
@@ -204,13 +207,27 @@ const followTranscript = (sessionId, path) => {
         seen.add(item.id);
         items.push(item);
         broadcast(JSON.stringify({ t: "item", item }));
+        // Any new line means claude moved on from the dialog.
+        setWaiting(false);
       }
     },
   });
   pending = next;
 };
 
+// True while claude waits on a dialog: set by its PermissionRequest and Notification hooks, cleared by the next line.
+let waiting = false;
+const setWaiting = (next) => {
+  if (next === waiting) return;
+  waiting = next;
+  broadcast(JSON.stringify({ t: "waiting", waiting }));
+};
+
 const onHook = ({ sessionId, transcriptPath: path, event, source }) => {
+  if (event === "PermissionRequest" || event === "Notification") {
+    setWaiting(true);
+    return;
+  }
   if (path === (waitingFor ?? followed.path)) return;
   console.log(`${event}${source ? ` ${source}` : ""}: ${path}`);
   followTranscript(sessionId, path);
@@ -314,6 +331,7 @@ new WebSocketServer({ server }).on("connection", (ws) => {
   ws.send(JSON.stringify({ t: "settings", settings: readConfig() }));
   if (pty) ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
   ws.send(itemsMessage());
+  ws.send(JSON.stringify({ t: "waiting", waiting }));
 
   ws.on("message", (raw) => {
     const m = JSON.parse(raw.toString());

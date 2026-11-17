@@ -96,7 +96,7 @@ export const newTurnPage = (root, { replyNode }) => {
   let durationMs = null;
   // Set by update: false once a newer turn exists, so nothing here runs any more.
   let latest = true;
-  let context = { mode: null, cost: null };
+  let context = { mode: null, cost: null, waiting: false };
   const running = () => latest && !ended;
 
   // --- Groups ---
@@ -124,7 +124,7 @@ export const newTurnPage = (root, { replyNode }) => {
       : g.thoughts ? "Thought" : `${g.chores.length} housekeeping`;
     fill(g.summary, 
       ...(live
-        ? [title(`Running ${toolTitle(live.item)}`, true)]
+        ? [title(`${context.waiting ? "Waiting on you ·" : "Running"} ${toolTitle(live.item)}`, true)]
         : [title(what), g.first && g.last !== g.first ? meta(duration(since(g.first, g.last))) : null,
           failed ? meta(`${failed} failed`, true) : null, g.tools.length ? chips : null]),
     );
@@ -173,8 +173,13 @@ export const newTurnPage = (root, { replyNode }) => {
 
   // --- Thinking ---
   const addThinking = (item) => {
-    const first = item.text.trim().split("\n")[0] || "Thinking, no text in the transcript";
-    const row = first === item.text.trim() || !item.text.trim()
+    // Thinking with no text: why the transcript holds none is unknown, so it shows loud.
+    if (!item.text.trim()) {
+      addRow(h("div", { className: "row thinking empty" }, "Thinking, no text in the transcript")).thoughts++;
+      return;
+    }
+    const first = item.text.trim().split("\n")[0];
+    const row = first === item.text.trim()
       ? h("div", { className: "row thinking" }, first)
       : h("div", { className: "row thinking" },
         h("details", {}, h("summary", { className: "line" }, title(first)), h("div", { className: "thinking-text" }, item.text)));
@@ -205,7 +210,7 @@ export const newTurnPage = (root, { replyNode }) => {
     const elapsed = promptAt == null ? null
       : ended && durationMs != null ? durationMs
         : since(promptAt, running() ? new Date() : (lastAt ?? promptAt));
-    const state = running() ? "Running" : ended ? "Done" : "Stopped";
+    const state = running() ? (context.waiting ? "Waiting on you" : "Running") : ended ? "Done" : "Stopped";
     const model = calls.at(-1)?.model;
     fill(status, 
       h("span", { className: running() ? "state pulse" : "state" }, state),
@@ -256,9 +261,10 @@ export const newTurnPage = (root, { replyNode }) => {
   // Called after new items, and each second for the elapsed time. latest: no newer turn exists.
   const update = (next) => {
     const wasRunning = running();
+    const wasWaiting = context.waiting;
     latest = next.latest;
-    context = { mode: next.mode, cost: next.cost };
-    if (wasRunning !== running()) drawAll();
+    context = { mode: next.mode, cost: next.cost, waiting: next.waiting };
+    if (wasRunning !== running() || wasWaiting !== context.waiting) drawAll();
     else drawStatus();
   };
 
