@@ -18,7 +18,7 @@
   #win { position:absolute; left:90px; top:190px; width:1100px; height:470px; border:1px solid var(--line); border-radius:14px;
     background:var(--panel); box-shadow:0 30px 80px rgba(0,0,0,.55); overflow:hidden; transform-origin:100% 55%; }
 
-  #term { position:absolute; left:0; top:0; width:1100px; height:100%; background:#0d1017; border-right:1px solid var(--line); overflow:hidden; }
+  #term { position:absolute; left:0; top:0; width:1100px; height:100%; background:#16181d; border-right:1px solid var(--line); overflow:hidden; }
   #scroll { position:absolute; left:0; top:0; width:1100px; height:386px; overflow:hidden; }
   #lines { padding:14px 22px; font-size:14px; line-height:20px; color:#7c869b; white-space:pre; }
   #lines div { border-radius:3px; }
@@ -28,27 +28,29 @@
   #prompt div { opacity:0; }
   #prompt .ok { color:var(--green); }
 
-  #page { position:absolute; left:480px; top:0; width:620px; height:100%; padding:30px 34px; opacity:0; }
+  /* The reply pane is paper, as in the product: sepia page, dark ink. Colours from web/base.css. */
+  #page { --paper:#f4ecd8; --ink:#3b2f22; --rule:#ddd0b5; position:absolute; left:480px; top:0; width:620px; height:100%; padding:30px 34px; opacity:0; background:var(--paper); color:var(--ink); }
   #col { width:392px; }
-  #page h2 { font-size:25px; margin-bottom:14px; }
-  #page p { font-size:17px; line-height:1.65; color:#b9c2d3; margin-bottom:14px; }
+  #page h2 { font-size:25px; margin-bottom:14px; color:var(--ink); }
+  #page p { font-size:17px; line-height:1.65; color:var(--ink); margin-bottom:14px; }
   #page .s { border-radius:4px; padding:2px 0; }
 
   .key { position:absolute; padding:9px 16px; border-radius:9px; background:#e8ecf3; color:#12151c; font-size:19px; font-weight:700;
     border-bottom:4px solid #9aa3b5; box-shadow:0 10px 24px rgba(0,0,0,.55); opacity:0; z-index:9; white-space:nowrap; }
   #cursor { position:absolute; left:0; top:0; width:26px; height:26px; z-index:8; opacity:0; filter:drop-shadow(0 3px 6px rgba(0,0,0,.7)); }
-  #ring { position:absolute; left:0; top:0; width:36px; height:36px; margin:-18px 0 0 -18px; border:3px solid var(--accent); border-radius:50%; opacity:0; z-index:7; }
+  #ring { position:absolute; left:0; top:0; width:36px; height:36px; margin:-18px 0 0 -18px; border:3px solid var(--ink); border-radius:50%; opacity:0; z-index:7; }
 
-  #grid { position:absolute; left:34px; display:grid; grid-template-columns:repeat(6,50px); gap:6px; padding:10px; border-radius:12px;
-    background:#1d2433; border:1px solid #33405a; box-shadow:0 18px 40px rgba(0,0,0,.6); opacity:0; z-index:6; transform-origin:0 0; }
-  #grid .ic { height:50px; border-radius:8px; background:#262f42; display:grid; place-items:center; position:relative; color:#c9d1e0; }
-  #grid .ic svg { width:20px; height:20px; }
-  #grid .ic b { position:absolute; right:4px; bottom:1px; font-size:10px; color:var(--accent); }
+  /* As in the product: no panel, each icon is its own raised ink button with its key at the bottom right. */
+  #grid { position:absolute; left:34px; display:grid; grid-template-columns:repeat(6,46px); gap:6px; opacity:0; z-index:6; transform-origin:0 0; }
+  #grid .ic { height:46px; border-radius:8px; background:#3b2f22; display:grid; place-items:center; position:relative; color:#f4ecd8;
+    box-shadow:0 1px 2px rgb(0 0 0 / .25), 0 6px 16px rgb(0 0 0 / .22); }
+  #grid .ic svg { width:21px; height:21px; }
+  #grid .ic b { position:absolute; right:4px; bottom:2px; font-size:10px; opacity:.75; }
 
-  .tag { position:absolute; padding:0 6px; border-radius:4px; background:var(--accent); color:#111; font-size:13px; font-weight:800; line-height:20px; opacity:0; z-index:5; }
-  #box { position:absolute; left:34px; width:392px; min-height:74px; padding:12px 14px; border-radius:10px; background:#1d2433; border:2px solid var(--accent);
-    font-size:16px; line-height:1.5; color:var(--text); box-shadow:0 18px 40px rgba(0,0,0,.6); opacity:0; z-index:6; }
-  #box::after { content:"▍"; color:var(--accent); }
+  .tag { position:absolute; padding:0 6px; border-radius:4px; background:#3b2f22; color:#f4ecd8; font-size:13px; font-weight:700; line-height:20px; opacity:0; z-index:5; }
+  #box { position:absolute; left:34px; width:392px; min-height:74px; padding:12px 14px; border-radius:8px; background:var(--paper); border:1px solid var(--rule);
+    font-size:16px; line-height:1.5; color:var(--ink); box-shadow:0 8px 24px rgb(0 0 0 / .22); opacity:0; z-index:6; }
+  #box::after { content:"▍"; color:var(--ink); }
   .ghost { position:absolute; padding:2px 6px; margin:-2px 0 0 -6px; border-radius:4px; background:rgba(255,216,107,.95); color:#111; font-size:17px; white-space:nowrap; opacity:0; z-index:6; transform-origin:0 0; }
 
   #end { position:absolute; inset:0; display:grid; place-content:center; text-align:center; gap:26px; opacity:0; }
@@ -137,8 +139,9 @@ const LABELS = ['A', 'S', 'D', 'J', 'K'];
 const tags = S.map((s, i) => { const t = document.createElement('div'); t.className = 'tag'; t.textContent = LABELS[i]; t.style.left = P[i].x - 4 + 'px'; t.style.top = P[i].y - 14 + 'px'; page.append(t); return t; });
 
 gsap.set(cursor, { x: 560, y: 420 });
-// One highlight colour only. A picked sentence is a lighter yellow, a commented one the full yellow. Nothing else marks a comment.
-const PICKED = 'rgba(255,216,107,.28)', COMMENTED = 'rgba(255,216,107,.5)', CLEAR = 'rgba(255,216,107,0)';
+// Colours from web/base.css: a picked sentence takes the selection tan, a commented one turns yellow. Nothing else marks a comment.
+const PICKED = 'rgba(227,207,160,1)', COMMENTED = 'rgba(255,216,107,.5)', CLEAR = 'rgba(255,216,107,0)';
+const IC_OFF = { backgroundColor: '#3b2f22', color: '#f4ecd8' }, IC_ON = { backgroundColor: '#b5651d', color: '#fff', duration: 0.15 };
 const box = $('#box'), typed = { n: 0 }, PROSE = 'keep both until the next release';
 // A copy of each commented sentence, to fly into the terminal on send.
 const ghosts = [1, 3].map(i => { const g = document.createElement('div'); g.className = 'ghost'; g.textContent = S[i].textContent; g.style.left = P[i].x + 'px'; g.style.top = P[i].y + 'px'; page.append(g); return g; });
@@ -215,11 +218,11 @@ beat(1.2);
 caption(4);
 tl.to(cursor, { opacity: 0, duration: 0.2 });
 press(pkey, 'F', 400, P[1].y + P[1].h + 30);
-tl.to($$('#grid .ic')[0], { backgroundColor: '#ffb454', color: '#111', duration: 0.15 });
+tl.to($$('#grid .ic')[0], IC_ON);
 beat(0.5);
 release(pkey);
 tl.to(grid, { opacity: 0, duration: 0.25 });
-tl.set($$('#grid .ic')[0], { backgroundColor: '#262f42', color: '#c9d1e0' });
+tl.set($$('#grid .ic')[0], IC_OFF);
 tl.to(S[1], { backgroundColor: COMMENTED, duration: 0.4 });
 beat(1.2);
 
@@ -240,11 +243,11 @@ tl.fromTo(grid, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.
 beat(0.7);
 // R opens a box for a reply in your own words.
 press(pkey, 'R', 400, P[3].y + P[3].h + 30);
-tl.to($$('#grid .ic')[6], { backgroundColor: '#ffb454', color: '#111', duration: 0.15 });
+tl.to($$('#grid .ic')[6], IC_ON);
 beat(0.4);
 release(pkey);
 tl.to(grid, { opacity: 0, duration: 0.25 });
-tl.set($$('#grid .ic')[6], { backgroundColor: '#262f42', color: '#c9d1e0' });
+tl.set($$('#grid .ic')[6], IC_OFF);
 tl.call(() => { box.textContent = ''; });
 tl.set(box, { top: P[3].y + P[3].h + 10 });
 tl.to(box, { opacity: 1, duration: 0.25 });
