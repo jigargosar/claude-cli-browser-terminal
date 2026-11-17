@@ -70,3 +70,5 @@ Parallel work in worktrees. Conflicts with this workflow get resolved as they co
 - [ ] transcript: replace running to waiting on prompt the blibnking green part.
       e.g. Running Bash · Show changes beyond the workflow section
 - [.] what is housekeeping?
+- [.] Pain: the reading pane reshapes the transcript, so I can't tell what is really going on. Where is the thinking? It says Running when it is waiting.
+    - Solution: a timeline. Every transcript line is one closed entry, in file order. No grouping beyond what the transcript itself groups.
