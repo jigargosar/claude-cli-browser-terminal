@@ -1,0 +1,6 @@
+{
+  "name": "probe",
+  "version": "0.1.0",
+  "description": "Test mod: one pane tab per element, plus band, spinner, toast, status line, log line and question-dialog checks",
+  "author": { "name": "probe" }
+}
