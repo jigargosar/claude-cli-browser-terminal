@@ -28,7 +28,7 @@ Making Claude answer shorter didn't work, so ccw makes long answers easy to read
 
 ## Install
 
-<!-- The install-ccw skill fetches this README and runs its Install command as written, with no grep and no version of its own. Keep the command exact. -->
+<!-- install-ccw, a pwsh function in the user's $PROFILE, fetches this README and runs the first line that starts with `pnpm add -D ` or `npm install -D `. Keep those lines exact. It serves only the user: other users copy the command, which is the same effort. -->
 
 pnpm:
 

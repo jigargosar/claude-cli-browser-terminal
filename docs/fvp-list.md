@@ -56,9 +56,6 @@ Parallel work in worktrees. Conflicts with this workflow get resolved as they co
     - Split the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together, into 8 top-level tasks, each with pain, solution and done-when. Then delete its file.
     - Move research docs into `docs/research/`, flat, with an index of one-line summaries.
     - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.
-- [x] Pain: installing ccw needs a Claude session, because install-ccw is a skill. Without it, I have to remember a long command in every new project.
-    - Solution: an `install-ccw` function in the pwsh `$PROFILE`, outside this project. It checks for `pnpm-lock.yaml` and `package-lock.json` and prints each result. One keypress picks the manager: `p` for pnpm, `n` for npm. It fetches the README and runs that manager's Install line. Each step prints a line before it starts. No dry run.
-    - Decided: only the user's pain. Other users would copy a shortcut from the README, which is the same effort as copying the install command.
 - [ ] multiple housekeeping tasks are grouped together, that is good, but are they shown in proper chrono order? even some other stufff appears then goes. Pain: dont know what is going on, and our algo to collect stuff.
 - [ ] safely open links, editor and url.
 - [.] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them.
@@ -70,8 +67,6 @@ Parallel work in worktrees. Conflicts with this workflow get resolved as they co
 - [ ] I figure out what is more important, currently thinking block is important rest can as Also, a quick navigation where we basically get back to reading my ask and your response. Also, a smooth way to compress all everything. Basically, compress all yeah. And the third thing is a lot of noise, but that doesn't get any, it just stays hidden unless I press it. So by noise, I mean the miscellaneous or some section that we have, I think it's called housekeeping. So we also need to figure out stuff about how to handle drinking, housekeeping, and bash and tool calls and stuff like that 
 - [ ] Readme: issues. video link doesnt wrk because of huge file size. 
 - [ ] How should we group info in reading pane.
-- [x] Pain: the probe-001 spike sits in `.claude/skills/`, so its probe command stays live in every session.
-    - Solution: move it to `docs/spikes/probe-001/`. It is a plugin that exercises the mod features. To use it again, copy it back.
 - [ ] remvoe noise from my response.  
 - [ ] transcript: replace running to waiting on prompt the blibnking green part.
       e.g. Running Bash · Show changes beyond the workflow section

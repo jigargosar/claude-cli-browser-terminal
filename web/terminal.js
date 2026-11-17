@@ -7,8 +7,8 @@ import { Unicode11Addon } from "@xterm/addon-unicode11";
 import "@fontsource/atkinson-hyperlegible-mono/300.css";
 import "@fontsource/atkinson-hyperlegible-mono/500.css";
 
-// Atkinson Hyperlegible Mono at 300, picked in docs/mockups/font-grid.html. The page waits for both faces, because
-// xterm measures the cell size once, and the first columns and rows must be the real ones (CLAUDE.md, Decision 1.2).
+// Atkinson Hyperlegible Mono at 300, picked from a font grid mockup. The page waits for both faces, because
+// xterm measures the cell size once, and the first columns and rows must be the real ones.
 await Promise.all([document.fonts.load('300 14px "Atkinson Hyperlegible Mono"'), document.fonts.load('500 14px "Atkinson Hyperlegible Mono"')]);
 
 // The Slice 5 look (448568e): xterm defaults on #16181d (--term-bg in base.css).
