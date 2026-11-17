@@ -71,4 +71,4 @@ Parallel work in worktrees. Conflicts with this workflow get resolved as they co
       e.g. Running Bash · Show changes beyond the workflow section
 - [.] what is housekeeping?
 - [.] Pain: the reading pane reshapes the transcript, so I can't tell what is really going on. Where is the thinking? It says Running when it is waiting.
-    - Solution: a timeline. Every transcript line is one closed entry, in file order. No grouping beyond what the transcript itself groups.
+    - Solution: prompts and Claude's text open. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/tasks/response-info/transcript-inventory.md`.

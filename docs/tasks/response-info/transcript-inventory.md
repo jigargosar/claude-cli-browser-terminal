@@ -39,3 +39,13 @@ Every line has `timestamp` and `parentUuid`.
 - A only: `tools-used`, `agent-name`, `custom-title`, `session-owner`, `system` with subtype `local_command`, and `toolInputStreamMs`.
 
 Line types differ by version and session. The page should show what it finds, not depend on a fixed set.
+
+## All transcripts, 2026-11-17
+
+Made with a node script over all 178 transcripts under `~/.claude/projects/`.
+
+- Every entry type found is in `web/entry-types.js`: 71 types, each with an example, a description and an active flag. Inactive types are skipped on the page. A type not in the table shows, labelled Unknown.
+- Thinking without text: 294 of 8,795 thinking blocks have an empty `thinking` and only a `signature`. Why is not recorded. Decided: the page shows them in red.
+- `attachment/thinking_drop` appeared in 4 transcripts. Inference: Claude Code dropped thinking from a response.
+- Turn end writes, in this order: `last-prompt`, `ai-title`, `mode`, `permission-mode`, `session-owner`, `atis-latch`.
+- What the server changes, in `server.mjs` `itemsOf`: a known line keeps only the fields the code names. A Claude line becomes one entry per part, then its API entry. A Stop hook summary becomes one entry per hook. Hook output and unknown lines are cut to 2000 characters. Image data becomes its type. Lines read again after the file moves are skipped.
