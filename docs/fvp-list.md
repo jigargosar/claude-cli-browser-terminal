@@ -56,3 +56,4 @@
     - Solution: an `install-ccw` function in the pwsh `$PROFILE`, outside this project. It checks for `pnpm-lock.yaml` and `package-lock.json` and prints each result. One keypress picks the manager: `p` for pnpm, `n` for npm. It fetches the README and runs that manager's Install line. Each step prints a line before it starts. No dry run.
     - Decided: only the user's pain. Other users would copy a shortcut from the README, which is the same effort as copying the install command.
 - [ ] multiple housekeeping tasks are grouped together, that is good, but are they shown in proper chrono order? even some other stufff appears then goes. Pain: dont know what is going on, and our algo to collect stuff.
+- [ ] safely open links, editor and url.
