@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Showcase storyboard</title>
+<style>
+  :root { --bg:#0b0d12; --panel:#141821; --line:#232a38; --text:#e8ecf3; --dim:#6b7689; --accent:#ffb454; --mark:rgba(255,180,84,.30); --green:#7fd88f; }
+  * { box-sizing:border-box; margin:0; }
+  html,body { height:100%; background:#000; overflow:hidden; }
+  body { font-family:"Segoe UI",system-ui,sans-serif; color:var(--text); }
+  .mono { font-family:"Cascadia Code",Consolas,monospace; }
+  #stage { width:1280px; height:720px; position:fixed; left:50%; top:50%; overflow:hidden;
+    background:radial-gradient(1200px 600px at 20% 0%, #1a2030 0%, var(--bg) 60%); }
+
+  .cap { position:absolute; left:90px; top:54px; font-size:56px; font-weight:700; letter-spacing:-1.2px; opacity:0; white-space:nowrap; }
+  .cap em { font-style:normal; color:var(--accent); }
+
+  #win { position:absolute; left:90px; top:190px; width:1100px; height:470px; border:1px solid var(--line); border-radius:14px;
+    background:var(--panel); box-shadow:0 30px 80px rgba(0,0,0,.55); overflow:hidden; transform-origin:100% 55%; }
+
+  #term { position:absolute; left:0; top:0; width:1100px; height:100%; background:#0d1017; border-right:1px solid var(--line); overflow:hidden; }
+  #scroll { position:absolute; left:0; top:0; width:1100px; height:386px; overflow:hidden; }
+  #lines { padding:14px 22px; font-size:14px; line-height:20px; color:#7c869b; white-space:pre; }
+  #lines div { border-radius:3px; }
+  #lines .hi { color:#c9d1e0; }
+  #prompt { position:absolute; left:0; right:0; bottom:0; height:84px; border-top:1px solid var(--line); background:#0f131b;
+    padding:12px 22px; font-size:14px; line-height:20px; color:#c9d1e0; white-space:pre; }
+  #prompt div { opacity:0; }
+  #prompt .ok { color:var(--green); }
+
+  #page { position:absolute; left:480px; top:0; width:620px; height:100%; padding:30px 34px; opacity:0; }
+  #col { width:392px; }
+  #page h2 { font-size:25px; margin-bottom:14px; }
+  #page p { font-size:17px; line-height:1.65; color:#b9c2d3; margin-bottom:14px; }
+  #page .s { border-radius:4px; padding:2px 0; }
+
+  .key { position:absolute; padding:9px 16px; border-radius:9px; background:#e8ecf3; color:#12151c; font-size:19px; font-weight:700;
+    border-bottom:4px solid #9aa3b5; box-shadow:0 10px 24px rgba(0,0,0,.55); opacity:0; z-index:9; white-space:nowrap; }
+  #cursor { position:absolute; left:0; top:0; width:26px; height:26px; z-index:8; opacity:0; filter:drop-shadow(0 3px 6px rgba(0,0,0,.7)); }
+  #ring { position:absolute; left:0; top:0; width:36px; height:36px; margin:-18px 0 0 -18px; border:3px solid var(--accent); border-radius:50%; opacity:0; z-index:7; }
+
+  #grid { position:absolute; left:34px; display:grid; grid-template-columns:repeat(6,50px); gap:6px; padding:10px; border-radius:12px;
+    background:#1d2433; border:1px solid #33405a; box-shadow:0 18px 40px rgba(0,0,0,.6); opacity:0; z-index:6; transform-origin:0 0; }
+  #grid .ic { height:50px; border-radius:8px; background:#262f42; display:grid; place-items:center; position:relative; color:#c9d1e0; }
+  #grid .ic svg { width:20px; height:20px; }
+  #grid .ic b { position:absolute; right:4px; bottom:1px; font-size:10px; color:var(--accent); }
+
+  .tag { position:absolute; padding:0 6px; border-radius:4px; background:var(--accent); color:#111; font-size:13px; font-weight:800; line-height:20px; opacity:0; z-index:5; }
+  #box { position:absolute; left:34px; width:392px; min-height:74px; padding:12px 14px; border-radius:10px; background:#1d2433; border:2px solid var(--accent);
+    font-size:16px; line-height:1.5; color:var(--text); box-shadow:0 18px 40px rgba(0,0,0,.6); opacity:0; z-index:6; }
+  #box::after { content:"▍"; color:var(--accent); }
+  .ghost { position:absolute; padding:2px 6px; margin:-2px 0 0 -6px; border-radius:4px; background:rgba(255,216,107,.95); color:#111; font-size:17px; white-space:nowrap; opacity:0; z-index:6; transform-origin:0 0; }
+
+  #end { position:absolute; inset:0; display:grid; place-content:center; text-align:center; gap:26px; opacity:0; }
+  #end h1 { font-size:58px; letter-spacing:-1.4px; }
+  #end h1 em { font-style:normal; color:var(--accent); }
+  #end code { font-size:24px; color:#c9d1e0; background:#141821; border:1px solid var(--line); padding:12px 22px; border-radius:10px; justify-self:center; }
+
+  #bar { position:absolute; left:0; bottom:0; height:4px; width:100%; background:var(--accent); transform-origin:0 50%; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="cap">Claude's answers tend to be <em>long.</em></div>
+  <div class="cap">To reply: <em>copy, paste, comment. Repeat.</em></div>
+  <div class="cap">Read it like <em>a book.</em></div>
+  <div class="cap">Click <em>a sentence.</em></div>
+  <div class="cap">One key <em>replies.</em></div>
+  <div class="cap">No mouse <em>needed.</em></div>
+  <div class="cap">Send it <em>all at once.</em></div>
+
+  <div id="win">
+    <div id="term" class="mono">
+      <div id="scroll"><div id="lines"></div></div>
+      <div id="prompt"><div id="p1"></div><div id="p2"></div><div id="p3" class="ok">✓ sent as one message</div></div>
+      <div class="key" id="tkey" style="left:760px;top:150px"></div>
+    </div>
+    <div id="page">
+      <div id="col">
+        <h2>The divider keeps its place</h2>
+        <p><span class="s">The divider no longer jumps after a resize.</span> <span class="s">The width is still saved in pixels for now.</span></p>
+        <p><span class="s">On resize, the layout reads the width back before it paints.</span> <span class="s">I also removed the old cache, since nothing reads it.</span></p>
+        <p><span class="s">Run pnpm dev and drag the window to check.</span></p>
+      </div>
+      <div id="grid"></div>
+      <div id="box"></div>
+      <div class="key" id="pkey"></div>
+      <div id="ring"></div>
+      <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2l16 9-7 2-3 7z" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <div id="end">
+    <h1>Claude CLI finally has<br><em>a reply button.</em></h1>
+    <code class="mono">pnpm exec ccw</code>
+  </div>
+  <div id="bar"></div>
+</div>
+
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<script src="../../node_modules/lucide/dist/umd/lucide.min.js"></script>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const stage = $('#stage');
+const fit = () => { stage.style.transform = `translate(-50%, -50%) scale(${Math.min(innerWidth / 1280, innerHeight / 720)})`; };
+addEventListener('resize', fit); fit();
+
+// Terminal text: tool noise, then the same reply as raw wrapped lines.
+const TERM = [
+  '● Read(web/divider.js)', '  ⎿ Read 41 lines', '● Update(web/divider.js)', '  ⎿ Updated with 14 additions and 3 removals',
+  '    212 -   const w = pane.offsetWidth', '    212 +   const w = pane.offsetWidth / innerWidth', '● Bash(pnpm test)', '  ⎿ 38 passed',
+  '● The divider keeps its place', '', '  The divider no longer jumps after a resize.', '  The width is still saved in pixels for now.', '',
+  '  On resize, the layout reads the width back before', '  it paints. I also removed the old cache, since', '  nothing reads it.', '',
+  '  Run pnpm dev and drag the window to check.', '', '  A few notes on what I did not touch: the keyboard', '  path still uses the old handler, and the settings',
+  '  file keeps both values until the next release.', '  The tests cover the mouse path only. I can add', '  the keyboard cases if you want them, though that',
+  '  needs a small change to how the pane reports', '  its size. There is also a rounding question at', '  very narrow widths, where the fraction and the',
+  '  pixel value disagree by one. I left that alone.', '', '✻ Churned for 41s · ↓ 2.1k tokens',
+];
+const lines = $('#lines');
+TERM.forEach((t, i) => { const d = document.createElement('div'); d.textContent = t || ' '; if (i >= 8) d.className = 'hi'; lines.append(d); });
+const L = $$('#lines div');
+const copy1 = L[11], copy2 = L[14];
+
+// Reply icons, in the product's order.
+const ICONS = [['wrench','F'],['circle-help','E'],['check-check','C'],['volume-x','T'],['trash-2','X'],['search','S'],['message-square','R'],['check','Y'],['x','N'],['play','G'],['circle-check','D']];
+$('#grid').innerHTML = ICONS.map(([n, k]) => `<div class="ic"><i data-lucide="${n}"></i><b>${k}</b></div>`).join('');
+lucide.createIcons();
+
+const page = $('#page'), win = $('#win'), term = $('#term'), grid = $('#grid'), cursor = $('#cursor'), ring = $('#ring');
+const S = $$('#page .s'), caps = $$('.cap'), pkey = $('#pkey'), tkey = $('#tkey');
+const pos = el => { let x = 0, y = 0, e = el; while (e && e !== page) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; } return { x, y, h: el.offsetHeight }; };
+const P = S.map(pos);
+
+// Keyboard labels, one per sentence.
+const LABELS = ['A', 'S', 'D', 'J', 'K'];
+const tags = S.map((s, i) => { const t = document.createElement('div'); t.className = 'tag'; t.textContent = LABELS[i]; t.style.left = P[i].x - 4 + 'px'; t.style.top = P[i].y - 14 + 'px'; page.append(t); return t; });
+
+gsap.set(cursor, { x: 560, y: 420 });
+// One highlight colour only. A picked sentence is a lighter yellow, a commented one the full yellow. Nothing else marks a comment.
+const PICKED = 'rgba(255,216,107,.28)', COMMENTED = 'rgba(255,216,107,.5)', CLEAR = 'rgba(255,216,107,0)';
+const box = $('#box'), typed = { n: 0 }, PROSE = 'keep both until the next release';
+// A copy of each commented sentence, to fly into the terminal on send.
+const ghosts = [1, 3].map(i => { const g = document.createElement('div'); g.className = 'ghost'; g.textContent = S[i].textContent; g.style.left = P[i].x + 'px'; g.style.top = P[i].y + 'px'; page.append(g); return g; });
+
+const tl = gsap.timeline({ repeat: -1, defaults: { ease: 'power3.out' } });
+const beat = (d = 0.6) => tl.to({}, { duration: d });
+// One mover at a time: the old caption leaves, the new one arrives, then a reading hold.
+const caption = i => {
+  if (i > 0) tl.to(caps[i - 1], { opacity: 0, duration: 0.3 });
+  tl.fromTo(caps[i], { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5 });
+  beat(1.0);
+};
+const press = (el, label, x, y) => {
+  tl.call(() => { el.textContent = label; });
+  if (x !== undefined) tl.set(el, { left: x, top: y });
+  tl.fromTo(el, { opacity: 0, y: -8, scale: 1 }, { opacity: 1, y: 0, duration: 0.2 })
+    .to(el, { y: 4, scale: 0.95, duration: 0.1 })
+    .to(el, { y: 0, scale: 1, duration: 0.15 });
+};
+const release = el => tl.to(el, { opacity: 0, duration: 0.25 });
+
+// 1. Long answer: it streams past, then the hunt for where it starts.
+tl.set(win, { opacity: 0, y: 40 });
+caption(0);
+tl.to(win, { opacity: 1, y: 0, duration: 0.6 });
+tl.fromTo(lines, { y: 0 }, { y: -250, duration: 2.2, ease: 'none' });
+beat(0.5);
+tl.to(lines, { y: -40, duration: 0.9, ease: 'power2.inOut' });
+beat(0.4);
+tl.to(lines, { y: -150, duration: 0.7, ease: 'power2.inOut' });
+beat(0.8);
+
+// 2. Copy, paste, repeat.
+caption(1);
+// Copy the part, paste it, then type the comment on it. Then all of it again.
+const copyPaste = (line, out, quote, comment, quick) => {
+  const n = { v: 0 };
+  tl.to(line, { backgroundColor: 'rgba(255,180,84,.30)', duration: quick ? 0.25 : 0.5 });
+  press(tkey, 'Ctrl + C'); beat(quick ? 0.2 : 0.5); release(tkey);
+  tl.call(() => { out.textContent = quote; });
+  press(tkey, 'Ctrl + V');
+  tl.to(out, { opacity: 1, duration: 0.15 });
+  beat(quick ? 0.2 : 0.5); release(tkey);
+  tl.to(line, { backgroundColor: 'rgba(255,180,84,0)', duration: 0.2 });
+  tl.fromTo(n, { v: 0 }, { v: comment.length, duration: comment.length * (quick ? 0.05 : 0.08), ease: 'none', onUpdate: () => { out.textContent = quote + comment.slice(0, Math.round(n.v)); } });
+  beat(quick ? 0.3 : 0.6);
+};
+copyPaste(copy1, $('#p1'), '> "The width is still saved in pixels for now."', ' fix this', false);
+copyPaste(copy2, $('#p2'), '  "I also removed the old cache"', ' keep both for now', true);
+beat(1.0);
+
+// 3. The page appears beside the terminal.
+caption(2);
+tl.to(['#p1', '#p2'], { opacity: 0, duration: 0.3 });
+tl.to(term, { width: 480, duration: 0.8, ease: 'power2.inOut' });
+tl.to(page, { opacity: 1, duration: 0.7 });
+beat(1.4);
+
+// 4. Click a sentence.
+caption(3);
+tl.to(win, { scale: 1.18, duration: 0.9, ease: 'power2.inOut' });
+tl.to(term, { opacity: 0.35, duration: 0.4 });
+tl.to(cursor, { opacity: 1, duration: 0.2 });
+tl.to(cursor, { x: P[1].x + 60, y: P[1].y + 12, duration: 0.9, ease: 'power2.inOut' });
+tl.set(ring, { x: P[1].x + 62, y: P[1].y + 14 });
+tl.fromTo(ring, { scale: 0.3, opacity: 1 }, { scale: 1.4, opacity: 0, duration: 0.45 });
+tl.to(S[1], { backgroundColor: PICKED, duration: 0.3 });
+beat(0.4);
+tl.set(grid, { top: P[1].y + P[1].h + 10 });
+tl.fromTo(grid, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.8)' });
+beat(1.2);
+
+// 5. One key replies.
+caption(4);
+tl.to(cursor, { opacity: 0, duration: 0.2 });
+press(pkey, 'F', 400, P[1].y + P[1].h + 30);
+tl.to($$('#grid .ic')[0], { backgroundColor: '#ffb454', color: '#111', duration: 0.15 });
+beat(0.5);
+release(pkey);
+tl.to(grid, { opacity: 0, duration: 0.25 });
+tl.set($$('#grid .ic')[0], { backgroundColor: '#262f42', color: '#c9d1e0' });
+tl.to(S[1], { backgroundColor: COMMENTED, duration: 0.4 });
+beat(1.2);
+
+// 6. No mouse: labels, pick by letter, reply by letter.
+caption(5);
+press(pkey, 'F', 400, 300);
+beat(0.3);
+release(pkey);
+tl.to(tags, { opacity: 1, duration: 0.25, stagger: 0.12 });
+beat(1.0);
+press(pkey, 'J', 400, 300);
+beat(0.3);
+release(pkey);
+tl.to(tags, { opacity: 0, duration: 0.2 });
+tl.to(S[3], { backgroundColor: PICKED, duration: 0.3 });
+tl.set(grid, { top: P[3].y + P[3].h + 10 });
+tl.fromTo(grid, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(1.8)' });
+beat(0.7);
+// R opens a box for a reply in your own words.
+press(pkey, 'R', 400, P[3].y + P[3].h + 30);
+tl.to($$('#grid .ic')[6], { backgroundColor: '#ffb454', color: '#111', duration: 0.15 });
+beat(0.4);
+release(pkey);
+tl.to(grid, { opacity: 0, duration: 0.25 });
+tl.set($$('#grid .ic')[6], { backgroundColor: '#262f42', color: '#c9d1e0' });
+tl.call(() => { box.textContent = ''; });
+tl.set(box, { top: P[3].y + P[3].h + 10 });
+tl.to(box, { opacity: 1, duration: 0.25 });
+tl.fromTo(typed, { n: 0 }, { n: PROSE.length, duration: 1.6, ease: 'none', onUpdate: () => { box.textContent = PROSE.slice(0, Math.round(typed.n)); } });
+beat(0.8);
+tl.to(box, { opacity: 0, duration: 0.25 });
+tl.to(S[3], { backgroundColor: COMMENTED, duration: 0.4 });
+beat(1.2);
+
+// 7. Send it all at once.
+caption(6);
+tl.to(win, { scale: 1, duration: 0.9, ease: 'power2.inOut' });
+tl.to(term, { opacity: 1, duration: 0.4 });
+press(pkey, 'Ctrl + Enter', 250, 380);
+beat(0.4);
+release(pkey);
+tl.call(() => { $('#p1').textContent = '> "The width is still saved in pixels for now." fix it'; $('#p2').textContent = '  "I also removed the old cache…" keep both until the next release'; });
+// Each highlight lifts off its sentence and flies into the terminal, where its line lands. The page is left clean.
+[[1, '#p1'], [3, '#p2']].forEach(([i, out], k) => {
+  const g = ghosts[k];
+  tl.set(g, { opacity: 1, x: 0, y: 0, scale: 1 });
+  tl.set(S[i], { backgroundColor: CLEAR });
+  tl.to(g, { x: -458 - P[i].x, y: 400 + 20 * k - P[i].y, scale: 0.8, duration: 0.8, ease: 'power2.inOut' });
+  tl.to(g, { opacity: 0, duration: 0.15 });
+  tl.to(out, { opacity: 1, duration: 0.2 });
+  beat(0.4);
+});
+beat(0.8);
+tl.to('#p3', { opacity: 1, duration: 0.4 });
+beat(1.6);
+
+// 8. End card.
+tl.to(caps[6], { opacity: 0, duration: 0.3 });
+tl.to(win, { opacity: 0, duration: 0.5 });
+tl.to('#end', { opacity: 1, duration: 0.7 });
+beat(2.6);
+tl.to('#end', { opacity: 0, duration: 0.5 });
+// Back to the first frame's state for the loop.
+tl.set([S[1], S[3]], { backgroundColor: CLEAR })
+  .set(['#p1', '#p2', '#p3', page], { opacity: 0 })
+  .set(term, { width: 1100 })
+  .set(cursor, { x: 560, y: 420 });
+
+tl.fromTo('#bar', { scaleX: 0 }, { scaleX: 1, duration: tl.duration(), ease: 'none' }, 0);
+addEventListener('keydown', e => {
+  if (e.key === ' ') tl.paused(!tl.paused());
+  if (e.key === 'ArrowRight') tl.time(tl.time() + 2);
+  if (e.key === 'ArrowLeft') tl.time(Math.max(0, tl.time() - 2));
+});
+</script>
+</body>
+</html>
