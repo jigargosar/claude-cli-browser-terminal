@@ -1,8 +1,8 @@
 // One turn as a page: what Claude did, not only what it said. Approved mockup: docs/mockups/turn-insight.html.
 // The prompt and Claude's text show as is. Everything between two texts is one group, closed:
 //   level 1, the group line: tool count, time, failures, tool chips; or the tool running now.
-//   level 2, the open group: one row per tool and per thought, then one housekeeping row (hooks, API calls, mode,
-//            cost, and any line the server does not know).
+//   level 2, the open group: one row per item, in arrival order: tools, thoughts, and housekeeping (hooks, API
+//            calls, mode, cost, and any line the server does not know).
 //   level 3, an open row: a tool's Request (its input as a table), Response and Allowed by; or a housekeeping detail.
 // Rendering is generic: any object becomes a key/value table. Only an input with old_string and new_string gets a diff.
 // A page only appends or updates in place, so open folds stay open and comments on Claude's text survive.
@@ -100,7 +100,7 @@ export const newTurnPage = (root, { replyNode }) => {
     const summary = h("summary", { className: "line" });
     const rows = h("div", { className: "rows" });
     const g = { el: h("details", { className: "group" }, summary, rows), summary, rows,
-      tools: [], thoughts: 0, chores: [], choreRow: null, first: null, last: null };
+      tools: [], thoughts: 0, chores: [], first: null, last: null };
     root.append(g.el);
     groups.push(g);
     return g;
@@ -125,10 +125,10 @@ export const newTurnPage = (root, { replyNode }) => {
           failed ? meta(`${failed} failed`, true) : null, g.tools.length ? chips : null]),
     );
   };
-  // A row goes in before the housekeeping row, which stays last.
+  // Rows keep arrival order.
   const addRow = (row) => {
     group ??= newGroup();
-    group.rows.insertBefore(row, group.choreRow);
+    group.rows.append(row);
     return group;
   };
 
@@ -182,28 +182,14 @@ export const newTurnPage = (root, { replyNode }) => {
   };
 
   // --- Housekeeping ---
-  const drawChores = (g) => {
-    const counts = Object.entries(Object.groupBy(g.chores, (c) => c.item.kind)).map(([k, cs]) => (cs.length > 1 ? `${k} ×${cs.length}` : k));
-    fill(g.choreSummary, title(`${g.chores.length} housekeeping`), meta(counts.join(", ")));
-  };
   const drawChore = (c) => {
     fill(c.summary, title(choreTitle(c.item)), choreMeta(c.item));
     fill(c.detail, choreDetail(c.item));
   };
   const addChore = (item) => {
-    group ??= newGroup();
-    const g = group;
-    if (!g.choreRow) {
-      g.choreSummary = h("summary", { className: "line" });
-      g.choreRows = h("div", { className: "rows" });
-      g.choreRow = h("div", { className: "row" }, h("details", {}, g.choreSummary, g.choreRows));
-      g.rows.append(g.choreRow);
-    }
     const c = { item, summary: h("summary", { className: "line" }), detail: h("div", { className: "block" }) };
-    g.choreRows.append(h("div", { className: "row" }, h("details", {}, c.summary, c.detail)));
-    g.chores.push(c);
+    addRow(h("div", { className: "row" }, h("details", {}, c.summary, c.detail))).chores.push(c);
     drawChore(c);
-    drawChores(g);
     return c;
   };
   // An API call writes one line per content block. The first makes its row; later ones update it.
