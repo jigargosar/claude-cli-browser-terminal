@@ -1,0 +1,363 @@
+{
+  "ok": false,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": false,
+    "errorCount": 2,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "host_missing_composition_id",
+        "severity": "error",
+        "message": "Composition host for \"compositions/components/code-terminal-run.html\" is missing `data-composition-id`.",
+        "selector": "#demo1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\jigar\\projects\\claude-cli-browser-terminal\\docs\\mockups\\showcase-hf\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Set `data-composition-id` on every `data-composition-src` host element."
+      },
+      {
+        "code": "host_missing_composition_id",
+        "severity": "error",
+        "message": "Composition host for \"compositions/components/cursor-text-select.html\" is missing `data-composition-id`.",
+        "selector": "#demo2",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\jigar\\projects\\claude-cli-browser-terminal\\docs\\mockups\\showcase-hf\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Set `data-composition-id` on every `data-composition-src` host element."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": false,
+    "errorCount": 1,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "console_error",
+        "severity": "error",
+        "message": "[HyperFrames] composition script error: cursor-text-select TypeError: Cannot read properties of undefined (reading 'offsetWidth')",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {
+          "data-composition-id": "main",
+          "data-start": "0",
+          "data-duration": "13",
+          "data-width": "1920",
+          "data-height": "1080"
+        },
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "time": 0,
+        "url": "",
+        "line": 1493
+      }
+    ]
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 2,
+    "findings": [
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 2.167,
+        "selector": "div.ctr-stage",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 160,
+          "top": 270,
+          "right": 1772.8,
+          "bottom": 1371.5,
+          "width": 1612.8,
+          "height": 1101.5
+        },
+        "containerSelector": "#code-terminal-run-clip",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 160,
+          "top": 270,
+          "right": 1760,
+          "bottom": 1030,
+          "width": 1600,
+          "height": 760
+        },
+        "overflow": {
+          "right": 12.8,
+          "bottom": 341.5
+        },
+        "dataAttributes": {},
+        "sourceFile": "compositions/components/code-terminal-run.html",
+        "bbox": {
+          "x": 160,
+          "y": 270,
+          "width": 1612.8,
+          "height": 1101.5
+        },
+        "firstSeen": 2.167,
+        "lastSeen": 5.056,
+        "occurrences": 3,
+        "heldMs": 0,
+        "times": [
+          2.167,
+          3.611,
+          5.056
+        ]
+      },
+      {
+        "code": "panel_out_of_canvas",
+        "severity": "info",
+        "time": 2.167,
+        "selector": "div.ctr-panel",
+        "message": "Painted panel extends outside the composition canvas.",
+        "rect": {
+          "left": 160,
+          "top": 270,
+          "right": 1772.8,
+          "bottom": 1371.5,
+          "width": 1612.8,
+          "height": 1101.5
+        },
+        "containerSelector": "#root",
+        "text": "- resolving 128 modules - bundling src/app ok 12",
+        "fixHint": "Move the panel inward, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "bottom": 291.5
+        },
+        "dataAttributes": {},
+        "sourceFile": "compositions/components/code-terminal-run.html",
+        "bbox": {
+          "x": 160,
+          "y": 270,
+          "width": 1612.8,
+          "height": 1101.5
+        },
+        "firstSeen": 2.167,
+        "lastSeen": 3.611,
+        "occurrences": 2,
+        "heldMs": 0,
+        "times": [
+          2.167,
+          3.611
+        ]
+      }
+    ],
+    "duration": 13,
+    "samples": [
+      0.722,
+      2.167,
+      3.611,
+      5.056,
+      6.5,
+      7.944,
+      9.389,
+      10.833,
+      12.278
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 2,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": false,
+    "errorCount": 1,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.18:1; WCAG AA requires 3:1.",
+        "text": "run build src/app\n                    --minify",
+        "fg": "rgb(0,0,0)",
+        "bg": "rgb(15,25,28)",
+        "ratio": 1.18,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(100,100,100)",
+        "large": true,
+        "selector": "div > div:nth-of-type(1) > div > div > div > div > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1)",
+        "dataAttributes": {
+          "data-terminal": "command"
+        },
+        "sourceFile": "compositions/components/code-terminal-run.html",
+        "bbox": {
+          "x": 218.59375,
+          "y": 355.109375,
+          "width": 1495.609375,
+          "height": 184.3125
+        },
+        "time": 3.611,
+        "times": [
+          3.611
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "error",
+        "message": "Contrast is 3.19:1; WCAG AA requires 4.5:1.",
+        "text": "Draft · edited just now",
+        "fg": "rgb(138,144,162)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.19,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(113,118,133)",
+        "large": false,
+        "selector": "div > div:nth-of-type(2) > div > div:nth-of-type(1) > div > div",
+        "dataAttributes": {},
+        "sourceFile": "compositions/components/cursor-text-select.html",
+        "bbox": {
+          "x": 376.3125,
+          "y": 616.390625,
+          "width": 1167.375,
+          "height": 25
+        },
+        "time": 9.389,
+        "times": [
+          9.389,
+          12.278
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      0.722,
+      3.611,
+      6.5,
+      9.389,
+      12.278
+    ],
+    "checked": 13,
+    "passed": 10
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 2,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "first_frame_empty",
+        "severity": "warning",
+        "message": "Frame 0 shows only the background, and the first frame is the thumbnail on social players: have the title or key image already on screen at 0 s instead of entering from nothing; see references/review.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and \"Draft · edited just now\" renders at 21 px for 5.00 s: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "Draft · edited just now",
+        "selector": "div.ts-meta",
+        "dataAttributes": {},
+        "sourceFile": "compositions/components/cursor-text-select.html",
+        "bbox": {
+          "x": 376.31,
+          "y": 616.39,
+          "width": 291.02,
+          "height": 25
+        },
+        "time": 8,
+        "times": [
+          8
+        ],
+        "fontPx": 21.12,
+        "floorPx": 28,
+        "seconds": 5,
+        "elements": [
+          {
+            "selector": "div.ts-meta",
+            "text": "Draft · edited just now",
+            "fontPx": 21.12,
+            "time": 8,
+            "seconds": 5
+          }
+        ]
+      }
+    ],
+    "enabled": true,
+    "step": 0.125,
+    "samples": 104
+  },
+  "audio": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 1,
+    "findings": [
+      {
+        "code": "audio_none",
+        "severity": "info",
+        "message": "The film has no sound: no clip in it plays audio.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      }
+    ]
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

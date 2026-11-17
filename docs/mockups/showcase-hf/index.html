@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ground: #0b0d12;
+        --ink: #e8ecf3;
+        --accent-ink: #ffb454;
+        --font-display: "Segoe UI", system-ui, sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--ground);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        font-family: var(--font-display);
+        background: radial-gradient(1800px 900px at 20% 0%, #1a2030 0%, var(--ground) 60%);
+      }
+      .clip {
+        position: absolute;
+      }
+      .caption {
+        left: 140px;
+        top: 80px;
+        color: var(--ink);
+        font-size: 104px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        opacity: 0;
+      }
+      .caption em {
+        font-style: normal;
+        color: var(--accent-ink);
+      }
+      .demo {
+        left: 160px;
+        top: 270px;
+        width: 1600px;
+        height: 760px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="13"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Scene 1: 0 to 6.5 -->
+      <h1 id="cap1" class="clip caption" data-start="0" data-duration="6.5" data-track-index="0">
+        Stop reading <em>scrollback.</em>
+      </h1>
+      <div
+        id="demo1" data-composition-id="demo-terminal"
+        class="clip demo"
+        data-composition-src="compositions/components/code-terminal-run.html"
+        data-start="1.5"
+        data-duration="5"
+        data-track-index="1"
+        data-variable-values='{"prompt_glyph":">","accent":"green"}'
+      ></div>
+
+      <!-- Scene 2: 6.5 to 13 -->
+      <h1 id="cap2" class="clip caption" data-start="6.5" data-duration="6.5" data-track-index="0">
+        Point at the <em>exact words.</em>
+      </h1>
+      <div
+        id="demo2" data-composition-id="demo-select"
+        class="clip demo"
+        data-composition-src="compositions/components/cursor-text-select.html"
+        data-start="8"
+        data-duration="5"
+        data-track-index="1"
+        data-variable-values='{"title":"Startup cache","text":"The cache is rebuilt on every start. We could skip it when nothing changed, or keep it as it is and accept the delay.","phrase":"skip it when nothing changed","accent":"#ffb454"}'
+      ></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#cap1", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.1);
+      tl.to("#cap1", { opacity: 0, duration: 0.4, ease: "power2.in" }, 6.1);
+      tl.fromTo("#cap2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 6.6);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
