@@ -57,3 +57,5 @@
     - Decided: only the user's pain. Other users would copy a shortcut from the README, which is the same effort as copying the install command.
 - [ ] multiple housekeeping tasks are grouped together, that is good, but are they shown in proper chrono order? even some other stufff appears then goes. Pain: dont know what is going on, and our algo to collect stuff.
 - [ ] safely open links, editor and url.
+- [.] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them.
+    - Solution: not decided. In mockup discovery phase.
