@@ -142,6 +142,7 @@ const drawLive = (turn) => {
   document.startViewTransition(swap).ready.catch(() => {
     // A skipped transition rejects ready, e.g. a hidden tab or a newer transition. The swap still runs, so only the
     // crossfade is lost. A failed swap reaches the error banner through updateCallbackDone instead.
+    // Empty on purpose: this catch recovers, so it does not break the no-empty-catch rule. No error is swallowed.
     // https://drafts.csswg.org/css-view-transitions-1/#skip-the-view-transition-algorithm
   });
   return true;

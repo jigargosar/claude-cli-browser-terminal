@@ -35,34 +35,26 @@ Parallel work in worktrees. Conflicts with this workflow get resolved as they co
 
 # List
 
-- [x] Global CLAUDE.md changes, outside the project, and the conversation patterns to explore. The plan, the research and the transcript moved to the skills repo, in `global-claude-md/`.
-- [ ] Write the release steps in their own doc, next to the scripts, the way `scripts/build-watch/README.md` does for the watch. The README stays user-facing: how to install and use. Include the changelog process: a line goes in the same commit as the change, which section to use (Added, Changed, Removed), the Keep a Changelog format, and what `kacl` checks and stamps. Also the compare links at the bottom of `CHANGELOG.md`. `[Unreleased]: …/compare/<last tag>...HEAD` makes the Unreleased heading open GitHub's compare of the last tag to `HEAD`, so it lists every unreleased commit. Use it to check Unreleased before a release. `kacl release` writes these links: the 0.1.8 release set `[Unreleased]` to `v0.1.8...HEAD` and added `[0.1.8]` as `v0.1.7...v0.1.8`. CLAUDE.md then points to the doc.
-    - Failure, 2026-11-07, the 0.1.9 release: Claude ran `pnpm release` after the overlay stacking tick, as rule 9 said. Rule 9 came in commit `1b140bf` on 2026-11-04. The auto mode classifier denied it, with reason "[Create Public Surface]". Nothing ran. After the user approved through AskUserQuestion, the second run published 0.1.9. Rule 9 now asks for permission with AskUserQuestion before every release.
+- [ ] Write the release steps in their own doc, next to the scripts, the way `scripts/build-watch/README.md` does for the watch. The README stays user-facing: how to install and use. Include the changelog process: when a line goes in (Releasing, step 1), which section to use (Added, Changed, Removed), the Keep a Changelog format, and what `kacl` checks and stamps. Also the compare links at the bottom of `CHANGELOG.md`. `[Unreleased]: …/compare/<last tag>...HEAD` makes the Unreleased heading open GitHub's compare of the last tag to `HEAD`, so it lists every unreleased commit. Use it to check Unreleased before a release. `kacl release` writes these links: the 0.1.8 release set `[Unreleased]` to `v0.1.8...HEAD` and added `[0.1.8]` as `v0.1.7...v0.1.8`. CLAUDE.md then points to the doc.
+    - Failure, 2026-11-07, the 0.1.9 release: Claude ran `pnpm release` after the overlay stacking tick, as rule 9 said. Rule 9 came in commit `1b140bf` on 2026-11-04. The auto mode classifier denied it, with reason "[Create Public Surface]". Nothing ran. After the user approved through AskUserQuestion, the second run published 0.1.9. Releasing, step 2, now proposes every release, with AskUserQuestion.
     - use google z tool to create a markdown file with code and comments so we know exactly what we are upto. without things being spread out.
 - [ ] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay. Since comments are page based, they clear as page changes.
     - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
     - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis.
 - [.] markdown pane UX sucks. need better UX.
-- [x] When scrolling at bottom, there is no space, same when expanding elements there. Suspect append only response.
 - [ ] format response and show images. 
 - [ ] move divider with keyboard
-- [x] Pain Point: Need response information in page, to track what is actually going on.
-    - Pain: the page gives no insight while a turn runs. Which tools ran, with what request and response, is only in the terminal, which is ugly to read.
-    - Need: live insight into the turn: prompt, tool calls with input and result, Claude's text, status, time, tokens.
-    - Solution: a live timeline of the turn, built from the transcript. Each item sits in a collapser. Research: `docs/tasks/response-info/transcript-inventory.md`.
 - [ ] Extract a skill that handles our process in other projects.
     - Pain: not recorded yet.
-- [x] Bug: AbortError: Transition was skipped. New ViewTransition started
 - [ ] switching between panes is still clumsy. Happens unintentally by using trackpad.
 - [ ] Mark dead turns after a rewind.
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
     - Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat.
-- [ ] Collaboration: put in place the ideas of 2026-11-10 on how the user and Claude work together. Plan: `docs/tasks/collaboration/plan.md`.
-- need recommendation button for quick comments.
+- [ ] need recommendation button for quick comments.
 - [ ] Reorganize tasks and docs, as agreed 2026-11-10.
-    - Split the collaboration plan into 8 top-level tasks, each with pain, solution and done-when. Then delete its file.
-    - Move research docs into `docs/research/`, flat, with an index of one-line summaries. Update rule 13 to match.
+    - Split the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together, into 8 top-level tasks, each with pain, solution and done-when. Then delete its file.
+    - Move research docs into `docs/research/`, flat, with an index of one-line summaries.
     - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.
 - [x] Pain: installing ccw needs a Claude session, because install-ccw is a skill. Without it, I have to remember a long command in every new project.
     - Solution: an `install-ccw` function in the pwsh `$PROFILE`, outside this project. It checks for `pnpm-lock.yaml` and `package-lock.json` and prints each result. One keypress picks the manager: `p` for pnpm, `n` for npm. It fetches the README and runs that manager's Install line. Each step prints a line before it starts. No dry run.
