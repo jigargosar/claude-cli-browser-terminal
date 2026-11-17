@@ -8,6 +8,8 @@
 // Rendering is generic: any object becomes a key/value table. Only an input with old_string and new_string gets a diff.
 // A page only appends or updates in place, so open folds stay open and comments on Claude's text survive.
 
+import { isShown } from "../entry-types.js";
+
 // null and false kids are skipped. replaceChildren would turn them into the text "null".
 const present = (kids) => kids.filter((k) => k != null && k !== false);
 const h = (tag, props = {}, ...kids) => {
@@ -223,6 +225,11 @@ export const newTurnPage = (root, { replyNode }) => {
     if (seen.has(item.id)) return;
     seen.add(item.id);
     if (item.at) lastAt = item.at;
+    // An inactive entry type is skipped (entry-types.js). An API line still counts in the status.
+    if (!isShown(item)) {
+      if (item.kind === "api") apis.set(item.requestId, { item });
+      return;
+    }
     if (item.kind === "prompt") {
       group = null;
       promptAt = item.at;
