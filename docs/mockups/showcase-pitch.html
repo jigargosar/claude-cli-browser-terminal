@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Showcase pitch</title>
+<style>
+  :root { --bg:#0b0d12; --panel:#141821; --line:#232a38; --text:#e8ecf3; --dim:#6b7689; --accent:#ffb454; --mark:rgba(255,180,84,.32); --green:#7fd88f; }
+  * { box-sizing:border-box; margin:0; }
+  html,body { height:100%; background:#000; overflow:hidden; }
+  body { font-family:"Segoe UI",system-ui,sans-serif; color:var(--text); }
+  #stage { width:1280px; height:720px; position:fixed; left:50%; top:50%; overflow:hidden; transform-origin:center;
+    background:radial-gradient(1200px 600px at 20% 0%, #1a2030 0%, var(--bg) 60%); }
+  .slide { position:absolute; inset:0; padding:56px 72px; visibility:hidden; opacity:0; }
+  .caption { font-size:64px; font-weight:700; letter-spacing:-1.5px; line-height:1.05; }
+  .caption .w { display:inline-block; margin-right:.25em; }
+  .caption em { font-style:normal; color:var(--accent); }
+  .clip { position:absolute; left:140px; top:190px; width:1000px; height:440px; }
+  .mono { font-family:"Cascadia Code",Consolas,monospace; }
+
+  /* slide 1 */
+  .win { width:100%; height:420px; display:flex; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--panel); box-shadow:0 30px 80px rgba(0,0,0,.55); }
+  .term { width:50%; padding:22px; font-size:13px; line-height:1.55; color:#55607a; border-right:1px solid var(--line); background:#0d1017; white-space:nowrap; overflow:hidden; }
+  .page { width:50%; padding:30px 34px; }
+  .page h2 { font-size:26px; margin-bottom:14px; }
+  .page p { font-size:16px; line-height:1.6; color:#b9c2d3; margin-bottom:12px; }
+  .page li { font-size:16px; line-height:1.9; color:#b9c2d3; }
+  .page code { background:#222a3a; padding:2px 7px; border-radius:5px; color:var(--accent); font-size:14px; }
+
+  /* slide 2 */
+  .card { position:relative; padding:44px 52px; border:1px solid var(--line); border-radius:14px; background:var(--panel); font-size:30px; line-height:1.7; color:#c5cddc; box-shadow:0 30px 80px rgba(0,0,0,.55); }
+  .target { white-space:nowrap; background:linear-gradient(var(--mark),var(--mark)) no-repeat 0 0 / 0% 100%; border-radius:4px; }
+  .bubble { position:absolute; padding:14px 20px; min-width:340px; border-radius:12px; background:#1d2433; border:1px solid var(--accent); font-size:21px; color:var(--text); transform-origin:0 0; box-shadow:0 16px 40px rgba(0,0,0,.6); }
+  .bubble::after { content:"▍"; color:var(--accent); animation:blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+  .cursor { position:absolute; left:0; top:0; width:26px; height:26px; z-index:5; filter:drop-shadow(0 3px 6px rgba(0,0,0,.7)); }
+
+  /* slide 3 */
+  .chip { position:absolute; width:360px; padding:14px 18px; border-radius:12px; background:#1d2433; border:1px solid var(--line); font-size:18px; box-shadow:0 12px 30px rgba(0,0,0,.5); }
+  .chip q { display:block; quotes:none; color:var(--accent); font-size:14px; margin-bottom:5px; }
+  .bar { position:absolute; left:250px; top:350px; width:500px; height:64px; padding:0 10px 0 24px; display:flex; align-items:center; justify-content:space-between; border-radius:32px; background:#1d2433; border:1px solid var(--line); font-size:21px; }
+  .send { width:46px; height:46px; border-radius:50%; background:var(--accent); color:#111; display:grid; place-items:center; font-size:22px; font-weight:700; }
+  .done { position:absolute; left:0; right:0; top:150px; text-align:center; font-size:44px; font-weight:700; color:var(--green); }
+
+  #bar { position:absolute; left:0; bottom:0; height:4px; width:100%; background:var(--accent); transform-origin:0 50%; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <section class="slide" id="s1">
+    <div class="caption">Stop reading <em>scrollback.</em></div>
+    <div class="clip">
+      <div class="win">
+        <div class="term mono">
+          <div>● Update(src/server.mjs)</div>
+          <div>  ⎿ Updated with 14 additions and 3 removals</div>
+          <div>    212 -   const out = pty.read()</div>
+          <div>    212 +   const out = await pty.read()</div>
+          <div>● The divider now keeps its place after a re</div>
+          <div>  size. Two things changed: 1) the width is</div>
+          <div>  k. ✻ Churned for 41s · ↓ 2.1k tokens</div>
+        </div>
+        <div class="page">
+          <h2>The divider keeps its place</h2>
+          <p>It no longer jumps after a resize.</p>
+          <ul>
+            <li>The width is stored as a fraction.</li>
+            <li><code>resize</code> reads it back before layout.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s2">
+    <div class="caption">Point at the <em>exact words.</em></div>
+    <div class="clip">
+      <div class="card">
+        The cache is rebuilt on every start.<br>
+        We could <span class="target">skip it when nothing changed</span>, or<br>
+        keep it as it is and accept the delay.
+        <div class="bubble"></div>
+        <svg class="cursor" viewBox="0 0 24 24"><path d="M4 2l16 9-7 2-3 7z" fill="#fff" stroke="#000" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s3">
+    <div class="caption">Many comments. <em>One message.</em></div>
+    <div class="clip">
+      <div class="chip" style="left:40px;top:10px"><q>“skip it when nothing changed”</q>make this the default</div>
+      <div class="chip" style="left:580px;top:50px"><q>“accept the delay”</q>how long is it?</div>
+      <div class="chip" style="left:310px;top:180px"><q>“rebuilt on every start”</q>why every start?</div>
+      <div class="bar"><span class="count">0 comments</span><span class="send">↑</span></div>
+      <div class="done">✓ Sent, with context</div>
+    </div>
+  </section>
+
+  <div id="bar"></div>
+</div>
+
+<script src="../../node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const stage = document.getElementById('stage');
+const fit = () => { stage.style.transform = `translate(-50%, -50%) scale(${Math.min(innerWidth / 1280, innerHeight / 720)})`; };
+addEventListener('resize', fit); fit();
+
+for (const c of document.querySelectorAll('.caption')) {
+  c.innerHTML = [...c.childNodes].map(n => {
+    const words = n.textContent.trim().split(/\s+/).map(w => `<span class="w">${w}</span>`).join('');
+    return n.nodeType === 1 ? `<em>${words}</em>` : words;
+  }).join('');
+}
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const tl = gsap.timeline({ repeat: -1, defaults: { ease: 'power3.out' } });
+
+// One mover at a time. Every motion is followed by a hold.
+const READ = 1.0;
+const BEAT = 0.6;
+const beat = (d = BEAT) => tl.to({}, { duration: d });
+const open = s => {
+  tl.to(s, { autoAlpha: 1, duration: 0.3 })
+    .from($$('.caption .w', s), { y: 50, opacity: 0, filter: 'blur(12px)', duration: 0.6, stagger: 0.12 });
+  beat(READ);
+};
+const close = s => tl.to(s, { autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, '+=2');
+
+// 1. terminal noise, then the page
+const s1 = $('#s1'), win = $('.win', s1), pageParts = $$('.page > *, .page li', s1);
+gsap.set(win, { transformOrigin: '75% 50%' });
+open(s1);
+tl.from(win, { y: 60, opacity: 0, duration: 0.6 })
+  .from(pageParts, { opacity: 0, duration: 0.01 }, '<');
+beat(0.3);
+tl.from($$('.term div', s1), { opacity: 0, x: -8, duration: 0.15, stagger: 0.22 });
+beat();
+tl.to($('.term', s1), { opacity: 0.25, duration: 0.6 });
+tl.fromTo(pageParts, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.45, immediateRender: false });
+beat();
+tl.to(win, { scale: 1.2, duration: 1.2, ease: 'power2.inOut' });
+close(s1);
+
+// 2. select and comment
+const s2 = $('#s2');
+const target = $('.target', s2), cursor = $('.cursor', s2), bubble = $('.bubble', s2), card = $('.card', s2);
+const tx = target.offsetLeft, ty = target.offsetTop, tw = target.offsetWidth, th = target.offsetHeight;
+gsap.set(bubble, { left: tx, top: ty + th + 14, scale: 0, opacity: 0 });
+gsap.set(cursor, { x: 860, y: 260, opacity: 0 });
+gsap.set(card, { transformOrigin: `${tx + tw / 2}px ${ty}px` });
+const typed = { n: 0 }, text = 'make this the default';
+open(s2);
+tl.from(card, { y: 60, opacity: 0, duration: 0.6 });
+beat(1.2);
+tl.to(cursor, { x: tx - 2, y: ty + 10, opacity: 1, duration: 1.1, ease: 'power2.inOut' });
+beat(0.3);
+tl.to(cursor, { x: tx + tw, duration: 1.2, ease: 'power1.inOut' })
+  .to(target, { backgroundSize: '100% 100%', duration: 1.2, ease: 'power1.inOut' }, '<');
+beat();
+tl.to(cursor, { opacity: 0, duration: 0.2 });
+tl.to(card, { scale: 1.1, duration: 0.9, ease: 'power2.inOut' });
+tl.to(bubble, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' });
+beat(0.3);
+tl.to(typed, { n: text.length, duration: 1.4, ease: 'none', onUpdate: () => { bubble.textContent = text.slice(0, Math.round(typed.n)); } });
+close(s2);
+
+// 3. many into one
+const s3 = $('#s3');
+const chips = $$('.chip', s3), bar = $('.bar', s3), count = $('.count', s3), done = $('.done', s3);
+gsap.set(done, { opacity: 0, scale: 0.7 });
+open(s3);
+tl.set(count, { textContent: '0 comments' });
+tl.from(chips, { scale: 0, opacity: 0, duration: 0.4, stagger: 0.7, ease: 'back.out(1.8)' });
+beat();
+tl.from(bar, { y: 40, opacity: 0, duration: 0.5 });
+beat();
+chips.forEach((c, i) => {
+  tl.to(c, { x: 500 - (c.offsetLeft + 180), y: 382 - (c.offsetTop + 30), scale: 0.15, opacity: 0, duration: 0.6, ease: 'power3.in' })
+    .set(count, { textContent: `${i + 1} comment${i ? 's' : ''}` })
+    .fromTo(bar, { scale: 1.08 }, { scale: 1, duration: 0.3 });
+  beat(0.4);
+});
+tl.to($('.send', s3), { scale: 1.3, duration: 0.2, yoyo: true, repeat: 1 });
+tl.to(bar, { y: -200, opacity: 0, duration: 0.5, ease: 'power3.in' });
+tl.to(done, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(2)' });
+close(s3);
+
+tl.fromTo('#bar', { scaleX: 0 }, { scaleX: 1, duration: tl.duration(), ease: 'none' }, 0);
+addEventListener('keydown', e => { if (e.key === ' ') tl.paused(!tl.paused()); });
+</script>
+</body>
+</html>
