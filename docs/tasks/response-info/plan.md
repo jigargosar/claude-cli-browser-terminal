@@ -1,0 +1,37 @@
+# Plan: choose which entry types show in comment pane
+
+Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the transcript". Research: `transcript-inventory.md`, next to this file. Mockup: `docs/mockups/entry-filter.html`, reviewed 2026-11-18.
+
+## Decided
+
+- Prompts and Claude's text are always visible
+- Defaults are hardcoded in `web/entry-types.js`
+- An "All" group sits at the bottom of each Events group, just before Claude's text. It holds every entry in arrival order, hidden ones included, and starts closed.
+- Each row in "All" has a checkbox for its type, labelled with the type and its count in the turn. One tick changes every row of that type, in every group.
+- Hovering a checkbox highlights every row that tick changes.
+- Unticked rows are dimmed.
+- Ticks are saved. To promote them, the user asks Claude, who moves them into `web/entry-types.js` and clears the saved file.
+
+## Code today
+
+- `web/views/turn.js:235` drops an inactive entry as it arrives. "All" needs every entry, so entries are kept and only hidden.
+- `turn.js` merges a `tool_use` and its `tool_result` into one row with Request and Response blocks. The mockup shows them as two rows.
+- Page settings live in `<project>/.ccw-cache/config.json` (`server.mjs:57`, `web/settings.js`). They are per project.
+
+## Open
+
+1. Where ticks are saved: one file for all projects, e.g. `~/.ccw/entry-types.json`, or the per-project page settings.
+2. A fold whose content repeats its title. Seen: "Mode · default" opens to "Mode default".
+3. How Request and Response blocks show, in the rows and in "All". Tied to the merged tool row above.
+4. The workflow experiment's pre-tool-call lines are Claude's text, so each one splits the Events group. How the group handles it.
+
+## Steps
+
+1. Settle open item 1.
+2. Server: read the saved ticks, send them on connect, write them on change.
+3. Page: a type shows when its saved tick says so, else its default.
+4. `turn.js`: keep every entry. Draw hidden ones only in "All".
+5. Build "All" as in the mockup: rows, checkboxes, counts, dimming, hover highlight.
+6. A tick redraws every group and saves.
+7. Settle open items 2 to 4, each with a mockup if the look changes.
+8. Review, then a test checklist for the user, then the tick.

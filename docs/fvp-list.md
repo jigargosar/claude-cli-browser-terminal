@@ -6,34 +6,31 @@
 
 ## Task shape
 
-        - [.] Pain: <the problem, in the user's words>
-            - Solution: <the plan, in a few lines>
-
-Get the pain clear before work starts. It may be an XY problem.
-
 ## Working a task
 
-Claude works the last dotted task:
+1. Claude works the last dotted task:
 
-1. Shape the task.
-2. Implement it. Commit WIP generously.
-3. Review it.
-4. Provide the user a checklist to test it.
-5. Propose the commit with the tick.
+2. Get the pain clear before work starts. It may be an XY problem.
+>    - [.] Pain: <the problem, in the user's words>
+>       - Solution: <the plan, in a few lines>
 
-Experiment, in use, to polish: Claude lists objectives before execution, and names the plan step before each tool call. These lines are Claude's text, always open, so each splits the events group into one per tool call. Open: how the group handles it.
+
+2. While impleminting regularily perform WIP commits.
+3. Self-review untill you fixed all issues.
+4. Present a list, for manual checking.
+
 
 ## Releasing
 
-After the tick:
+Once a task is closed:
 
 1. If an end user would notice the change, add a line under Unreleased in `CHANGELOG.md`.
-2. If Unreleased has lines, propose a release with `pnpm release`.
-3. Move to the new last dotted task.
+2. If Unreleased has lines, propose `pnpm release`.
 
 ## Experiment
 
-Parallel work in worktrees. Conflicts with this workflow get resolved as they come up.
+- Parallel work in worktrees. Conflicts with this workflow get resolved as they come up.
+- (rule active, polish pending) Claude lists objectives before execution, and names the plan step before each tool call. These lines are Claude's text, always open, so each splits the events group into one per tool call. Open: how the group handles it.
 
 # List
 
