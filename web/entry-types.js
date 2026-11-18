@@ -1,5 +1,6 @@
-// Every kind of transcript entry the page knows, one row each. active: false skips the entry on the page. A type not
-// in this table shows, so new kinds of entries are noticed. The row's position is its number.
+// Every kind of transcript entry the page knows, one row each. active: whether the type shows by default. A hidden
+// type still shows in "All" (entry-filter.js). A type not in this table shows, so new kinds of entries are noticed.
+// The row's position is its number.
 // type: the item's kind, or for a raw line its transcript type (server.mjs, itemsOf).
 export const ENTRY_TYPES = [
   { type: "prompt", example: "some items are marked done, are they really done, check.", description: "Your prompt.", active: true },
@@ -80,7 +81,5 @@ export const ENTRY_TYPES = [
 export const entryType = (item) =>
   item.kind === "raw" ? item.type : ({ mode: "permission-mode", cost: "cost-state" })[item.kind] ?? item.kind;
 
-const inactive = new Set(ENTRY_TYPES.filter((t) => !t.active).map((t) => t.type));
-export const isShown = (item) => !inactive.has(entryType(item));
 const known = new Set(ENTRY_TYPES.map((t) => t.type));
 export const isKnown = (item) => known.has(entryType(item));

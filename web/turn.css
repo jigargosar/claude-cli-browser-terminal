@@ -36,13 +36,25 @@
 
 /* Level 2: one row per item, in a bordered box. */
 #reply .rows { margin-top: 6px; border: 1px solid var(--rule); border-radius: 8px; }
-#reply .rows > * + * { border-top: 1px solid var(--rule); }
+/* A rule between visible rows only, so a hidden row leaves no double line. */
+#reply .rows > :not([hidden]) ~ :not([hidden]) { border-top: 1px solid var(--rule); }
 #reply .row { padding: 7px 12px; }
 #reply .row.thinking, #reply .row.thinking .line { font-style: italic; font-size: 14px; line-height: 1.5; color: var(--ink-muted); }
 #reply .thinking-text { margin: 6px 0 2px; white-space: pre-wrap; font: 13px/1.5 var(--sans); }
 /* Thinking with no text in the transcript: why is unknown, so it shows loud. */
 #reply .row.thinking.empty { color: #fff; background: #b3261e; font-weight: 600; font-style: normal; padding: 4px 8px; border-radius: 4px; }
 #reply .rows details .rows { margin: 6px 0 2px; }
+
+/* "All": every entry, with the checkbox for its type. Approved mockup: docs/mockups/entry-filter.html. */
+#reply .group .all { padding: 7px 12px; }
+#reply .all-row { display: grid; grid-template-columns: 17em minmax(0, 1fr); gap: 10px; align-items: baseline; }
+#reply .all-row > :not(label) { min-width: 0; }
+#reply .all-row.off > :not(label) { opacity: 0.45; }
+#reply .type { display: flex; gap: 6px; align-items: baseline; min-width: 0; cursor: pointer; font: normal 12.5px/1.5 var(--mono); color: var(--ink-muted); }
+#reply .type span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#reply .type input { accent-color: var(--ink); margin: 0; translate: 0 2px; cursor: pointer; }
+/* Hovering a checkbox marks every row it shows or hides. */
+#reply .row.hl { background: var(--selection); }
 
 /* Level 3: Request, Response and the other blocks. */
 #reply .block { margin: 8px 0 2px; padding: 8px 12px; border-radius: 6px; background: var(--tint); }

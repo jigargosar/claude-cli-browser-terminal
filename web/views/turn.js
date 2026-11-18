@@ -5,10 +5,13 @@
 //            calls, mode, cost, and any line the server does not know).
 //   level 3, an open row: a tool call's Request (its input as a table); a result's Response and Allowed by; or a
 //            housekeeping detail.
+// A type the filter hides (entry-filter.js) has no row in the group. "All", the group's last row, holds every entry
+// in arrival order, each with a checkbox that shows or hides its type. Approved mockup: docs/mockups/entry-filter.html.
 // Rendering is generic: any object becomes a key/value table. Only an input with old_string and new_string gets a diff.
 // A page only appends or updates in place, so open folds stay open and comments on Claude's text survive.
 
-import { isKnown, isShown } from "../entry-types.js";
+import { entryType, isKnown } from "../entry-types.js";
+import { isTypeShown, onChange, setShown } from "../entry-filter.js";
 
 // null and false kids are skipped. replaceChildren would turn them into the text "null".
 const present = (kids) => kids.filter((k) => k != null && k !== false);
@@ -102,9 +105,12 @@ export const newTurnPage = (root, { replyNode }) => {
   // --- Groups ---
   const newGroup = () => {
     const summary = h("summary", { className: "line" });
-    const rows = h("div", { className: "rows" });
-    const g = { el: h("details", { className: "group" }, summary, rows), summary, rows,
-      tools: [], thoughts: 0, chores: [], first: null, last: null };
+    const allSummary = h("summary", { className: "line" });
+    const allRows = h("div", { className: "rows" });
+    const all = h("details", { className: "all" }, allSummary, allRows);
+    const rows = h("div", { className: "rows" }, all);
+    const g = { el: h("details", { className: "group" }, summary, rows), summary, rows, all, allSummary, allRows,
+      entries: [], tools: [], thoughts: 0, chores: [], first: null, last: null };
     root.append(g.el);
     groups.push(g);
     return g;
@@ -120,33 +126,82 @@ export const newTurnPage = (root, { replyNode }) => {
     const byName = Object.groupBy(g.tools, (t) => t.item.name);
     const chips = h("span", { className: "chips" }, ...Object.entries(byName).map(([name, ts]) =>
       h("span", { className: ts.some((t) => t.isError) ? "chip bad" : "chip" }, ts.length > 1 ? `${name} ×${ts.length}` : name)));
+    const chores = g.chores.filter((c) => isTypeShown(entryType(c.item))).length;
+    const hidden = g.entries.filter((e) => !isTypeShown(e.type)).length;
     const what = g.tools.length ? `Used ${g.tools.length} tool${g.tools.length > 1 ? "s" : ""}`
-      : g.thoughts ? "Thought" : `${g.chores.length} housekeeping`;
-    fill(g.summary, 
+      : g.thoughts ? "Thought" : chores ? `${chores} housekeeping` : "Nothing shown";
+    fill(g.summary,
       ...(live
         ? [title(`${context.waiting ? "Waiting on you ·" : "Running"} ${toolTitle(live.item)}`, true)]
         : [title(what), g.first && g.last !== g.first ? meta(duration(since(g.first, g.last))) : null,
-          failed ? meta(`${failed} failed`, true) : null, g.tools.length ? chips : null]),
+          failed ? meta(`${failed} failed`, true) : null, hidden ? meta(`${hidden} hidden`) : null,
+          g.tools.length ? chips : null]),
     );
+    fill(g.allSummary, title(`All · ${g.entries.length}, in arrival order`));
   };
-  // Rows keep arrival order.
-  const addRow = (row) => {
+
+  // --- Entries ---
+  // An entry is drawn twice: in the group, hidden when the filter hides its type, and in "All", always. render makes
+  // one copy of its row. Rows keep arrival order.
+  const typeCounts = () => Object.groupBy(groups.flatMap((g) => g.entries), (e) => e.type);
+  const rowsOfType = (type) => root.querySelectorAll(`.row[data-type="${CSS.escape(type)}"]`);
+  const drawEntry = (e, counts) => {
+    const shown = isTypeShown(e.type);
+    e.row.hidden = !shown;
+    e.allRow.classList.toggle("off", !shown);
+    e.box.checked = shown;
+    e.count.textContent = `${e.type} · ${counts[e.type].length}`;
+  };
+  const allRow = (type, row) => {
+    const box = h("input", { type: "checkbox" });
+    box.addEventListener("change", () => setShown(type, box.checked));
+    const count = h("span", {});
+    const label = h("label", { className: "type", title: `Shows or hides every ${type} entry` }, box, count);
+    label.addEventListener("mouseenter", () => rowsOfType(type).forEach((r) => r.classList.add("hl")));
+    label.addEventListener("mouseleave", () => rowsOfType(type).forEach((r) => r.classList.remove("hl")));
+    row.classList.add("all-row");
+    row.prepend(label);
+    return { allRow: row, box, count };
+  };
+  const addEntry = (item, render) => {
     group ??= newGroup();
-    group.rows.append(row);
+    const type = entryType(item);
+    const row = render();
+    row.dataset.type = type;
+    group.rows.insertBefore(row, group.all);
+    const e = { type, row, ...allRow(type, render()) };
+    e.allRow.dataset.type = type;
+    group.allRows.append(e.allRow);
+    group.entries.push(e);
+    const counts = typeCounts();
+    for (const other of counts[type]) drawEntry(other, counts);
     return group;
   };
+  // A changed filter redraws every entry and group. A page replaced by a newer one unsubscribes.
+  const stop = onChange(() => {
+    if (!status.isConnected) return stop();
+    const counts = typeCounts();
+    for (const g of groups) {
+      for (const e of g.entries) drawEntry(e, counts);
+      drawGroup(g);
+    }
+  });
 
   // --- Tools ---
   // A tool call and its result are two rows, each where it arrived. The call's row only shows whether it still runs.
-  const drawTool = (t) => fill(t.summary, title(toolTitle(t.item), running() && !t.done));
+  const drawTool = (t) => {
+    for (const s of t.summaries) fill(s, title(toolTitle(t.item), running() && !t.done));
+  };
   const addTool = (item) => {
-    const summary = h("summary", { className: "line" });
     const input = item.input;
-    const fold = h("details", {}, summary,
-      block("Request", table(input)),
-      typeof input.old_string === "string" && typeof input.new_string === "string" ? block("Diff", diff(input)) : null);
-    const t = { item, summary, done: false, isError: false, group: null };
-    t.group = addRow(h("div", { className: "row" }, fold));
+    const t = { item, summaries: [], done: false, isError: false, group: null };
+    t.group = addEntry(item, () => {
+      const summary = h("summary", { className: "line" });
+      t.summaries.push(summary);
+      return h("div", { className: "row" }, h("details", {}, summary,
+        block("Request", table(input)),
+        typeof input.old_string === "string" && typeof input.new_string === "string" ? block("Diff", diff(input)) : null));
+    });
     t.group.tools.push(t);
     tools.set(item.toolUseId, t);
     drawTool(t);
@@ -161,10 +216,10 @@ export const newTurnPage = (root, { replyNode }) => {
       }
       Object.assign(t, { done: true, isError: r.isError });
       drawTool(t);
-      const summary = h("summary", { className: "line" },
-        title(`Result · ${toolTitle(t.item)}`),
-        meta(r.isError ? "Failed" : duration(since(t.item.at, item.at)), r.isError));
-      addRow(h("div", { className: "row" }, h("details", {}, summary,
+      addEntry(item, () => h("div", { className: "row" }, h("details", {},
+        h("summary", { className: "line" },
+          title(`Result · ${toolTitle(t.item)}`),
+          meta(r.isError ? "Failed" : duration(since(t.item.at, item.at)), r.isError)),
         block("Response", h("pre", {}, resultText(r.content))),
         item.allowed ? block("Allowed by", h("pre", {}, allowedText(item.allowed))) : null)));
       drawGroup(t.group);
@@ -175,25 +230,31 @@ export const newTurnPage = (root, { replyNode }) => {
   const addThinking = (item) => {
     // Thinking with no text: why the transcript holds none is unknown, so it shows loud.
     if (!item.text.trim()) {
-      addRow(h("div", { className: "row thinking empty" }, "Thinking, no text in the transcript")).thoughts++;
+      addEntry(item, () => h("div", { className: "row thinking empty" }, "Thinking, no text in the transcript")).thoughts++;
       return;
     }
     const first = item.text.trim().split("\n")[0];
-    const row = first === item.text.trim()
-      ? h("div", { className: "row thinking" }, first)
+    const render = () => first === item.text.trim()
+      ? h("div", { className: "row thinking" }, h("span", {}, first))
       : h("div", { className: "row thinking" },
         h("details", {}, h("summary", { className: "line" }, title(first)), h("div", { className: "thinking-text" }, item.text)));
-    addRow(row).thoughts++;
+    addEntry(item, render).thoughts++;
   };
 
   // --- Housekeeping ---
   const drawChore = (c) => {
-    fill(c.summary, title(choreTitle(c.item)), choreMeta(c.item));
-    fill(c.detail, choreDetail(c.item));
+    for (const s of c.summaries) fill(s, title(choreTitle(c.item)), choreMeta(c.item));
+    for (const d of c.details) fill(d, choreDetail(c.item));
   };
   const addChore = (item) => {
-    const c = { item, summary: h("summary", { className: "line" }), detail: h("div", { className: "block" }) };
-    addRow(h("div", { className: "row" }, h("details", {}, c.summary, c.detail))).chores.push(c);
+    const c = { item, summaries: [], details: [] };
+    addEntry(item, () => {
+      const summary = h("summary", { className: "line" });
+      const detail = h("div", { className: "block" });
+      c.summaries.push(summary);
+      c.details.push(detail);
+      return h("div", { className: "row" }, h("details", {}, summary, detail));
+    }).chores.push(c);
     drawChore(c);
     return c;
   };
@@ -231,11 +292,7 @@ export const newTurnPage = (root, { replyNode }) => {
     if (seen.has(item.id)) return;
     seen.add(item.id);
     if (item.at) lastAt = item.at;
-    // An inactive entry type is skipped (entry-types.js). An API line still counts in the status.
-    if (!isShown(item)) {
-      if (item.kind === "api") apis.set(item.requestId, { item });
-      return;
-    }
+    // The prompt and Claude's text always show. Every other entry gets a row, hidden or not (addEntry).
     if (item.kind === "prompt") {
       group = null;
       promptAt = item.at;

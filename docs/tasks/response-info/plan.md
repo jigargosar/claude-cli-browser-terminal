@@ -14,9 +14,9 @@ Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the
 
 ## Code today
 
-- `web/views/turn.js:235` drops an inactive entry as it arrives. "All" needs every entry, so entries are kept and only hidden.
-- `turn.js` merges a `tool_use` and its `tool_result` into one row with Request and Response blocks. The mockup shows them as two rows.
-- Page settings live in `<project>/.ccw-cache/config.json` (`server.mjs:57`, `web/settings.js`). They are per project.
+- Every entry has a row in its group, hidden when its type is filtered out, and a copy in "All" (`web/views/turn.js`, `web/entry-filter.js`).
+- A tool call and its result are two rows, each where it arrived.
+- Filter choices that differ from the defaults are saved under `entryFilter` in the page settings, `<project>/.ccw-cache/config.json`. They stay there until open item 1 is settled. No server change was needed.
 
 ## Open
 
@@ -37,11 +37,11 @@ Now: weed out noise, while "All" still shows everything. Later: coalesce related
 ## Steps
 
 1. Settle open item 1.
-2. Server: read the saved ticks, send them on connect, write them on change.
-3. Page: a type shows when its saved tick says so, else its default.
-4. `turn.js`: keep every entry. Draw hidden ones only in "All".
-5. Build "All" as in the mockup: rows, checkboxes, counts, dimming, hover highlight.
-6. A tick redraws every group and saves.
+2. Done. Server: read the saved ticks, send them on connect, write them on change.
+3. Done. Page: a type shows when its saved tick says so, else its default.
+4. Done. `turn.js`: keep every entry. Draw hidden ones only in "All".
+5. Done. Build "All" as in the mockup: rows, checkboxes, counts, dimming, hover highlight.
+6. Done. A tick redraws every group and saves.
 7. Settle open items 2 and 3, each with a mockup if the look changes.
 8. Strip the pasted-content tags from the prompt shown on the page.
 9. Run the investigations.
