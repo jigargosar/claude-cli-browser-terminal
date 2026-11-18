@@ -51,6 +51,8 @@ const resultText = (content) =>
   typeof content === "string" ? content
     : Array.isArray(content) ? content.map((b) => (b.type === "text" ? b.text : `[${b.type}]`)).join("\n")
       : "";
+// Claude Code wraps pasted text in tags with a random id. The page shows the text without them.
+const promptText = (text) => text.replace(/<\/?pasted_content\b[^>]*>/g, "").replace(/\n{3,}/g, "\n\n").trim();
 const allowedText = (d) => [d.decision, d.source, d.reasonType ?? d.grantScope, d.reasonCode].filter(Boolean).join(" · ");
 const toolTitle = (item) => {
   const what = item.input.description ?? Object.values(item.input).find((v) => typeof v === "string");
@@ -296,7 +298,7 @@ export const newTurnPage = (root, { replyNode }) => {
     if (item.kind === "prompt") {
       group = null;
       promptAt = item.at;
-      root.append(h("div", { className: "prompt" }, item.text), h("p", { className: "prompt-meta" }, timeFormat.format(new Date(item.at))));
+      root.append(h("div", { className: "prompt" }, promptText(item.text)), h("p", { className: "prompt-meta" }, timeFormat.format(new Date(item.at))));
     } else if (item.kind === "reply") {
       group = null;
       root.append(replyNode(item));

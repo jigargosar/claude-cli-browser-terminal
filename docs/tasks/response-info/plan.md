@@ -44,6 +44,6 @@ Now: weed out noise, while "All" still shows everything. Later: coalesce related
 5. Done. Build "All" as in the mockup: rows, checkboxes, counts, dimming, hover highlight.
 6. Done. A tick redraws every group and saves.
 7. Settle open items 2 and 3, each with a mockup if the look changes.
-8. Strip the pasted-content tags from the prompt shown on the page.
+8. Done. Strip the pasted-content tags from the prompt shown on the page.
 9. Run the investigations.
 10. Review, then a test checklist for the user, then the tick.
