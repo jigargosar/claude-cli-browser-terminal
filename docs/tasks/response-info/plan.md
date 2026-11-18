@@ -28,6 +28,11 @@ Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the
 
 1. Events arrive in bursts. A few show, a pause follows, then many land at once.
 2. How the header shows, and how the user's reply is added to the page.
+3. Which event ends a turn, so the page starts a new one.
+4. How a tool call and its result pair up, and whether the transcript keeps them adjacent. Seen: several edits queue, then permission prompts. Approving one by one spaces them out. "Accept edits" lands them in one burst.
+5. How a filter checkbox works once a call and its result are one row. Filtering Read hides every Read call, and filtering Read results hides half of what's left.
+
+Now: weed out noise, while "All" still shows everything. Later: coalesce related items.
 
 ## Steps
 
