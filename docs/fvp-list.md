@@ -21,6 +21,8 @@ Claude works the last dotted task:
 4. Provide the user a checklist to test it.
 5. Propose the commit with the tick.
 
+Experiment, in use, to polish: Claude lists objectives before execution, and names the plan step before each tool call. These lines are Claude's text, always open, so each splits the events group into one per tool call. Open: how the group handles it.
+
 ## Releasing
 
 After the tick:
