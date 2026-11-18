@@ -70,4 +70,5 @@ Once a task is closed:
 - [.] Pain: the reading pane reshapes the transcript, so I can't tell what is really going on. Where is the thinking? It says Running when it is waiting.
     - Think about: a fold whose content repeats its title. Seen: "Mode · default" opens to "Mode default".
     - Think about: how Request and Response blocks show.
+    - Investigate: events arrive in bursts. A few show, a pause follows, then many land at once.
     - Solution: prompts and Claude's text are always open, never closed or hidden. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/tasks/response-info/transcript-inventory.md`.
