@@ -24,6 +24,11 @@ Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the
 2. A fold whose content repeats its title. Seen: "Mode · default" opens to "Mode default".
 3. How Request and Response blocks show, in the rows and in "All". Tied to the merged tool row above.
 
+## Investigate
+
+1. Events arrive in bursts. A few show, a pause follows, then many land at once.
+2. How the header shows, and how the user's reply is added to the page.
+
 ## Steps
 
 1. Settle open item 1.
@@ -33,4 +38,5 @@ Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the
 5. Build "All" as in the mockup: rows, checkboxes, counts, dimming, hover highlight.
 6. A tick redraws every group and saves.
 7. Settle open items 2 and 3, each with a mockup if the look changes.
-8. Review, then a test checklist for the user, then the tick.
+8. Run the investigations.
+9. Review, then a test checklist for the user, then the tick.
