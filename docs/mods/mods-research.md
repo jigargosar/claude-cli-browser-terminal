@@ -24,7 +24,7 @@ Sources: docs downloaded 2026-10-18 into `docs/mods/raw/claude-code-docs-2026-10
 
 1. Answering AskUserQuestion in code (`tool.call` returns `{ result }`).
 2. `$.prompt.submit({ text, asUser: true })` sends a prompt without typing into the pty. That removes the "stray Enter approves a dialog" risk for comments.
-3. `session.append` fires for each row before it's stored. It's a live feed, not a file tail.
+3. `session.append` fires for each row before it's stored. It's a live feed, not a file tail. Verified 2026-11-18: it arrives a median 165 ms before the tail, with the same `uuid`, and gives fewer fields. See `docs/spikes/mods-vs-tail/results.md`.
 4. A live state: a mod knows when a dialog is open, so the page can block sends while one is.
 
 ## Channel to our server

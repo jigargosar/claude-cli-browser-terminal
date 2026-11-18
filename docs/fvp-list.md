@@ -71,3 +71,5 @@ Once a task is closed:
     - Plan: `docs/tasks/response-info/plan.md`.
       - Solution: prompts and Claude's text are always open, never closed or hidden. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/tasks/response-info/transcript-inventory.md`
 - [ ] hide maximize panels.   
+- [.] Pain: the page learns about each conversation row by tailing the transcript file. Is a mod's `session.append` hook faster?
+    - Solution: a spike. One process receives the mod's POST and tails the transcript, so both arrival times share one clock. Code and results: `docs/spikes/mods-vs-tail/`.

@@ -1,0 +1,5 @@
+{
+  "name": "spike-append-feed",
+  "version": "0.0.1",
+  "description": "Spike: POST each session.append row to a local listener, to time it against the transcript tail."
+}
