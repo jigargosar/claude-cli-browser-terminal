@@ -23,7 +23,6 @@ Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the
 1. Where ticks are saved: one file for all projects, e.g. `~/.ccw/entry-types.json`, or the per-project page settings.
 2. A fold whose content repeats its title. Seen: "Mode · default" opens to "Mode default".
 3. How Request and Response blocks show, in the rows and in "All". Tied to the merged tool row above.
-4. The workflow experiment's pre-tool-call lines are Claude's text, so each one splits the Events group. How the group handles it.
 
 ## Steps
 
@@ -33,5 +32,5 @@ Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the
 4. `turn.js`: keep every entry. Draw hidden ones only in "All".
 5. Build "All" as in the mockup: rows, checkboxes, counts, dimming, hover highlight.
 6. A tick redraws every group and saves.
-7. Settle open items 2 to 4, each with a mockup if the look changes.
+7. Settle open items 2 and 3, each with a mockup if the look changes.
 8. Review, then a test checklist for the user, then the tick.

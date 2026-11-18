@@ -30,8 +30,6 @@ Once a task is closed:
 ## Experiment
 
 - Parallel work in worktrees. Conflicts with this workflow get resolved as they come up.
-- (rule active, polish pending) Claude lists objectives before execution, and names the plan step before each tool call. These lines are Claude's text, always open, so each splits the events group into one per tool call. Open: how the group handles it.
-
 # List
 
 - [ ] Write the release steps in their own doc, next to the scripts, the way `scripts/build-watch/README.md` does for the watch. The README stays user-facing: how to install and use. Include the changelog process: when a line goes in (Releasing, step 1), which section to use (Added, Changed, Removed), the Keep a Changelog format, and what `kacl` checks and stamps. Also the compare links at the bottom of `CHANGELOG.md`. `[Unreleased]: …/compare/<last tag>...HEAD` makes the Unreleased heading open GitHub's compare of the last tag to `HEAD`, so it lists every unreleased commit. Use it to check Unreleased before a release. `kacl release` writes these links: the 0.1.8 release set `[Unreleased]` to `v0.1.8...HEAD` and added `[0.1.8]` as `v0.1.7...v0.1.8`. CLAUDE.md then points to the doc.
