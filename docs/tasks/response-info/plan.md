@@ -15,7 +15,7 @@ Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the
 ## Code today
 
 - Every entry has a row in its group, hidden when its type is filtered out, and a copy in "All" (`web/views/turn.js`, `web/entry-filter.js`).
-- A tool call and its result are two rows, each where it arrived.
+- [ ] A tool call and its result are two rows, each where it arrived.
 - Filter choices that differ from the defaults are saved under `entryFilter` in the page settings, `<project>/.ccw-cache/config.json`. They stay there until open item 1 is settled. No server change was needed.
 
 ## Open

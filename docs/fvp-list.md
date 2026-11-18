@@ -69,4 +69,5 @@ Once a task is closed:
 - [.] what is housekeeping?
 - [.] Pain: the reading pane reshapes the transcript, so I can't tell what is really going on. Where is the thinking? It says Running when it is waiting.
     - Plan: `docs/tasks/response-info/plan.md`.
-    - Solution: prompts and Claude's text are always open, never closed or hidden. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/tasks/response-info/transcript-inventory.md`.
+      - Solution: prompts and Claude's text are always open, never closed or hidden. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/tasks/response-info/transcript-inventory.md`
+- [ ] hide maximize panels.   
