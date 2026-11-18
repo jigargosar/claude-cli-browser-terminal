@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: choose which entry types show</title>
+<link rel="stylesheet" href="../../web/base.css">
+<link rel="stylesheet" href="../../web/reader.css">
+<link rel="stylesheet" href="../../web/turn.css">
+<style>
+  /* Mockup only: the terminal is a placeholder. */
+  #terminal-pane { color: #6b7380; font: 13px/1.5 var(--mono); }
+
+  /* The All group: every entry in arrival order, each with the checkbox for its type. */
+  #reply .all-row { display: grid; grid-template-columns: 17em 1fr; gap: 10px; align-items: baseline; }
+  #reply .all-row > details { min-width: 0; }
+  #reply .all-row.off > details { opacity: 0.45; }
+  #reply .type { display: flex; gap: 6px; align-items: baseline; min-width: 0; cursor: pointer;
+    font: 12.5px/1.5 var(--mono); color: var(--ink-muted); }
+  #reply .type span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #reply .type input { accent-color: var(--ink); margin: 0; translate: 0 2px; cursor: pointer; }
+  /* Hovering a checkbox marks every row its tick changes, in both lists. */
+  #reply .row.hl { background: var(--selection); }
+  #reply .group .rows .all { padding: 7px 12px; }
+</style>
+</head>
+<body>
+<main id="terminal-pane">Terminal (placeholder)</main>
+<div id="divider"></div>
+<aside id="reply-pane" aria-label="Turn">
+  <article id="reply" class="md" tabindex="0"></article>
+</aside>
+
+<script>
+// Mockup data. The active flags match web/entry-types.js today. Ticks here last until reload; the page saves them.
+const active = {
+  hook: true, "attachment/output_style": false, thinking: true, api: false, tool_use: true, tool_result: true,
+  "attachment/edited_text_file": true, "queue-operation": false, "attachment/queued_command": true,
+  "attachment/silent_turn_reminder": false,
+};
+const turn = {
+  prompt: { text: "show hidden entry types under All, in arrival order", time: "09:43:14" },
+  pieces: [
+    [
+      { type: "hook", title: "Hook · UserPromptSubmit", meta: "116 ms", detail: "Wed Nov 18 09:43:14 IST 2026" },
+      { type: "attachment/output_style", title: "Concise · Be concise: lead with the result…", detail: "Concise output style is active." },
+      { type: "thinking", title: "Find where entry types are filtered in turn.js.", meta: "3.1 s", detail: "Find where entry types are filtered in turn.js. Then check the group builder." },
+      { type: "api", title: "API call · claude-opus-5-5 · tool_use", meta: "212 out", detail: "input 2 · output 212 · cache read 177,063" },
+      { type: "tool_use", title: "Grep · ENTRY_TYPES", detail: "pattern: ENTRY_TYPES\npath: web/" },
+      { type: "tool_result", title: "Result · Grep", meta: "309 ms", detail: "web/entry-types.js\nweb/views/turn.js" },
+      { type: "tool_use", title: "Read · web/views/turn.js", detail: "file_path: web/views/turn.js" },
+      { type: "api", title: "API call · claude-opus-5-5 · tool_use", meta: "96 out", detail: "input 2 · output 96 · cache read 178,410" },
+      { type: "tool_result", title: "Result · Read", meta: "12 ms", detail: "1\t// What Claude did in a turn…" },
+    ],
+    "The filter sits in turn.js. Inactive types are dropped before the group is built.",
+    [
+      { type: "attachment/edited_text_file", title: "Changed on disk · docs/fvp-list.md", detail: "docs/fvp-list.md" },
+      { type: "queue-operation", title: "Queued · cnp", detail: "enqueue · cnp" },
+      { type: "tool_use", title: "Edit · web/views/turn.js", detail: "file_path: web/views/turn.js\nold_string: …\nnew_string: …" },
+      { type: "api", title: "API call · claude-opus-5-5 · tool_use", meta: "640 out", detail: "input 2 · output 640 · cache read 181,002" },
+      { type: "tool_result", title: "Result · Edit", meta: "30 ms", detail: "The file was updated." },
+      { type: "attachment/queued_command", title: "Delivered · cnp", detail: "cnp" },
+      { type: "attachment/silent_turn_reminder", title: "The user hasn't heard from you in a while…", detail: "A nudge to report progress." },
+    ],
+    "Done. Hidden types now show under All, in arrival order.",
+  ],
+};
+
+/** @param {string} tag @param {object} [props] @param {...(Node|string)} kids */
+function h(tag, props = {}, ...kids) {
+  const el = Object.assign(document.createElement(tag), props);
+  el.append(...kids.filter((k) => k != null));
+  return el;
+}
+const collapser = (summaryKids, ...body) => h("details", {}, h("summary", { className: "line" }, ...summaryKids), ...body);
+const meta = (text) => (text ? h("span", { className: "meta" }, text) : null);
+const block = (text) => h("div", { className: "block" }, h("pre", {}, text));
+const entry = (i) => collapser([h("span", { className: "title" }, i.title), meta(i.meta)], block(i.detail));
+
+// How many rows each type has in the turn: the scope of one tick.
+const counts = {};
+for (const piece of turn.pieces) if (Array.isArray(piece)) for (const i of piece) counts[i.type] = (counts[i.type] ?? 0) + 1;
+
+const rowsOf = (type) => document.querySelectorAll(`#reply .row[data-type="${type}"]`);
+const groups = [];
+
+function shownRow(i) {
+  const row = h("div", { className: i.type === "thinking" ? "row thinking" : "row" }, entry(i));
+  row.dataset.type = i.type;
+  row.dataset.list = "shown";
+  return row;
+}
+function allRow(i) {
+  const box = h("input", { type: "checkbox" });
+  box.dataset.type = i.type;
+  box.addEventListener("change", () => { active[i.type] = box.checked; refresh(); });
+  const label = h("label", { className: "type", title: `Ticks every ${i.type} row in this turn` }, box, h("span", {}, `${i.type} · ${counts[i.type]}`));
+  label.addEventListener("mouseenter", () => rowsOf(i.type).forEach((r) => r.classList.add("hl")));
+  label.addEventListener("mouseleave", () => rowsOf(i.type).forEach((r) => r.classList.remove("hl")));
+  const row = h("div", { className: "row all-row" }, label, entry(i));
+  row.dataset.type = i.type;
+  return row;
+}
+function group(items) {
+  const counter = h("span", { className: "meta" });
+  const all = h("details", { className: "all", open: true },
+    h("summary", { className: "line" }, h("span", { className: "title" }, `All · ${items.length}, in arrival order`)),
+    h("div", { className: "rows" }, ...items.map(allRow)));
+  const d = h("details", { className: "group", open: true },
+    h("summary", { className: "line" }, h("span", { className: "title" }, "Events"), counter),
+    h("div", { className: "rows" }, ...items.map(shownRow), all));
+  groups.push({ items, counter });
+  return d;
+}
+
+// One tick changes every row of its type, in both lists and in every group.
+function refresh() {
+  for (const row of document.querySelectorAll("#reply .row[data-list=shown]")) row.hidden = !active[row.dataset.type];
+  for (const row of document.querySelectorAll("#reply .all-row")) row.classList.toggle("off", !active[row.dataset.type]);
+  for (const box of document.querySelectorAll("#reply .all-row input")) box.checked = active[box.dataset.type];
+  for (const g of groups) {
+    const shown = g.items.filter((i) => active[i.type]).length;
+    g.counter.textContent = `${shown} shown · ${g.items.length - shown} hidden`;
+  }
+}
+
+// The prompt and Claude's text are plain blocks, never collapsers: they cannot close or hide.
+const reply = document.getElementById("reply");
+reply.append(h("div", { className: "prompt" }, turn.prompt.text), h("p", { className: "prompt-meta" }, turn.prompt.time));
+for (const piece of turn.pieces) reply.append(Array.isArray(piece) ? group(piece) : h("p", {}, piece));
+refresh();
+</script>
+</body>
+</html>

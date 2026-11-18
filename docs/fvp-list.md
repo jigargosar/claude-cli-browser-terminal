@@ -71,4 +71,6 @@ Parallel work in worktrees. Conflicts with this workflow get resolved as they co
       e.g. Running Bash · Show changes beyond the workflow section
 - [.] what is housekeeping?
 - [.] Pain: the reading pane reshapes the transcript, so I can't tell what is really going on. Where is the thinking? It says Running when it is waiting.
-    - Solution: prompts and Claude's text open. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/tasks/response-info/transcript-inventory.md`.
+    - Think about: a fold whose content repeats its title. Seen: "Mode · default" opens to "Mode default".
+    - Think about: how Request and Response blocks show.
+    - Solution: prompts and Claude's text are always open, never closed or hidden. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/tasks/response-info/transcript-inventory.md`.
