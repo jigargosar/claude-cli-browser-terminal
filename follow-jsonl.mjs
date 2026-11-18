@@ -15,6 +15,8 @@ import { parseChunked } from "@discoveryjs/json-ext";
 import chokidar from "chokidar";
 
 const never = new Promise(() => {});
+// How often to check for a file that doesn't exist yet.
+const POLL_MS = 200;
 
 export const followJsonl = (path, { onStart, onValue }) => {
   let offset = 0;
@@ -39,25 +41,41 @@ export const followJsonl = (path, { onStart, onValue }) => {
     dirty = true;
     wake?.();
   };
+  let watcher = null;
+  let poll = null;
   const stop = () => {
     stopped = true;
-    watcher.close();
+    clearInterval(poll);
+    watcher?.close();
   };
 
-  const watcher = chokidar.watch(path);
-  let started = false;
-  watcher.on("add", () => {
-    if (started) return changed();
-    started = true;
-    onStart();
-    // Unhandled on purpose: a parse error rejects, and the process crashes with it.
-    parseChunked(chunks, { mode: "jsonl", onRootValue: (value) => onValue(value) });
-  });
-  watcher.on("change", changed);
-  watcher.on("unlink", stop);
-  watcher.on("error", (err) => {
-    throw err;
-  });
+  const watch = () => {
+    watcher = chokidar.watch(path);
+    let started = false;
+    watcher.on("add", () => {
+      if (started) return changed();
+      started = true;
+      onStart();
+      // Unhandled on purpose: a parse error rejects, and the process crashes with it.
+      parseChunked(chunks, { mode: "jsonl", onRootValue: (value) => onValue(value) });
+    });
+    watcher.on("change", changed);
+    watcher.on("unlink", stop);
+    watcher.on("error", (err) => {
+      throw err;
+    });
+  };
+
+  // chokidar misses a file whose folder is missing when the watch starts, as in a project's first session.
+  // So the watch starts only once the file exists.
+  if (existsSync(path)) watch();
+  else {
+    poll = setInterval(() => {
+      if (!existsSync(path)) return;
+      clearInterval(poll);
+      watch();
+    }, POLL_MS);
+  }
 
   return { close: stop };
 };

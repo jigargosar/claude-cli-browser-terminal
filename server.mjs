@@ -250,6 +250,12 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(204).end();
     return;
   }
+  // Which transcript the server follows, for debugging an empty or stale page.
+  if (req.method === "GET" && req.url === "/status") {
+    const status = { followed, waitingFor, items: items.length, waiting };
+    res.writeHead(200, { "content-type": "application/json" }).end(`${JSON.stringify(status, null, 2)}\n`);
+    return;
+  }
   serveDist(req, res, () => res.writeHead(404).end());
 });
 
