@@ -27,3 +27,10 @@ None among rows with a `uuid`. The transcript also has about 30 lines per run wi
 
 - with mod: 22418, 16711, 16246, 13302 (median 16711)
 - without mod: 30791, 16364, 17006, 15578 (median 17006)
+
+## Not covered
+
+- Interactive claude in a pty, the way the app runs it. Every run here is `claude -p`.
+- Subagents. No run starts one.
+- Turn time: 4 runs each, and model latency dominates, so a small slowdown would not show.
+- The raw logs in `results/` are not committed. `bash run.sh` makes new ones.
