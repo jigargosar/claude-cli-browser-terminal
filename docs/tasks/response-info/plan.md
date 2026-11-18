@@ -27,6 +27,7 @@ Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the
 ## Investigate
 
 1. Events arrive in bursts. A few show, a pause follows, then many land at once.
+    - Found 2026-11-18: our reader sees each write within milliseconds. Claude Code batches writes, up to about 0.5 s late. The long pauses are the model generating, with no rows yet. A mod's `session.append` sees rows up to 0.5 s sooner. The real need is states the transcript never records, such as a permission wait, left for a mod-events spike in another session.
 2. How the header shows, and how the user's reply is added to the page.
 3. Which event ends a turn, so the page starts a new one.
 4. How a tool call and its result pair up, and whether the transcript keeps them adjacent. Seen: several edits queue, then permission prompts. Approving one by one spaces them out. "Accept edits" lands them in one burst.
