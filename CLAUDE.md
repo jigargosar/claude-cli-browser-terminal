@@ -25,3 +25,4 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - No task may start before it is on `docs/fvp-list.md`.
 - Browser libraries come from `node_modules`, not a CDN.
 - The server does not hot reload. Only the page rebuilds on change. Restart the server before testing a change to `server.mjs`.
+- A test session's claude runs with `--model haiku --effort low`. Pass both to `server.mjs`.
