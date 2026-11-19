@@ -2,7 +2,7 @@
 
 1. The user owns this list. Claude edits it only when asked.
 2. New tasks go at the end.
-3. Weeding merges duplicates and drops done or stale tasks. Before a task goes, Claude seeks out its unrecorded facts and open issues.
+3. Weeding runs regularly. It merges duplicates and drops ticked or stale tasks. Before a task goes, Claude lists its unwritten findings and open issues, each with where it should go. The user approves.
 
 ## Task shape
 
@@ -18,6 +18,7 @@
 2. While impleminting regularily perform WIP commits.
 3. Self-review untill you fixed all issues.
 4. Present a list, for manual checking.
+5. To close, Claude lists what the task found that isn't written down yet, its open issues, and the files only it used, each with where it should go. The user approves, and Claude ticks the task and commits.
 
 
 ## Releasing
