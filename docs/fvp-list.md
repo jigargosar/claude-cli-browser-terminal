@@ -19,6 +19,7 @@
 3. Self-review untill you fixed all issues.
 4. Present a list, for manual checking.
 5. To close, Claude lists what the task found that isn't written down yet, its open issues, and the files only it used, each with where it should go. The user approves, and Claude ticks the task and commits.
+    - The plan lives as sub-bullets under its task. A plan file is the last resort, when the plan outgrows the list. Closing the task deletes the plan file, once its lasting content has moved out.
 
 
 ## Releasing
@@ -55,7 +56,7 @@ Once a task is closed:
     - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.
     - Pain: things seem spread out. Plan, task, reference, spike and mockups. Thier notes, reference, plan etc. causing confusion.
     - reference materal can be part of plan file for each task. But on close of related issues. Its content should be levated to reference section.
-    - Decided, 2026-11-20: a task's plan file grows while the task runs. At weeding and on close, the content worth keeping is moved out, and the plan file is deleted as part of closing the task.
+    - Decided, 2026-11-20: plans live under their task. See Working a task, step 5.
 - [.] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them.
     - Solution: a one-minute animated walkthrough, mocked, not a screen recording. Eight scenes from the README draft: the pain, the page, click to reply, one key, keyboard only, send all, the tagline.
     - Source and render steps: `docs/mockups/showcase-video/`. Output: `docs/media/ccw-showcase.gif` and `.mp4`, shown at the top of `README.md`.
