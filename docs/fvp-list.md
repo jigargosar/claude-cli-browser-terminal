@@ -18,7 +18,7 @@
 2. While impleminting regularily perform WIP commits.
 3. Self-review untill you fixed all issues.
 4. Present a list, for manual checking.
-5. To close, Claude lists what the task found that isn't written down yet, its open issues, and the files only it used, each with where it should go. The user approves, and Claude ticks the task and commits.
+- [ ] 5. To close, Claude lists what the task found that isn't written down yet, its open issues, and the files only it used, each with where it should go. The user approves, and Claude ticks the task and commits.
 
 
 ## Releasing
@@ -72,8 +72,7 @@ Once a task is closed:
     - Solution: a spike. One process receives the mod's POST and tails the transcript, so both arrival times share one clock. Code and results: `docs/spikes/mods-vs-tail/`.
     - Result, 2026-11-18: one hook, `session.append`. The mod leads by a median 165 ms, p95 462 ms, over 138 rows. Rows arrive one by one, not in bursts. No slowdown seen in 4 noisy runs. Measured with `claude -p` only, not in a pty, and without subagents. Same `uuid` as the transcript line. Assistant and tool result content match. Prompts and attachments differ in shape. The mod gives 4 fields per row against about 35 in the transcript, and misses the lines without a `uuid`.
     - Next, not started: map each JSONL line and field the page uses to the mod event that gives it, then decide mod only, hybrid, or tail only.
-- [ ] Pain: in a project's first session, the reading pane stays empty. Plan: `docs/tasks/first-session-empty-pane/plan.md`.
-    - Tested by hand: the bug reproduced. The fix has not run yet.
-    - A unit test is wanted. This task stays open until it exists.
+- [x] Pain: in a project's first session, the reading pane stays empty.
+    - Fixed in `follow-jsonl.mjs`, tested by `test/follow-jsonl.test.mjs`, and by hand on 2026-11-19.
 - [ ] reference materal can be part of plan file for each task. But on close of related issues. Its content should be levated to reference section.
 - Pain: things seem spread out. Plan, task, reference, spike and mockups. Thier notes, reference, plan etc. causing confusion.
