@@ -22,7 +22,15 @@ Primary goal: when a reply mentions a file, I see the exact lines it means, in o
 - [ ] If a click on a reference clashes with picking a sentence, a keyboard shortcut opens the peek instead.
 - [ ] Nice to have: the peek appears and disappears smoothly.
 - [ ] Bring back the diff in the peek, once it is readable. It is commented out in `web/refs.js`.
-- [.] Pain: 
+- [.] Pain: "Where is the reference? Right now you are talking about a file, and I can't even figure out what you are talking about."
+    - Solution: ccw starts claude with `--append-system-prompt` and this prompt, drafted with the user on 2026-11-20:
+      ```
+      In your responses:
+      - every file reference is written as `path:line` or `path:start-end`
+      - every line number matches the file as it is now
+      - every reference to removed text is shown as a verbatim quote of that text
+      ```
+    - Next: the user confirms, then it goes into `server.mjs:53`, the `claudeArgs` line.
 
 ## Reference
 
