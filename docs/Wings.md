@@ -9,3 +9,4 @@ Once upon a time in a far far future some of them were surprisingly alive.
 - [ ] UX keys: The reader pane is fully keyboard driven: every mouse action in it also has a key.
 - Rewind from the reply page itself: go back to an earlier turn from the markdown page, without the terminal.
 - Replace the xterm terminal with our own interface, one piece at a time. More and more time is then spent in the markdown page. Each problem met in the terminal decides the next piece to migrate. A lot of migration in total, but no big switch.
+- One place to read everything: the reply as markdown, earlier replies, the terminal shown or hidden, and a document brought up. Comment on a file's lines the same way as on a reply, so we talk inside the file as we do in the response.

@@ -15,6 +15,7 @@
 1. Claude works the last dotted task:
 
 2. Get the pain clear before work starts. It may be an XY problem.
+    - The user's solution ideas are input, not the spec. Claude proposes the solution.
 >    - [.] Pain: <the problem, in the user's words>
 >       - Solution: <the plan, in a few lines>
 
@@ -92,3 +93,10 @@ Once a task is closed:
       - open links to editor and url from within response.
       - Hover shows line content + links to docs.
       - Inline content in response.
+    - Solution, minimal:
+        1. The page turns file references in Claude's replies into links. Forms: `path:line`, `path:line-line`, `path#L83`, `[text](relative path)`, and bare paths, in code or in prose.
+        2. Only paths that exist in the project folder become links. The server checks, and reads only files inside that folder.
+        3. Hover shows the referenced lines, with a few lines around them, highlighted.
+        4. Click opens the file at that line in the editor, through the server, with `launch-editor`. The page never navigates.
+        5. Web links open in a new tab.
+    - Out of scope: a quote with no path.
