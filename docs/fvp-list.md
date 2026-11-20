@@ -3,6 +3,8 @@
 1. The user owns this list. Claude edits it only when asked.
 2. New tasks go at the end.
 3. Weeding runs regularly. It merges duplicates and drops ticked or stale tasks. Before a task goes, Claude lists its unwritten findings and open issues, each with where it should go. The user approves.
+4. Meta tasks, changes to how we work, never go in the list. They are applied as soon as they come up.
+5. A change that isn't concrete yet gets the prefix "Experiment:". It goes where it needs a decision or a task.
 
 ## Task shape
 
@@ -19,7 +21,9 @@
 3. Self-review untill you fixed all issues.
 4. Present a list, for manual checking.
 5. To close, Claude lists what the task found that isn't written down yet, its open issues, and the files only it used, each with where it should go. The user approves, and Claude ticks the task and commits.
-    - The plan lives as sub-bullets under its task. A plan file is the last resort, when the plan outgrows the list. Closing the task deletes the plan file, once its lasting content has moved out.
+    - The plan lives as sub-bullets under its task.
+    - A plan file is the last resort, when the plan outgrows the list.
+    - Closing the task deletes the plan file, once its lasting content has moved out.
 
 
 ## Releasing
@@ -32,6 +36,7 @@ Once a task is closed:
 ## Experiment
 
 - Parallel work in worktrees. Conflicts with this workflow get resolved as they come up.
+- Worktree tasks are marked as such. How a task links to its worktree is not worked out yet.
 # List
 
 - [.] Write the release steps in their own doc, next to the scripts, the way `scripts/build-watch/README.md` does for the watch. The README stays user-facing: how to install and use. Include the changelog process: when a line goes in (Releasing, step 1), which section to use (Added, Changed, Removed), the Keep a Changelog format, and what `kacl` checks and stamps. Also the compare links at the bottom of `CHANGELOG.md`. `[Unreleased]: …/compare/<last tag>...HEAD` makes the Unreleased heading open GitHub's compare of the last tag to `HEAD`, so it lists every unreleased commit. Use it to check Unreleased before a release. `kacl release` writes these links: the 0.1.8 release set `[Unreleased]` to `v0.1.8...HEAD` and added `[0.1.8]` as `v0.1.7...v0.1.8`. CLAUDE.md then points to the doc.
@@ -56,7 +61,6 @@ Once a task is closed:
     - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.
     - Pain: things seem spread out. Plan, task, reference, spike and mockups. Thier notes, reference, plan etc. causing confusion.
     - reference materal can be part of plan file for each task. But on close of related issues. Its content should be levated to reference section.
-    - Decided, 2026-11-20: plans live under their task. See Working a task, step 5.
 - [.] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them.
     - Solution: a one-minute animated walkthrough, mocked, not a screen recording. Eight scenes from the README draft: the pain, the page, click to reply, one key, keyboard only, send all, the tagline.
     - Source and render steps: `docs/mockups/showcase-video/`. Output: `docs/media/ccw-showcase.gif` and `.mp4`, shown at the top of `README.md`.
