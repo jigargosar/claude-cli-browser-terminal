@@ -14,15 +14,15 @@ Task in `docs/fvp-list.md`: "Pain: impossible to view/review line number content
 
 Each state has its own color and a tooltip that names it.
 
-| State | Color | Peek |
-|:--|:--|:--|
-| In the project, unchanged | link blue | the file |
-| In the project, uncommitted changes | amber | the file, with the diff |
-| In the project, untracked | green | the file, marked as new |
-| Binary, e.g. an image | link blue | "binary file", its size, no contents |
-| Deleted since the reply | grey, struck through | "deleted" |
-| Outside the project | red | none |
-| Not found | plain text | none |
+| State                               | Color                | Peek                                 |
+|:------------------------------------|:---------------------|:-------------------------------------|
+| In the project, unchanged           | link blue            | the file                             |
+| In the project, uncommitted changes | amber                | the file, with the diff              |
+| In the project, untracked           | green                | the file, marked as new              |
+| Binary, e.g. an image               | link blue            | "binary file", its size, no contents |
+| Deleted since the reply             | grey, struck through | "deleted"                            |
+| Outside the project                 | red                  | none                                 |
+| Not found                           | plain text           | none                                 |
 
 - The server returns the state with each resolved path, from one `git status` per request.
 - No git, or no commit yet: the peek works without a diff, and the tooltip says so.
