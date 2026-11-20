@@ -13,6 +13,7 @@ import getPort from "get-port";
 import { globby } from "globby";
 import launchEditor from "launch-editor";
 import open from "open";
+import { simpleGit } from "simple-git";
 import sirv from "sirv";
 import writeFileAtomic from "write-file-atomic";
 import { WebSocketServer } from "ws";
@@ -283,6 +284,13 @@ const projectPath = (rel) => {
   if (!insideRoot(abs)) throw new Error(`${rel} is outside the project folder`);
   return abs;
 };
+// The file as of the last commit, for the peek's diff. Null when the project is no git repo or the file is untracked.
+const git = simpleGit(ROOT);
+const headText = async (rel) => {
+  if (!(await git.checkIsRepo())) return null;
+  if (!(await git.raw(["ls-files", "--", rel])).trim()) return null;
+  return git.show([`HEAD:${rel}`]);
+};
 const readBody = async (req) => {
   let body = "";
   for await (const chunk of req) body += chunk;
@@ -306,7 +314,8 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "GET" && req.url.startsWith("/refs/file?")) {
     const rel = new URL(req.url, "http://x").searchParams.get("path");
     const text = await readFile(projectPath(rel), "utf8");
-    res.writeHead(200, { "content-type": "text/plain; charset=utf-8" }).end(text);
+    const head = await headText(rel);
+    res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ text, head }));
     return;
   }
   // Opens the file at the line in the editor that launch-editor finds running, or $LAUNCH_EDITOR. A missing editor is

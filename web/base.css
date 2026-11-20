@@ -128,21 +128,19 @@ body[data-focus="none"] #focus-mark {
 /* Above the focus arrow (6): shift() can push the popup and the box over the divider. */
 .comment-float { position: fixed; top: 0; left: 0; z-index: 7; }
 .comment-float[hidden], #comment-submit[hidden] { display: none; }
-/* The peek at a file reference (web/refs.js): a piece of the file, as a code block, above the reply. */
+/* The peek at a file reference (web/refs.js): a CodeMirror view of the file, above the reply. A sensible size, but never
+   past the viewport: refs.js caps its max size to the room left. The view scrolls inside, so nothing outside scrolls. */
 .ref-peek {
-  --peek-pad: 8px;
-  position: fixed; top: 0; left: 0; z-index: 8; max-width: min(100ch, 90vw);
-  background: var(--term-bg); color: var(--code-fg); border-radius: 6px; overflow: hidden;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 8px 24px rgb(0 0 0 / 0.3);
+  position: fixed; top: 0; left: 0; z-index: 8; display: flex; flex-direction: column; overflow: hidden;
+  width: min(100ch, calc(100vw - 16px)); min-width: min(48ch, calc(100vw - 16px)); min-height: min(10em, calc(100vh - 16px));
+  background: #282c34; border-radius: 6px; box-shadow: 0 1px 2px rgb(0 0 0 / 0.25), 0 8px 24px rgb(0 0 0 / 0.3);
 }
 .ref-peek[hidden] { display: none; }
-.ref-peek-head { padding: 6px 10px; font: 12px/1.4 var(--sans); color: #8b949e; border-bottom: 1px solid #2a2f38; }
-.ref-peek-body { display: flex; max-height: 50vh; overflow: auto; scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
-.ref-peek pre { margin: 0; padding: var(--peek-pad) 10px; font: 13px/1.5 var(--mono); white-space: pre; }
-.ref-peek .gutter { color: #6e7681; text-align: right; user-select: none; padding-right: 4px; }
-.ref-peek .code { position: relative; flex: 1; }
-.ref-peek .code code { background: none; padding: 0; }
-.ref-peek .mark { position: absolute; left: 0; right: 0; background: rgb(255 216 107 / 0.14); pointer-events: none; }
+.ref-peek-head { flex: none; padding: 6px 10px; font: 12px/1.4 var(--sans); color: #8b949e; border-bottom: 1px solid #3a3f4b; }
+.ref-peek-body { flex: 1 1 auto; min-height: 0; display: flex; overflow: hidden; }
+.ref-peek .cm-editor { flex: 1; min-width: 0; max-height: 60vh; font-size: 13px; }
+.ref-peek .cm-scroller { font-family: var(--mono); scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
+.ref-peek .cm-ref-line { background: rgb(255 216 107 / 0.16); }
 /* Ink on paper, flipped, so the popup stands out from the sepia reply. */
 /* The phrase grid: 2 rows of icons, 6 then 5, each its own raised ink button with its key tiny at the bottom right. */
 #comment-pick:not([hidden]) { display: grid; grid-template-columns: repeat(6, 34px); gap: 4px; }

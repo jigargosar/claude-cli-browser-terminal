@@ -1,17 +1,19 @@
-// File references in Claude's replies, e.g. `web/main.js:83`, become links. Hover shows the lines, a click opens the
-// file at that line in the editor. The server resolves, reads and opens them (server.mjs, /refs/*). The page never
+// File references in Claude's replies, e.g. `web/main.js:83`, become links. A click peeks at the lines, a double click
+// opens the file at that line in the editor. The server resolves, reads and opens them (server.mjs, /refs/*). The page never
 // navigates. A span wraps each reference before its node is on the page, so no text node on the page is replaced
 // later and the comments' ranges survive (views/last.js). Resolving only adds attributes.
-import { computePosition, offset, flip, shift } from "@floating-ui/dom";
-import { highlight } from "./markdown.js";
+import { autoUpdate, computePosition, flip, offset, shift, size } from "@floating-ui/dom";
+import { LanguageDescription } from "@codemirror/language";
+import { languages } from "@codemirror/language-data";
+import { unifiedMergeView } from "@codemirror/merge";
+import { EditorState, RangeSetBuilder, Text } from "@codemirror/state";
+import { oneDark } from "@codemirror/theme-one-dark";
+import { Decoration, EditorView, lineNumbers } from "@codemirror/view";
 
 // A path with an extension, with an optional drive, ./ or ~/ start, then an optional line or range: `:83`, `:83-90`,
 // `#L83`, `#L83-L90`. Not inside a longer word or a URL.
 const REF =
   /(?<![\w@/\\.:-])((?:[A-Za-z]:[\\/]|\.{1,2}[\\/]|~[\\/])?(?:[\w@.-]+[\\/])*[\w@-][\w@.-]*\.[A-Za-z]\w{0,7})(?:(?::|#L)(\d+)(?:-L?(\d+))?)?(?![\w/\\])/g;
-// Lines shown around a referenced line, and from the top of a file referenced without one.
-const CONTEXT = 4;
-const TOP = 20;
 
 const reply = document.getElementById("reply");
 
@@ -78,75 +80,127 @@ const label = (span) => {
   return line ? `${path}:${line}${end ? `-${end}` : ""}` : path;
 };
 
-// The peek: the referenced lines, a few around them, with the referenced ones marked.
+// The peek: the whole file in a read-only CodeMirror view, wrapped, scrolled to the referenced lines, which are marked.
+// Uncommitted changes show as a diff against HEAD. A click on a reference opens it. A click outside, or Esc, closes it.
+// A double click on a reference opens the file in the editor.
 const peek = document.createElement("div");
 peek.className = "ref-peek";
 peek.hidden = true;
+peek.innerHTML = '<div class="ref-peek-head"></div><div class="ref-peek-body"></div>';
 document.body.append(peek);
+const peekHead = peek.querySelector(".ref-peek-head");
+const peekBody = peek.querySelector(".ref-peek-body");
 let shownFor = null;
-let hideTimer = null;
+let view = null;
+let stopFollowing = null;
 
-const showPeek = async (span) => {
-  shownFor = span;
-  const res = await fetch(`/refs/file?path=${encodeURIComponent(span.dataset.path)}`);
-  if (!res.ok) throw new Error(`${span.dataset.path}: ${res.status} ${await res.text()}`);
-  const lines = (await res.text()).split("\n");
-  // The mouse may have moved on while the file loaded.
-  if (shownFor !== span) return;
-  const line = Math.min(Number(span.dataset.line) || 0, lines.length);
-  const end = Math.min(Math.max(Number(span.dataset.end) || line, line), lines.length);
-  const from = line ? Math.max(1, line - CONTEXT) : 1;
-  const to = line ? Math.min(lines.length, end + CONTEXT) : Math.min(lines.length, TOP);
-  const numbers = Array.from({ length: to - from + 1 }, (_, i) => from + i).join("\n");
-  const code = highlight(lines.slice(from - 1, to).join("\n"), span.dataset.path.split(".").pop());
-  peek.innerHTML =
-    `<div class="ref-peek-head"></div><div class="ref-peek-body"><pre class="gutter"></pre>` +
-    `<pre class="code"><code class="hljs">${code}</code></pre></div>`;
-  peek.querySelector(".ref-peek-head").textContent = `${label(span)} · click opens it in the editor`;
-  peek.querySelector(".gutter").textContent = numbers;
-  if (line) {
-    const mark = document.createElement("div");
-    mark.className = "mark";
-    mark.style.top = `calc(var(--peek-pad) + ${line - from} * 1lh)`;
-    mark.style.height = `calc(${end - line + 1} * 1lh)`;
-    peek.querySelector(".code").append(mark);
-  }
-  peek.style.visibility = "hidden";
-  peek.hidden = false;
+const markedLine = Decoration.line({ class: "cm-ref-line" });
+const markLines = (doc, line, end) => {
+  const marks = new RangeSetBuilder();
+  for (let n = line; n <= end; n++) marks.add(doc.line(n).from, doc.line(n).from, markedLine);
+  return EditorView.decorations.of(marks.finish());
+};
+
+const closePeek = () => {
+  peek.hidden = true;
+  shownFor = null;
+  view?.destroy();
+  view = null;
+  stopFollowing?.();
+  stopFollowing = null;
+};
+
+// Below the reference, or above when there is more room. Never wider or taller than the room left in the viewport.
+const place = async (span) => {
   const { x, y } = await computePosition(span, peek, {
     placement: "bottom-start",
     strategy: "fixed",
-    middleware: [offset(6), flip(), shift({ padding: 8 })],
+    middleware: [
+      offset(6),
+      flip({ padding: 8 }),
+      shift({ padding: 8 }),
+      size({
+        padding: 8,
+        apply: ({ availableWidth, availableHeight }) => {
+          peek.style.maxWidth = `${availableWidth}px`;
+          peek.style.maxHeight = `${availableHeight}px`;
+        },
+      }),
+    ],
   });
   Object.assign(peek.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
 };
 
-const hidePeek = () => {
-  hideTimer = setTimeout(() => {
-    peek.hidden = true;
-    shownFor = null;
-  }, 200);
+const openPeek = async (span) => {
+  closePeek();
+  shownFor = span;
+  const path = span.dataset.path;
+  const res = await fetch(`/refs/file?path=${encodeURIComponent(path)}`);
+  if (!res.ok) throw new Error(`${path}: ${res.status} ${await res.text()}`);
+  const file = await res.json();
+  const language = await LanguageDescription.matchFilename(languages, path.split("/").pop())?.load();
+  // Another click may have come in while the file loaded.
+  if (shownFor !== span) return;
+  // Git can hand back LF where the disk has CRLF. Only real changes may show.
+  const text = file.text.replaceAll("\r\n", "\n");
+  const original = file.head?.replaceAll("\r\n", "\n");
+  const changed = original != null && original !== text;
+  const doc = Text.of(text.split("\n"));
+  const line = Math.min(Number(span.dataset.line) || 0, doc.lines);
+  const end = Math.min(Math.max(Number(span.dataset.end) || line, line), doc.lines);
+  peekHead.textContent = `${label(span)}${changed ? " · uncommitted changes" : ""} · double click the link to open it in the editor`;
+  view = new EditorView({
+    parent: peekBody,
+    state: EditorState.create({
+      doc,
+      extensions: [
+        EditorState.readOnly.of(true),
+        EditorView.editable.of(false),
+        EditorView.lineWrapping,
+        lineNumbers(),
+        oneDark,
+        language ?? [],
+        line ? markLines(doc, line, end) : [],
+        changed ? unifiedMergeView({ original, mergeControls: false }) : [],
+      ],
+    }),
+  });
+  peek.style.visibility = "hidden";
+  peek.hidden = false;
+  await place(span);
+  if (line) view.dispatch({ effects: EditorView.scrollIntoView(doc.line(line).from, { y: "center" }) });
+  // Follows the reference while the reply scrolls or the window resizes.
+  stopFollowing = autoUpdate(span, peek, () => place(span));
 };
 
-reply.addEventListener("mouseover", (event) => {
-  const span = event.target.closest(".file-ref.ok");
-  if (!span) return;
-  clearTimeout(hideTimer);
-  if (span !== shownFor) return showPeek(span);
-});
-reply.addEventListener("mouseout", (event) => {
-  if (event.target.closest(".file-ref.ok") && !event.relatedTarget?.closest?.(".file-ref.ok")) hidePeek();
-});
-peek.addEventListener("mouseenter", () => clearTimeout(hideTimer));
-peek.addEventListener("mouseleave", hidePeek);
-
-reply.addEventListener("click", async (event) => {
-  const span = event.target.closest(".file-ref.ok");
-  // A drag that ends on a reference selects text. Only a plain click opens.
-  if (!span || !getSelection().isCollapsed) return;
+const openInEditor = async (span) => {
   const res = await fetch("/refs/open", {
     method: "POST",
     body: JSON.stringify({ path: span.dataset.path, line: span.dataset.line }),
   });
   if (!res.ok) throw new Error(await res.text());
+};
+
+// The first click of a double click opens the peek. The double click then closes it and opens the editor.
+reply.addEventListener("click", (event) => {
+  const span = event.target.closest(".file-ref.ok");
+  // A drag that ends on a reference selects text. Only a plain click opens.
+  if (!span || event.detail !== 1 || !getSelection().isCollapsed) return;
+  if (span === shownFor) return closePeek();
+  return openPeek(span);
+});
+reply.addEventListener("dblclick", (event) => {
+  const span = event.target.closest(".file-ref.ok");
+  if (!span) return;
+  // A double click selects the word under it.
+  getSelection().removeAllRanges();
+  closePeek();
+  return openInEditor(span);
+});
+document.addEventListener("mousedown", (event) => {
+  if (peek.hidden || peek.contains(event.target) || event.target.closest(".file-ref.ok")) return;
+  closePeek();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !peek.hidden) closePeek();
 });
