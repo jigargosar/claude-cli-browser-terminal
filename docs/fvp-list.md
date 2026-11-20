@@ -89,17 +89,7 @@ Once a task is closed:
     - Result, 2026-11-18: one hook, `session.append`. The mod leads by a median 165 ms, p95 462 ms, over 138 rows. Rows arrive one by one, not in bursts. No slowdown seen in 4 noisy runs. Measured with `claude -p` only, not in a pty, and without subagents. Same `uuid` as the transcript line. Assistant and tool result content match. Prompts and attachments differ in shape. The mod gives 4 fields per row against about 35 in the transcript, and misses the lines without a `uuid`.
     - Next, not started: map each JSONL line and field the page uses to the mod event that gives it, then decide mod only, hybrid, or tail only.
 - [.] Pain: impossible to view/review line number content when referenced in your reply.
-      Brainstorming:
-      - open links to editor and url from within response.
-      - Hover shows line content + links to docs.
-      - Inline content in response.
-    - Solution, 2026-11-20: the page finds file references in the reply's text, whatever their form. A click on one opens a peek, a read-only CodeMirror view: wrapped, the lines marked, uncommitted changes as a diff against HEAD, inside the viewport.
-    - Any reference to a file outside the project folder shows red, linked or not. Such as the global CLAUDE.md. Only project files peek and open.
-    - A double click opens the file in the editor, with `launch-editor`.
-    - Fallback: if the clicks clash with picking a sentence, other keys do it for now. Smooth appear and disappear is a nice to have.
-    - Issues: Some important popups have no hilighted lines, so the context is still not clear. word wrap should be on by default. Hovercontent shouldnot leave the window/viewport, but should have min stuff. if there is a diff it should be shown as such. 
-    - Out of scope: a quote with no path.
-    - To test: a referenced file with uncommitted changes gets its own color too. At close, move this to the modified files task.
+    - Plan: `docs/tasks/file-refs/plan.md`.
 - [ ] Pain: three or four files get modified, and I can't tell which ones or what changed. Unaccounted modifications slip by.
     - Solution: each reply ends with a list of the files modified, outside the project first, in red, then inside the project. Each one links like a file reference.
     - Not decided: how to find the modified files and their diff. Git inside the project. Outside it, perhaps chezmoi.
