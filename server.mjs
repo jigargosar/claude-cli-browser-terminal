@@ -323,7 +323,9 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "POST" && req.url === "/refs/open") {
     const { path: rel, line } = await readBody(req);
     let failed = null;
-    launchEditor(line ? `${projectPath(rel)}:${line}` : projectPath(rel), (_file, message) => (failed = message ?? "no editor found"));
+    // The column is always given. Without one, launch-editor 2.14.2 defaults it to the number 1, and its Windows command
+    // builder calls .includes on every argument, so editors that take the column as its own argument fail.
+    launchEditor(line ? `${projectPath(rel)}:${line}:1` : projectPath(rel), (_file, message) => (failed = message ?? "no editor found"));
     if (failed) res.writeHead(500, { "content-type": "text/plain" }).end(`Could not open ${rel}: ${failed}`);
     else res.writeHead(204).end();
     return;
