@@ -18,7 +18,7 @@
 2. While impleminting regularily perform WIP commits.
 3. Self-review untill you fixed all issues.
 4. Present a list, for manual checking.
-- [ ] 5. To close, Claude lists what the task found that isn't written down yet, its open issues, and the files only it used, each with where it should go. The user approves, and Claude ticks the task and commits.
+5. To close, Claude lists what the task found that isn't written down yet, its open issues, and the files only it used, each with where it should go. The user approves, and Claude ticks the task and commits.
 
 
 ## Releasing
