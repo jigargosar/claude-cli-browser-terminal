@@ -94,3 +94,5 @@ Once a task is closed:
     - Solution: each reply ends with a list of the files modified, outside the project first, in red, then inside the project. Each one links like a file reference.
     - Not decided: how to find the modified files and their diff. Git inside the project. Outside it, perhaps chezmoi.
     - Idea: the server finds the writes in the transcript, since it reads every line. Writes outside the project matter most.
+- [ ] Track how long each task takes, using git log.
+- [ ] `docs/mods/raw/` holds all of the Claude Code docs, the CLI reference included, so a path to a general doc reads as a mods doc.

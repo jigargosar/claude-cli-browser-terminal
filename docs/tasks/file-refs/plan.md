@@ -21,6 +21,8 @@ Primary goal: when a reply mentions a file, I see the exact lines it means, in o
 - [ ] A click on a line number opens the editor there.
 - [ ] If a click on a reference clashes with picking a sentence, a keyboard shortcut opens the peek instead.
 - [ ] Nice to have: the peek appears and disappears smoothly.
+- [ ] Bring back the diff in the peek, once it is readable. It is commented out in `web/refs.js`.
+- [.] Pain: 
 
 ## Reference
 
