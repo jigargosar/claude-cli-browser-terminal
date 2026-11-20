@@ -2,7 +2,7 @@
 // opens the file at that line in the editor. The server resolves, reads and opens them (server.mjs, /refs/*). The page never
 // navigates. A span wraps each reference before its node is on the page, so no text node on the page is replaced
 // later and the comments' ranges survive (views/last.js). Resolving only adds attributes.
-import { autoUpdate, computePosition, flip, offset, shift, size } from "@floating-ui/dom";
+import { autoUpdate, computePosition, flip, hide, offset, shift, size } from "@floating-ui/dom";
 import { LanguageDescription } from "@codemirror/language";
 import { languages } from "@codemirror/language-data";
 import { unifiedMergeView } from "@codemirror/merge";
@@ -112,7 +112,7 @@ const closePeek = () => {
 
 // Below the reference, or above when there is more room. Never wider or taller than the room left in the viewport.
 const place = async (span) => {
-  const { x, y } = await computePosition(span, peek, {
+  const { x, y, middlewareData } = await computePosition(span, peek, {
     placement: "bottom-start",
     strategy: "fixed",
     middleware: [
@@ -126,9 +126,12 @@ const place = async (span) => {
           peek.style.maxHeight = `${availableHeight}px`;
         },
       }),
+      hide(),
     ],
   });
-  Object.assign(peek.style, { left: `${x}px`, top: `${y}px`, visibility: "" });
+  // A reference scrolled out of the reply, or on a page no longer shown, hides the peek until it is back.
+  const hidden = middlewareData.hide.referenceHidden;
+  Object.assign(peek.style, { left: `${x}px`, top: `${y}px`, visibility: hidden ? "hidden" : "" });
 };
 
 const openPeek = async (span) => {
@@ -168,6 +171,8 @@ const openPeek = async (span) => {
   peek.style.visibility = "hidden";
   peek.hidden = false;
   await place(span);
+  // Closed while it was being placed.
+  if (shownFor !== span) return;
   if (line) view.dispatch({ effects: EditorView.scrollIntoView(doc.line(line).from, { y: "center" }) });
   // Follows the reference while the reply scrolls or the window resizes.
   stopFollowing = autoUpdate(span, peek, () => place(span));
@@ -181,17 +186,21 @@ const openInEditor = async (span) => {
   if (!res.ok) throw new Error(await res.text());
 };
 
-// The first click of a double click opens the peek. The double click then closes it and opens the editor.
+// A click opens the peek once the double-click window has passed, so a double click only opens the editor.
+const DOUBLE_CLICK_MS = 250;
+let pendingPeek = null;
 reply.addEventListener("click", (event) => {
   const span = event.target.closest(".file-ref.ok");
   // A drag that ends on a reference selects text. Only a plain click opens.
   if (!span || event.detail !== 1 || !getSelection().isCollapsed) return;
+  clearTimeout(pendingPeek);
   if (span === shownFor) return closePeek();
-  return openPeek(span);
+  pendingPeek = setTimeout(() => openPeek(span), DOUBLE_CLICK_MS);
 });
 reply.addEventListener("dblclick", (event) => {
   const span = event.target.closest(".file-ref.ok");
   if (!span) return;
+  clearTimeout(pendingPeek);
   // A double click selects the word under it.
   getSelection().removeAllRanges();
   closePeek();

@@ -284,12 +284,23 @@ const projectPath = (rel) => {
   if (!insideRoot(abs)) throw new Error(`${rel} is outside the project folder`);
   return abs;
 };
-// The file as of the last commit, for the peek's diff. Null when the project is no git repo or the file is untracked.
+// The file as of the last commit, for the peek's diff. Null when the project is no git repo or the file is not in HEAD,
+// e.g. untracked or only staged.
 const git = simpleGit(ROOT);
 const headText = async (rel) => {
   if (!(await git.checkIsRepo())) return null;
-  if (!(await git.raw(["ls-files", "--", rel])).trim()) return null;
+  if (!(await git.raw(["ls-tree", "--name-only", "HEAD", "--", rel])).trim()) return null;
   return git.show([`HEAD:${rel}`]);
+};
+// A failed /refs/* request answers the page with its error, which shows in the page's error banner. It must not reach
+// crash(): a peek at a file deleted since the reply would stop the server, and the claude session with it.
+const refsRequest = async (res, handle) => {
+  try {
+    await handle();
+  } catch (err) {
+    console.error(err);
+    res.writeHead(500, { "content-type": "text/plain" }).end(err.stack ?? String(err));
+  }
 };
 const readBody = async (req) => {
   let body = "";
@@ -306,29 +317,32 @@ const server = http.createServer(async (req, res) => {
     return;
   }
   if (req.method === "POST" && req.url === "/refs/resolve") {
-    const { refs } = await readBody(req);
-    const resolved = await Promise.all(refs.map(resolveRef));
-    res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ resolved }));
-    return;
+    return refsRequest(res, async () => {
+      const { refs } = await readBody(req);
+      const resolved = await Promise.all(refs.map(resolveRef));
+      res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ resolved }));
+    });
   }
   if (req.method === "GET" && req.url.startsWith("/refs/file?")) {
-    const rel = new URL(req.url, "http://x").searchParams.get("path");
-    const text = await readFile(projectPath(rel), "utf8");
-    const head = await headText(rel);
-    res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ text, head }));
-    return;
+    return refsRequest(res, async () => {
+      const rel = new URL(req.url, "http://x").searchParams.get("path");
+      const text = await readFile(projectPath(rel), "utf8");
+      const head = await headText(rel);
+      res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ text, head }));
+    });
   }
   // Opens the file at the line in the editor that launch-editor finds running, or $LAUNCH_EDITOR. A missing editor is
   // reported to the page. A failure after the start shows in this terminal (launch-editor prints it).
   if (req.method === "POST" && req.url === "/refs/open") {
-    const { path: rel, line } = await readBody(req);
-    let failed = null;
-    // The column is always given. Without one, launch-editor 2.14.2 defaults it to the number 1, and its Windows command
-    // builder calls .includes on every argument, so editors that take the column as its own argument fail.
-    launchEditor(line ? `${projectPath(rel)}:${line}:1` : projectPath(rel), (_file, message) => (failed = message ?? "no editor found"));
-    if (failed) res.writeHead(500, { "content-type": "text/plain" }).end(`Could not open ${rel}: ${failed}`);
-    else res.writeHead(204).end();
-    return;
+    return refsRequest(res, async () => {
+      const { path: rel, line } = await readBody(req);
+      let failed = null;
+      // The column is always given. Without one, launch-editor 2.14.2 defaults it to the number 1, and its Windows command
+      // builder calls .includes on every argument, so editors that take the column as its own argument fail.
+      launchEditor(line ? `${projectPath(rel)}:${line}:1` : projectPath(rel), (_file, message) => (failed = message ?? "no editor found"));
+      if (failed) res.writeHead(500, { "content-type": "text/plain" }).end(`Could not open ${rel}: ${failed}`);
+      else res.writeHead(204).end();
+    });
   }
   // Which transcript the server follows, for debugging an empty or stale page.
   if (req.method === "GET" && req.url === "/status") {
