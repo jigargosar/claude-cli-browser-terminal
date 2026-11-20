@@ -7,6 +7,8 @@ Task in `docs/fvp-list.md`: "Pain: impossible to view/review line number content
 - [x] Double click opens the running editor.
 - [x] Outside the project: red, inert.
 - [x] Errors go to the banner. The server never stops.
+- [ ] ccw gives every claude it starts the reply rules, with `--append-system-prompt`: name the file and line for every reference. For removed or changed lines, show the old text inline or as a diff.
+- [ ] If a click on a reference clashes with picking a sentence, keys open the peek instead.
 - [ ] Nice to have: the peek appears and disappears smoothly.
 - [ ] A click on a line number opens the editor there.
 - [ ] Head counts the changes, e.g. "2 changes, +12 −3".
@@ -35,10 +37,6 @@ Task in `docs/fvp-list.md`: "Pain: impossible to view/review line number content
 
 - Diff: `@codemirror/merge`, with `collapseUnchanged`, `goToNextChunk`, `getChunks`.
 - System app: `open`, already a server dependency.
-
-### Notes
-
-- Out of scope: a quote with no path.
 
 ### Manual checks
 
