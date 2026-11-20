@@ -3,6 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { readFile, stat } from "node:fs/promises";
 import http from "node:http";
+import { homedir } from "node:os";
 import path from "node:path";
 import { spawn } from "@lydell/node-pty";
 import { SerializeAddon } from "@xterm/addon-serialize";
@@ -266,14 +267,16 @@ const projectFiles = async () => {
   }
   return fileList.files;
 };
-// A reference as written to a project path with forward slashes, or null. A path from the root wins. Else a name that
-// ends exactly one project path, e.g. `main.js` for `web/main.js`.
+// A reference as written to { path } of a project file with forward slashes, { outside: true } for any path outside the
+// project folder, existing or not, or null. A path from the root wins. Else a name that ends exactly one project path,
+// e.g. `main.js` for `web/main.js`.
 const resolveRef = async (ref) => {
-  const abs = path.resolve(ROOT, ref);
-  if (insideRoot(abs) && (await isFile(abs))) return path.relative(ROOT, abs).replaceAll("\\", "/");
+  const abs = path.resolve(ROOT, ref.replace(/^~(?=[\\/])/, homedir()));
+  if (!insideRoot(abs) && abs !== ROOT) return { outside: true };
+  if (await isFile(abs)) return { path: path.relative(ROOT, abs).replaceAll("\\", "/") };
   const tail = ref.replaceAll("\\", "/").replace(/^\.\//, "");
   const hits = (await projectFiles()).filter((f) => f === tail || f.endsWith(`/${tail}`));
-  return hits.length === 1 ? hits[0] : null;
+  return hits.length === 1 ? { path: hits[0] } : null;
 };
 const projectPath = (rel) => {
   const abs = path.resolve(ROOT, rel);

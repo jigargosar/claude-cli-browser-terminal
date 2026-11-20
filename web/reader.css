@@ -30,6 +30,8 @@
 /* A file reference the server found (web/refs.js): hover peeks, a click opens the editor. */
 .md .file-ref.ok { color: var(--link); cursor: pointer; text-decoration: underline dotted 1px; text-underline-offset: 3px; }
 .md .file-ref.ok:hover { text-decoration-style: solid; }
+/* A file outside the project folder, such as a global config: red, so a change there never hides in the reply. */
+.md .file-ref.outside { color: var(--outside); font-weight: 600; }
 .md strong { font-weight: 600; }
 .md hr { border: 0; border-top: 1px solid var(--rule); margin: 2em 0; }
 .md blockquote { padding: 0 0 0 1em; color: var(--quote); border-left: 2px solid var(--rule); }

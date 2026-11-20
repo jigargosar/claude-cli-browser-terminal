@@ -53,9 +53,10 @@ export const linkify = (root) => {
   return resolve(root);
 };
 
-// Only references the server finds in the project folder turn into links.
+// Only references the server finds in the project folder turn into links. A path outside the folder shows red, so a
+// change outside the project stands out. It neither peeks nor opens.
 const resolve = async (root) => {
-  const spans = [...root.querySelectorAll(".file-ref:not(.ok)")];
+  const spans = [...root.querySelectorAll(".file-ref:not(.ok):not(.outside)")];
   if (!spans.length) return;
   const refs = [...new Set(spans.map((s) => s.dataset.ref))];
   const res = await fetch("/refs/resolve", { method: "POST", body: JSON.stringify({ refs }) });
@@ -63,10 +64,12 @@ const resolve = async (root) => {
   const { resolved } = await res.json();
   const byRef = new Map(refs.map((r, i) => [r, resolved[i]]));
   for (const span of spans) {
-    const path = byRef.get(span.dataset.ref);
-    if (!path) continue;
-    span.dataset.path = path;
-    span.classList.add("ok");
+    const found = byRef.get(span.dataset.ref);
+    if (found?.outside) span.classList.add("outside");
+    else if (found) {
+      span.dataset.path = found.path;
+      span.classList.add("ok");
+    }
   }
 };
 
