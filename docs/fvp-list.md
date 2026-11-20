@@ -54,7 +54,6 @@ Once a task is closed:
     - Move research docs into `docs/research/`, flat, with an index of one-line summaries.
     - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.
 - [.] multiple housekeeping tasks are grouped together, that is good, but are they shown in proper chrono order? even some other stufff appears then goes. Pain: dont know what is going on, and our algo to collect stuff.
-- [ ] safely open links, editor and url.
 - [.] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them.
     - Solution: a one-minute animated walkthrough, mocked, not a screen recording. Eight scenes from the README draft: the pain, the page, click to reply, one key, keyboard only, send all, the tagline.
     - Source and render steps: `docs/mockups/showcase-video/`. Output: `docs/media/ccw-showcase.gif` and `.mp4`, shown at the top of `README.md`.
@@ -75,4 +74,9 @@ Once a task is closed:
 - [x] Pain: in a project's first session, the reading pane stays empty.
     - Fixed in `follow-jsonl.mjs`, tested by `test/follow-jsonl.test.mjs`, and by hand on 2026-11-19.
 - [ ] reference materal can be part of plan file for each task. But on close of related issues. Its content should be levated to reference section.
-- Pain: things seem spread out. Plan, task, reference, spike and mockups. Thier notes, reference, plan etc. causing confusion.
+- [ ] Pain: things seem spread out. Plan, task, reference, spike and mockups. Thier notes, reference, plan etc. causing confusion.
+- [.] Pain: impossible to view/review line number content when referenced in your reply.
+      Brainstorming:
+      - open links to editor and url from within response.
+      - Hover shows line content + links to docs.
+      - Inline content in response.
