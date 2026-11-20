@@ -24,4 +24,4 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 
 - No task may start before it is on `docs/fvp-list.md`.
 - Browser libraries come from `node_modules`, not a CDN.
-- Never start/spawn another session. And even if you do it ever, users permission, always pas --mide..... fix this line.
+- The server does not hot reload. Only the page rebuilds on change. Before testing a change to `server.mjs`, ask the user to restart the server.
