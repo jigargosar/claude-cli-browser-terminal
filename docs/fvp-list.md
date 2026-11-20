@@ -3,9 +3,10 @@
 1. The user owns this list. Claude edits it only when asked.
 2. New tasks go at the end.
 3. Weeding runs regularly. It merges duplicates and drops ticked or stale tasks. Before a task goes, Claude lists its unwritten findings and open issues, each with where it should go. The user approves.
-4. Meta tasks, changes to how we work, never go in the list. They are applied as soon as they come up.
+4. Meta tasks, changes to how we work, never go in the list. They are applied as soon as they come up. Those not applied yet go under Meta, in progress.
     - Claude drafts the change. The user reviews the diff before it is committed.
 5. A change that isn't concrete yet gets the prefix "Experiment:". It goes where it needs a decision or a task.
+6. Rules are defaults, and older tasks may not follow them. To break one, Claude says so in one line and carries on.
 
 ## Task shape
 
@@ -33,13 +34,24 @@ Once a task is closed:
 
 1. If an end user would notice the change, add a line under Unreleased in `CHANGELOG.md`.
 2. If Unreleased has lines, propose `pnpm release` with AskUserQuestion. Claude never runs it unasked.
-
-Steps and changelog format: `scripts/release/README.md`.
+3. Changelog format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), with Added, Changed, Fixed, Removed.
+4. Before a release, open the Unreleased link at the bottom of `CHANGELOG.md`. It lists every commit since the last tag.
+5. `pnpm release` builds, runs `kacl prerelease` (fails if Unreleased is empty), bumps the patch, stamps the changelog, updates the README install command, packs, commits, tags and pushes.
 
 ## Experiment
 
 - Parallel work in worktrees. Conflicts with this workflow get resolved as they come up.
 - Worktree tasks are marked as such. How a task links to its worktree is not worked out yet.
+
+## Meta, in progress
+
+- Reorganize tasks and docs, as agreed 2026-11-10.
+    - Pain: things seem spread out. Plan, task, reference, spike and mockups. Thier notes, reference, plan etc. causing confusion.
+    - Apply the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file.
+    - Move research docs into `docs/research/`, flat, with an index of one-line summaries.
+    - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.
+    - use google z tool to create a markdown file with code and comments so we know exactly what we are up to. without things being spread out.
+- Extract a skill that handles our process in other projects.
 
 # List
 
@@ -50,19 +62,11 @@ Steps and changelog format: `scripts/release/README.md`.
 - [ ] markdown pane UX sucks. need better UX.
 - [ ] format response and show images.
 - [ ] move divider with keyboard
-- [ ] Extract a skill that handles our process in other projects.
 - [ ] switching between panes is still clumsy. Happens unintentionally by using trackpad.
 - [ ] Mark dead turns after a rewind.
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
     - Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat.
 - [ ] need recommendation button for quick comments.
-- [ ] Reorganize tasks and docs, as agreed 2026-11-10.
-    - Split the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together, into 8 top-level tasks, each with pain, solution and done-when. Then delete its file.
-    - Move research docs into `docs/research/`, flat, with an index of one-line summaries.
-    - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.
-    - Pain: things seem spread out. Plan, task, reference, spike and mockups. Thier notes, reference, plan etc. causing confusion.
-    - use google z tool to create a markdown file with code and comments so we know exactly what we are up to. without things being spread out.
-    - reference materal can be part of plan file for each task. But on close of related issues. Its content should be levated to reference section.
 - [.] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them.
     - Solution: a one-minute animated walkthrough, mocked, not a screen recording. Eight scenes from the README draft: the pain, the page, click to reply, one key, keyboard only, send all, the tagline.
     - Source and render steps: `docs/mockups/showcase-video/`. Output: `docs/media/ccw-showcase.gif` and `.mp4`, shown at the top of `README.md`.
