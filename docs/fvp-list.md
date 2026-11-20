@@ -93,11 +93,12 @@ Once a task is closed:
       - open links to editor and url from within response.
       - Hover shows line content + links to docs.
       - Inline content in response.
-    - Solution, minimal:
-        1. The page turns file references in Claude's replies into links. Forms: `path:line`, `path:line-line`, `path#L83`, `[text](relative path)`, and bare paths, in code or in prose.
-        2. Only paths that exist in the project folder become links. The server checks, and reads only files inside that folder.
-        3. Hover shows the referenced lines, with a few lines around them, highlighted.
-        4. Click opens the file at that line in the editor, through the server, with `launch-editor`. The page never navigates.
-        5. Web links open in a new tab.
+    - Solution, 2026-11-20: the page finds file references in the reply's text, whatever their form. A click on one opens a peek, a read-only CodeMirror view: wrapped, the lines marked, uncommitted changes as a diff against HEAD, inside the viewport.
+    - Any reference to a file outside the project folder shows red, linked or not. Such as the global CLAUDE.md. Only project files peek and open.
+    - A double click opens the file in the editor, with `launch-editor`.
+    - Fallback: if the clicks clash with picking a sentence, other keys do it for now. Smooth appear and disappear is a nice to have.
     - Issues: Some important popups have no hilighted lines, so the context is still not clear. word wrap should be on by default. Hovercontent shouldnot leave the window/viewport, but should have min stuff. if there is a diff it should be shown as such. 
     - Out of scope: a quote with no path.
+- [ ] Pain: three or four files get modified, and I can't tell which ones or what changed. Unaccounted modifications slip by.
+    - Solution: each reply ends with a list of the files modified, outside the project first, in red, then inside the project. Each one links like a file reference.
+    - Not decided: how to find the modified files and their diff. Git inside the project. Outside it, perhaps chezmoi.
