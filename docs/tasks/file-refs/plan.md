@@ -2,22 +2,25 @@
 
 Task in `docs/fvp-list.md`: "Pain: impossible to view/review line number content when referenced in your reply."
 
+Primary goal: when a reply mentions a file, I see the exact lines it means, in one click.
+
 - [x] References in reply text and markdown links become links.
 - [x] Click peeks, in CodeMirror, wrapped, lines marked.
 - [x] Double click opens the running editor.
 - [x] Outside the project: red, inert.
 - [x] Errors go to the banner. The server never stops.
-- [ ] ccw gives every claude it starts the reply rules, with `--append-system-prompt`: name the file and line for every reference. For removed or changed lines, show the old text inline or as a diff.
-- [ ] If a click on a reference clashes with picking a sentence, keys open the peek instead.
-- [ ] Nice to have: the peek appears and disappears smoothly.
-- [ ] A click on a line number opens the editor there.
-- [ ] Head counts the changes, e.g. "2 changes, +12 −3".
-- [ ] Next and previous change, by button and key.
-- [ ] Unchanged lines collapse, and expand on click.
-- [ ] Scroll to the referenced line, else the first change.
-- [ ] No git, or no commit yet: no diff, tooltip says so.
+- [ ] Each state gets its color and tooltip. See States.
+- [ ] Test whether a file with uncommitted changes needs its own link color. If so, build it in the modified files task.
+- [ ] Is the diff in the peek readable, and does it need a legend for its colors?
 - [ ] Binary files open in the system's app.
-- [.] Each state gets its color and tooltip. See States.
+- [ ] No git, or no commit yet: no diff, tooltip says so.
+- [ ] Scroll to the referenced line, else the first change.
+- [ ] Unchanged lines collapse, and expand on click.
+- [ ] Next and previous change, by button and keyboard shortcut.
+- [ ] Head counts the changes, e.g. "2 changes, +12 −3".
+- [ ] A click on a line number opens the editor there.
+- [ ] If a click on a reference clashes with picking a sentence, a keyboard shortcut opens the peek instead.
+- [ ] Nice to have: the peek appears and disappears smoothly.
 
 ## Reference
 

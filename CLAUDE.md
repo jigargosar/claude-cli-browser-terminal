@@ -23,5 +23,6 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 # Rules
 
 - No task may start before it is on `docs/fvp-list.md`.
+- Finish the task's pain point first, plus at most one more pain found while building it. When the user asks for something secondary, say so and guide them back.
 - Browser libraries come from `node_modules`, not a CDN.
 - The server does not hot reload. Only the page rebuilds on change. Before testing a change to `server.mjs`, ask the user to restart the server.
