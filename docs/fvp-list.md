@@ -99,4 +99,5 @@ Once a task is closed:
         3. Hover shows the referenced lines, with a few lines around them, highlighted.
         4. Click opens the file at that line in the editor, through the server, with `launch-editor`. The page never navigates.
         5. Web links open in a new tab.
+    - Issues: Some important popups have no hilighted lines, so the context is still not clear. word wrap should be on by default. Hovercontent shouldnot leave the window/viewport, but should have min stuff. if there is a diff it should be shown as such. 
     - Out of scope: a quote with no path.

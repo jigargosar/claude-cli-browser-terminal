@@ -176,8 +176,8 @@ reply.addEventListener("mouseup", (event) => {
     const { range: commented } = comments[index];
     return openBox(commented, near(commented, event.clientX, event.clientY), index);
   }
-  // A single click picks the sentence under it. Links and buttons keep their click.
-  if (event.detail !== 1 || event.target.closest("a, button")) return;
+  // A single click picks the sentence under it. Links, file references (web/refs.js) and buttons keep their click.
+  if (event.detail !== 1 || event.target.closest("a, button, .file-ref.ok")) return;
   const sentence = sentenceAt(event.clientX, event.clientY);
   if (sentence) return pickRange(sentence, near(sentence, event.clientX, event.clientY));
 });

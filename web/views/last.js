@@ -1,6 +1,7 @@
 // View "last": the page of the last turn: the prompt, Claude's text rendered as markdown, and what Claude did between
 // the texts (views/turn.js).
 import { render } from "../markdown.js";
+import { linkify } from "../refs.js";
 import { newTurnPage } from "./turn.js";
 
 const reply = document.getElementById("reply");
@@ -70,6 +71,7 @@ const replyNode = (item) => {
   node.className = "turn-text";
   node.innerHTML = render(item.text);
   addCodeBars(node);
+  linkify(node);
   return node;
 };
 
