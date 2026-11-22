@@ -6,11 +6,9 @@
 4. Weeding runs regularly. It merges duplicates and drops ticked or stale tasks.
     - Before a task goes, Claude lists its unwritten findings and open issues, each with where it should go. The user approves.
 
-## Task shape
-
 ## Working a task
 
-1. Claude works the last dotted task:
+1. Claude works the last dotted task.
 
 2. Get the pain clear before work starts. It may be an XY problem.
     - The user's solution ideas are input, not the spec. Claude proposes the solution.
@@ -18,8 +16,8 @@
 >       - Solution: <the plan, in a few lines>
 
 
-3. While impleminting regularily perform WIP commits.
-4. Self-review untill you fixed all issues.
+3. While implementing, regularly perform WIP commits.
+4. Self-review until you fixed all issues.
 5. Present a list, for manual checking.
 6. To close, Claude lists what the task found that isn't written down yet, its open issues, and the files only it used, each with where it should go. The user approves, and Claude ticks the task and commits.
     - The plan lives as sub-bullets under its task.
@@ -88,7 +86,7 @@
     - Next, not started: map each JSONL line and field the page uses to the mod event that gives it, then decide mod only, hybrid, or tail only.
 - [x] Pain: impossible to view/review line number content when referenced in your reply.
     - Plan: `docs/tasks/file-refs/plan.md`. Closed on 2026-11-22.
-- [ ] File peek, left over from the task above: the list under "Left over" in `docs/tasks/file-refs/plan.md`. The diff, a transition, a click on a line to open the editor, and space after the last line.
+- [ ] File peek, left over from the file references task: the list under "Left over" in `docs/tasks/file-refs/plan.md`. The diff, a transition, a click on a line to open the editor, and space after the last line.
 - [ ] Pain: three or four files get modified, and I can't tell which ones or what changed. Unaccounted modifications slip by.
     - Solution: each reply ends with a list of the files modified, outside the project first, in red, then inside the project. Each one links like a file reference.
     - Not decided: how to find the modified files and their diff. Git inside the project. Outside it, perhaps chezmoi.
