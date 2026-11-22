@@ -27,6 +27,8 @@
     "test:about": "echo deep investigation before we even think about running this test, so dont",
     "test:unit": "vitest run --root . --dir test",
     "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku",
+    "check:page:about": "echo Check of the page by Claude. Opens the built page in a headless browser, fed by a transcript file, with no claude. Why: scripts/test-page/README.md",
+    "check:page": "node scripts/test-page/smoke.mjs",
     "preversion": "kacl prerelease",
     "version": "kacl release && node scripts/readme-version.mjs && pnpm pack --pack-destination published-versions && git add CHANGELOG.md README.md published-versions"
   },

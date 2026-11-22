@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- A file reference to a committed file opens when ccw runs in a subfolder of a git repository. Before, the file view showed an error.
 
 ## [0.1.18] - 2026-11-22
 ### Added

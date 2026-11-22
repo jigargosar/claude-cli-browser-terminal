@@ -102,8 +102,13 @@ Once a task is closed:
 - [ ] Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
     - Idea: the page shows its version number, and the changelog with Unreleased.
     - Idea: known issues go in the changelog too, so I don't hunt for a bug that is already known.
-- [ ] Pain: I run every check of the page by hand, and I repeat "test it yourself with puppeteer-core" in every session.
+- [.] Pain: I run every check of the page by hand, and I repeat "test it yourself with puppeteer-core" in every session.
     - Idea: a test page Claude can open by itself in the test browser, with no second claude session. Today the page needs the server, and the server starts claude.
+    - Solution: the server shows a transcript file and starts no claude. A script opens that page in a headless browser. How: `scripts/test-page/README.md`.
+    - Done when: Claude checks the page with no step by the user, and the next session finds how in `docs/handoff.md`.
+    - Built 2026-11-22: `pnpm check:page` passes. It checks that the reply shows, that a click on a file reference shows the file, and that Esc closes it.
 - [ ] The release fails when `server.mjs` has CRLF line endings in the working folder: `pnpm pack` refuses the shebang line. Seen on 2026-11-22. What wrote the CRLF is not known.
 - [ ] Pain: a sentence like "Fix 3 is live now" points back by a number, so I can't tell what it means, or reply to it alone.
     - Idea: one more line in the system prompt in `server.mjs`. Every sentence names the thing it talks about.
+- [ ] Idea: the word "explain". Claude says its last reply again in plainer words, with no new ideas, no next steps and no question.
+- [ ] Pain: the first click after the page loads lands on the page itself, not on what is under it. Seen in the test browser on 2026-11-22, not checked in a normal browser. `scripts/test-page/test-page.mjs` works around it.

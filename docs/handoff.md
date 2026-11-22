@@ -10,7 +10,8 @@ For the next session. Read this, then `CLAUDE.md`, `docs/fvp-list.md` and `docs/
 - The diff in the peek is commented out in `web/refs.js`, because a heavily changed file showed as one wall of green.
 - Closed on 2026-11-22, after the user's checks: the system prompt in `server.mjs`, outside files that peek and open, and the peek covering the terminal pane. What is left over sits under "Left over" in the plan.
 - Next: the 0.1.18 release, if it has not happened. `CHANGELOG.md` shows it.
-- After that, recommended by Claude, in this order: the task "I run every check of the page by hand" in `docs/fvp-list.md`, then the modified files task, for the pain of reviewing a diff.
+- In progress since 2026-11-22: the task "I run every check of the page by hand" in `docs/fvp-list.md`. The test page is built, and Claude checks the page with `pnpm check:page`. How: `scripts/test-page/README.md`.
+- After that, recommended by Claude: the modified files task, for the pain of reviewing a diff.
 - New on 2026-11-22: Goal 4, Focus and UX principles in `CLAUDE.md`.
 
 ## How the user wants to work
