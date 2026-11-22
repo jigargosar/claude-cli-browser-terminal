@@ -1,13 +1,10 @@
 # How we work
 
-1. The user owns this list. Claude edits it only when asked.
-2. New tasks go at the end. Never ever start work without writing its pain points here.
-    - Exception: meta work, recorded under Meta, in progress.
-3. Weeding runs regularly. It merges duplicates and drops ticked or stale tasks. Before a task goes, Claude lists its unwritten findings and open issues, each with where it should go. The user approves.
-4. Meta tasks, changes to how we work, have higher priority than the task list.
-    - Claude drafts the change. The user reviews the diff before it is committed.
-5. A change that isn't concrete yet gets the prefix "Experiment:". It goes where it needs a decision or a task.
-6. Rules are defaults, and older tasks may not follow them. To break one, Claude says so in one line and carries on.
+1. New tasks are appended at the end of the file. Unformatted is fine.
+2. Never ever start work before its task has a `Pain:` line.
+3. Meta tasks are the exception to the workflow rules.
+4. Weeding runs regularly. It merges duplicates and drops ticked or stale tasks.
+    - Before a task goes, Claude lists its unwritten findings and open issues, each with where it should go. The user approves.
 
 ## Task shape
 
