@@ -59,3 +59,24 @@
 
 - The user's count for the test page: 5 to 10 percent of the context and 1 to 2 percent of the weekly quota.
 - Decided: open.
+
+## Cleanup, started at 16:10
+
+- The user chose to weed out what the two sessions of the day added, one step at a time.
+- Each step is its own commit.
+- Step 1: the nine lines added today to `~/.claude/CLAUDE.md`, lines 20 to 28, are removed.
+    - That file is not in git, so the lines are kept here.
+
+```
+- A question or a check gets its answer from the context, or from one lookup.
+- When it needs more, Claude states the plan in one line and waits for a go.
+- When a lookup shows something unexpected, Claude reports it in one line and stops.
+- When something blows up, Claude stops and gives three lines: what happened, the state now, how to undo.
+    - The user says keep or undo.
+    - The lesson gets one parked line. Work resumes.
+- After three rounds on one topic, Claude gives one recommendation and one question, and nothing else.
+- Freeze: until 2026-11-29, no edits to this file or to a project's `CLAUDE.md`.
+    - A complaint about Claude's behaviour gets one line at the end of the project's task list, with no discussion.
+```
+
+- Step 2: `docs/handoff.md` is deleted. Git keeps it.
