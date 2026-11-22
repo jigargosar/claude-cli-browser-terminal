@@ -13,6 +13,10 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
     - Done when: every feature the README lists is released and works on first use.
     - Done when: the showcase plays from the README.
     - Done when: one write-up on the user's blog links to it.
+- Secondary aim, for your information: quick notes (QN), the `quick-notes-v2` project.
+    - ccw was made to make it easy to author other apps, and it is used to develop itself too. QN is such an app, and the work moves there sooner or later.
+    - QN is where the user's general knowledge goes: UX principles, references, leisure activities, notes on other products and ideas, extension development, RAG, docs on how AI tools work, and pages from its web clipper extension.
+    - Today no system records that knowledge. QN is needed, and it has a handful of major issues.
 
 # Focus
 

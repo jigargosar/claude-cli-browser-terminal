@@ -44,6 +44,7 @@ Not part of the closed task. One undotted task in `docs/fvp-list.md` points here
 - [ ] Bring back the diff in the peek, once it is readable. It is commented out in `web/refs.js`.
 - [ ] Empty space after the last line, so a reference near the end of the file can sit in the middle.
 - [ ] Select or click a line in the peek to open the editor at that line.
+- [ ] A double click on a reference opens the editor, and it also opens the reply icons over the reference. Seen on 2026-11-22.
 
 ## Reference
 
