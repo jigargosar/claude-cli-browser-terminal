@@ -4,17 +4,31 @@ Task in `docs/fvp-list.md`: "Pain: impossible to view/review line number content
 
 Primary goal: when a reply mentions a file, I see the exact lines it means, in one click.
 
-Done when: the three dotted items below pass their manual checks. Then the task closes and releases. The open items left become new undotted tasks.
+Closed on 2026-11-22. The user checked the items below in the page that day.
 
 - [x] References in reply text and markdown links become links.
 - [x] Click peeks, in CodeMirror, wrapped, lines marked.
 - [x] Double click opens the running editor.
 - [x] Outside the project: red.
 - [x] Errors go to the banner. The server never stops.
-- [.] Pain: an outside file is red and not clickable, so it is not reachable.
-    - Solution: it stays red, and it peeks and opens like any other. Built 2026-11-22, not checked.
-- [.] Pain: the peek's place changes with the reference, which makes it painful to read.
-    - Solution: the peek covers the terminal pane, full height, always in the same place. Built 2026-11-22, not checked.
+- [x] Pain: an outside file is red and not clickable, so it is not reachable.
+    - Solution: it stays red, and it peeks and opens like any other.
+- [x] Pain: the peek's place changes with the reference, which makes it painful to read.
+    - Solution: the peek covers the terminal pane, full height, always in the same place. The referenced lines sit in the middle. A range taller than the view starts at its top.
+- [x] Pain: "Where is the reference? Right now you are talking about a file, and I can't even figure out what you are talking about."
+    - Solution: ccw starts claude with `--append-system-prompt` and this prompt, in `server.mjs:53-58`:
+      ```
+      In your responses:
+      - every file reference is written as `path:line` or `path:start-end`
+      - every line number matches the file as it is now
+      - every reference to removed text is shown as a verbatim quote of that text
+      ```
+    - Checked by Claude on 2026-11-22: the running claude has the prompt in its start arguments. Not checked: what a reply looks like in a session that never heard of the rule.
+
+## Left over
+
+Not part of the closed task. One undotted task in `docs/fvp-list.md` points here.
+
 - [ ] Each state gets its color and tooltip. See States.
 - [ ] Test whether a file with uncommitted changes needs its own link color. If so, build it in the modified files task.
 - [ ] Is the diff in the peek readable, and does it need a legend for its colors?
@@ -28,15 +42,8 @@ Done when: the three dotted items below pass their manual checks. Then the task 
 - [ ] If a click on a reference clashes with picking a sentence, a keyboard shortcut opens the peek instead.
 - [ ] The peek appears and disappears with a transition. See UX principles in `CLAUDE.md`.
 - [ ] Bring back the diff in the peek, once it is readable. It is commented out in `web/refs.js`.
-- [.] Pain: "Where is the reference? Right now you are talking about a file, and I can't even figure out what you are talking about."
-    - Solution: ccw starts claude with `--append-system-prompt` and this prompt, drafted with the user on 2026-11-20:
-      ```
-      In your responses:
-      - every file reference is written as `path:line` or `path:start-end`
-      - every line number matches the file as it is now
-      - every reference to removed text is shown as a verbatim quote of that text
-      ```
-    - In `server.mjs:53-58`. Built 2026-11-22, not checked. It needs a server restart.
+- [ ] Empty space after the last line, so a reference near the end of the file can sit in the middle.
+- [ ] Select or click a line in the peek to open the editor at that line.
 
 ## Reference
 

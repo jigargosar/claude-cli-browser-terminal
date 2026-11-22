@@ -4,14 +4,14 @@ For the next session. Read this, then `CLAUDE.md`, `docs/fvp-list.md` and `docs/
 
 ## Where we are
 
-- Task in progress: "Pain: impossible to view/review line number content when referenced in your reply." Its plan: `docs/tasks/file-refs/plan.md`.
+- Last task: "Pain: impossible to view/review line number content when referenced in your reply." Its plan: `docs/tasks/file-refs/plan.md`.
 - Primary goal: when a reply mentions a file, the user sees the exact lines it means, in one click.
 - Built and committed: references in reply text become links, a click opens a CodeMirror peek, a double click opens the running editor, paths outside the project show red.
 - The diff in the peek is commented out in `web/refs.js`, because a heavily changed file showed as one wall of green.
-- Built on 2026-11-22, uncommitted, not checked by the user: the system prompt in `server.mjs`, outside files that peek and open, and the peek covering the terminal pane.
-- Next: the user runs the manual checks at the bottom of the plan. Once they pass, Claude closes the task, proposes the 0.1.18 release, and moves the plan's open items to the list as undotted tasks.
-- After that, recommended by Claude: the modified files task in `docs/fvp-list.md`, for the pain of reviewing a diff.
-- New on 2026-11-22, uncommitted, for the user to review: Goal 4, Focus and UX principles in `CLAUDE.md`.
+- Closed on 2026-11-22, after the user's checks: the system prompt in `server.mjs`, outside files that peek and open, and the peek covering the terminal pane. What is left over sits under "Left over" in the plan.
+- Next: the 0.1.18 release, if it has not happened. `CHANGELOG.md` shows it.
+- After that, recommended by Claude, in this order: the task "I run every check of the page by hand" in `docs/fvp-list.md`, then the modified files task, for the pain of reviewing a diff.
+- New on 2026-11-22: Goal 4, Focus and UX principles in `CLAUDE.md`.
 
 ## How the user wants to work
 

@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- A file reference in a reply, such as `web/main.js:83`, is a link. A click shows the file over the terminal, with the lines marked. A double click opens it in your editor at that line. A file outside the project shows in red.
+- A file reference in a reply, such as `web/main.js:83`, is a link. A click shows the file over the terminal, with the lines marked. A double click opens it in your editor at that line. A file outside the project shows in red, and opens the same way.
 - ccw asks Claude to write every file reference as `path:line`, so each one links to its lines.
 
 ## [0.1.17] - 2026-11-12

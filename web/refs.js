@@ -5,7 +5,7 @@
 import { LanguageDescription } from "@codemirror/language";
 import { languages } from "@codemirror/language-data";
 import { unifiedMergeView } from "@codemirror/merge";
-import { EditorState, RangeSetBuilder, Text } from "@codemirror/state";
+import { EditorSelection, EditorState, RangeSetBuilder, Text } from "@codemirror/state";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { Decoration, EditorView, lineNumbers } from "@codemirror/view";
 
@@ -124,8 +124,15 @@ const openPeek = async (span) => {
   const line = Math.min(Number(span.dataset.line) || 0, doc.lines);
   const end = Math.min(Math.max(Number(span.dataset.end) || line, line), doc.lines);
   peekHead.textContent = `${label(span)}${changed ? " · uncommitted changes" : ""} · double click the link to open it in the editor · Esc closes`;
+  // Shown before the view is made, so the view measures real sizes and its first scroll lands right.
+  peek.hidden = false;
   view = new EditorView({
     parent: peekBody,
+    // The whole referenced range sits in the middle. A range taller than the view starts at its top, since the
+    // range's head is its first line.
+    scrollTo: line
+      ? EditorView.scrollIntoView(EditorSelection.range(doc.line(end).to, doc.line(line).from), { y: "center" })
+      : undefined,
     state: EditorState.create({
       doc,
       extensions: [
@@ -142,8 +149,6 @@ const openPeek = async (span) => {
       ],
     }),
   });
-  peek.hidden = false;
-  if (line) view.dispatch({ effects: EditorView.scrollIntoView(doc.line(line).from, { y: "center" }) });
 };
 
 const openInEditor = async (span) => {

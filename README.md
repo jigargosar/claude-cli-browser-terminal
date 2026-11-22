@@ -25,6 +25,7 @@ Making Claude answer shorter didn't work, so ccw makes long answers easy to read
 7. **Live turn view.** See what Claude does during a turn: a status bar with running or done, time, tool calls, tokens, model and mode. Thinking, tool calls and housekeeping fold into one line per group; open a group for each tool's request, response and why it was allowed.
 8. **Follows the session.** The reply pane keeps up across `/cd`, `/clear`, `/resume` and worktrees.
 9. **Comments are safe.** Reloading or closing the tab asks first, links show as plain text so a click can't leave the page, and Esc in the comment box asks before discarding changes.
+10. **File references open in place.** A reference such as `web/main.js:83` is a link. A click shows the file over the terminal with the lines marked, and a double click opens it in your editor at that line. A file outside the project shows in red. ccw asks Claude to give every reference a line number.
 
 ## Install
 
@@ -71,7 +72,9 @@ A browser tab opens with the session. Flags pass through to `claude`, for exampl
 | F, E, C, T, X, S, R, Y, N, G, D | Reply icons | Send that reply |
 | ← → | Reply | Previous / next turn |
 | Ctrl+Enter, Alt+Enter | Anywhere | Send all comments |
-| Esc | Popup / comment box | Close / ask before discarding |
+| Click | File reference | Show the file over the terminal, lines marked |
+| Double click | File reference | Open the file in your editor at that line |
+| Esc | Popup / comment box / file view | Close / ask before discarding / close |
 
 ## How it's built
 

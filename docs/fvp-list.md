@@ -90,8 +90,9 @@ Once a task is closed:
     - Solution: a spike. One process receives the mod's POST and tails the transcript, so both arrival times share one clock. Code and results: `docs/spikes/mods-vs-tail/`.
     - Result, 2026-11-18: one hook, `session.append`. The mod leads by a median 165 ms, p95 462 ms, over 138 rows. Rows arrive one by one, not in bursts. No slowdown seen in 4 noisy runs. Measured with `claude -p` only, not in a pty, and without subagents. Same `uuid` as the transcript line. Assistant and tool result content match. Prompts and attachments differ in shape. The mod gives 4 fields per row against about 35 in the transcript, and misses the lines without a `uuid`.
     - Next, not started: map each JSONL line and field the page uses to the mod event that gives it, then decide mod only, hybrid, or tail only.
-- [.] Pain: impossible to view/review line number content when referenced in your reply.
-    - Plan: `docs/tasks/file-refs/plan.md`.
+- [x] Pain: impossible to view/review line number content when referenced in your reply.
+    - Plan: `docs/tasks/file-refs/plan.md`. Closed on 2026-11-22.
+- [ ] File peek, left over from the task above: the list under "Left over" in `docs/tasks/file-refs/plan.md`. The diff, a transition, a click on a line to open the editor, and space after the last line.
 - [ ] Pain: three or four files get modified, and I can't tell which ones or what changed. Unaccounted modifications slip by.
     - Solution: each reply ends with a list of the files modified, outside the project first, in red, then inside the project. Each one links like a file reference.
     - Not decided: how to find the modified files and their diff. Git inside the project. Outside it, perhaps chezmoi.
@@ -101,5 +102,7 @@ Once a task is closed:
 - [ ] Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
     - Idea: the page shows its version number, and the changelog with Unreleased.
     - Idea: known issues go in the changelog too, so I don't hunt for a bug that is already known.
+- [ ] Pain: I run every check of the page by hand, and I repeat "test it yourself with puppeteer-core" in every session.
+    - Idea: a test page Claude can open by itself in the test browser, with no second claude session. Today the page needs the server, and the server starts claude.
 - [ ] Pain: a sentence like "Fix 3 is live now" points back by a number, so I can't tell what it means, or reply to it alone.
     - Idea: one more line in the system prompt in `server.mjs`. Every sentence names the thing it talks about.
