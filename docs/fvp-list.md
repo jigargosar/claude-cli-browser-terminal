@@ -104,5 +104,6 @@ Once a task is closed:
     - Idea: known issues go in the changelog too, so I don't hunt for a bug that is already known.
 - [ ] Pain: I run every check of the page by hand, and I repeat "test it yourself with puppeteer-core" in every session.
     - Idea: a test page Claude can open by itself in the test browser, with no second claude session. Today the page needs the server, and the server starts claude.
+- [ ] The release fails when `server.mjs` has CRLF line endings in the working folder: `pnpm pack` refuses the shebang line. Seen on 2026-11-22. What wrote the CRLF is not known.
 - [ ] Pain: a sentence like "Fix 3 is live now" points back by a number, so I can't tell what it means, or reply to it alone.
     - Idea: one more line in the system prompt in `server.mjs`. Every sentence names the thing it talks about.
