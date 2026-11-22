@@ -1,10 +1,10 @@
 // Smoke check of the test page: the reply shows, a file reference opens the file over the terminal, Esc closes it.
-// Usage: node scripts/test-page/smoke.mjs [screenshot.png]. Also the example to copy for a new check.
+// Usage: node scripts/test-page/smoke.mjs [screenshot.png]. With CCW_HEADED=60 the browser shows, for the user to watch. Also the example to copy for a new check.
 import assert from "node:assert/strict";
 import { openTestPage } from "./test-page.mjs";
 
 const screenshotPath = process.argv[2];
-const { page, close } = await openTestPage();
+const { page, step, close } = await openTestPage();
 
 const peekShown = () => {
   const peek = document.querySelector(".ref-peek");
@@ -21,6 +21,7 @@ try {
   assert.match(replyText, /The app starts in/);
   console.log("ok: the reply shows");
 
+  await step();
   await page.click('#reply .file-ref.ok[data-ref^="src/app.js"]');
   await page.waitForFunction(peekShown, { timeout: 5000 });
   const peekText = await page.$eval(".ref-peek", (el) => el.textContent);
@@ -28,6 +29,7 @@ try {
   console.log("ok: a click on the reference shows the file");
   if (screenshotPath) await page.screenshot({ path: screenshotPath });
 
+  await step();
   await page.keyboard.press("Escape");
   await page.waitForFunction(`!(${peekShown})()`, { timeout: 5000 });
   console.log("ok: Esc closes the file");

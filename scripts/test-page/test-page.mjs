@@ -1,12 +1,12 @@
 // The test page: the built page in a headless browser, fed by a transcript file, with no claude.
 // Why and how: scripts/test-page/README.md.
 //
-//   const { page, addLines, close } = await openTestPage();
+//   const { page, addLines, step, close } = await openTestPage();
 //   ...checks on page, a puppeteer Page...
 //   await close();
 //
-// addLines(...objects): appends transcript lines, as if claude wrote them. close(): stops the browser and the server,
-// then throws if the page threw an error during the check.
+// addLines(...objects): appends transcript lines, as if claude wrote them. step(): a pause between two actions, in a
+// headed browser only. close(): stops the browser and the server, then throws if the page threw an error during the check.
 import { spawn } from "node:child_process";
 import { appendFileSync, copyFileSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -17,6 +17,20 @@ import puppeteer from "puppeteer-core";
 const ROOT = path.resolve(import.meta.dirname, "../..");
 const FIXTURES = `${ROOT}/test/page`;
 const HOST = "127.0.0.1";
+// CCW_HEADED: the browser shows, each step pauses, and the window stays open this many seconds at the end. For the
+// user, to watch a check and try the page by hand. Not set: headless, for Claude's own checks.
+const headedSeconds = process.env.CCW_HEADED ? Number(process.env.CCW_HEADED) : null;
+const headed = headedSeconds !== null;
+const STEP_MS = 1500;
+
+const stayOpen = (browser) =>
+  new Promise((resolve) => {
+    const timer = setTimeout(resolve, headedSeconds * 1000);
+    browser.once("disconnected", () => {
+      clearTimeout(timer);
+      resolve();
+    });
+  });
 
 export const openTestPage = async ({
   transcript = `${FIXTURES}/transcript.jsonl`,
@@ -42,8 +56,14 @@ export const openTestPage = async ({
     server.once("exit", (code) => reject(new Error(`server.mjs exited (${code}) before it listened`)));
   });
 
-  const browser = await puppeteer.launch({ channel: "chrome", defaultViewport: viewport });
-  const page = await browser.newPage();
+  const browser = await puppeteer.launch(
+    headed
+      ? { channel: "chrome", headless: false, defaultViewport: null, args: [`--window-size=${viewport.width},${viewport.height}`] }
+      : { channel: "chrome", defaultViewport: viewport },
+  );
+  // Headed: the tab the browser starts with, so the window has one tab only. Headless: a new tab. A click in the
+  // starting tab of a headless browser did not open the file view, seen on 2026-11-22.
+  const page = headed ? (await browser.pages())[0] : await browser.newPage();
   const pageErrors = [];
   page.on("pageerror", (err) => pageErrors.push(err));
   await page.goto(url);
@@ -57,8 +77,16 @@ export const openTestPage = async ({
     page,
     url,
     addLines: (...lines) => appendFileSync(copy, lines.map((line) => `${JSON.stringify(line)}\n`).join("")),
+    // A pause the user can follow in a headed browser. No pause in a headless one.
+    step: async () => {
+      if (headed) await new Promise((resolve) => setTimeout(resolve, STEP_MS));
+    },
     close: async () => {
-      await browser.close();
+      if (headed && browser.connected) {
+        console.log(`The browser stays open for ${headedSeconds} s. Close its window to finish sooner.`);
+        await stayOpen(browser);
+      }
+      if (browser.connected) await browser.close();
       server.kill();
       rmSync(tempDir, { recursive: true });
       if (pageErrors.length) throw new AggregateError(pageErrors, `the page threw ${pageErrors.length} error(s)`);

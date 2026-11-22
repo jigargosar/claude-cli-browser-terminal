@@ -112,3 +112,4 @@ Once a task is closed:
     - Idea: one more line in the system prompt in `server.mjs`. Every sentence names the thing it talks about.
 - [ ] Idea: the word "explain". Claude says its last reply again in plainer words, with no new ideas, no next steps and no question.
 - [ ] Pain: the first click after the page loads lands on the page itself, not on what is under it. Seen in the test browser on 2026-11-22, not checked in a normal browser. `scripts/test-page/test-page.mjs` works around it.
+- [ ] Complaint: Claude kept trying after a failed check and did not stop and report. The stop rule in the global file names no limit. Idea: two failed tries at one problem, then stop. Idea: a hook that reminds Claude after two failed commands.
