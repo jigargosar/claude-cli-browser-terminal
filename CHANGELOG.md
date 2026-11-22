@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- A file reference in a reply, such as `web/main.js:83`, is a link. A click shows the file over the terminal, with the lines marked. A double click opens it in your editor at that line. A file outside the project shows in red.
+- ccw asks Claude to write every file reference as `path:line`, so each one links to its lines.
 
 ## [0.1.17] - 2026-11-12
 ### Added

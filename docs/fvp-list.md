@@ -64,6 +64,8 @@ Once a task is closed:
 - [ ] format response and show images.
 - [ ] move divider with keyboard
 - [ ] switching between panes is still clumsy. Happens unintentionally by using trackpad.
+    - The first click in the other pane should only move the focus. It should not also run what is under the mouse.
+    - A click on the file peek's scrollbar moves the focus to the left pane.
 - [ ] Mark dead turns after a rewind.
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
     - Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat.
@@ -96,3 +98,8 @@ Once a task is closed:
     - Idea: the server finds the writes in the transcript, since it reads every line. Writes outside the project matter most.
 - [ ] Track how long each task takes, using git log.
 - [ ] `docs/mods/raw/` holds all of the Claude Code docs, the CLI reference included, so a path to a general doc reads as a mods doc.
+- [ ] Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
+    - Idea: the page shows its version number, and the changelog with Unreleased.
+    - Idea: known issues go in the changelog too, so I don't hunt for a bug that is already known.
+- [ ] Pain: a sentence like "Fix 3 is live now" points back by a number, so I can't tell what it means, or reply to it alone.
+    - Idea: one more line in the system prompt in `server.mjs`. Every sentence names the thing it talks about.

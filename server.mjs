@@ -50,7 +50,12 @@ const HOOK_SETTINGS = JSON.stringify({
 
 // Usage: node server.mjs [claude args]. All args pass through to claude as is.
 // Port: CC_WEB_PORT if set (pnpm test uses 7682), else a free one.
-const claudeArgs = ["--settings", HOOK_SETTINGS, ...process.argv.slice(2)];
+// Tells claude how to write file references, so the page can link every one to its lines (web/refs.js).
+const REFS_PROMPT = `In your responses:
+- every file reference is written as \`path:line\` or \`path:start-end\`
+- every line number matches the file as it is now
+- every reference to removed text is shown as a verbatim quote of that text`;
+const claudeArgs = ["--settings", HOOK_SETTINGS, "--append-system-prompt", REFS_PROMPT, ...process.argv.slice(2)];
 const fixedPort = process.env.CC_WEB_PORT ? Number(process.env.CC_WEB_PORT) : null;
 
 if (!existsSync(HTML_PATH)) throw new Error(`${HTML_PATH} is missing: run pnpm watch`);
@@ -249,7 +254,8 @@ chokidar
   });
 
 // File references in Claude's replies (web/refs.js). The page sends what a reply names, e.g. `web/main.js` or a bare
-// `main.js`. Only files inside the project folder are resolved, read or opened.
+// `main.js`. A file outside the project folder is read and opened too, by its full path. The server listens on
+// 127.0.0.1 only.
 const ROOT = process.cwd();
 const insideRoot = (abs) => {
   const rel = path.relative(ROOT, abs);
@@ -268,26 +274,26 @@ const projectFiles = async () => {
   }
   return fileList.files;
 };
-// A reference as written to { path } of a project file with forward slashes, { outside: true } for any path outside the
-// project folder, existing or not, or null. A path from the root wins. Else a name that ends exactly one project path,
-// e.g. `main.js` for `web/main.js`.
+// A reference as written to { path } of a project file with forward slashes, or null. A path outside the project
+// folder gives { outside: true }, with its full path when the file exists. A path from the root wins. Else a name
+// that ends exactly one project path, e.g. `main.js` for `web/main.js`.
 const resolveRef = async (ref) => {
   const abs = path.resolve(ROOT, ref.replace(/^~(?=[\\/])/, homedir()));
-  if (!insideRoot(abs) && abs !== ROOT) return { outside: true };
+  if (!insideRoot(abs) && abs !== ROOT) {
+    return (await isFile(abs)) ? { outside: true, path: abs.replaceAll("\\", "/") } : { outside: true };
+  }
   if (await isFile(abs)) return { path: path.relative(ROOT, abs).replaceAll("\\", "/") };
   const tail = ref.replaceAll("\\", "/").replace(/^\.\//, "");
   const hits = (await projectFiles()).filter((f) => f === tail || f.endsWith(`/${tail}`));
   return hits.length === 1 ? { path: hits[0] } : null;
 };
-const projectPath = (rel) => {
-  const abs = path.resolve(ROOT, rel);
-  if (!insideRoot(abs)) throw new Error(`${rel} is outside the project folder`);
-  return abs;
-};
-// The file as of the last commit, for the peek's diff. Null when the project is no git repo or the file is not in HEAD,
-// e.g. untracked or only staged.
+// A path from resolveRef, relative to the project or full, to its full path.
+const refPath = (p) => path.resolve(ROOT, p);
+// The file as of the last commit, for the peek's diff. Null when the file is outside the project, the project is no
+// git repo, or the file is not in HEAD, e.g. untracked or only staged.
 const git = simpleGit(ROOT);
 const headText = async (rel) => {
+  if (!insideRoot(refPath(rel))) return null;
   if (!(await git.checkIsRepo())) return null;
   if (!(await git.raw(["ls-tree", "--name-only", "HEAD", "--", rel])).trim()) return null;
   return git.show([`HEAD:${rel}`]);
@@ -326,7 +332,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "GET" && req.url.startsWith("/refs/file?")) {
     return refsRequest(res, async () => {
       const rel = new URL(req.url, "http://x").searchParams.get("path");
-      const text = await readFile(projectPath(rel), "utf8");
+      const text = await readFile(refPath(rel), "utf8");
       const head = await headText(rel);
       res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ text, head }));
     });
@@ -339,7 +345,7 @@ const server = http.createServer(async (req, res) => {
       let failed = null;
       // The column is always given. Without one, launch-editor 2.14.2 defaults it to the number 1, and its Windows command
       // builder calls .includes on every argument, so editors that take the column as its own argument fail.
-      launchEditor(line ? `${projectPath(rel)}:${line}:1` : projectPath(rel), (_file, message) => (failed = message ?? "no editor found"));
+      launchEditor(line ? `${refPath(rel)}:${line}:1` : refPath(rel), (_file, message) => (failed = message ?? "no editor found"));
       if (failed) res.writeHead(500, { "content-type": "text/plain" }).end(`Could not open ${rel}: ${failed}`);
       else res.writeHead(204).end();
     });

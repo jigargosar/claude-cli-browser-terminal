@@ -2,7 +2,6 @@
 // opens the file at that line in the editor. The server resolves, reads and opens them (server.mjs, /refs/*). The page never
 // navigates. A span wraps each reference before its node is on the page, so no text node on the page is replaced
 // later and the comments' ranges survive (views/last.js). Resolving only adds attributes.
-import { autoUpdate, computePosition, flip, hide, offset, shift, size } from "@floating-ui/dom";
 import { LanguageDescription } from "@codemirror/language";
 import { languages } from "@codemirror/language-data";
 import { unifiedMergeView } from "@codemirror/merge";
@@ -55,8 +54,8 @@ export const linkify = (root) => {
   return resolve(root);
 };
 
-// Only references the server finds in the project folder turn into links. A path outside the folder shows red, so a
-// change outside the project stands out. It neither peeks nor opens.
+// Only references the server finds turn into links. A path outside the project folder shows red, so a change outside
+// the project stands out. It peeks and opens like any other, when the file exists.
 const resolve = async (root) => {
   const spans = [...root.querySelectorAll(".file-ref:not(.ok):not(.outside)")];
   if (!spans.length) return;
@@ -68,7 +67,7 @@ const resolve = async (root) => {
   for (const span of spans) {
     const found = byRef.get(span.dataset.ref);
     if (found?.outside) span.classList.add("outside");
-    else if (found) {
+    if (found?.path) {
       span.dataset.path = found.path;
       span.classList.add("ok");
     }
@@ -81,18 +80,17 @@ const label = (span) => {
 };
 
 // The peek: the whole file in a read-only CodeMirror view, wrapped, scrolled to the referenced lines, which are marked.
-// Uncommitted changes show as a diff against HEAD. A click on a reference opens it. A click outside, or Esc, closes it.
-// A double click on a reference opens the file in the editor.
+// It covers the terminal pane, so it is always in the same place and the reply stays readable beside it. A click on a
+// reference opens it. A click outside, or Esc, closes it. A double click on a reference opens the file in the editor.
 const peek = document.createElement("div");
 peek.className = "ref-peek";
 peek.hidden = true;
 peek.innerHTML = '<div class="ref-peek-head"></div><div class="ref-peek-body"></div>';
-document.body.append(peek);
+document.getElementById("terminal-pane").append(peek);
 const peekHead = peek.querySelector(".ref-peek-head");
 const peekBody = peek.querySelector(".ref-peek-body");
 let shownFor = null;
 let view = null;
-let stopFollowing = null;
 
 const markedLine = Decoration.line({ class: "cm-ref-line" });
 const markLines = (doc, line, end) => {
@@ -106,32 +104,6 @@ const closePeek = () => {
   shownFor = null;
   view?.destroy();
   view = null;
-  stopFollowing?.();
-  stopFollowing = null;
-};
-
-// Below the reference, or above when there is more room. Never wider or taller than the room left in the viewport.
-const place = async (span) => {
-  const { x, y, middlewareData } = await computePosition(span, peek, {
-    placement: "bottom-start",
-    strategy: "fixed",
-    middleware: [
-      offset(6),
-      flip({ padding: 8 }),
-      shift({ padding: 8 }),
-      size({
-        padding: 8,
-        apply: ({ availableWidth, availableHeight }) => {
-          peek.style.maxWidth = `${availableWidth}px`;
-          peek.style.maxHeight = `${availableHeight}px`;
-        },
-      }),
-      hide(),
-    ],
-  });
-  // A reference scrolled out of the reply, or on a page no longer shown, hides the peek until it is back.
-  const hidden = middlewareData.hide.referenceHidden;
-  Object.assign(peek.style, { left: `${x}px`, top: `${y}px`, visibility: hidden ? "hidden" : "" });
 };
 
 const openPeek = async (span) => {
@@ -151,7 +123,7 @@ const openPeek = async (span) => {
   const doc = Text.of(text.split("\n"));
   const line = Math.min(Number(span.dataset.line) || 0, doc.lines);
   const end = Math.min(Math.max(Number(span.dataset.end) || line, line), doc.lines);
-  peekHead.textContent = `${label(span)}${changed ? " · uncommitted changes" : ""} · double click the link to open it in the editor`;
+  peekHead.textContent = `${label(span)}${changed ? " · uncommitted changes" : ""} · double click the link to open it in the editor · Esc closes`;
   view = new EditorView({
     parent: peekBody,
     state: EditorState.create({
@@ -170,14 +142,8 @@ const openPeek = async (span) => {
       ],
     }),
   });
-  peek.style.visibility = "hidden";
   peek.hidden = false;
-  await place(span);
-  // Closed while it was being placed.
-  if (shownFor !== span) return;
   if (line) view.dispatch({ effects: EditorView.scrollIntoView(doc.line(line).from, { y: "center" }) });
-  // Follows the reference while the reply scrolls or the window resizes.
-  stopFollowing = autoUpdate(span, peek, () => place(span));
 };
 
 const openInEditor = async (span) => {
