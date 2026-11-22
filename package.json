@@ -24,6 +24,9 @@
     "ccw": "node scripts/build-watch/refuse-start-without-build-watch.mjs && node server.mjs",
     "release:about": "echo Needs entries under Unreleased in CHANGELOG.md. Builds, bumps the patch version, stamps the changelog, puts the version into the README install command, packs one tarball into published-versions/, commits it all with a tag, pushes.",
     "release": "vite build && pnpm version patch && git push --follow-tags",
+    "test:about": "echo deep investigation before we even think about running this test, so dont",
+    "test:unit": "vitest run --root . --dir test",
+    "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku",
     "preversion": "kacl prerelease",
     "version": "kacl release && node scripts/readme-version.mjs && pnpm pack --pack-destination published-versions && git add CHANGELOG.md README.md published-versions"
   },
