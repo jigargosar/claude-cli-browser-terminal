@@ -57,8 +57,6 @@ const REFS_PROMPT = `In your responses:
 - every reference to removed text is shown as a verbatim quote of that text`;
 const claudeArgs = ["--settings", HOOK_SETTINGS, "--append-system-prompt", REFS_PROMPT, ...process.argv.slice(2)];
 const fixedPort = process.env.CC_WEB_PORT ? Number(process.env.CC_WEB_PORT) : null;
-// CC_WEB_TRANSCRIPT: a check by Claude (scripts/test-page/README.md). No claude starts. The page shows this transcript file.
-const transcriptOnly = process.env.CC_WEB_TRANSCRIPT ?? null;
 
 if (!existsSync(HTML_PATH)) throw new Error(`${HTML_PATH} is missing: run pnpm watch`);
 // Dev loop: read files on each request, so a rebuild shows on reload. See scripts/build-watch/README.md.
@@ -439,17 +437,14 @@ new WebSocketServer({ server }).on("connection", (ws) => {
   clients.add(ws);
   ws.send(JSON.stringify({ t: "settings", settings: readConfig() }));
   if (pty) ws.send(JSON.stringify({ t: "o", d: serializer.serialize() }));
-  if (transcriptOnly) ws.send(JSON.stringify({ t: "o", d: "ccw test page: no claude runs here\r\n" }));
   ws.send(itemsMessage());
   ws.send(JSON.stringify({ t: "waiting", waiting }));
 
   ws.on("message", (raw) => {
     const m = JSON.parse(raw.toString());
-    if (m.t === "s") writeConfig(m.settings);
+    if (m.t === "i") pty.write(m.d);
+    else if (m.t === "s") writeConfig(m.settings);
     else if (m.t === "l") reloadLog(`page: ${m.line}`);
-    // Without claude, typed input and terminal sizes have nowhere to go.
-    else if (transcriptOnly) return;
-    else if (m.t === "i") pty.write(m.d);
     else if (m.t === "r" && !pty) startClaude(m.cols, m.rows);
     else if (m.t === "r") {
       pty.resize(m.cols, m.rows);
@@ -471,9 +466,6 @@ new WebSocketServer({ server }).on("connection", (ws) => {
 await new Promise((resolve) => server.listen(port, HOST, resolve));
 const url = `http://localhost:${port}`;
 console.log(url);
-if (transcriptOnly) {
-  followTranscript("test-page", transcriptOnly);
-  console.log(`no claude: showing ${transcriptOnly}`);
-} else console.log("claude starts when the first tab opens");
+console.log("claude starts when the first tab opens");
 // CC_WEB_NO_OPEN: a test by Claude drives its own browser, so the user's browser must not take the one tab.
 if (!process.env.CC_WEB_NO_OPEN) await open(url);

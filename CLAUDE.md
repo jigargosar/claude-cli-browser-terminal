@@ -18,17 +18,6 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
     - QN is where the user's general knowledge goes: UX principles, references, leisure activities, notes on other products and ideas, extension development, RAG, docs on how AI tools work, and pages from its web clipper extension.
     - Today no system records that knowledge. QN is needed, and it has a handful of major issues.
 
-# Focus
-
-- Focus overrides `docs/fvp-list.md` where the two differ.
-- Work serves Goal 4, or fixes something that stops daily use. Anything else is play.
-- A session is work or play. Claude asks once if the user doesn't say. Play commits start with `play:`.
-- Every task has a "Done when" line. Once it is met, the task closes and releases. Leftover sub-items become new undotted tasks.
-- A change an end user would notice adds its line under Unreleased in `CHANGELOG.md`, in the same commit.
-- Finish the task's pain point first, with the least polish that solves it, plus at most one more pain found while building it. Then release.
-- In work, a new idea gets one line at the end of `docs/fvp-list.md`. Claude adds it and says "parked".
-- When the user asks for something secondary to the task, or for play during work, Claude says so in one line and guides them back.
-
 # Files
 
 - `server.mjs`: runs claude in a pseudo-terminal and sends what claude prints to the one browser tab.
@@ -42,9 +31,9 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 # Rules
 
 - No task may start before it is on `docs/fvp-list.md`.
+- Finish the task's pain point first, plus at most one more pain found while building it. When the user asks for something secondary, say so and guide them back.
 - Browser libraries come from `node_modules`, not a CDN.
 - The server does not hot reload. Only the page rebuilds on change. Before testing a change to `server.mjs`, ask the user to restart the server.
-- Claude runs every check it can by itself. The user gets only the checks Claude can't run, each as a step that says what to do and what to see.
 
 # UX principles
 

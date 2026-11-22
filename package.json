@@ -24,13 +24,6 @@
     "ccw": "node scripts/build-watch/refuse-start-without-build-watch.mjs && node server.mjs",
     "release:about": "echo Needs entries under Unreleased in CHANGELOG.md. Builds, bumps the patch version, stamps the changelog, puts the version into the README install command, packs one tarball into published-versions/, commits it all with a tag, pushes.",
     "release": "vite build && pnpm version patch && git push --follow-tags",
-    "test:about": "echo deep investigation before we even think about running this test, so dont",
-    "test:unit": "vitest run --root . --dir test",
-    "test": "vite build && cross-env CC_WEB_PORT=7682 node server.mjs --model haiku",
-    "check:page:about": "echo Check of the page by Claude. Opens the built page in a headless browser, fed by a transcript file, with no claude. Why: scripts/test-page/README.md",
-    "check:page": "node scripts/test-page/smoke.mjs",
-    "check:page:watch:about": "echo The same check in a browser the user can watch. Each step pauses, and the window stays open 60 seconds at the end.",
-    "check:page:watch": "cross-env CCW_HEADED=60 node scripts/test-page/smoke.mjs",
     "preversion": "kacl prerelease",
     "version": "kacl release && node scripts/readme-version.mjs && pnpm pack --pack-destination published-versions && git add CHANGELOG.md README.md published-versions"
   },

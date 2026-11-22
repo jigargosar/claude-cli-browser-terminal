@@ -80,3 +80,15 @@
 ```
 
 - Step 2: `docs/handoff.md` is deleted. Git keeps it.
+- Step 3: the test page is deleted. Git keeps it, in the two WIP commits of 2026-11-22.
+    - Deleted: `scripts/test-page/`, `test/page/`, the `check:page` scripts in `package.json` and the `CC_WEB_TRANSCRIPT` mode in `server.mjs`.
+    - Kept: the fix in `server.mjs` for a file view in a subfolder of a repository, with its line in `CHANGELOG.md`.
+    - What the test page showed: the page runs from a transcript file with no claude, and a headless browser can check it.
+    - Open when it was deleted: the headless check failed after the visible mode was added. The cause is not known.
+- Step 4: this session's lines on `docs/fvp-list.md` are removed.
+    - The task "I run every check of the page by hand" is back to its two lines, undotted.
+    - Removed: the "explain" idea, the first click pain and the complaint about not stopping.
+- Step 5: the Focus section and the checks rule are removed from the project `CLAUDE.md`.
+    - The rule line that Focus replaced in the morning is back under Rules.
+    - Kept: Goal 4, the quick notes aim and the UX principles.
+- Steps 3 to 5 were left uncommitted for the user to review.
