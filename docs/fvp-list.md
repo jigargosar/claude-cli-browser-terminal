@@ -1,9 +1,10 @@
 # How we work
 
 1. The user owns this list. Claude edits it only when asked.
-2. New tasks go at the end.
+2. New tasks go at the end. Never ever start work without writing its pain points here.
+    - Exception: meta work, recorded under Meta, in progress.
 3. Weeding runs regularly. It merges duplicates and drops ticked or stale tasks. Before a task goes, Claude lists its unwritten findings and open issues, each with where it should go. The user approves.
-4. Meta tasks, changes to how we work, never go in the list. They are applied as soon as they come up. Those not applied yet go under Meta, in progress.
+4. Meta tasks, changes to how we work, have higher priority than the task list.
     - Claude drafts the change. The user reviews the diff before it is committed.
 5. A change that isn't concrete yet gets the prefix "Experiment:". It goes where it needs a decision or a task.
 6. Rules are defaults, and older tasks may not follow them. To break one, Claude says so in one line and carries on.
@@ -29,11 +30,9 @@
     - Closing the task deletes the plan file, once its lasting content has moved out.
 
 
-## Releasing
+## Changelog: Releasing
 
-Once a task is closed:
-
-1. If an end user would notice the change, add a line under Unreleased in `CHANGELOG.md`.
+1. Add a line under Unreleased in `CHANGELOG.md`.
 2. If Unreleased has lines, propose `pnpm release` with AskUserQuestion. Claude never runs it unasked.
 3. Changelog format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), with Added, Changed, Fixed, Removed.
 4. Before a release, open the Unreleased link at the bottom of `CHANGELOG.md`. It lists every commit since the last tag.
@@ -54,7 +53,7 @@ Once a task is closed:
     - use google z tool to create a markdown file with code and comments so we know exactly what we are up to. without things being spread out.
 - Extract a skill that handles our process in other projects.
 
-# List
+# Task List
 
 - [ ] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay.
     - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
