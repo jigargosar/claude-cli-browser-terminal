@@ -3,8 +3,9 @@
 1. New tasks are appended at the end of the file. Unformatted is fine.
 2. Never ever start implementing before its task has a `Pain:` line.
 3. Meta tasks are the exception to the workflow rules.
-4. Weeding runs regularly. It merges duplicates and drops ticked or stale tasks.
-    - Before a task goes, Claude lists its unwritten findings and open issues, each with where it should go. The user approves.
+4. Weeding runs regularly. It is the Impact and Cleanup of "Closing a task", done across tasks and across the project.
+    - It merges duplicates and drops ticked or stale tasks.
+    - Ticked tasks stay on the list until weeding, for that reason.
 
 ## Before implementing
 
