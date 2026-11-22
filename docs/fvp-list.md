@@ -1,28 +1,35 @@
 # How we work
 
 1. New tasks are appended at the end of the file. Unformatted is fine.
-2. Never ever start work before its task has a `Pain:` line.
+2. Never ever start implementing before its task has a `Pain:` line.
 3. Meta tasks are the exception to the workflow rules.
 4. Weeding runs regularly. It merges duplicates and drops ticked or stale tasks.
     - Before a task goes, Claude lists its unwritten findings and open issues, each with where it should go. The user approves.
 
-## Working a task
+## Before implementing
 
-1. Claude works the last dotted task.
-
-2. Get the pain clear before work starts. It may be an XY problem.
-    - The user's solution ideas are input, not the spec. Claude proposes the solution.
+1. Claude suggests the task to dot.
+2. Claude and the user get its pain clear, and it is written as the task's `Pain:` line. It may be an XY problem.
+3. Claude proposes the solution. The user's solution ideas are input, not the spec.
+    - The plan lives as sub-bullets under its task.
+    - A plan file is the last resort, when the plan outgrows the list.
+4. The user approves the solution. Then Claude implements.
 >    - [.] Pain: <the problem, in the user's words>
 >       - Solution: <the plan, in a few lines>
 
 
-3. While implementing, regularly perform WIP commits.
-4. Self-review until you fixed all issues.
-5. Present a list, for manual checking.
-6. To close, Claude lists what the task found that isn't written down yet, its open issues, and the files only it used, each with where it should go. The user approves, and Claude ticks the task and commits.
-    - The plan lives as sub-bullets under its task.
-    - A plan file is the last resort, when the plan outgrows the list.
-    - Closing the task deletes the plan file, once its lasting content has moved out.
+## Implementing
+
+1. While implementing, regularly perform WIP commits.
+2. Self-review until you fixed all issues.
+3. Present a list, for manual checking.
+
+## Closing a task
+
+1. Impact: Claude lists what the task changed, what it found that isn't written down yet, and its open issues.
+2. Cleanup: every item gets a place. Open issues become new tasks. Files only the task used are moved or deleted.
+    - A plan file with open items goes to a new task. It is deleted only when nothing in it is still needed.
+3. The user approves. Claude ticks the task and commits.
 
 
 ## Changelog: Releasing
