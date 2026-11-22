@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.1.18] - 2026-11-22
 ### Added
 - A file reference in a reply, such as `web/main.js:83`, is a link. A click shows the file over the terminal, with the lines marked. A double click opens it in your editor at that line. A file outside the project shows in red, and opens the same way.
 - ccw asks Claude to write every file reference as `path:line`, so each one links to its lines.
@@ -73,7 +75,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The terminal font is Atkinson Hyperlegible Mono at weight 300, with bold at 500. The font ships inside the package.
 - Links in a reply show as plain text, so a click can no longer leave the page and lose the comments.
 
-[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.17...HEAD
+[Unreleased]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.18...HEAD
+[0.1.18]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.17...v0.1.18
 [0.1.17]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.16...v0.1.17
 [0.1.16]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.15...v0.1.16
 [0.1.15]: https://github.com/jigargosar/claude-cli-browser-terminal/compare/v0.1.14...v0.1.15

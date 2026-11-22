@@ -34,14 +34,14 @@ Making Claude answer shorter didn't work, so ccw makes long answers easy to read
 pnpm:
 
 ```
-pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.17.tgz
+pnpm add -D https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.18.tgz
 ```
 
 <!-- npm 12 needs --allow-remote=all to install a tarball URL. -->
 npm:
 
 ```
-npm install -D --allow-remote=all https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.17.tgz
+npm install -D --allow-remote=all https://github.com/jigargosar/claude-cli-browser-terminal/raw/main/published-versions/claude-cli-browser-terminal-0.1.18.tgz
 ```
 
 ## Use
