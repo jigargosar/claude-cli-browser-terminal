@@ -72,7 +72,7 @@
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
     - Seen in one transcript: a new prompt hangs off the line before a whole answered turn, and no line marks the rewind. Inference: a rewind wrote this. The server reads the file flat.
 - [ ] need recommendation button for quick comments.
-- [.] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them.
+- [x] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them.
     - Solution: a one-minute animated walkthrough, mocked, not a screen recording. Eight scenes from the README draft: the pain, the page, click to reply, one key, keyboard only, send all, the tagline.
     - Source and render steps: `docs/mockups/showcase-video/`. Output: `docs/media/ccw-showcase.gif` and `.mp4`, shown at the top of `README.md`.
     - Decided by Claude on "do whatever you like", for the user to accept or undo: one full-length GIF with a link to the video, and the draft `docs/README-004.md` replaces `README.md`.
