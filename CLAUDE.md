@@ -18,6 +18,11 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
     - QN is where the user's general knowledge goes: UX principles, references, leisure activities, notes on other products and ideas, extension development, RAG, docs on how AI tools work, and pages from its web clipper extension.
     - Today no system records that knowledge. QN is needed, and it has a handful of major issues.
 
+# Now
+
+- `docs/now.md` names the one task for the daily work block, and the block's rules. Read it at the start of a session and name the task.
+- Why: nothing else says what to work on today, and without it the work drifts across tasks and projects.
+
 # Files
 
 - `server.mjs`: runs claude in a pseudo-terminal and sends what claude prints to the one browser tab.
