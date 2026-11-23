@@ -109,3 +109,5 @@
 - [.] need to be able distinguish which session/project I am working on. the project name and color in terminal doesnt help, we need something in UI.
 - [ ] close button should be at bottom too. for collapsible.  
 - [ ] approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise.
+- [ ] when running commands intermediate actions are not visible in the page.
+- cleanup permissions
