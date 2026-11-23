@@ -14,12 +14,14 @@
 
 ## The task
 
-- The showcase video link in `README.md`. It is the open issue "video link doesnt wrk" under the showcase task in `docs/fvp-list.md`.
-- It serves Goal 4, "the showcase plays from the README".
-- Claude does the work. The user confirms that the showcase plays on github.com.
-- Known: `README.md` shows `docs/media/ccw-showcase.gif` (6.2MB) and links `docs/media/ccw-showcase.mp4` (3.1MB) as a file in the repo.
-- First step: see how the link fails on github.com. Not checked yet.
-- Unverified, from recall: GitHub plays a video inline only when the file is uploaded through its editor.
+- Get rid of the Now extra, and work out how to handle the next deadline and the time-bound projects.
+- Set by the user on 2026-11-23, after the showcase video task was done.
+- Why: deadlines and project requirements changed on 2026-11-23, and the plans from here on are driven by a different process.
+- Part 1: remove the Now extra. The user says what goes.
+    - Claude's reading, not confirmed: this file, the `# Now` section in `CLAUDE.md`, and the 9:30am tickler reminder.
+- Part 2: work out how to handle the next deadline and the time-bound projects.
+- The user knows the deadlines and the projects. Claude does not, and asks for them first.
+- This task does not serve Goal 4. The section below does not apply to it.
 
 ## When the task is done
 
