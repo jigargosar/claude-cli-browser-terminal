@@ -6,7 +6,7 @@ Read replies like a book, with your terminal beside them in one browser page. Cl
 
 ![ccw in one minute: read the reply as a page, click a sentence, reply with one key, send every comment as one message](docs/media/ccw-showcase.gif)
 
-![Watch it as a video](docs/media/ccw-showcase.mp4)
+https://github.com/user-attachments/assets/db4fc5cf-4d53-434a-b785-e6004a5ae50f
 
 ## Why
 
