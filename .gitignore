@@ -5,5 +5,4 @@ node_modules
 .claude/worktrees/
 dist
 
-docs/mods/raw/
 .misc

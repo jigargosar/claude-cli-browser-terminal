@@ -1,0 +1,80 @@
+plugins__mods__create.md:31:      In the `default` and `acceptEdits` [permission modes](/docs/en/permission-modes), Claude Code asks before Claude creates each of the mod's files, because the mods folder is a [protected path](/doc
+plugins__mods__create.md:66:* **Nobody is there to approve**: the session can't show you a prompt, as in a `claude -p` run or [`dontAsk` mode](/docs/en/permission-modes)
+plugins__mods__create.md:264:Then ask for the change, for example `add a /tally-reset command to this mod that sets the tally back to zero`. Claude edits the hooks module, runs `claude plugin validate`, and fixes what it reports. 
+plugins__mods__interface.md:221:| `InfoNotice`, `SessionMode`, `PromptHint` | Status lines under the logo, the mode labels in the footer, and the hint line under the prompt |
+plugins__mods__reference.md:243:| `SessionMode` | `modes` | One instance | Terminal, Desktop |
+plugins__mods__troubleshoot.md:172:In auto mode, a denied tool call gives this reason. A hook changed the tool call's input after the [server-side classifier](/docs/en/permission-modes#server-side-classifier-review) reviewed it, s
+permission-modes.md:7:> Control whether Claude asks before acting. Switch permission modes with Shift+Tab in the CLI, the mode indicator in VS Code, or the mode selector in Desktop.
+permission-modes.md:13:## Available modes
+permission-modes.md:28:Writes to [protected paths](#protected-paths) are never auto-approved except in `bypassPermissions` mode and in plan-mode sessions where bypass permissions are available, meaning interactive terminal session
+permission-modes.md:30:Modes set the baseline. Layer [permission rules](/docs/en/permissions#manage-permissions) on top to pre-approve or block specific tools. Deny rules block in every mode, including `bypassPermissions`. Deny an
+permission-modes.md:49:Permission modes decide whether Claude asks before an action, and the [Bash sandbox](/docs/en/sandboxing) and outer [isolation boundaries](/docs/en/sandbox-environments) decide what an action can reach once 
+permission-modes.md:54:| Iterate locally with fewer prompts, without a classifier | Manual mode plus the Bash sandbox in [auto-allow mode](/docs/en/sandboxing#sandbox-modes): `claude --permission-mode default`, then run `/sandbox`
+permission-modes.md:60:The Bash sandbox and auto mode work independently and combine, with the exceptions listed under [Sandbox modes](/docs/en/sandboxing#sandbox-modes). For the full interaction, see [How sandboxing relates to pe
+permission-modes.md:76:Conversations the VS Code extension starts follow the extension's own list in [Switch permission modes](#switch-permission-modes). For the permission mode Claude Code starts a resumed session in, see [permis
+permission-modes.md:80:The built-in default depends on how you run Claude Code. The first row that matches your session applies. The table covers sessions you start in a terminal or through the VS Code extension; for the desktop a
+permission-modes.md:85:| `claude -p` or the [Agent SDK](/docs/en/agent-sdk/permissions#permission-modes) | `default` in sessions that [fetch feature flags](/docs/en/env-vars#features-that-need-feature-flag-fetching). In sessions t
+permission-modes.md:104:You can set the starting permission mode for one session, or as a default for every session on a machine, in a project, or in an organization. When more than one settings file sets `permissions.defaultMode`
+permission-modes.md:109:| Every terminal session you start on this machine | Set `permissions.defaultMode` in `~/.claude/settings.json`. For what the VS Code extension reads, see [Switch permission modes](#switch-permission-modes)
+permission-modes.md:111:| Every terminal session in your organization | Set `permissions.defaultMode` in [managed settings](/docs/en/managed-settings). Terminal sessions start in that mode and people can still switch to auto mode;
+permission-modes.md:126:  Permission modes with the HIPAA configuration
+permission-modes.md:133:* **Switch to auto mode**: press `Shift+Tab`, or use [your interface's control](#switch-permission-modes)
+permission-modes.md:140:## Switch permission modes
+permission-modes.md:142:Each interface has its own control for switching permission modes during a session and its own way of choosing the permission mode new sessions start in. Select your interface to see its controls.
+permission-modes.md:146:    **During a session**: press `Shift+Tab` to cycle permission modes. From `auto`, the first press switches to `default`, and the cycle then runs `default` → `acceptEdits` → `plan`. Optional modes slot
+permission-modes.md:151:      <video autoPlay muted loop playsInline className="w-full dark:hidden" style={{aspectRatio: "1440 / 264"}} src="https://mintcdn.com/claude-code/oa7CKjMeIChox26S/images/permission-modes-cycle-light.mp4?
+permission-modes.md:153:      <video autoPlay muted loop playsInline className="w-full hidden dark:block" style={{aspectRatio: "1440 / 264"}} src="https://mintcdn.com/claude-code/oa7CKjMeIChox26S/images/permission-modes-cycle-dark
+permission-modes.md:158:    * `auto`: appears when [auto mode is available](#eliminate-prompts-with-auto-mode); cycling to it switches permission modes without a confirmation prompt
+permission-modes.md:162:    Enabled optional modes slot in after `plan`, with `bypassPermissions` first and `auto` last. If you have both enabled, you will cycle through `bypassPermissions` on the way to `auto`.
+permission-modes.md:164:    **From a Bash permission prompt**: in the Manual and `acceptEdits` permission modes, when [auto mode](#eliminate-prompts-with-auto-mode) is available, Claude Code adds **Yes, and switch to auto mode** t
+permission-modes.md:180:    **During a session**: click the mode indicator at the bottom of the prompt box. It uses these labels for the modes on this page:
+permission-modes.md:190:    **As a default**: to pin the permission mode conversations start in, set `claudeCode.initialPermissionMode` in your VS Code user settings to `default`, `manual`, `acceptEdits`, `plan`, or `bypassPermiss
+permission-modes.md:192:    1. `claudeCode.initialPermissionMode`
+permission-modes.md:209:    The JetBrains plugin runs Claude Code in the IDE terminal, so switching permission modes works the same as in the CLI: press `Shift+Tab` to cycle, or pass `--permission-mode` when launching.
+permission-modes.md:218:    The Cowork tab doesn't use these modes. Cowork has its own permission modes, enabled separately, and the Cowork tab shows no mode selector at all until a mode beyond its default is enabled for your acco
+permission-modes.md:230:    On [claude.ai/code](https://claude.ai/code), use the mode dropdown next to the prompt box. In the mobile app, tap the **+** button in the prompt box, then **Permission**. Cloud sessions and Remote Contr
+permission-modes.md:271:* **Auto mode not available, or `useAutoModeDuringPlan` off**: commands outside the [built-in read-only set](/docs/en/permissions#read-only-commands) prompt for approval, including when the sandbox's [auto-
+permission-modes.md:297:To make plan mode the default for a project's terminal sessions, set `defaultMode` to `plan` in `.claude/settings.json`, placed as the example under [Start in a different permission mode](#start-in-a-differ
+permission-modes.md:328:If you set `defaultMode: "auto"` in [settings](/docs/en/settings-reference#all-settings) and a terminal session starts in Manual mode with no error, the setting is likely in `.claude/settings.json` or `.cla
+permission-modes.md:465:* **Some blocks stay in place**: [the classifier's precedence order](/docs/en/auto-mode-config#override-the-block-and-allow-rules) sets out which blocks your approval can reach. To run a step it won't clear
+permission-modes.md:475:* **A mode switch during a check**: if you switch permission modes while a classifier check is pending, Claude Code discards a verdict the new mode wouldn't have requested. You're prompted for approval inst
+permission-modes.md:504:       * In a session with [server-side classifier review](#server-side-classifier-review), read-only and [sandboxed](/docs/en/sandboxing#sandbox-modes) shell commands wait for that review and are blocked i
+permission-modes.md:538:    2. While the subagent runs, each of its actions goes through the same [decision order](#how-the-classifier-evaluates-actions) as in the parent session, with the same block and allow rules. Any `permissi
+permission-modes.md:618:[Cloud sessions](/docs/en/claude-code-on-the-web) don't honor `defaultMode: "bypassPermissions"` or `"dontAsk"` from your settings files, so a repository's checked-in settings can't start a cloud session in
+permission-modes.md:638:In the modes that route protected-path writes to the classifier, a write that the [symlink check](/docs/en/permissions#symlinks) resolves to a protected path prompts you instead when the path Claude request
+permission-modes.md:640:[`permissions.allow`](/docs/en/permissions#manage-permissions) rules in settings files do not pre-approve protected-path writes. The safety check runs before Claude Code evaluates allow rules from settings,
+permission-modes.md:676:* The file that your user, project, or local [settings file](/docs/en/settings#settings-files-and-who-they-affect) points to when the settings file is itself a symbolic link, for example into a dotfiles rep
+permission-modes.md:682:Claude Code never lets a [`permissions.allow`](/docs/en/permissions#manage-permissions) rule or a [`PreToolUse` hook](/docs/en/permissions#extend-permissions-with-hooks) that returns `"allow"` approve an `r
+permission-modes.md:747:| `auto` | Asks you to approve it in the terminal, with a [time limit](#time-limits-and-denials-in-auto-and-bypasspermissions-modes). Elsewhere, denies it |
+permission-modes.md:751:If an explicit [ask rule](/docs/en/permissions#manage-permissions) matches the command, Claude Code asks you instead, even in `auto` mode and without a time limit. In modes that ask, a [`PermissionRequest` 
+permission-modes.md:753:### Time limits and denials in auto and bypassPermissions modes
+permission-modes.md:755:In `auto` and `bypassPermissions` modes, the terminal prompt for a critical-path removal shows a two-minute countdown:
+permission-modes.md:771:* **Your working directory or one of its parents, with `-Recurse`**: Claude Code treats the command like any other that needs approval in your permission mode, so it asks you in modes that ask, sends it to 
+hooks.md:739:| `permission_mode` | Current [permission mode](/docs/en/permissions#permission-modes): `"default"`, `"plan"`, `"acceptEdits"`, `"auto"`, `"dontAsk"`, or `"bypassPermissions"`. The mode labeled **Manual** arrives as `
+hooks.md:765:  "permission_mode": "default",
+hooks.md:1499:  "permission_mode": "default",
+hooks.md:1566:  "permission_mode": "default",
+hooks.md:1615:In non-interactive runs, including Agent SDK queries and `claude -p`, MessageDisplay runs once per assistant message instead of once per batch of lines. The single call arrives after the message completes and carries
+hooks.md:1929:On Claude Code v2.1.271 or later, a subagent that runs with the [`SubagentHandback`](/docs/en/tools-reference) tool, which Claude Code provides in [auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mod
+hooks.md:1948:Presents a plan and asks the user to approve it before Claude leaves [plan mode](/docs/en/permission-modes#analyze-before-you-edit-with-plan-mode). Claude writes the plan to a file on disk before calling the tool, so
+hooks.md:1964:| `permissionDecision` | `"allow"` skips the permission prompt, except for [actions no mode auto-approves](/docs/en/permission-modes#actions-no-mode-auto-approves) and [reads from network paths](/docs/en/permissions#
+hooks.md:1975:A hook's `"ask"` also forces a permission prompt in [auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode): the classifier can still deny the tool call, but it can't approve the call silently. Before
+hooks.md:2088:The `permission_suggestions` array isn't an exact list of the options you see, because each permission dialog builds its own options. Some dialogs, such as the one for file edits, don't read the array at all and deri
+hooks.md:2097:  "permission_mode": "default",
+hooks.md:2152:| `setMode` | `mode`, `destination` | Changes the permission mode. Valid modes are `default`, `auto`, `acceptEdits`, `dontAsk`, `bypassPermissions`, `plan`, and `manual` as an alias for `default` |
+hooks.md:2157:  `setMode` with `bypassPermissions` only takes effect if you launched the session with bypass mode already available: `--dangerously-skip-permissions`, `--permission-mode bypassPermissions`, `--allow-dangerously-ski
+hooks.md:2193:  "permission_mode": "default",
+hooks.md:2222:| `classifierContext` | Short note about this call's result for the [auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode) classifier rather than for Claude. See [Annotate a result for the auto mode 
+hooks.md:2251:Return `classifierContext` to send a short note about the tool call's result to the [auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode) classifier rather than to Claude. The classifier [never rece
+hooks.md:2299:  "permission_mode": "default",
+hooks.md:2355:  "permission_mode": "default",
+hooks.md:2401:Runs when [auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode) denies a tool call, including when it denies without a classifier verdict because [a safety check separate from auto mode refused the 
+hooks.md:2414:  "permission_mode": "auto",
+hooks.md:2598:  "permission_mode": "default",
+hooks.md:2682:  "permission_mode": "default",
+hooks.md:2774:  "permission_mode": "default",
+hooks.md:2871:  "permission_mode": "default",
+hooks.md:3343:* A `set_model` request, or a model change in an `apply_flag_settings` request, from an [Agent SDK](/docs/en/agent-sdk/typescript#query-object) host or [Remote Control](/docs/en/remote-control)
+hooks.md:3428:| `source` | string | Where the request came from: `"command"` for `/model <name>`, the Model setting in `/config`, or turning on fast mode; `"picker"` for a model picker; `"sdk"` for a `set_model` request, or a mode
+hooks.md:3464:| `permissionDecisionReason` | For `"deny"`, shown to the user as the reason the switch was blocked, or returned as the error for a `set_model` request. For `"ask"`, shown in the confirmation prompt. Ignored for `"al
+hooks.md:3466:Only `/model` in an interactive session can show the `"ask"` prompt. On every other surface, including non-interactive mode with the `-p` flag, `/config`, and `set_model` requests, Claude Code treats `"ask"` as a ref

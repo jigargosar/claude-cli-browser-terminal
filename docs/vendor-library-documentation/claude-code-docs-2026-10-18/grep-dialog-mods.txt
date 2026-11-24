@@ -1,0 +1,15 @@
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__admin.md:141:In the `hooks:` line, [`tool.call`](/docs/en/plugins/mods/reference#tools) and [`promp
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__events.md:145:A hook can pause a tool call and ask the user what to do before it goes ahead. A `too
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__events.md:160:      answer = await $.ui.ask('Run this command? ' + e.command, ['Run it', 'Refuse'])
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__events.md:177:* **The user types an answer**: `$.ui.ask` resolves to the typed text. The hook compa
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__events.md:178:* **Nobody answers**: `$.ui.ask` rejects when the user dismisses the question or pick
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__events.md:180:Keep the wait inside a mods API call such as `$.ui.ask`, because that time doesn't co
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__interface.md:219:| `AskUserQuestion` | The dialog Claude opens to ask you a question |
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__interface.md:223:`Pane`, `AskUserQuestion`, `Spinner`, `UserMessage`, `AssistantMessage`, and the t
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__interface.md:294:The permission prompt isn't a render site, so a mod can't change what it shows. Th
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__interface.md:360:* **The question dialog**: at `AskUserQuestion`, the panel keeps its own question 
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__reference.md:141:| `session.attach`, `session.detach` | Another app connects to or disconnects from
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__reference.md:210:| [`$.session`](/docs/en/plugins/mods/api#send-and-receive-messages-between-sessio
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__reference.md:238:| [`AskUserQuestion`](/docs/en/plugins/mods/interface#change-what-claude-code-alre
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__test.md:178:| `$.ui.ask` | A `tool.call` stub, because the question reaches it as a call to the `As
+docs/vendor/claude-code-docs-2026-10-18/pages/plugins__mods__troubleshoot.md:117:Claude writes a mod in an interactive session, nothing loads, and Claude Code d

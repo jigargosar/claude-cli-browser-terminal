@@ -1,0 +1,14 @@
+plugins__mods__create.md:31:      In the `default` and `acceptEdits` [permission modes](/docs/en/permission-modes), Claude Code asks before Claude creates each of the mod's files, because the mods folder is a [protected path](/doc
+plugins__mods__create.md:66:* **Nobody is there to approve**: the session can't show you a prompt, as in a `claude -p` run or [`dontAsk` mode](/docs/en/permission-modes)
+plugins__mods__create.md:264:Then ask for the change, for example `add a /tally-reset command to this mod that sets the tally back to zero`. Claude edits the hooks module, runs `claude plugin validate`, and fixes what it reports. 
+plugins__mods__interface.md:221:| `InfoNotice`, `SessionMode`, `PromptHint` | Status lines under the logo, the mode labels in the footer, and the hint line under the prompt |
+plugins__mods__reference.md:243:| `SessionMode` | `modes` | One instance | Terminal, Desktop |
+plugins__mods__troubleshoot.md:172:In auto mode, a denied tool call gives this reason. A hook changed the tool call's input after the [server-side classifier](/docs/en/permission-modes#server-side-classifier-review) reviewed it, s
+permission-modes.md:104:You can set the starting permission mode for one session, or as a default for every session on a machine, in a project, or in an organization. When more than one settings file sets `permissions.defaultMode`
+permission-modes.md:109:| Every terminal session you start on this machine | Set `permissions.defaultMode` in `~/.claude/settings.json`. For what the VS Code extension reads, see [Switch permission modes](#switch-permission-modes)
+permission-modes.md:111:| Every terminal session in your organization | Set `permissions.defaultMode` in [managed settings](/docs/en/managed-settings). Terminal sessions start in that mode and people can still switch to auto mode;
+permission-modes.md:297:To make plan mode the default for a project's terminal sessions, set `defaultMode` to `plan` in `.claude/settings.json`, placed as the example under [Start in a different permission mode](#start-in-a-differ
+permission-modes.md:328:If you set `defaultMode: "auto"` in [settings](/docs/en/settings-reference#all-settings) and a terminal session starts in Manual mode with no error, the setting is likely in `.claude/settings.json` or `.cla
+permission-modes.md:618:[Cloud sessions](/docs/en/claude-code-on-the-web) don't honor `defaultMode: "bypassPermissions"` or `"dontAsk"` from your settings files, so a repository's checked-in settings can't start a cloud session in
+hooks.md:2152:| `setMode` | `mode`, `destination` | Changes the permission mode. Valid modes are `default`, `auto`, `acceptEdits`, `dontAsk`, `bypassPermissions`, `plan`, and `manual` as an alias for `default` |
+hooks.md:2157:  `setMode` with `bypassPermissions` only takes effect if you launched the session with bypass mode already available: `--dangerously-skip-permissions`, `--permission-mode bypassPermissions`, `--allow-dangerously-ski

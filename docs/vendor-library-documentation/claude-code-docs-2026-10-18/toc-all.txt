@@ -1,0 +1,2015 @@
+agent-sdk__agent-loop.md:5:# How the agent loop works
+agent-sdk__agent-loop.md:15:## The loop at a glance
+agent-sdk__agent-loop.md:31:## Turns and messages
+agent-sdk__agent-loop.md:50:## Message types
+agent-sdk__agent-loop.md:69:### Handle messages
+agent-sdk__agent-loop.md:147:## Tool execution
+agent-sdk__agent-loop.md:151:### Built-in tools
+agent-sdk__agent-loop.md:172:### Tool permissions
+agent-sdk__agent-loop.md:184:### Parallel tool execution
+agent-sdk__agent-loop.md:190:## Control how the loop runs
+agent-sdk__agent-loop.md:194:### Turns and budget
+agent-sdk__agent-loop.md:211:### Effort level
+agent-sdk__agent-loop.md:231:### Permission mode
+agent-sdk__agent-loop.md:246:### Model
+agent-sdk__agent-loop.md:250:## The context window
+agent-sdk__agent-loop.md:254:### What consumes context
+agent-sdk__agent-loop.md:268:### Automatic compaction
+agent-sdk__agent-loop.md:294:### Keep context efficient
+agent-sdk__agent-loop.md:305:## Sessions and continuity
+agent-sdk__agent-loop.md:317:## Handle the result
+agent-sdk__agent-loop.md:349:## Hooks
+agent-sdk__agent-loop.md:366:## Put it all together
+agent-sdk__agent-loop.md:470:## Next steps
+agent-sdk__claude-code-features.md:5:# Use Claude Code features in the SDK
+agent-sdk__claude-code-features.md:13:## Control filesystem settings with settingSources
+agent-sdk__claude-code-features.md:86:### What settingSources does not control
+agent-sdk__claude-code-features.md:102:## Project instructions (CLAUDE.md and rules)
+agent-sdk__claude-code-features.md:106:### CLAUDE.md load locations
+agent-sdk__claude-code-features.md:126:## Skills
+agent-sdk__claude-code-features.md:180:## Hooks
+agent-sdk__claude-code-features.md:272:### When to use which hook type
+agent-sdk__claude-code-features.md:285:## Choose the right feature
+agent-sdk__claude-code-features.md:301:## Related resources
+agent-sdk__configuration.md:5:# Configure your agent
+agent-sdk__configuration.md:13:## Pass options to a session
+agent-sdk__configuration.md:69:## Load settings files
+agent-sdk__configuration.md:78:## Choose a model
+agent-sdk__configuration.md:110:## Set environment variables
+agent-sdk__configuration.md:137:## Set the working directory
+agent-sdk__configuration.md:149:## Limit turns and spend
+agent-sdk__configuration.md:163:## Change configuration mid-session
+agent-sdk__configuration.md:269:## Configure specific features
+agent-sdk__configuration.md:293:## Next steps
+agent-sdk__cost-tracking.md:5:# Track cost and usage
+agent-sdk__cost-tracking.md:27:## Understand token usage
+agent-sdk__cost-tracking.md:62:## Track costs in streaming input mode
+agent-sdk__cost-tracking.md:83:## Get the total cost of a query
+agent-sdk__cost-tracking.md:146:## Track per-step and per-model usage
+agent-sdk__cost-tracking.md:150:### Track per-step usage
+agent-sdk__cost-tracking.md:195:### Break down usage per model
+agent-sdk__cost-tracking.md:226:## Accumulate costs across multiple calls
+agent-sdk__cost-tracking.md:306:## Handle errors, caching, and output token counts
+agent-sdk__cost-tracking.md:310:### Read output tokens from the result message
+agent-sdk__cost-tracking.md:318:### Track costs on failed conversations
+agent-sdk__cost-tracking.md:329:### Recover totals after a session crash
+agent-sdk__cost-tracking.md:339:### Track cache tokens
+agent-sdk__cost-tracking.md:348:### Extend the prompt cache TTL to one hour
+agent-sdk__cost-tracking.md:405:## Related documentation
+agent-sdk__custom-tools.md:5:# Give Claude custom tools
+agent-sdk__custom-tools.md:11:## Quick reference
+agent-sdk__custom-tools.md:26:## Create a custom tool
+agent-sdk__custom-tools.md:58:### Weather tool example
+agent-sdk__custom-tools.md:147:### Make a parameter optional
+agent-sdk__custom-tools.md:156:### Call a custom tool
+agent-sdk__custom-tools.md:230:### Add more tools
+agent-sdk__custom-tools.md:333:### Add tool annotations
+agent-sdk__custom-tools.md:381:## Control tool access
+agent-sdk__custom-tools.md:385:### Configure allowed tools
+agent-sdk__custom-tools.md:398:## Handle errors
+agent-sdk__custom-tools.md:507:## Return images and resources
+agent-sdk__custom-tools.md:513:### Images
+agent-sdk__custom-tools.md:580:### Resources
+agent-sdk__custom-tools.md:628:## Return structured data
+agent-sdk__custom-tools.md:655:## Example: unit converter
+agent-sdk__custom-tools.md:906:## Next steps
+agent-sdk__examples.md:5:# Examples
+agent-sdk__examples.md:11:## Run a minimal agent first
+agent-sdk__examples.md:19:## Explore a demo application
+agent-sdk__examples.md:23:## Work through a Python recipe
+agent-sdk__file-checkpointing.md:5:# Rewind file changes with checkpointing
+agent-sdk__file-checkpointing.md:15:## How checkpointing works
+agent-sdk__file-checkpointing.md:25:## Implement checkpointing
+agent-sdk__file-checkpointing.md:172:## Common patterns
+agent-sdk__file-checkpointing.md:176:### Checkpoint before risky operations
+agent-sdk__file-checkpointing.md:253:### Multiple restore points
+agent-sdk__file-checkpointing.md:387:## Try it out
+agent-sdk__file-checkpointing.md:618:## Limitations
+agent-sdk__file-checkpointing.md:630:## Troubleshooting
+agent-sdk__file-checkpointing.md:632:### Checkpointing options not recognized
+agent-sdk__file-checkpointing.md:641:### User messages don't have UUIDs
+agent-sdk__file-checkpointing.md:649:### "No file checkpoint found for this message" error
+agent-sdk__file-checkpointing.md:660:### "File rewinding is not enabled" error
+agent-sdk__file-checkpointing.md:672:### "ProcessTransport is not ready for writing" error
+agent-sdk__file-checkpointing.md:678:## Next steps
+agent-sdk__hooks.md:5:# Intercept and control agent behavior with hooks
+agent-sdk__hooks.md:17:## How hooks work
+agent-sdk__hooks.md:147:## Available hooks
+agent-sdk__hooks.md:187:## Configure hooks
+agent-sdk__hooks.md:222:### Matchers
+agent-sdk__hooks.md:236:### Callback functions
+agent-sdk__hooks.md:294:## Examples
+agent-sdk__hooks.md:298:### Modify tool input
+agent-sdk__hooks.md:353:### Add context and block a tool
+agent-sdk__hooks.md:405:### Auto-approve specific tools
+agent-sdk__hooks.md:447:### Register multiple hooks
+agent-sdk__hooks.md:479:### Filter with multi-tool matchers
+agent-sdk__hooks.md:521:### Track subagent activity
+agent-sdk__hooks.md:566:### Make HTTP requests from hooks
+agent-sdk__hooks.md:657:### Forward notifications to Slack
+agent-sdk__hooks.md:766:## Fix common issues
+agent-sdk__hooks.md:768:### Hook not firing
+agent-sdk__hooks.md:776:### Matcher not filtering as expected
+agent-sdk__hooks.md:791:### Hook timeout
+agent-sdk__hooks.md:811:### Tool blocked unexpectedly
+agent-sdk__hooks.md:817:### Modified input not applied
+agent-sdk__hooks.md:835:### Session hooks not available in Python
+agent-sdk__hooks.md:855:### Subagent permission prompts multiplying
+agent-sdk__hooks.md:859:### Recursive hook loops with subagents
+agent-sdk__hooks.md:866:### systemMessage not appearing in output
+agent-sdk__hooks.md:874:## Related resources
+agent-sdk__hosting.md:5:# Hosting the Agent SDK
+agent-sdk__hosting.md:15:## The subprocess model
+agent-sdk__hosting.md:57:### State that lives on local disk
+agent-sdk__hosting.md:71:## Choose a session pattern
+agent-sdk__hosting.md:75:### Ephemeral sessions
+agent-sdk__hosting.md:114:### Long-running sessions
+agent-sdk__hosting.md:127:### Hybrid sessions
+agent-sdk__hosting.md:177:### Multi-agent container
+agent-sdk__hosting.md:183:## Provision the container
+agent-sdk__hosting.md:185:### Container-based sandboxing
+agent-sdk__hosting.md:199:### Runtime dependencies
+agent-sdk__hosting.md:208:### Resources
+agent-sdk__hosting.md:212:### Network
+agent-sdk__hosting.md:218:## Handle production concerns
+agent-sdk__hosting.md:222:### Session and state persistence
+agent-sdk__hosting.md:232:### Observability
+agent-sdk__hosting.md:250:### Auth and secrets
+agent-sdk__hosting.md:258:### Scaling and concurrency
+agent-sdk__hosting.md:272:### Cost
+agent-sdk__hosting.md:276:### Multi-tenant isolation
+agent-sdk__hosting.md:342:## Known limitations
+agent-sdk__hosting.md:353:## Troubleshoot deployment failures
+agent-sdk__hosting.md:361:## Next steps
+agent-sdk__mcp.md:5:# Connect to external tools with MCP
+agent-sdk__mcp.md:17:## Quickstart
+agent-sdk__mcp.md:73:## Add an MCP server
+agent-sdk__mcp.md:79:### Add a server in code
+agent-sdk__mcp.md:136:### Add a server from a config file
+agent-sdk__mcp.md:151:## Connection timing
+agent-sdk__mcp.md:179:## Allow MCP tools
+agent-sdk__mcp.md:183:### Tool naming convention
+agent-sdk__mcp.md:196:### Auto-approve with allowedTools
+agent-sdk__mcp.md:236:### Discover available tools
+agent-sdk__mcp.md:285:## Transport types
+agent-sdk__mcp.md:293:### stdio servers
+agent-sdk__mcp.md:329:### HTTP/SSE servers
+agent-sdk__mcp.md:367:### SDK MCP servers
+agent-sdk__mcp.md:373:## MCP tool search
+agent-sdk__mcp.md:379:## Authentication
+agent-sdk__mcp.md:383:### Pass credentials via environment variables
+agent-sdk__mcp.md:441:### HTTP headers for remote servers
+agent-sdk__mcp.md:501:### OAuth2 authentication
+agent-sdk__mcp.md:545:## Examples
+agent-sdk__mcp.md:547:### List issues from a repository
+agent-sdk__mcp.md:646:### Query a database
+agent-sdk__mcp.md:728:## Error handling
+agent-sdk__mcp.md:825:## Troubleshooting
+agent-sdk__mcp.md:827:### Server shows "failed" status
+agent-sdk__mcp.md:859:### Tools not being called
+agent-sdk__mcp.md:885:### A tool is missing from an SDK MCP server
+agent-sdk__mcp.md:897:### Connection timeouts
+agent-sdk__mcp.md:907:### Tool output exceeds maximum allowed tokens
+agent-sdk__mcp.md:913:## Related resources
+agent-sdk__migration-guide.md:5:# Migrate to Claude Agent SDK
+agent-sdk__migration-guide.md:9:## Overview
+agent-sdk__migration-guide.md:15:## What's Changed
+agent-sdk__migration-guide.md:23:## Migration Steps
+agent-sdk__migration-guide.md:27:### Migrate a TypeScript or JavaScript project
+agent-sdk__migration-guide.md:63:### Migrate a Python project
+agent-sdk__migration-guide.md:86:# Before
+agent-sdk__migration-guide.md:89:# After
+agent-sdk__migration-guide.md:97:## Breaking changes
+agent-sdk__migration-guide.md:103:### Python: ClaudeCodeOptions renamed to ClaudeAgentOptions
+agent-sdk__migration-guide.md:110:# BEFORE (claude-code-sdk)
+agent-sdk__migration-guide.md:115:# AFTER (claude-agent-sdk)
+agent-sdk__migration-guide.md:121:### System prompt no longer default
+agent-sdk__migration-guide.md:184:### Settings sources default
+agent-sdk__migration-guide.md:198:## Next Steps
+agent-sdk__modifying-system-prompts.md:5:# Modifying system prompts
+agent-sdk__modifying-system-prompts.md:11:## How system prompts work
+agent-sdk__modifying-system-prompts.md:19:### Decide on a starting point
+agent-sdk__modifying-system-prompts.md:39:## Customize agent behavior
+agent-sdk__modifying-system-prompts.md:43:### CLAUDE.md files for project-level instructions
+agent-sdk__modifying-system-prompts.md:107:### Output styles for persistent configurations
+agent-sdk__modifying-system-prompts.md:151:### Append to the `claude_code` preset
+agent-sdk__modifying-system-prompts.md:268:### Custom system prompts
+agent-sdk__modifying-system-prompts.md:372:### Change the prompt of an existing session
+agent-sdk__modifying-system-prompts.md:393:## Context Claude Code adds outside the system prompt
+agent-sdk__modifying-system-prompts.md:399:### Reminders Claude Code adds to the conversation
+agent-sdk__modifying-system-prompts.md:420:### Turn off the context your agent replaces
+agent-sdk__modifying-system-prompts.md:490:### See what Claude received
+agent-sdk__modifying-system-prompts.md:499:## Compare the four approaches
+agent-sdk__modifying-system-prompts.md:516:## Combine approaches
+agent-sdk__modifying-system-prompts.md:520:### Combine an output style with session-specific additions
+agent-sdk__modifying-system-prompts.md:584:## See also
+agent-sdk__observability.md:5:# Observability with OpenTelemetry
+agent-sdk__observability.md:24:## How telemetry flows from the SDK
+agent-sdk__observability.md:43:## Enable telemetry export
+agent-sdk__observability.md:119:### Flush telemetry from short-lived calls
+agent-sdk__observability.md:145:## Read agent traces
+agent-sdk__observability.md:164:## Link traces to your application
+agent-sdk__observability.md:174:## Tag telemetry from your agent
+agent-sdk__observability.md:204:## Attribute actions to your end users
+agent-sdk__observability.md:237:## Control sensitive data in exports
+agent-sdk__observability.md:250:## Related documentation
+agent-sdk__overview.md:5:# Agent SDK overview
+agent-sdk__overview.md:11:## Compare the Agent SDK to other Claude tools
+agent-sdk__overview.md:24:## Capabilities
+agent-sdk__overview.md:39:## Get started
+agent-sdk__overview.md:47:## Changelog
+agent-sdk__overview.md:54:## Report bugs
+agent-sdk__overview.md:61:## Branding guidelines
+agent-sdk__overview.md:78:## License and terms
+agent-sdk__overview.md:82:## Next steps
+agent-sdk__permissions.md:5:# Configure permissions
+agent-sdk__permissions.md:11:## How permissions are evaluated
+agent-sdk__permissions.md:74:## Allow and deny rules
+agent-sdk__permissions.md:116:## Permission modes
+agent-sdk__permissions.md:129:### Available modes
+agent-sdk__permissions.md:148:### Set permission mode
+agent-sdk__permissions.md:254:### Mode details
+agent-sdk__permissions.md:316:## Related resources
+agent-sdk__plugins.md:5:# Plugins in the SDK
+agent-sdk__plugins.md:18:## Loading plugins
+agent-sdk__plugins.md:64:### Path specifications
+agent-sdk__plugins.md:75:## Verifying plugin installation
+agent-sdk__plugins.md:135:## Use plugin skills
+agent-sdk__plugins.md:185:## Complete example
+agent-sdk__plugins.md:267:## Plugin structure reference
+agent-sdk__plugins.md:291:## Multiple plugin sources
+agent-sdk__plugins.md:312:## Troubleshooting
+agent-sdk__plugins.md:314:### Plugin not loading
+agent-sdk__plugins.md:323:### Skills not appearing
+agent-sdk__plugins.md:331:## See also
+agent-sdk__python.md:5:# Agent SDK reference - Python
+agent-sdk__python.md:9:## Installation
+agent-sdk__python.md:21:## Choosing between `query()` and `ClaudeSDKClient`
+agent-sdk__python.md:39:## Functions
+agent-sdk__python.md:43:### `query()`
+agent-sdk__python.md:88:### `tool()`
+agent-sdk__python.md:201:### `create_sdk_mcp_server()`
+agent-sdk__python.md:247:# Use with Claude
+agent-sdk__python.md:254:### `list_sessions()`
+agent-sdk__python.md:302:### `get_session_messages()`
+agent-sdk__python.md:347:### `get_session_info()`
+agent-sdk__python.md:379:### `rename_session()`
+agent-sdk__python.md:413:### `tag_session()`
+agent-sdk__python.md:442:# Tag the most recent session
+agent-sdk__python.md:447:# Later: find all sessions with that tag
+agent-sdk__python.md:453:### `fork_session()`
+agent-sdk__python.md:496:## Classes
+agent-sdk__python.md:498:### `ClaudeSDKClient`
+agent-sdk__python.md:739:## Types
+agent-sdk__python.md:745:### `SdkMcpTool`
+agent-sdk__python.md:767:### `Transport`
+agent-sdk__python.md:812:### `ClaudeAgentOptions`
+agent-sdk__python.md:949:### `OutputFormat`
+agent-sdk__python.md:954:# Expected dict shape for output_format
+agent-sdk__python.md:966:### `SystemPromptPreset`
+agent-sdk__python.md:987:### `SystemPromptCustom`
+agent-sdk__python.md:1004:### `SystemPromptFile`
+agent-sdk__python.md:1019:### `SettingSource`
+agent-sdk__python.md:1042:# Do not load user, project, or local settings from disk
+agent-sdk__python.md:1067:# Load only project settings, ignore user and local
+agent-sdk__python.md:1088:# Define everything programmatically.
+agent-sdk__python.md:1089:# Pass [] to opt out of filesystem setting sources.
+agent-sdk__python.md:1126:### `AgentDefinition`
+agent-sdk__python.md:1168:### `PermissionMode`
+agent-sdk__python.md:1183:### `EffortLevel`
+agent-sdk__python.md:1197:### `CanUseTool`
+agent-sdk__python.md:1219:### `ToolPermissionContext`
+agent-sdk__python.md:1249:### `PermissionResult`
+agent-sdk__python.md:1257:### `PermissionResultAllow`
+agent-sdk__python.md:1275:### `PermissionResultDeny`
+agent-sdk__python.md:1293:### `PermissionUpdate`
+agent-sdk__python.md:1326:### `PermissionRuleValue`
+agent-sdk__python.md:1337:### `ToolsPreset`
+agent-sdk__python.md:1347:### `ThinkingConfig`
+agent-sdk__python.md:1386:# Option 1: dict literal (recommended, no import needed)
+agent-sdk__python.md:1389:# Option 2: constructor-style (returns a plain dict)
+agent-sdk__python.md:1392:# config.budget_tokens would raise AttributeError
+agent-sdk__python.md:1395:### `TaskBudget`
+agent-sdk__python.md:1410:### `SdkBeta`
+agent-sdk__python.md:1424:### `McpSdkServerConfig`
+agent-sdk__python.md:1435:### `McpServerConfig`
+agent-sdk__python.md:1473:### `McpServerStatusConfig`
+agent-sdk__python.md:1489:### `McpStatusResponse`
+agent-sdk__python.md:1498:### `McpServerStatus`
+agent-sdk__python.md:1523:### `ContextUsageResponse`
+agent-sdk__python.md:1554:### `SdkPluginConfig`
+agent-sdk__python.md:1580:## Message Types
+agent-sdk__python.md:1582:### `Message`
+agent-sdk__python.md:1598:### `UserMessage`
+agent-sdk__python.md:1624:### `AssistantMessage`
+agent-sdk__python.md:1654:### `AssistantMessageError`
+agent-sdk__python.md:1671:### `SystemMessage`
+agent-sdk__python.md:1684:### `ResultMessage`
+agent-sdk__python.md:1755:### `StreamEvent`
+agent-sdk__python.md:1775:### `RateLimitEvent`
+agent-sdk__python.md:1793:### `RateLimitInfo`
+agent-sdk__python.md:1827:### `ConversationResetMessage`
+agent-sdk__python.md:1845:### `TaskStartedMessage`
+agent-sdk__python.md:1869:### `TaskUsage`
+agent-sdk__python.md:1880:### `TaskProgressMessage`
+agent-sdk__python.md:1906:### `TaskNotificationMessage`
+agent-sdk__python.md:1938:## Content Block Types
+agent-sdk__python.md:1940:### `ContentBlock`
+agent-sdk__python.md:1955:### `TextBlock`
+agent-sdk__python.md:1965:### `ThinkingBlock`
+agent-sdk__python.md:1976:### `ToolUseBlock`
+agent-sdk__python.md:1988:### `ToolResultBlock`
+agent-sdk__python.md:2000:## Error Types
+agent-sdk__python.md:2004:### `ClaudeSDKError`
+agent-sdk__python.md:2015:### `CLINotFoundError`
+agent-sdk__python.md:2031:### `CLIConnectionError`
+agent-sdk__python.md:2040:### `ProcessError`
+agent-sdk__python.md:2053:### `ResultError`
+agent-sdk__python.md:2070:### `CLIJSONDecodeError`
+agent-sdk__python.md:2086:## Hook Types
+agent-sdk__python.md:2090:### `HookEvent`
+agent-sdk__python.md:2113:### `HookCallback`
+agent-sdk__python.md:2129:### `HookContext`
+agent-sdk__python.md:2138:### `HookMatcher`
+agent-sdk__python.md:2157:### `HookInput`
+agent-sdk__python.md:2176:### `BaseHookInput`
+agent-sdk__python.md:2195:### `PreToolUseHookInput`
+agent-sdk__python.md:2218:### `PostToolUseHookInput`
+agent-sdk__python.md:2243:### `PostToolUseFailureHookInput`
+agent-sdk__python.md:2270:### `UserPromptSubmitHookInput`
+agent-sdk__python.md:2285:### `StopHookInput`
+agent-sdk__python.md:2300:### `SubagentStopHookInput`
+agent-sdk__python.md:2321:### `PreCompactHookInput`
+agent-sdk__python.md:2338:### `NotificationHookInput`
+agent-sdk__python.md:2357:### `SubagentStartHookInput`
+agent-sdk__python.md:2374:### `PermissionRequestHookInput`
+agent-sdk__python.md:2397:### `HookJSONOutput`
+agent-sdk__python.md:2499:### Hook Usage Example
+agent-sdk__python.md:2556:## Tool Input/Output Types
+agent-sdk__python.md:2562:### Agent
+agent-sdk__python.md:2669:### AskUserQuestion
+agent-sdk__python.md:2727:### Bash
+agent-sdk__python.md:2756:### Monitor
+agent-sdk__python.md:2785:### Edit
+agent-sdk__python.md:2831:### Read
+agent-sdk__python.md:2934:### Write
+agent-sdk__python.md:2977:### Glob
+agent-sdk__python.md:3005:### Grep
+agent-sdk__python.md:3052:### NotebookEdit
+agent-sdk__python.md:3085:### WebFetch
+agent-sdk__python.md:3112:### WebSearch
+agent-sdk__python.md:3136:### TodoWrite
+agent-sdk__python.md:3191:### TaskCreate
+agent-sdk__python.md:3214:### TaskUpdate
+agent-sdk__python.md:3246:### TaskGet
+agent-sdk__python.md:3273:### TaskList
+agent-sdk__python.md:3299:### TaskOutput
+agent-sdk__python.md:3305:### TaskStop
+agent-sdk__python.md:3329:### ExitPlanMode
+agent-sdk__python.md:3355:### ListMcpResources
+agent-sdk__python.md:3383:### ReadMcpResource
+agent-sdk__python.md:3412:## Build a continuous conversation interface
+agent-sdk__python.md:3482:# Example conversation:
+agent-sdk__python.md:3483:# Turn 1 - You: "Create a file called hello.py"
+agent-sdk__python.md:3484:# Turn 1 - Claude: "I'll create a hello.py file for you..."
+agent-sdk__python.md:3485:# Turn 2 - You: "What's in that file?"
+agent-sdk__python.md:3486:# Turn 2 - Claude: "The hello.py file I just created contains..." (remembers!)
+agent-sdk__python.md:3487:# Turn 3 - You: "Add a main function to it"
+agent-sdk__python.md:3488:# Turn 3 - Claude: "I'll add a main function to hello.py..." (knows which file!)
+agent-sdk__python.md:3493:## Error handling
+agent-sdk__python.md:3536:## Sandbox Configuration
+agent-sdk__python.md:3538:### `SandboxSettings`
+agent-sdk__python.md:3606:### `SandboxNetworkConfig`
+agent-sdk__python.md:3639:### `SandboxIgnoreViolations`
+agent-sdk__python.md:3654:### Permissions Fallback for Unsandboxed Commands
+agent-sdk__python.md:3696:# Required: dummy hook keeps the stream open for can_use_tool
+agent-sdk__python.md:3733:## See also
+agent-sdk__quickstart.md:5:# Quickstart
+agent-sdk__quickstart.md:17:## Prerequisites
+agent-sdk__quickstart.md:22:## Setup
+agent-sdk__quickstart.md:134:## Create a buggy file
+agent-sdk__quickstart.md:155:## Build an agent that finds and fixes bugs
+agent-sdk__quickstart.md:231:### Run your agent
+agent-sdk__quickstart.md:273:### Try other prompts
+agent-sdk__quickstart.md:281:### Customize your agent
+agent-sdk__quickstart.md:349:## Key concepts
+agent-sdk__quickstart.md:361:## Next steps
+agent-sdk__secure-deployment.md:5:# Securely deploying AI agents
+agent-sdk__secure-deployment.md:15:## Threat model
+agent-sdk__secure-deployment.md:21:## Built-in security features
+agent-sdk__secure-deployment.md:30:## Security principles
+agent-sdk__secure-deployment.md:34:### Security boundaries
+agent-sdk__secure-deployment.md:40:### Least privilege
+agent-sdk__secure-deployment.md:51:### Defense in depth
+agent-sdk__secure-deployment.md:62:## Isolation technologies
+agent-sdk__secure-deployment.md:77:### Sandbox runtime
+agent-sdk__secure-deployment.md:105:### Containers
+agent-sdk__secure-deployment.md:158:### gVisor
+agent-sdk__secure-deployment.md:192:### Virtual machines
+agent-sdk__secure-deployment.md:200:### Cloud deployments
+agent-sdk__secure-deployment.md:210:## Credential management
+agent-sdk__secure-deployment.md:214:### The proxy pattern
+agent-sdk__secure-deployment.md:225:### Configuring Claude Code to use a proxy
+agent-sdk__secure-deployment.md:246:### Implementing a proxy
+agent-sdk__secure-deployment.md:255:### Credentials for other services
+agent-sdk__secure-deployment.md:290:## Filesystem configuration
+agent-sdk__secure-deployment.md:294:### Read-only code mounting
+agent-sdk__secure-deployment.md:321:### Writable locations
+agent-sdk__secure-deployment.md:337:## Further reading
+agent-sdk__session-storage.md:5:# Persist sessions to external storage
+agent-sdk__session-storage.md:17:## The `SessionStore` interface
+agent-sdk__session-storage.md:110:## Quick start
+agent-sdk__session-storage.md:190:## Write your own adapter
+agent-sdk__session-storage.md:196:## Reference implementations
+agent-sdk__session-storage.md:237:### Validate your adapter
+agent-sdk__session-storage.md:261:## Behavior notes
+agent-sdk__session-storage.md:263:### Dual-write architecture
+agent-sdk__session-storage.md:279:### Resume from the store
+agent-sdk__session-storage.md:299:### Mirror writes are best-effort
+agent-sdk__session-storage.md:305:### `getSessionMessages` returns the post-compaction chain
+agent-sdk__session-storage.md:309:### `forkSession` is not a byte copy
+agent-sdk__session-storage.md:313:### Subagent transcripts
+agent-sdk__session-storage.md:317:### Retention
+agent-sdk__session-storage.md:323:## Supported on
+agent-sdk__session-storage.md:341:## Related resources
+agent-sdk__sessions.md:5:# Work with sessions
+agent-sdk__sessions.md:19:## Choose an approach
+agent-sdk__sessions.md:32:### Continue, resume, and fork
+agent-sdk__sessions.md:43:## Automatic session management
+agent-sdk__sessions.md:47:### Python: `ClaudeSDKClient`
+agent-sdk__sessions.md:103:### TypeScript: `continue: true`
+agent-sdk__sessions.md:146:## Use session options with `query()`
+agent-sdk__sessions.md:148:### Capture the session ID
+agent-sdk__sessions.md:215:### Resume by ID
+agent-sdk__sessions.md:288:### Fork to explore alternatives
+agent-sdk__sessions.md:398:## Resume across hosts
+agent-sdk__sessions.md:414:## Related resources
+agent-sdk__skills.md:5:# Extend agents with skills
+agent-sdk__skills.md:13:## How skills work with the Agent SDK
+agent-sdk__skills.md:30:## Use skills with the Agent SDK
+agent-sdk__skills.md:46:### Set up skills in a session
+agent-sdk__skills.md:96:### Confirm skills loaded
+agent-sdk__skills.md:102:### Allow only specific skills
+agent-sdk__skills.md:112:## Commands in Agent SDK sessions
+agent-sdk__skills.md:123:### Discover available commands
+agent-sdk__skills.md:164:### Dispatch commands by name
+agent-sdk__skills.md:176:### Compact history with `/compact`
+agent-sdk__skills.md:259:### Reset context with `/clear`
+agent-sdk__skills.md:265:## Create skills
+agent-sdk__skills.md:276:### Choose a discovery level
+agent-sdk__skills.md:285:### Create and dispatch your first skill
+agent-sdk__skills.md:350:## Pre-approve tools for skills
+agent-sdk__skills.md:399:## Troubleshooting
+agent-sdk__skills.md:401:### Skills not found
+agent-sdk__skills.md:461:# Check project skills
+agent-sdk__skills.md:464:# Check personal skills
+agent-sdk__skills.md:468:### Skill not being used
+agent-sdk__skills.md:474:### Invalid skill name error
+agent-sdk__skills.md:511:### Additional troubleshooting
+agent-sdk__skills.md:515:## Next steps
+agent-sdk__skills.md:524:## Related resources
+agent-sdk__streaming-output.md:5:# Stream responses in real-time
+agent-sdk__streaming-output.md:15:## Enable streaming output
+agent-sdk__streaming-output.md:74:## StreamEvent reference
+agent-sdk__streaming-output.md:98:## Message flow
+agent-sdk__streaming-output.md:121:### Handle a stream that's cut off
+agent-sdk__streaming-output.md:127:## Stream tool calls
+agent-sdk__streaming-output.md:226:## Build a streaming UI
+agent-sdk__streaming-output.md:325:## Known limitations
+agent-sdk__streaming-output.md:329:## Next steps
+agent-sdk__streaming-vs-single-mode.md:5:# Streaming Input
+agent-sdk__streaming-vs-single-mode.md:9:## Overview
+agent-sdk__streaming-vs-single-mode.md:16:## Streaming Input Mode (Recommended)
+agent-sdk__streaming-vs-single-mode.md:22:### Benefits
+agent-sdk__streaming-vs-single-mode.md:32:### Implementation Example
+agent-sdk__streaming-vs-single-mode.md:169:## Single Message Input
+agent-sdk__streaming-vs-single-mode.md:173:### When to Use Single Message Input
+agent-sdk__streaming-vs-single-mode.md:181:### Limitations
+agent-sdk__streaming-vs-single-mode.md:194:### Implementation Example
+agent-sdk__structured-outputs.md:5:# Get structured output from agents
+agent-sdk__structured-outputs.md:13:## Why structured outputs?
+agent-sdk__structured-outputs.md:55:## Quick start
+agent-sdk__structured-outputs.md:137:## Type-safe schemas with Zod and Pydantic
+agent-sdk__structured-outputs.md:250:## Output format configuration
+agent-sdk__structured-outputs.md:263:## Example: TODO tracking agent
+agent-sdk__structured-outputs.md:379:## Error handling
+agent-sdk__structured-outputs.md:481:## Related resources
+agent-sdk__subagents.md:5:# Subagents in the SDK
+agent-sdk__subagents.md:12:## Overview
+agent-sdk__subagents.md:22:## Benefits of using subagents
+agent-sdk__subagents.md:31:## Create subagents
+agent-sdk__subagents.md:33:### Programmatic definition (recommended)
+agent-sdk__subagents.md:143:### AgentDefinition configuration
+agent-sdk__subagents.md:169:### Filesystem-based definition (alternative)
+agent-sdk__subagents.md:177:## What subagents inherit
+agent-sdk__subagents.md:207:## Invoke subagents
+agent-sdk__subagents.md:209:### Automatic invocation
+agent-sdk__subagents.md:215:### Explicit invocation
+agent-sdk__subagents.md:225:### Dynamic agent configuration
+agent-sdk__subagents.md:301:## Detect subagent invocation
+agent-sdk__subagents.md:399:## Resume subagents
+agent-sdk__subagents.md:541:## Tool restrictions
+agent-sdk__subagents.md:604:### Common tool combinations
+agent-sdk__subagents.md:613:## Cap subagent depth, concurrency, and spend
+agent-sdk__subagents.md:697:### Run Opus 5 with subagents
+agent-sdk__subagents.md:706:## Scale up with dynamic workflows
+agent-sdk__subagents.md:712:## Troubleshooting
+agent-sdk__subagents.md:714:### Claude not delegating to subagents
+agent-sdk__subagents.md:721:### Filesystem-based agents not loading
+agent-sdk__subagents.md:733:## Related documentation
+agent-sdk__todo-tracking.md:5:# Track todos
+agent-sdk__todo-tracking.md:13:## Model availability
+agent-sdk__todo-tracking.md:35:## Todo lifecycle
+agent-sdk__todo-tracking.md:44:## When Claude creates todos
+agent-sdk__todo-tracking.md:55:## Examples
+agent-sdk__todo-tracking.md:67:### Monitor todo changes
+agent-sdk__todo-tracking.md:143:### Display progress in real time
+agent-sdk__todo-tracking.md:374:## Related documentation
+agent-sdk__tool-search.md:5:# Scale to many tools with tool search
+agent-sdk__tool-search.md:16:## How tool search works
+agent-sdk__tool-search.md:30:## Configure tool search
+agent-sdk__tool-search.md:128:## Optimize tool discovery
+agent-sdk__tool-search.md:158:## Limits
+agent-sdk__tool-search.md:164:## Related documentation
+agent-sdk__troubleshooting.md:5:# Troubleshoot the Agent SDK
+agent-sdk__troubleshooting.md:25:## CLI startup
+agent-sdk__troubleshooting.md:27:### CLINotFoundError: Claude Code not found
+agent-sdk__troubleshooting.md:48:### CLIConnectionError: Refusing to execute batch script
+agent-sdk__troubleshooting.md:71:### CLIConnectionError: Failed to start Claude Code
+agent-sdk__troubleshooting.md:90:### CLIConnectionError: Not connected
+agent-sdk__troubleshooting.md:100:## CLI process exit
+agent-sdk__troubleshooting.md:104:### ProcessError: Command failed with exit code
+agent-sdk__troubleshooting.md:119:### Claude Code process exited with code N
+agent-sdk__troubleshooting.md:129:### Claude Code returned an error result
+agent-sdk__troubleshooting.md:139:## Structured outputs
+agent-sdk__troubleshooting.md:141:### structured\_output is None but the result says success
+agent-sdk__troubleshooting.md:149:## Report a new issue
+agent-sdk__typescript-v2-preview.md:5:# TypeScript SDK V2 session API (removed)
+agent-sdk__typescript-v2-preview.md:21:## Installation
+agent-sdk__typescript-v2-preview.md:33:## Quick start
+agent-sdk__typescript-v2-preview.md:35:### One-shot prompt
+agent-sdk__typescript-v2-preview.md:69:### Basic session
+agent-sdk__typescript-v2-preview.md:125:### Multi-turn conversation
+agent-sdk__typescript-v2-preview.md:204:### Session resume
+agent-sdk__typescript-v2-preview.md:304:### Cleanup
+agent-sdk__typescript-v2-preview.md:333:## API reference
+agent-sdk__typescript-v2-preview.md:335:### `unstable_v2_createSession()`
+agent-sdk__typescript-v2-preview.md:346:### `unstable_v2_resumeSession()`
+agent-sdk__typescript-v2-preview.md:360:### `unstable_v2_prompt()`
+agent-sdk__typescript-v2-preview.md:374:### SDKSession interface
+agent-sdk__typescript-v2-preview.md:385:## Feature availability
+agent-sdk__typescript-v2-preview.md:392:## See also
+agent-sdk__typescript.md:5:# Agent SDK reference - TypeScript
+agent-sdk__typescript.md:9:## Installation
+agent-sdk__typescript.md:21:### Compile to a single executable
+agent-sdk__typescript.md:51:### Import the `/core` entry when you bundle the Agent SDK
+agent-sdk__typescript.md:59:## Functions
+agent-sdk__typescript.md:61:### `query()`
+agent-sdk__typescript.md:86:### `startup()`
+agent-sdk__typescript.md:124:### `prewarm()`
+agent-sdk__typescript.md:171:### `tool()`
+agent-sdk__typescript.md:222:### `createSdkMcpServer()`
+agent-sdk__typescript.md:248:### `listSessions()`
+agent-sdk__typescript.md:293:### `getSessionMessages()`
+agent-sdk__typescript.md:343:### `getSessionInfo()`
+agent-sdk__typescript.md:363:### `renameSession()`
+agent-sdk__typescript.md:383:### `tagSession()`
+agent-sdk__typescript.md:403:### `forkSession()`
+agent-sdk__typescript.md:431:### `resolveSettings()`
+agent-sdk__typescript.md:488:## Types
+agent-sdk__typescript.md:490:### `Options`
+agent-sdk__typescript.md:594:### `Query` object
+agent-sdk__typescript.md:737:### `WarmQuery`
+agent-sdk__typescript.md:757:### `SpareProcess`
+agent-sdk__typescript.md:786:### `SDKControlInitializeResponse`
+agent-sdk__typescript.md:837:### `SDKControlInterruptResponse`
+agent-sdk__typescript.md:864:### `SDKControlGetContextUsageResponse`
+agent-sdk__typescript.md:981:### `SDKControlReadFileResponse`
+agent-sdk__typescript.md:1007:### `SDKControlReloadPluginsResponse`
+agent-sdk__typescript.md:1048:### `SDKControlReloadSkillsResponse`
+agent-sdk__typescript.md:1060:### `SDKControlReloadOutputStylesResponse`
+agent-sdk__typescript.md:1072:### `SDKControlMcpReadResourceResponse`
+agent-sdk__typescript.md:1094:### `AgentDefinition`
+agent-sdk__typescript.md:1138:### `AgentMcpServerSpec`
+agent-sdk__typescript.md:1148:### `SettingSource`
+agent-sdk__typescript.md:1206:### `PermissionMode`
+agent-sdk__typescript.md:1218:### `CanUseTool`
+agent-sdk__typescript.md:1262:### `PermissionResult`
+agent-sdk__typescript.md:1282:### `ToolConfig`
+agent-sdk__typescript.md:1298:### `McpServerConfig`
+agent-sdk__typescript.md:1362:### `SdkPluginConfig`
+agent-sdk__typescript.md:1391:## Message Types
+agent-sdk__typescript.md:1393:### `SDKMessage`
+agent-sdk__typescript.md:1437:### `SDKAssistantMessage`
+agent-sdk__typescript.md:1489:### `SDKUserMessage`
+agent-sdk__typescript.md:1555:### `SDKUserMessageReplay`
+agent-sdk__typescript.md:1576:### `SDKResultMessage`
+agent-sdk__typescript.md:1813:### `SDKSystemMessage`
+agent-sdk__typescript.md:1883:### `SDKPartialAssistantMessage`
+agent-sdk__typescript.md:1905:### `SDKCompactBoundaryMessage`
+agent-sdk__typescript.md:1922:### `SDKInformationalMessage`
+agent-sdk__typescript.md:1943:### `SDKWorkerShuttingDownMessage`
+agent-sdk__typescript.md:1957:### `SDKPluginInstallMessage`
+agent-sdk__typescript.md:1973:### `SDKPermissionDeniedMessage`
+agent-sdk__typescript.md:2008:### `SDKPermissionDenial`
+agent-sdk__typescript.md:2020:### `SDKContextUsage`
+agent-sdk__typescript.md:2081:### `SDKContextUsageCategory`
+agent-sdk__typescript.md:2108:### `SDKUsageReport`
+agent-sdk__typescript.md:2179:### `SDKMessageOrigin`
+agent-sdk__typescript.md:2218:### Task-notification subkinds
+agent-sdk__typescript.md:2235:### Peer origin fields
+agent-sdk__typescript.md:2247:## Hook Types
+agent-sdk__typescript.md:2251:### `HookEvent`
+agent-sdk__typescript.md:2292:### `HookCallback`
+agent-sdk__typescript.md:2304:### `HookCallbackMatcher`
+agent-sdk__typescript.md:2316:### `HookInput`
+agent-sdk__typescript.md:2357:### `BaseHookInput`
+agent-sdk__typescript.md:2814:### `HookJSONOutput`
+agent-sdk__typescript.md:2987:## Tool Input Types
+agent-sdk__typescript.md:2991:### `ToolInputSchemas`
+agent-sdk__typescript.md:3037:### Agent
+agent-sdk__typescript.md:3062:### AskUserQuestion
+agent-sdk__typescript.md:3082:### Bash
+agent-sdk__typescript.md:3098:### Monitor
+agent-sdk__typescript.md:3122:### TaskOutput
+agent-sdk__typescript.md:3128:### Edit
+agent-sdk__typescript.md:3143:### Read
+agent-sdk__typescript.md:3164:### Write
+agent-sdk__typescript.md:3177:### Glob
+agent-sdk__typescript.md:3190:### Grep
+agent-sdk__typescript.md:3216:### TaskStop
+agent-sdk__typescript.md:3229:### NotebookEdit
+agent-sdk__typescript.md:3245:### WebFetch
+agent-sdk__typescript.md:3261:### WebSearch
+agent-sdk__typescript.md:3275:### Workflow
+agent-sdk__typescript.md:3303:### TodoWrite
+agent-sdk__typescript.md:3335:### TaskCreate
+agent-sdk__typescript.md:3350:### TaskUpdate
+agent-sdk__typescript.md:3370:### TaskGet
+agent-sdk__typescript.md:3382:### TaskList
+agent-sdk__typescript.md:3392:### ExitPlanMode
+agent-sdk__typescript.md:3409:### ListMcpResources
+agent-sdk__typescript.md:3421:### ReadMcpResource
+agent-sdk__typescript.md:3434:### EnterWorktree
+agent-sdk__typescript.md:3447:### ExitWorktree
+agent-sdk__typescript.md:3460:### EnterPlanMode
+agent-sdk__typescript.md:3470:### CronCreate
+agent-sdk__typescript.md:3487:### CronDelete
+agent-sdk__typescript.md:3499:### CronList
+agent-sdk__typescript.md:3509:### ScheduleWakeup
+agent-sdk__typescript.md:3525:### RemoteTrigger
+agent-sdk__typescript.md:3557:### PushNotification
+agent-sdk__typescript.md:3570:### REPL
+agent-sdk__typescript.md:3574:### ReportFindings
+agent-sdk__typescript.md:3607:### Artifact
+agent-sdk__typescript.md:3647:### Projects
+agent-sdk__typescript.md:3676:### ReadMcpResourceDir
+agent-sdk__typescript.md:3689:### RefreshMcpTools
+agent-sdk__typescript.md:3701:### ShowOnboardingRolePicker
+agent-sdk__typescript.md:3711:### McpInput
+agent-sdk__typescript.md:3723:## Tool Output Types
+agent-sdk__typescript.md:3727:### `ToolOutputSchemas`
+agent-sdk__typescript.md:3773:### Agent
+agent-sdk__typescript.md:3860:### AskUserQuestion
+agent-sdk__typescript.md:3881:### Bash
+agent-sdk__typescript.md:3932:### Monitor
+agent-sdk__typescript.md:3946:### Edit
+agent-sdk__typescript.md:3979:### Read
+agent-sdk__typescript.md:4055:### Write
+agent-sdk__typescript.md:4091:### Glob
+agent-sdk__typescript.md:4110:### Grep
+agent-sdk__typescript.md:4133:### TaskStop
+agent-sdk__typescript.md:4148:### NotebookEdit
+agent-sdk__typescript.md:4169:### WebFetch
+agent-sdk__typescript.md:4193:### WebSearch
+agent-sdk__typescript.md:4214:### Workflow
+agent-sdk__typescript.md:4250:### TodoWrite
+agent-sdk__typescript.md:4287:### TaskCreate
+agent-sdk__typescript.md:4302:### TaskUpdate
+agent-sdk__typescript.md:4321:### TaskGet
+agent-sdk__typescript.md:4340:### TaskList
+agent-sdk__typescript.md:4358:### ExitPlanMode
+agent-sdk__typescript.md:4376:### ListMcpResources
+agent-sdk__typescript.md:4392:### ReadMcpResource
+agent-sdk__typescript.md:4410:### EnterWorktree
+agent-sdk__typescript.md:4424:### ExitWorktree
+agent-sdk__typescript.md:4443:### EnterPlanMode
+agent-sdk__typescript.md:4455:### CronCreate
+agent-sdk__typescript.md:4470:### CronDelete
+agent-sdk__typescript.md:4482:### CronList
+agent-sdk__typescript.md:4501:### ScheduleWakeup
+agent-sdk__typescript.md:4517:### RemoteTrigger
+agent-sdk__typescript.md:4531:### PushNotification
+agent-sdk__typescript.md:4547:### ReportFindings
+agent-sdk__typescript.md:4570:### Artifact
+agent-sdk__typescript.md:4609:### Projects
+agent-sdk__typescript.md:4671:### ReadMcpResourceDir
+agent-sdk__typescript.md:4688:### RefreshMcpTools
+agent-sdk__typescript.md:4705:### ShowOnboardingRolePicker
+agent-sdk__typescript.md:4718:### McpOutput
+agent-sdk__typescript.md:4736:## Permission Types
+agent-sdk__typescript.md:4738:### `PermissionUpdate`
+agent-sdk__typescript.md:4779:### `PermissionBehavior`
+agent-sdk__typescript.md:4785:### `PermissionUpdateDestination`
+agent-sdk__typescript.md:4796:### `PermissionRuleValue`
+agent-sdk__typescript.md:4805:## Other Types
+agent-sdk__typescript.md:4807:### `ApiKeySource`
+agent-sdk__typescript.md:4835:### `SdkBeta`
+agent-sdk__typescript.md:4847:### `SlashCommand`
+agent-sdk__typescript.md:4863:### `ModelInfo`
+agent-sdk__typescript.md:4893:### `AgentInfo`
+agent-sdk__typescript.md:4911:### `McpServerProvenance`
+agent-sdk__typescript.md:4937:### `McpServerStatus`
+agent-sdk__typescript.md:4970:### `McpServerStatusConfig`
+agent-sdk__typescript.md:4985:### `AccountInfo`
+agent-sdk__typescript.md:4999:### `ModelUsage`
+agent-sdk__typescript.md:5028:### `ConfigScope`
+agent-sdk__typescript.md:5034:### `NonNullableUsage`
+agent-sdk__typescript.md:5046:### `Usage`
+agent-sdk__typescript.md:5081:### `CallToolResult`
+agent-sdk__typescript.md:5096:### `SDKMcpResourceLink`
+agent-sdk__typescript.md:5124:### `ThinkingConfig`
+agent-sdk__typescript.md:5139:### `SpawnedProcess`
+agent-sdk__typescript.md:5168:### `SpawnOptions`
+agent-sdk__typescript.md:5188:### `McpSetServersResult`
+agent-sdk__typescript.md:5210:### `RewindFilesResult`
+agent-sdk__typescript.md:5227:### `SDKStatusMessage`
+agent-sdk__typescript.md:5242:### `SDKTaskNotificationMessage`
+agent-sdk__typescript.md:5277:### `SDKToolUseSummaryMessage`
+agent-sdk__typescript.md:5291:### `SDKHookStartedMessage`
+agent-sdk__typescript.md:5309:### `SDKHookProgressMessage`
+agent-sdk__typescript.md:5328:### `SDKHookResponseMessage`
+agent-sdk__typescript.md:5349:### `SDKToolProgressMessage`
+agent-sdk__typescript.md:5386:### `SDKAuthStatusMessage`
+agent-sdk__typescript.md:5401:### `SDKTaskStartedMessage`
+agent-sdk__typescript.md:5456:### `SDKTaskProgressMessage`
+agent-sdk__typescript.md:5483:### `SDKTaskUpdatedMessage`
+agent-sdk__typescript.md:5506:### `SDKBackgroundTasksChangedMessage`
+agent-sdk__typescript.md:5540:### `SDKThinkingTokensMessage`
+agent-sdk__typescript.md:5560:### `SDKSessionStateChangedMessage`
+agent-sdk__typescript.md:5582:### `SDKFilesPersistedEvent`
+agent-sdk__typescript.md:5598:### `SDKRateLimitEvent`
+agent-sdk__typescript.md:5620:### `SDKLocalCommandOutputMessage`
+agent-sdk__typescript.md:5634:### `SDKCommandsChangedMessage`
+agent-sdk__typescript.md:5650:### `SDKPromptSuggestionMessage`
+agent-sdk__typescript.md:5663:### `SDKConversationResetMessage`
+agent-sdk__typescript.md:5689:### `AbortError`
+agent-sdk__typescript.md:5699:## Sandbox Configuration
+agent-sdk__typescript.md:5701:### `SandboxSettings`
+agent-sdk__typescript.md:5770:### `SandboxNetworkConfig`
+agent-sdk__typescript.md:5804:### `SandboxFilesystemConfig`
+agent-sdk__typescript.md:5822:### Permissions Fallback for Unsandboxed Commands
+agent-sdk__typescript.md:5869:## See also
+agent-sdk__user-input.md:5:# Handle approvals and user input
+agent-sdk__user-input.md:19:## Detect when Claude needs input
+agent-sdk__user-input.md:62:## Handle tool approval requests
+agent-sdk__user-input.md:208:### Respond to tool requests
+agent-sdk__user-input.md:404:## Handle clarifying questions
+agent-sdk__user-input.md:549:### Question format
+agent-sdk__user-input.md:619:### Response format
+agent-sdk__user-input.md:652:### Complete example
+agent-sdk__user-input.md:822:## Limitations
+agent-sdk__user-input.md:827:## Other ways to get user input
+agent-sdk__user-input.md:831:### Streaming input
+agent-sdk__user-input.md:841:### Custom tools
+agent-sdk__user-input.md:851:## Related resources
+auto-mode-classifier-billing.md:5:# Auto mode classifier request charges
+auto-mode-classifier-billing.md:19:## Respond to the notice
+auto-mode-classifier-billing.md:30:## Make the session eligible
+auto-mode-classifier-billing.md:44:## Why the notice appears
+auto-mode-classifier-billing.md:55:## Related resources
+auto-mode-config.md:5:# Configure auto mode
+auto-mode-config.md:29:## Common boundaries
+auto-mode-config.md:35:### Add a human checkpoint
+auto-mode-config.md:60:## Where the classifier reads configuration
+auto-mode-config.md:80:## Define trusted infrastructure
+auto-mode-config.md:183:### Review and save the draft
+auto-mode-config.md:211:## Override the block and allow rules
+auto-mode-config.md:280:## Route all shell commands through the classifier
+auto-mode-config.md:298:## Inspect the defaults and your effective config
+auto-mode-config.md:354:## Review denials
+auto-mode-config.md:360:### Fix a denial with an allow rule, an environment entry, or a retry
+auto-mode-config.md:378:### Fix repeated denials
+auto-mode-config.md:382:## See also
+cli-reference.md:5:# CLI reference
+cli-reference.md:9:## CLI commands
+cli-reference.md:56:## CLI flags
+cli-reference.md:143:### System prompt flags
+cli-reference.md:179:## See also
+fast-mode.md:5:# Speed up responses with fast mode
+fast-mode.md:26:## Toggle fast mode
+fast-mode.md:52:### Switch models while fast mode is on
+fast-mode.md:63:### Use fast mode in cloud sessions
+fast-mode.md:71:## Understand the cost tradeoff
+fast-mode.md:85:### See where fast mode spend appears
+fast-mode.md:93:## Decide when to use fast mode
+fast-mode.md:107:### Fast mode vs effort level
+fast-mode.md:118:## Requirements
+fast-mode.md:143:### Enable fast mode for your organization
+fast-mode.md:154:### Use fast mode behind proxies and LLM gateways
+fast-mode.md:178:### Require per-session opt-in
+fast-mode.md:192:## Handle rate limits
+fast-mode.md:208:## Research preview
+fast-mode.md:218:## See also
+headless.md:5:# Run Claude Code programmatically
+headless.md:19:## Basic usage
+headless.md:35:### Start faster with bare mode
+headless.md:73:### Background tasks at exit
+headless.md:92:### Stop a run with SIGTERM
+headless.md:103:### If the working directory is deleted
+headless.md:107:## Examples
+headless.md:111:### Pipe data through Claude
+headless.md:129:### Add Claude to a build script
+headless.md:145:### Get structured output
+headless.md:186:### Stream responses
+headless.md:298:### Auto-approve tools
+headless.md:319:### Turn off permission prompts in unattended runs
+headless.md:339:### Create a commit
+headless.md:360:### Customize the system prompt
+headless.md:374:### Continue conversations
+headless.md:379:# First request
+headless.md:382:# Continue the most recent conversation
+headless.md:398:## Next steps
+hooks-guide.md:5:# Automate actions with hooks
+hooks-guide.md:19:## Set up your first hook
+hooks-guide.md:78:## What you can automate
+hooks-guide.md:86:### Get notified when Claude needs input
+hooks-guide.md:211:### Auto-format code after edits
+hooks-guide.md:245:### Block edits to protected files
+hooks-guide.md:313:### Re-inject context after compaction
+hooks-guide.md:339:### Audit configuration changes
+hooks-guide.md:367:### Reload environment when directory or files change
+hooks-guide.md:424:### Auto-approve specific permission prompts
+hooks-guide.md:478:## How hooks work
+hooks-guide.md:525:### Combine results from multiple hooks
+hooks-guide.md:557:### Read input and return output
+hooks-guide.md:668:### Filter hooks with matchers
+hooks-guide.md:829:### Configure hook location
+hooks-guide.md:849:## Prompt-based hooks
+hooks-guide.md:883:## Agent-based hooks
+hooks-guide.md:917:## HTTP hooks
+hooks-guide.md:955:## Limitations and troubleshooting
+hooks-guide.md:957:### Limitations
+hooks-guide.md:972:### Hooks and permission modes
+hooks-guide.md:986:### Hook not firing
+hooks-guide.md:994:### Hook error in output
+hooks-guide.md:1011:### `/hooks` shows no hooks configured
+hooks-guide.md:1020:### Stop hook hits the block cap
+hooks-guide.md:1032:# ... rest of your hook logic
+hooks-guide.md:1037:### Hook JSON has no effect
+hooks-guide.md:1056:# In ~/.zshrc or ~/.bashrc
+hooks-guide.md:1068:### Check what a hook did
+hooks-guide.md:1081:## Learn more
+hooks.md:5:# Hooks reference
+hooks.md:17:## Hook lifecycle
+hooks.md:73:### How a hook resolves
+hooks.md:237:## Configuration
+hooks.md:251:### Hook locations
+hooks.md:287:### Matcher patterns
+hooks.md:402:### Hook handler fields
+hooks.md:601:### Reference scripts by path
+hooks.md:674:### Hooks in skills and agents
+hooks.md:702:### The `/hooks` menu
+hooks.md:710:### Disable or remove hooks
+hooks.md:720:## Hook input and output
+hooks.md:728:### Common input fields
+hooks.md:780:### Exit code output
+hooks.md:838:# Reads JSON input from stdin, checks the command
+hooks.md:1023:### HTTP response handling
+hooks.md:1036:### JSON output
+hooks.md:1097:# Notification hook: ping the desktop when Claude Code needs attention.
+hooks.md:1226:## Hook events
+hooks.md:1230:### SessionStart
+hooks.md:1365:# Run your setup commands that modify the environment
+hooks.md:1394:### Setup
+hooks.md:1433:### InstructionsLoaded
+hooks.md:1470:### UserPromptSubmit
+hooks.md:1549:### UserPromptExpansion
+hooks.md:1599:### MessageDisplay
+hooks.md:1731:### PreToolUse
+hooks.md:2073:### PermissionRequest
+hooks.md:2173:### PostToolUse
+hooks.md:2280:### PostToolUseFailure
+hooks.md:2342:### PostToolBatch
+hooks.md:2399:### PermissionDenied
+hooks.md:2447:### Notification
+hooks.md:2539:### SubagentStart
+hooks.md:2577:### SubagentStop
+hooks.md:2612:### TaskCreated
+hooks.md:2667:### TaskCompleted
+hooks.md:2715:# Run the test suite
+hooks.md:2724:### Stop
+hooks.md:2828:### StopFailure
+hooks.md:2856:### TeammateIdle
+hooks.md:2904:### ConfigChange
+hooks.md:2975:### CwdChanged
+hooks.md:3010:### DirectoryAdded
+hooks.md:3056:### FileChanged
+hooks.md:3133:### WorktreeCreate
+hooks.md:3202:### WorktreeRemove
+hooks.md:3273:### PreCompact
+hooks.md:3305:### PostCompact
+hooks.md:3333:### PreModelSwitch
+hooks.md:3490:### PostModelSwitch
+hooks.md:3543:### SessionEnd
+hooks.md:3588:### Elicitation
+hooks.md:3788:### ElicitationResult
+hooks.md:3866:## Prompt-based hooks
+hooks.md:3910:### How prompt-based hooks work
+hooks.md:3918:### Prompt hook configuration
+hooks.md:3951:### Response schema
+hooks.md:3983:### Check multiple conditions before stopping
+hooks.md:4005:## Agent-based hooks
+hooks.md:4013:### How agent hooks work
+hooks.md:4024:### Agent hook configuration
+hooks.md:4050:## Run hooks in the background
+hooks.md:4054:### Configure an async hook
+hooks.md:4086:### How async hooks execute
+hooks.md:4101:### Run tests after file changes
+hooks.md:4107:# run-tests-async.sh
+hooks.md:4109:# Read hook input from stdin
+hooks.md:4113:# Only run tests for source files
+hooks.md:4118:# Run tests and report results to Claude via additionalContext
+hooks.md:4152:### Limitations
+hooks.md:4159:## Security considerations
+hooks.md:4161:### Disclaimer
+hooks.md:4167:### Workspace trust
+hooks.md:4176:### Security best practices
+hooks.md:4186:## Windows PowerShell tool
+hooks.md:4223:## Debug hooks
+interactive-mode.md:5:# Interactive mode
+interactive-mode.md:9:## Keyboard shortcuts
+interactive-mode.md:17:### General controls
+interactive-mode.md:44:### Text editing
+interactive-mode.md:74:### Theme and display
+interactive-mode.md:80:### Multiline input
+interactive-mode.md:90:### Quick commands
+interactive-mode.md:100:### Transcript viewer
+interactive-mode.md:113:### Voice input
+interactive-mode.md:119:## Commands
+interactive-mode.md:127:### Complete a command mid-prompt
+interactive-mode.md:138:## Vim editor mode
+interactive-mode.md:144:### Mode switching
+interactive-mode.md:158:### Remap INSERT-mode key sequences
+interactive-mode.md:177:### Navigation (NORMAL mode)
+interactive-mode.md:204:### Editing (NORMAL mode)
+interactive-mode.md:233:### Text objects (NORMAL mode)
+interactive-mode.md:247:### Visual mode
+interactive-mode.md:267:## Command history
+interactive-mode.md:277:### Reverse search with Ctrl+R
+interactive-mode.md:296:## Background Bash commands
+interactive-mode.md:300:### How backgrounding works
+interactive-mode.md:334:### Shell mode with `!` prefix
+interactive-mode.md:359:## Queue messages while Claude works
+interactive-mode.md:367:### When Claude Code sends what you queued
+interactive-mode.md:391:### Take back what you queued
+interactive-mode.md:399:## Prompt suggestions
+interactive-mode.md:410:### When Claude Code skips suggestions
+interactive-mode.md:427:### Turn prompt suggestions off
+interactive-mode.md:440:## You should know suggestions
+interactive-mode.md:466:### Cost of checks
+interactive-mode.md:472:### Answer a note
+interactive-mode.md:487:### Turn off You should know
+interactive-mode.md:494:## Emoji shortcodes
+interactive-mode.md:505:## Check spelling as you type
+interactive-mode.md:511:### Prerequisites
+interactive-mode.md:516:### Turn spell checking on or off
+interactive-mode.md:581:### What Claude Code underlines
+interactive-mode.md:592:### When Claude Code underlines nothing
+interactive-mode.md:602:## Invisible characters in prompts
+interactive-mode.md:610:## Review changes with /diff
+interactive-mode.md:621:### Diff panel
+interactive-mode.md:644:### Diff dialog
+interactive-mode.md:657:## Side questions with /btw
+interactive-mode.md:693:## Task list
+interactive-mode.md:705:## Session recap
+interactive-mode.md:713:## Wait for a usage limit to reset
+interactive-mode.md:734:### Cancel the wait
+interactive-mode.md:748:### Start a wait yourself
+interactive-mode.md:764:### Turn automatic continue off
+interactive-mode.md:768:## PR review status
+interactive-mode.md:795:### GitLab merge requests
+interactive-mode.md:815:## Issue reference links
+interactive-mode.md:834:## See also
+managed-settings.md:5:# Deploy managed settings
+managed-settings.md:13:## Deploy a managed settings file
+managed-settings.md:54:## Choose a delivery mechanism
+managed-settings.md:82:### Where and when a policy applies
+managed-settings.md:104:### Where each mechanism stores the policy
+managed-settings.md:114:### Split a file-based policy across teams
+managed-settings.md:133:## How Claude Code combines managed sources
+managed-settings.md:169:### Keys read from every admin source
+managed-settings.md:201:### Compose every managed source
+managed-settings.md:222:### Compute the policy with a helper program
+managed-settings.md:236:### Let an embedding host add policy
+managed-settings.md:278:### What a developer can change
+managed-settings.md:292:## Check that a policy is in force
+managed-settings.md:296:### Read the source in /status
+managed-settings.md:321:### Find entries Claude Code dropped
+managed-settings.md:415:## Keys only a managed source can set
+managed-settings.md:455:## Turn telemetry off for your organization
+managed-settings.md:475:## See also
+model-config.md:5:# Model configuration
+model-config.md:9:## Available models
+model-config.md:26:### Model aliases
+model-config.md:67:### Work with Fable
+model-config.md:116:### Setting your model
+model-config.md:228:## Restrict model selection
+model-config.md:282:### Surface coverage
+model-config.md:299:### Default model behavior
+model-config.md:305:### Enforce the allowlist for the Default model
+model-config.md:322:### Control the model users run on
+model-config.md:349:### Merge behavior
+model-config.md:355:### Mantle model IDs
+model-config.md:359:### Block specific models or versions
+model-config.md:389:### Organization model restrictions
+model-config.md:410:## Organization default model
+model-config.md:441:## Organization effort limits
+model-config.md:449:## Special model behavior
+model-config.md:451:### `default` model setting
+model-config.md:467:### `opusplan` model setting
+model-config.md:484:### Fallback model chains
+model-config.md:515:### Automatic model fallback
+model-config.md:591:### Adjust effort level
+model-config.md:706:### Extended thinking
+model-config.md:724:### Extended context
+model-config.md:747:# Append [1m] to a full model name
+model-config.md:751:# Or to an alias: the suffix applies to the model the alias resolves to
+model-config.md:776:## Context window and auto-compaction
+model-config.md:780:### Set the auto-compact window
+model-config.md:798:### Default auto-compact thresholds
+model-config.md:810:### Correct the window for a gateway or custom model ID
+model-config.md:848:## Checking your current model
+model-config.md:855:## Add a custom model option
+model-config.md:882:## Environment variables
+model-config.md:899:### Pin models for third-party deployments
+model-config.md:943:### Customize pinned model display and capabilities
+model-config.md:986:### Override model IDs per version
+model-config.md:1020:### Prompt caching configuration
+model-config.md:1034:## Version history
+output-styles.md:5:# Output styles
+output-styles.md:24:## Built-in output styles
+output-styles.md:37:### Default
+output-styles.md:43:### Proactive
+output-styles.md:51:### Concise
+output-styles.md:60:### Explanatory
+output-styles.md:73:### Learning
+output-styles.md:91:## Change your output style
+output-styles.md:116:## Create a custom output style
+output-styles.md:175:## Choose between an output style and other features
+output-styles.md:192:## How output styles work
+output-styles.md:205:## Related resources
+permission-modes.md:5:# Choose a permission mode
+permission-modes.md:13:## Available modes
+permission-modes.md:47:## Common setups
+permission-modes.md:140:## Switch permission modes
+permission-modes.md:245:## Auto-approve file edits with acceptEdits mode
+permission-modes.md:263:## Analyze before you edit with plan mode
+permission-modes.md:281:### Review and approve a plan
+permission-modes.md:295:### Set plan mode as the default
+permission-modes.md:340:### Server-side classifier review
+permission-modes.md:355:### What the classifier blocks by default
+permission-modes.md:453:### Boundaries you state in conversation
+permission-modes.md:459:### Approvals you state in conversation
+permission-modes.md:467:### When auto mode falls back
+permission-modes.md:485:### How auto mode evaluates actions
+permission-modes.md:553:## Allow only pre-approved tools with dontAsk mode
+permission-modes.md:569:## Skip all checks with bypassPermissions mode
+permission-modes.md:624:## Protected paths
+permission-modes.md:678:## Critical paths
+permission-modes.md:686:### Which paths are critical
+permission-modes.md:699:### Other targets that count as critical paths
+permission-modes.md:717:### Removals inside nested commands and inline scripts
+permission-modes.md:728:### Rewrite a flagged command
+permission-modes.md:739:### Critical-path removals in each permission mode
+permission-modes.md:753:### Time limits and denials in auto and bypassPermissions modes
+permission-modes.md:765:### Remove-Item in PowerShell
+permission-modes.md:779:## See also
+permissions.md:5:# Configure permissions
+permissions.md:11:## Permission system
+permissions.md:39:### Add a comment when you answer a permission prompt
+permissions.md:54:## Manage permissions
+permissions.md:76:## Permission modes
+permissions.md:95:## Permission rule syntax
+permissions.md:99:### Match all uses of a tool
+permissions.md:111:### Use specifiers for fine-grained control
+permissions.md:121:### Match by input parameter
+permissions.md:148:### Wildcard patterns
+permissions.md:195:### Tool name wildcards
+permissions.md:215:## Tool-specific permission rules
+permissions.md:217:### Bash
+permissions.md:325:### PowerShell
+permissions.md:347:### Read and Edit
+permissions.md:505:### WebFetch
+permissions.md:546:### MCP
+permissions.md:564:### Agent (subagents)
+permissions.md:582:### Cd
+permissions.md:598:## Extend permissions with hooks
+permissions.md:602:### Precedence among rules, hooks, and mods
+permissions.md:619:### Hook approvals in plan mode
+permissions.md:625:## Working directories
+permissions.md:641:### Move the session to another directory
+permissions.md:658:### Additional directories grant file access, not configuration
+permissions.md:686:## How permissions interact with sandboxing
+permissions.md:708:## Managed settings
+permissions.md:716:## Settings precedence
+permissions.md:728:## Project allow rules and workspace trust
+permissions.md:742:### When your local settings file needs trust
+permissions.md:755:### What runs before you trust a folder
+permissions.md:777:## Example configurations
+permissions.md:781:## See also
+plugin-evals.md:5:# Test plugins with evals
+plugin-evals.md:25:## Requirements
+plugin-evals.md:34:## How an eval run works
+plugin-evals.md:38:### What happens in a run
+plugin-evals.md:42:### How a case is scored
+plugin-evals.md:48:### The no-plugin baseline
+plugin-evals.md:54:## Create your first eval suite
+plugin-evals.md:147:### Write a case manually
+plugin-evals.md:257:### Use a different eval directory
+plugin-evals.md:266:## Set up fixtures and mocks
+plugin-evals.md:337:## Run evals
+plugin-evals.md:341:### Choose what to evaluate
+plugin-evals.md:357:### Grant tools
+plugin-evals.md:371:### Command options
+plugin-evals.md:434:## Read the results
+plugin-evals.md:438:### HTML report
+plugin-evals.md:455:### JSON result
+plugin-evals.md:483:### Trust the plugin directory
+plugin-evals.md:509:## Eval suite reference
+plugin-evals.md:573:### Grader frontmatter
+plugin-evals.md:643:## Troubleshooting
+plugin-evals.md:647:### "plugin eval is currently in early access"
+plugin-evals.md:651:### "plugin eval is currently unavailable"
+plugin-evals.md:655:### "is not a trusted plugin directory, and this run cannot stop to ask you about it"
+plugin-evals.md:687:### "No eval cases found"
+plugin-evals.md:691:### The baseline arm shows no plugin, or delta is zero
+plugin-evals.md:697:### "Agent type '...' not found" for one of your plugin's agents
+plugin-evals.md:705:### Everything scores zero although the right files were produced
+plugin-evals.md:711:### A regex over the trace doesn't match text I can see
+plugin-evals.md:717:### Tools are denied, MCP tools are missing, or Bash won't run
+plugin-evals.md:721:### The run exits 1 but the results look fine
+plugin-evals.md:733:### A grader shows passed: false under a run that scored 1.0
+plugin-evals.md:752:### Runs fail with a usage-limit or rate-limit error partway through
+plugin-evals.md:762:### Runs time out or hit the turn cap
+plugin-evals.md:766:## See also
+plugins__anthropic-marketplaces.md:5:# Anthropic's marketplaces
+plugins__anthropic-marketplaces.md:25:## Anthropic's marketplaces
+plugins__anthropic-marketplaces.md:40:### The demo marketplace in `anthropics/claude-code`
+plugins__anthropic-marketplaces.md:46:## Find plugins in the official marketplace
+plugins__anthropic-marketplaces.md:52:## Browse and install from Anthropic's marketplaces
+plugins__anthropic-marketplaces.md:65:### Add the community or demo marketplace
+plugins__anthropic-marketplaces.md:76:## Third-party marketplaces
+plugins__anthropic-marketplaces.md:86:## Next steps
+plugins__cli-hints.md:5:# Recommend your plugin from your CLI
+plugins__cli-hints.md:17:## Emit the hint
+plugins__cli-hints.md:69:## Hint format
+plugins__cli-hints.md:85:## Check when the prompt appears
+plugins__cli-hints.md:95:## Preview what the user sees
+plugins__cli-hints.md:123:## Next steps
+plugins__cli-reference.md:5:# Plugin commands reference
+plugins__cli-reference.md:21:## claude plugin commands
+plugins__cli-reference.md:33:### plugin init
+plugins__cli-reference.md:71:### plugin install
+plugins__cli-reference.md:152:### plugin uninstall
+plugins__cli-reference.md:188:### plugin enable
+plugins__cli-reference.md:224:### plugin disable
+plugins__cli-reference.md:255:### plugin update
+plugins__cli-reference.md:294:### plugin list
+plugins__cli-reference.md:355:### plugin details
+plugins__cli-reference.md:383:### plugin configure
+plugins__cli-reference.md:410:### plugin prune
+plugins__cli-reference.md:444:### plugin eval
+plugins__cli-reference.md:494:### plugin eval init
+plugins__cli-reference.md:524:### plugin tag
+plugins__cli-reference.md:566:### plugin test
+plugins__cli-reference.md:582:### plugin validate
+plugins__cli-reference.md:647:## claude plugin marketplace commands
+plugins__cli-reference.md:656:### plugin marketplace add
+plugins__cli-reference.md:709:### plugin marketplace list
+plugins__cli-reference.md:743:### plugin marketplace remove
+plugins__cli-reference.md:774:### plugin marketplace update
+plugins__cli-reference.md:849:### Reload summary
+plugins__cli-reference.md:857:### Reloads that change MCP tools
+plugins__cli-reference.md:861:### Sessions without an interactive terminal
+plugins__cli-reference.md:869:## Flags that load a plugin for one session
+plugins__cli-reference.md:888:## Next steps
+plugins__code-intelligence.md:5:# Code intelligence plugins
+plugins__code-intelligence.md:21:## Install a code intelligence plugin
+plugins__code-intelligence.md:72:## See what Claude gains
+plugins__code-intelligence.md:79:### Read the diagnostics yourself
+plugins__code-intelligence.md:83:## Accept or dismiss the recommendation dialog
+plugins__code-intelligence.md:87:### When the recommendation dialog appears
+plugins__code-intelligence.md:96:### Respond to the recommendation dialog
+plugins__code-intelligence.md:107:### Turn recommendations back on
+plugins__code-intelligence.md:114:## Troubleshoot code intelligence
+plugins__code-intelligence.md:122:## Add a language without an official plugin
+plugins__code-intelligence.md:131:## Next steps
+plugins__components.md:5:# Add components to a plugin
+plugins__components.md:418:## Explore the plugin directory
+plugins__components.md:633:## Add each kind of component
+plugins__components.md:637:### Skills
+plugins__components.md:676:### Commands
+plugins__components.md:710:### Agents
+plugins__components.md:745:### Hooks
+plugins__components.md:793:### MCP servers
+plugins__components.md:853:### LSP servers
+plugins__components.md:886:### Executables
+plugins__components.md:901:### Default settings
+plugins__components.md:925:### Themes and output styles
+plugins__components.md:949:### Channels
+plugins__components.md:983:### Monitors
+plugins__components.md:1038:### When the configuration dialog appears
+plugins__components.md:1070:### Install dependencies into the data directory
+plugins__components.md:1093:## Next steps
+plugins__create-marketplace.md:5:# Create a marketplace
+plugins__create-marketplace.md:23:## Create a marketplace
+plugins__create-marketplace.md:121:## Add plugin entries
+plugins__create-marketplace.md:131:## Rules for plugin entries
+plugins__create-marketplace.md:135:### Write relative paths from the marketplace root
+plugins__create-marketplace.md:144:### Keep the entry name and the manifest name the same
+plugins__create-marketplace.md:153:## Choose a plugin source
+plugins__create-marketplace.md:174:## Validate and test
+plugins__create-marketplace.md:178:### Problems that validation reports
+plugins__create-marketplace.md:191:### Problems that surface when you add or install
+plugins__create-marketplace.md:200:### Test an edit to a plugin
+plugins__create-marketplace.md:206:### Remove the marketplace to start over
+plugins__create-marketplace.md:210:## Host your marketplace
+plugins__create-marketplace.md:218:## Next steps
+plugins__create.md:5:# Create a Claude Code plugin
+plugins__create.md:26:## Decide when to use a plugin
+plugins__create.md:37:## Create your first plugin
+plugins__create.md:143:### Plugin layout
+plugins__create.md:164:## Develop without a marketplace
+plugins__create.md:263:## Test and debug
+plugins__create.md:278:### A component path isn't found
+plugins__create.md:282:### `--plugin-dir` at a marketplace root doesn't load the plugins under `plugins/`
+plugins__create.md:286:### The plugin loads but its skills are missing
+plugins__create.md:290:### The `userConfig` dialog never appears
+plugins__create.md:294:### Check that the plugin changes Claude's behavior
+plugins__create.md:392:## Next steps
+plugins__dependencies.md:5:# Plugin dependencies
+plugins__dependencies.md:23:## Declare dependencies
+plugins__dependencies.md:29:### Declare a dependency with a version constraint
+plugins__dependencies.md:56:### Bundle plugins for a team
+plugins__dependencies.md:85:### Depend on a plugin from another marketplace
+plugins__dependencies.md:114:### Test a plugin and its dependency locally
+plugins__dependencies.md:143:### Create a release tag
+plugins__dependencies.md:168:### Constrain a dependency that has a non-git source
+plugins__dependencies.md:183:## How dependencies behave for your users
+plugins__dependencies.md:187:### How a constraint resolves against tags
+plugins__dependencies.md:196:### Confirm the resolved version
+plugins__dependencies.md:204:### Combine constraints from several plugins
+plugins__dependencies.md:218:### Dependencies when your plugin loads from claude.ai
+plugins__dependencies.md:229:## See also
+plugins__host-marketplace.md:5:# Host and maintain a marketplace
+plugins__host-marketplace.md:22:## Host your marketplace
+plugins__host-marketplace.md:39:### Register the marketplace for everyone in a repository
+plugins__host-marketplace.md:43:### Avoid relative-path entries in a URL-hosted marketplace
+plugins__host-marketplace.md:47:### Stay within the download limits for hosted files
+plugins__host-marketplace.md:65:### Edit plugins in place on a shared directory
+plugins__host-marketplace.md:69:### Keep plugin files out of Git LFS
+plugins__host-marketplace.md:73:### Share files within a marketplace with symlinks
+plugins__host-marketplace.md:89:## Distribute through organization settings
+plugins__host-marketplace.md:101:## Grant access to a private marketplace
+plugins__host-marketplace.md:120:### Serve users who have no git-host account
+plugins__host-marketplace.md:133:### What background auto-update does with credentials
+plugins__host-marketplace.md:155:## Roll out to a whole company
+plugins__host-marketplace.md:171:## Keep users up to date
+plugins__host-marketplace.md:175:### Turn on auto-update
+plugins__host-marketplace.md:186:### Release a new version
+plugins__host-marketplace.md:199:### Hold users on one version
+plugins__host-marketplace.md:209:### Change the command of a command source
+plugins__host-marketplace.md:220:## Run release channels
+plugins__host-marketplace.md:252:## Rename or remove a plugin
+plugins__host-marketplace.md:258:### Migrate users with a renames map
+plugins__host-marketplace.md:290:### Uninstall removed plugins from users' machines
+plugins__host-marketplace.md:298:## Authenticate archive downloads
+plugins__host-marketplace.md:318:### Add a headersHelper to a plugin entry
+plugins__host-marketplace.md:337:### Write the headersHelper command
+plugins__host-marketplace.md:353:### When Claude Code skips a headersHelper command or drops its output
+plugins__host-marketplace.md:364:### How users accept a headersHelper command
+plugins__host-marketplace.md:401:## Depend on and recommend other plugins
+plugins__host-marketplace.md:412:## Work around what a marketplace can't do
+plugins__host-marketplace.md:423:## Next steps
+plugins__install.md:5:# Install and manage plugins
+plugins__install.md:22:## Install a plugin
+plugins__install.md:138:### Choose an install scope
+plugins__install.md:180:### Install from your shell
+plugins__install.md:198:## Add a marketplace
+plugins__install.md:223:### Add a marketplace and install in one command
+plugins__install.md:249:### Add a private marketplace
+plugins__install.md:286:## Manage installed plugins
+plugins__install.md:305:### Manage plugins synced from claude.ai
+plugins__install.md:314:### Uninstall a plugin the project enables
+plugins__install.md:321:### See what an installed plugin adds to your sessions
+plugins__install.md:325:### Find plugins you no longer use
+plugins__install.md:329:### Plugins with dependencies
+plugins__install.md:340:### Manage plugins from your shell
+plugins__install.md:355:## Keep plugins updated
+plugins__install.md:368:### Turn auto-update on or off for a marketplace
+plugins__install.md:372:### Update plugins now
+plugins__install.md:380:### Auto-update from a private marketplace
+plugins__install.md:384:## Manage marketplaces
+plugins__install.md:398:## Next steps
+plugins__loading.md:5:# Plugin loading reference
+plugins__loading.md:25:## Check which stage a plugin reached
+plugins__loading.md:36:### Plugins and marketplaces that aren't on disk at session start
+plugins__loading.md:45:## Find where a plugin came from
+plugins__loading.md:60:### Entry name and manifest name
+plugins__loading.md:67:### Plugins shared through a repository
+plugins__loading.md:133:## Find where a plugin is enabled
+plugins__loading.md:148:### Disabled in user settings but still loads
+plugins__loading.md:154:### Enabled in project settings but not installed
+plugins__loading.md:167:## Find plugins on disk
+plugins__loading.md:184:### In-place and copied plugins
+plugins__loading.md:193:### Paths that escape the plugin directory
+plugins__loading.md:203:### Cleanup of previous versions
+plugins__loading.md:209:### Node.js package dependencies
+plugins__loading.md:272:## Versions and updates
+plugins__loading.md:284:### How Claude Code computes the version
+plugins__loading.md:306:### When Claude Code refreshes a marketplace before an install
+plugins__loading.md:328:### When auto-update runs
+plugins__loading.md:348:### When a command source re-runs
+plugins__loading.md:362:## Name conflicts
+plugins__loading.md:386:### Keep a session-only plugin from loading
+plugins__loading.md:390:## Next steps
+plugins__manifest-reference.md:5:# Plugin manifest reference
+plugins__manifest-reference.md:28:## Manifest file
+plugins__manifest-reference.md:92:### Unrecognized fields
+plugins__manifest-reference.md:99:### Validate the manifest
+plugins__manifest-reference.md:118:## Fields
+plugins__manifest-reference.md:163:### `name`
+plugins__manifest-reference.md:180:### `displayName`
+plugins__manifest-reference.md:186:### `version`
+plugins__manifest-reference.md:190:### `metadata`
+plugins__manifest-reference.md:194:### Directory listing fields
+plugins__manifest-reference.md:202:### `defaultEnabled`
+plugins__manifest-reference.md:208:### `dependencies`
+plugins__manifest-reference.md:212:### `settings`
+plugins__manifest-reference.md:216:## Component path forms
+plugins__manifest-reference.md:220:### Path-only fields
+plugins__manifest-reference.md:232:### `commands`
+plugins__manifest-reference.md:258:### `hooks`
+plugins__manifest-reference.md:301:### `mcpServers`
+plugins__manifest-reference.md:318:### `lspServers`
+plugins__manifest-reference.md:359:### `monitors`
+plugins__manifest-reference.md:391:## Path rules
+plugins__manifest-reference.md:400:### Containment and existence
+plugins__manifest-reference.md:409:### How each key combines with its default location
+plugins__manifest-reference.md:421:## User configuration
+plugins__manifest-reference.md:463:### Limit a field to fixed options
+plugins__manifest-reference.md:487:### Where values are stored
+plugins__manifest-reference.md:491:### Reference a saved value
+plugins__manifest-reference.md:498:### Fields that run through a shell
+plugins__manifest-reference.md:510:## Channels
+plugins__manifest-reference.md:550:## Environment variables
+plugins__manifest-reference.md:564:### Where each variable resolves
+plugins__manifest-reference.md:579:### Quoting and path separators
+plugins__manifest-reference.md:609:## Standard layout
+plugins__manifest-reference.md:665:## Marketplace entries and the manifest
+plugins__manifest-reference.md:671:### How entry fields combine with `plugin.json`
+plugins__manifest-reference.md:681:### Metadata precedence
+plugins__manifest-reference.md:691:## Next steps
+plugins__marketplace-reference.md:5:# Marketplace reference
+plugins__marketplace-reference.md:29:## Marketplace file
+plugins__marketplace-reference.md:39:### Reserved names
+plugins__marketplace-reference.md:58:## Top-level fields
+plugins__marketplace-reference.md:76:## Plugin entries
+plugins__marketplace-reference.md:123:### Strict mode
+plugins__marketplace-reference.md:134:## Plugin sources
+plugins__marketplace-reference.md:161:### Relative path plugin source
+plugins__marketplace-reference.md:187:### github plugin source
+plugins__marketplace-reference.md:203:### url plugin source
+plugins__marketplace-reference.md:218:### git-subdir plugin source
+plugins__marketplace-reference.md:233:### npm plugin source
+plugins__marketplace-reference.md:263:### archive plugin source
+plugins__marketplace-reference.md:282:### command plugin source
+plugins__marketplace-reference.md:338:## Marketplace sources
+plugins__marketplace-reference.md:369:### Fields by type
+plugins__marketplace-reference.md:389:### Source values valid only in policy lists
+plugins__marketplace-reference.md:399:### Source objects in settings
+plugins__marketplace-reference.md:428:## Validation messages
+plugins__marketplace-reference.md:478:### Invalid input on a source
+plugins__marketplace-reference.md:488:### Failures that validation doesn't catch
+plugins__marketplace-reference.md:494:## Next steps
+plugins__measure.md:5:# Measure plugin cost and usage
+plugins__measure.md:22:## Measure what a plugin costs
+plugins__measure.md:64:### Lower the always-on figure
+plugins__measure.md:77:### Cost shown to users before install
+plugins__measure.md:83:## Check whether a plugin is used
+plugins__measure.md:93:### Not used recently in `/plugin`
+plugins__measure.md:107:### Find skills that never run
+plugins__measure.md:113:### Unused plugins in `/doctor`
+plugins__measure.md:117:### Usage share in `/usage`
+plugins__measure.md:121:## Measure across a fleet
+plugins__measure.md:142:### Redacted plugin names in your backend
+plugins__measure.md:156:### Query the Analytics API
+plugins__measure.md:166:## Next steps
+plugins__mods__admin.md:5:# Manage mods for your organization
+plugins__mods__admin.md:24:## Stop user-installed mods from loading
+plugins__mods__admin.md:53:## Know what happens by default
+plugins__mods__admin.md:71:### Know which controls still apply
+plugins__mods__admin.md:94:## Decide whether to leave mods on
+plugins__mods__admin.md:110:### Review what a mod can do
+plugins__mods__admin.md:143:## Choose how much to allow
+plugins__mods__admin.md:166:### Allow only your organization's mods
+plugins__mods__admin.md:202:### Apply your plugin controls to mods
+plugins__mods__admin.md:213:### Set options on the built-in guard
+plugins__mods__admin.md:233:## Run your organization's own mods
+plugins__mods__admin.md:316:### Enforce a policy with a mod of your own
+plugins__mods__admin.md:403:## Next steps
+plugins__mods__api.md:5:# Use the mods API
+plugins__mods__api.md:13:## Add a command or a tool
+plugins__mods__api.md:17:### Add a command
+plugins__mods__api.md:41:### Add a tool
+plugins__mods__api.md:72:## Call a model
+plugins__mods__api.md:90:### Send one prompt
+plugins__mods__api.md:119:### Use prompt caching
+plugins__mods__api.md:174:### What a `model.complete` hook receives
+plugins__mods__api.md:184:## Run work in the background
+plugins__mods__api.md:205:### Show something without starting a turn
+plugins__mods__api.md:217:### Start a turn from a background job
+plugins__mods__api.md:221:### Stop background work
+plugins__mods__api.md:225:## Send and receive messages between sessions
+plugins__mods__api.md:263:## Reach files, processes, and the network
+plugins__mods__api.md:292:## Next steps
+plugins__mods__create.md:5:# Create a mod
+plugins__mods__create.md:20:## Ask Claude for a mod
+plugins__mods__create.md:53:### Use the mod in other sessions
+plugins__mods__create.md:70:## Write a mod yourself
+plugins__mods__create.md:236:### How the example mod works
+plugins__mods__create.md:252:## Keep working on a mod
+plugins__mods__create.md:256:### Change a mod with Claude
+plugins__mods__create.md:288:### Check what Claude Code reads from your mod
+plugins__mods__create.md:318:### Test the mod
+plugins__mods__create.md:360:## Share your mod
+plugins__mods__create.md:373:## Next steps
+plugins__mods__events.md:5:# React to events with a mod
+plugins__mods__events.md:13:## How a hook handles an event
+plugins__mods__events.md:17:### Observe an event
+plugins__mods__events.md:47:### Rewrite an event
+plugins__mods__events.md:60:### Answer an event
+plugins__mods__events.md:73:### Filter which events a hook handles
+plugins__mods__events.md:94:## Hook what Claude is doing
+plugins__mods__events.md:98:### Guard or change a tool call
+plugins__mods__events.md:210:### Rewrite or add to a prompt
+plugins__mods__events.md:240:### Follow a turn
+plugins__mods__events.md:291:## Run alongside other mods
+plugins__mods__events.md:295:### The order mods run in
+plugins__mods__events.md:317:### Handle a hook that fails
+plugins__mods__events.md:354:## Next steps
+plugins__mods__gallery.md:5:# Interface gallery for mods
+plugins__mods__gallery.md:13:## Try a sample
+plugins__mods__gallery.md:93:## Pick an element
+plugins__mods__gallery.md:103:## Show text
+plugins__mods__gallery.md:107:### `Text`
+plugins__mods__gallery.md:134:### `Markdown`
+plugins__mods__gallery.md:150:### `Link`
+plugins__mods__gallery.md:164:## Show code and changes
+plugins__mods__gallery.md:168:### `Code`
+plugins__mods__gallery.md:186:### `Code` as a diff
+plugins__mods__gallery.md:203:## Arrange elements
+plugins__mods__gallery.md:205:### `Box`
+plugins__mods__gallery.md:234:## Take input
+plugins__mods__gallery.md:240:### `Button`
+plugins__mods__gallery.md:265:### `Input`
+plugins__mods__gallery.md:298:### `Select`
+plugins__mods__gallery.md:336:## Draw pictures
+plugins__mods__gallery.md:338:### `Raster`
+plugins__mods__gallery.md:360:### `Svg`
+plugins__mods__gallery.md:376:### `Image` and `Client`
+plugins__mods__gallery.md:388:## See where a mod can draw
+plugins__mods__gallery.md:397:## Next steps
+plugins__mods__interface.md:5:# Draw in the interface with a mod
+plugins__mods__interface.md:25:## Build a pane with tabs
+plugins__mods__interface.md:186:## Pick where to draw
+plugins__mods__interface.md:210:### Change what Claude Code already draws
+plugins__mods__interface.md:296:### Open a pane at the right time
+plugins__mods__interface.md:349:### Draw in the VS Code extension
+plugins__mods__interface.md:364:## Build a tree from elements
+plugins__mods__interface.md:477:### Draw a grid of colored cells
+plugins__mods__interface.md:521:## Respond to presses and typing
+plugins__mods__interface.md:580:### Take typed input and draw a row for each item
+plugins__mods__interface.md:684:### When Claude Code redraws without being asked
+plugins__mods__interface.md:688:### Redraw when your data changes
+plugins__mods__interface.md:721:### Redraw on a timer
+plugins__mods__interface.md:735:### How often a site can redraw
+plugins__mods__interface.md:741:## Keep state
+plugins__mods__interface.md:753:### Keep a value in `$.state`
+plugins__mods__interface.md:859:### Save from more than one session
+plugins__mods__interface.md:882:## Next steps
+plugins__mods__overview.md:5:# Mods overview
+plugins__mods__overview.md:15:## What a mod can do
+plugins__mods__overview.md:27:## Get a mod
+plugins__mods__overview.md:35:### Install or update a mod
+plugins__mods__overview.md:50:### Try a sample mod
+plugins__mods__overview.md:64:## Decide whether to trust a mod
+plugins__mods__overview.md:68:### What a mod can reach
+plugins__mods__overview.md:85:### List what a mod does before you install one
+plugins__mods__overview.md:95:## Turn mods on or off
+plugins__mods__overview.md:118:### See which mods a session loaded
+plugins__mods__overview.md:122:## How a mod works
+plugins__mods__overview.md:177:### What a hook can do with an event
+plugins__mods__overview.md:189:### Where mods run
+plugins__mods__overview.md:205:## Control mods for your organization
+plugins__mods__overview.md:209:## Compare mods, settings hooks, skills, and MCP servers
+plugins__mods__overview.md:223:## Mods built into Claude Code
+plugins__mods__overview.md:240:### Read the source of built-in mods
+plugins__mods__overview.md:249:## Next steps
+plugins__mods__reference.md:5:# Mods reference
+plugins__mods__reference.md:15:## Files
+plugins__mods__reference.md:29:## The hook function
+plugins__mods__reference.md:46:## Events
+plugins__mods__reference.md:52:### Tools
+plugins__mods__reference.md:71:### Prompts and what Claude reads
+plugins__mods__reference.md:107:### Commands and configuration
+plugins__mods__reference.md:118:### Turns
+plugins__mods__reference.md:144:### Subagents
+plugins__mods__reference.md:155:### Interface
+plugins__mods__reference.md:169:### Other mods
+plugins__mods__reference.md:180:### Telemetry
+plugins__mods__reference.md:188:### Settings hook events
+plugins__mods__reference.md:192:### Mods API calls
+plugins__mods__reference.md:196:## Mods API methods
+plugins__mods__reference.md:224:## Render sites
+plugins__mods__reference.md:256:## Elements
+plugins__mods__reference.md:347:## Limits
+plugins__mods__reference.md:376:## Settings and environment variables
+plugins__mods__reference.md:394:## Commands
+plugins__mods__test.md:5:# Test a mod
+plugins__mods__test.md:11:## Write a test
+plugins__mods__test.md:57:### Stub what Claude Code would answer
+plugins__mods__test.md:116:### Follow the test kit's rules
+plugins__mods__test.md:166:### Look up what a stub returns
+plugins__mods__test.md:200:## Test a timer
+plugins__mods__test.md:259:## Test a drawing
+plugins__mods__test.md:412:## Next steps
+plugins__mods__troubleshoot.md:5:# Troubleshoot a mod
+plugins__mods__troubleshoot.md:11:## Find out why a mod does nothing
+plugins__mods__troubleshoot.md:21:## Check whether mods can load
+plugins__mods__troubleshoot.md:34:## The mod doesn't load
+plugins__mods__troubleshoot.md:38:### Your version is too old
+plugins__mods__troubleshoot.md:42:### The `mods active` line doesn't name the mod
+plugins__mods__troubleshoot.md:50:### A `claude -p` run prints `hooks module not loaded`
+plugins__mods__troubleshoot.md:56:### Refusal messages
+plugins__mods__troubleshoot.md:69:### Messages from the built-in guard
+plugins__mods__troubleshoot.md:79:### `validate` passes and lists no `hooks` line
+plugins__mods__troubleshoot.md:85:### `hooks module did not load`
+plugins__mods__troubleshoot.md:91:### `options do not fit plugin.json userConfig`
+plugins__mods__troubleshoot.md:97:### `code nested too deep to scan: more than 2000 scopes`
+plugins__mods__troubleshoot.md:103:### No mod loads in a directory you opened for the first time
+plugins__mods__troubleshoot.md:109:### No installed plugin loads at all
+plugins__mods__troubleshoot.md:115:### Claude Code stops asking to enable hot reloading
+plugins__mods__troubleshoot.md:121:## A hook is skipped or a mod is unloaded
+plugins__mods__troubleshoot.md:125:### `hook skipped`
+plugins__mods__troubleshoot.md:131:### `no command.run hook answered it`
+plugins__mods__troubleshoot.md:140:### `it crashed the hooks worker`
+plugins__mods__troubleshoot.md:146:### `its session.start ran again in a fresh copy`
+plugins__mods__troubleshoot.md:154:### `$.agent.register refused: the hooks module that made the call is no longer loaded`
+plugins__mods__troubleshoot.md:160:### `mods that run in the hooks worker are off for this session`
+plugins__mods__troubleshoot.md:166:## A tool call is denied
+plugins__mods__troubleshoot.md:170:### `a hook changed this call's input after the model wrote it`
+plugins__mods__troubleshoot.md:176:### A message about the deny rules in your settings
+plugins__mods__troubleshoot.md:182:## A drawing doesn't appear or respond
+plugins__mods__troubleshoot.md:199:### A pane or band is empty or shows Claude Code's usual content
+plugins__mods__troubleshoot.md:205:### A `ui.render` line says `threw while drawn`
+plugins__mods__troubleshoot.md:213:### `the module failed without a message`
+plugins__mods__troubleshoot.md:221:### `$.ui.open` runs and no pane appears
+plugins__mods__troubleshoot.md:227:### A toast doesn't appear
+plugins__mods__troubleshoot.md:239:### Hotkeys do nothing
+plugins__mods__troubleshoot.md:246:### A drawing works in the terminal and not in the Desktop app or VS Code
+plugins__mods__troubleshoot.md:254:## An edit or a value is lost
+plugins__mods__troubleshoot.md:258:### Your edits don't take effect
+plugins__mods__troubleshoot.md:264:### A value resets when the module reloads
+plugins__mods__troubleshoot.md:270:### A value resets after `/clear`, `/resume`, or `/branch`
+plugins__mods__troubleshoot.md:276:## Read the debug log
+plugins__mods__troubleshoot.md:300:## Next steps
+plugins__org.md:5:# Manage Claude Code plugins for your organization
+plugins__org.md:24:## Pre-install and require plugins
+plugins__org.md:30:### Choose a delivery mechanism
+plugins__org.md:48:### Require a marketplace and its plugins
+plugins__org.md:85:### Require plugins per repository
+plugins__org.md:98:### When each surface applies the plugin keys
+plugins__org.md:110:### Confirm the rollout
+plugins__org.md:117:## Seed containers and CI
+plugins__org.md:159:## Restrict what users can install
+plugins__org.md:177:### Control matrix
+plugins__org.md:213:### Allowlist with `strictKnownMarketplaces`
+plugins__org.md:250:### Blocklist with `blockedMarketplaces`
+plugins__org.md:275:### Allow the official marketplace and your own
+plugins__org.md:312:## Set update policy
+plugins__org.md:316:### Turn auto-update on or off per marketplace
+plugins__org.md:323:### Turn updates off for the whole fleet
+plugins__org.md:339:### Assign release channels to user groups
+plugins__org.md:360:## Recommend plugins
+plugins__org.md:366:## Audit and review
+plugins__org.md:372:### OpenTelemetry events
+plugins__org.md:376:### Analytics API
+plugins__org.md:380:## Plan for what managed settings can't enforce
+plugins__org.md:390:## Troubleshoot policy
+plugins__org.md:399:## Next steps
+plugins__overview.md:5:# Plugins overview
+plugins__overview.md:25:## Understand what a plugin is
+plugins__overview.md:43:### Decide whether you need a plugin
+plugins__overview.md:49:### What an enabled plugin adds to your sessions
+plugins__overview.md:63:## Get plugins from a marketplace
+plugins__overview.md:81:### Make an installed plugin available in your session
+plugins__overview.md:91:## Tell Anthropic's marketplaces from third-party ones
+plugins__overview.md:103:## Understand install scopes
+plugins__overview.md:119:## Next steps
+plugins__publish.md:5:# Publish and distribute a plugin
+plugins__publish.md:22:## Choose how to distribute
+plugins__publish.md:34:## Prepare your plugin for release
+plugins__publish.md:70:## Share a plugin without a marketplace
+plugins__publish.md:79:### Ship a plugin with your own tool
+plugins__publish.md:83:## Publish through your own marketplace
+plugins__publish.md:87:### Add the marketplace file to your repository
+plugins__publish.md:105:### Control who can install
+plugins__publish.md:109:### Tell users how to install
+plugins__publish.md:118:### Ship updates to users
+plugins__publish.md:164:### How a listed plugin reaches Claude Code users
+plugins__publish.md:168:## Ship updates, renames, and removals
+plugins__publish.md:170:### Release a new version
+plugins__publish.md:174:### Tag a release
+plugins__publish.md:180:### Rename or remove a plugin
+plugins__publish.md:186:## Declare dependencies
+plugins__publish.md:192:## Next steps
+plugins__relevance.md:5:# Recommend plugins for your org
+plugins__relevance.md:25:## Understand how plugin relevance works
+plugins__relevance.md:43:## Add relevance to a plugin entry
+plugins__relevance.md:72:## Field reference
+plugins__relevance.md:78:### `relevance`
+plugins__relevance.md:87:### `relevance.signals`
+plugins__relevance.md:143:## Validate your marketplace
+plugins__relevance.md:159:## Enable suggestions in managed settings
+plugins__relevance.md:194:## Preview what the user sees
+plugins__relevance.md:218:## See also
+plugins__security.md:5:# Plugin security and trust
+plugins__security.md:25:## Understand what a plugin can do
+plugins__security.md:62:### Official marketplace names
+plugins__security.md:83:## Review a plugin before you install
+plugins__security.md:111:### Remove a plugin you no longer trust
+plugins__security.md:119:## Recognize when Claude Code refuses or warns
+plugins__security.md:123:### Trust warning before you install
+plugins__security.md:133:### Untrusted marketplace sources and failed integrity checks
+plugins__security.md:142:## Enforce plugin controls for your organization
+plugins__security.md:154:## Find plugins in telemetry
+plugins__security.md:163:## Next steps
+plugins__troubleshooting.md:5:# Troubleshoot plugins
+plugins__troubleshooting.md:25:## Find where `/plugin` runs
+plugins__troubleshooting.md:111:## Add a marketplace
+plugins__troubleshooting.md:400:## Install a plugin
+plugins__troubleshooting.md:700:## Plugin installed but not working
+plugins__troubleshooting.md:1008:## Build a plugin
+plugins__troubleshooting.md:1162:## Host a marketplace
+plugins__troubleshooting.md:1207:## Blocked by your organization
+plugins__troubleshooting.md:1279:## Next steps
+server-managed-settings.md:5:# Configure server-managed settings
+server-managed-settings.md:15:## Requirements
+server-managed-settings.md:23:## Choose between server-managed and endpoint-managed settings
+server-managed-settings.md:34:## Configure server-managed settings
+server-managed-settings.md:96:### Verify settings delivery
+server-managed-settings.md:111:### Access control
+server-managed-settings.md:120:### Managed-only settings
+server-managed-settings.md:124:### Current limitations
+server-managed-settings.md:134:## Settings delivery
+server-managed-settings.md:136:### Settings precedence
+server-managed-settings.md:148:### Per-key exceptions across managed sources
+server-managed-settings.md:161:### Fetch and caching behavior
+server-managed-settings.md:198:### Invalid entries in delivered settings
+server-managed-settings.md:219:### Enforce fail-closed startup
+server-managed-settings.md:250:### Security approval dialogs
+server-managed-settings.md:310:## Platform availability
+server-managed-settings.md:336:## Audit logging
+server-managed-settings.md:342:## Security considerations
+server-managed-settings.md:361:## See also
+settings-example.md:5:# Example settings files
+settings-example.md:19:## Your own settings
+settings-reference.md:5:# All settings
+settings-reference.md:576:## Settings index
+settings-reference.md:838:## Model and responses
+settings-reference.md:842:### `advisorModel`
+settings-reference.md:863:### `alwaysThinkingEnabled`
+settings-reference.md:882:### `availableModels`
+settings-reference.md:900:### `availableModelsMatch`
+settings-reference.md:921:### `deniedModels`
+settings-reference.md:944:### `effortLevel`
+settings-reference.md:971:### `enforceAvailableModels`
+settings-reference.md:996:### `fallbackModel`
+settings-reference.md:1017:### `fastMode`
+settings-reference.md:1034:### `fastModePerSessionOptIn`
+settings-reference.md:1054:### `language`
+settings-reference.md:1068:### `maxEffortLevel`
+settings-reference.md:1092:### `model`
+settings-reference.md:1109:### `modelOverrides`
+settings-reference.md:1129:### `modelPicker`
+settings-reference.md:1179:### `modelPricing`
+settings-reference.md:1232:### `modelSettings`
+settings-reference.md:1267:### `outputStyle`
+settings-reference.md:1285:### `promptCacheTtl`
+settings-reference.md:1307:### `showThinkingSummaries`
+settings-reference.md:1325:### `subagentPromptCacheTtl`
+settings-reference.md:1346:### `switchModelsOnFlag`
+settings-reference.md:1364:### `ultracode`
+settings-reference.md:1383:## Permission settings
+settings-reference.md:1387:### `allowManagedPermissionRulesOnly`
+settings-reference.md:1420:### `autoMode`
+settings-reference.md:1440:### `autoMode.classifyAllShell`
+settings-reference.md:1460:### `disableAutoMode`
+settings-reference.md:1474:### `permissions`
+settings-reference.md:1497:### `useAutoModeDuringPlan`
+settings-reference.md:1513:### `permissions.allow`
+settings-reference.md:1549:### `permissions.ask`
+settings-reference.md:1567:### `permissions.deny`
+settings-reference.md:1596:### `permissions.additionalDirectories`
+settings-reference.md:1615:### `permissions.blockReadsOutsideWorkingDirectories`
+settings-reference.md:1672:### `permissions.defaultMode`
+settings-reference.md:1698:### `permissions.disableBypassPermissionsMode`
+settings-reference.md:1717:### `skipAutoPermissionPrompt`
+settings-reference.md:1733:### `skipDangerousModePermissionPrompt`
+settings-reference.md:1749:## Sandbox settings
+settings-reference.md:1753:### `sandbox`
+settings-reference.md:1782:### `sandbox.enabled`
+settings-reference.md:1802:### `sandbox.failIfUnavailable`
+settings-reference.md:1827:### `sandbox.autoAllowBashIfSandboxed`
+settings-reference.md:1850:### `sandbox.excludedCommands`
+settings-reference.md:1883:### `sandbox.allowUnsandboxedCommands`
+settings-reference.md:1910:### `sandbox.filesystem`
+settings-reference.md:1956:### `sandbox.filesystem.allowWrite`
+settings-reference.md:1978:### `sandbox.filesystem.denyWrite`
+settings-reference.md:2000:### `sandbox.filesystem.denyRead`
+settings-reference.md:2020:### `sandbox.filesystem.allowRead`
+settings-reference.md:2043:### `sandbox.filesystem.allowManagedReadPathsOnly`
+settings-reference.md:2069:### `sandbox.filesystem.disabled`
+settings-reference.md:2097:### `sandbox.ignoreViolations`
+settings-reference.md:2115:### `sandbox.enableWeakerNestedSandbox`
+settings-reference.md:2136:### `sandbox.enableWeakerNetworkIsolation`
+settings-reference.md:2157:### `sandbox.allowAppleEvents`
+settings-reference.md:2178:### `sandbox.ripgrep`
+settings-reference.md:2196:### `sandbox.bwrapPath`
+settings-reference.md:2215:### `sandbox.socatPath`
+settings-reference.md:2234:### `sandbox.credentials`
+settings-reference.md:2267:### `sandbox.credentials.files`
+settings-reference.md:2340:### `sandbox.credentials.envVars`
+settings-reference.md:2414:### `sandbox.credentials.allowPlaintextInject`
+settings-reference.md:2434:### `sandbox.credentials.awsPairs`
+settings-reference.md:2466:### `sandbox.credentials.sigv4`
+settings-reference.md:2492:### `sandbox.network`
+settings-reference.md:2516:### `sandbox.network.allowUnixSockets`
+settings-reference.md:2536:### `sandbox.network.allowAllUnixSockets`
+settings-reference.md:2558:### `sandbox.network.allowLocalBinding`
+settings-reference.md:2578:### `sandbox.network.allowMachLookup`
+settings-reference.md:2598:### `sandbox.network.allowedDomains`
+settings-reference.md:2620:### `sandbox.network.deniedDomains`
+settings-reference.md:2642:### `sandbox.network.strictAllowlist`
+settings-reference.md:2664:### `sandbox.network.allowManagedDomainsOnly`
+settings-reference.md:2691:### `sandbox.network.httpProxyPort`
+settings-reference.md:2711:### `sandbox.network.socksProxyPort`
+settings-reference.md:2731:### `sandbox.network.tlsTerminate`
+settings-reference.md:2753:## Memory and context
+settings-reference.md:2757:### `autoCompactEnabled`
+settings-reference.md:2776:### `autoCompactWindow`
+settings-reference.md:2793:### `autoMemoryDirectory`
+settings-reference.md:2809:### `autoMemoryEnabled`
+settings-reference.md:2826:### `bashOutputMaxChars`
+settings-reference.md:2842:### `claudeMd`
+settings-reference.md:2860:### `claudeMdExcludes`
+settings-reference.md:2878:### `env`
+settings-reference.md:2945:### `fileCheckpointingEnabled`
+settings-reference.md:2964:### `idleCompaction`
+settings-reference.md:3007:### `plansDirectory`
+settings-reference.md:3026:### `skillListingBudgetFraction`
+settings-reference.md:3042:### `skillListingMaxDescChars`
+settings-reference.md:3058:### `taskOutputMaxChars`
+settings-reference.md:3066:## Interface and terminal
+settings-reference.md:3070:### `askUserQuestionTimeout`
+settings-reference.md:3087:### `autoContinueAtUsageLimit`
+settings-reference.md:3105:### `autoScrollEnabled`
+settings-reference.md:3123:### `axScreenReader`
+settings-reference.md:3140:### `bashEditDiffEnabled`
+settings-reference.md:3159:### `companyAnnouncements`
+settings-reference.md:3175:### `defaultShell`
+settings-reference.md:3195:### `dialogExpiry`
+settings-reference.md:3212:### `editorMode`
+settings-reference.md:3230:### `emojiCompletionEnabled`
+settings-reference.md:3250:### `fileSuggestion`
+settings-reference.md:3290:# Replace your-repo-file-index with your own file search command
+settings-reference.md:3296:### `footerLinksRegexes`
+settings-reference.md:3337:### `keybindingFlavor`
+settings-reference.md:3349:### `maxProseWidth`
+settings-reference.md:3363:### `prefersReducedMotion`
+settings-reference.md:3379:### `promptSuggestionEnabled`
+settings-reference.md:3398:### `respectGitignore`
+settings-reference.md:3414:### `respondToBashCommands`
+settings-reference.md:3432:### `showClearContextOnPlanAccept`
+settings-reference.md:3448:### `showTurnDuration`
+settings-reference.md:3464:### `spellcheck`
+settings-reference.md:3478:### `spinnerTipsEnabled`
+settings-reference.md:3494:### `spinnerTipsOverride`
+settings-reference.md:3556:### `spinnerVerbs`
+settings-reference.md:3579:### `statusLine`
+settings-reference.md:3601:### `subagentStatusLine`
+settings-reference.md:3620:### `syntaxHighlightingDisabled`
+settings-reference.md:3636:### `terminalProgressBarEnabled`
+settings-reference.md:3654:### `terminalTitleFromRename`
+settings-reference.md:3672:### `theme`
+settings-reference.md:3696:### `timeFormat`
+settings-reference.md:3733:### `timeZone`
+settings-reference.md:3747:### `tui`
+settings-reference.md:3766:### `verbose`
+settings-reference.md:3785:### `viewMode`
+settings-reference.md:3803:### `vimInsertModeRemaps`
+settings-reference.md:3821:### `voice`
+settings-reference.md:3844:### `voiceEnabled`
+settings-reference.md:3864:### `wheelScrollAccelerationEnabled`
+settings-reference.md:3880:## Git and attribution
+settings-reference.md:3886:### `attribution`
+settings-reference.md:3912:### `includeCoAuthoredBy`
+settings-reference.md:3934:### `includeGitInstructions`
+settings-reference.md:3958:### `prUrlTemplate`
+settings-reference.md:3974:### `attribution.commit`
+settings-reference.md:3994:### `attribution.pr`
+settings-reference.md:4010:### `attribution.sessionUrl`
+settings-reference.md:4032:## Hooks and automation
+settings-reference.md:4036:### `allowedHttpHookUrls`
+settings-reference.md:4054:### `allowManagedHooksOnly`
+settings-reference.md:4083:### `disableAllHooks`
+settings-reference.md:4124:### `disableWorkflows`
+settings-reference.md:4141:### `enableWorkflows`
+settings-reference.md:4160:### `hooks`
+settings-reference.md:4187:### `httpHookAllowedEnvVars`
+settings-reference.md:4205:### `workflowKeywordTriggerEnabled`
+settings-reference.md:4223:### `workflowSizeGuideline`
+settings-reference.md:4249:## Plugins and skills
+settings-reference.md:4253:### `disableBundledSkills`
+settings-reference.md:4272:### `disableSkillShellExecution`
+settings-reference.md:4290:### `skillOverrides`
+settings-reference.md:4317:### `syncClaudeAiSkills`
+settings-reference.md:4335:### `syncClaudeAiPlugins`
+settings-reference.md:4355:### `allowedChannelPlugins`
+settings-reference.md:4378:### `blockedMarketplaces`
+settings-reference.md:4400:### `channelsEnabled`
+settings-reference.md:4418:### `disableCommandPluginSources`
+settings-reference.md:4436:### `pluginSuggestionMarketplaces`
+settings-reference.md:4452:### `pluginTrustMessage`
+settings-reference.md:4466:### `strictKnownMarketplaces`
+settings-reference.md:4607:### `strictPluginOnlyCustomization`
+settings-reference.md:4625:### `strictPluginOnlyCustomization.skills`
+settings-reference.md:4639:### `strictPluginOnlyCustomization.agents`
+settings-reference.md:4653:### `strictPluginOnlyCustomization.hooks`
+settings-reference.md:4667:### `strictPluginOnlyCustomization.mcp`
+settings-reference.md:4681:### `enabledPlugins`
+settings-reference.md:4712:### `extraKnownMarketplaces`
+settings-reference.md:4812:### `pluginConfigs`
+settings-reference.md:4838:### `prependPlugins`
+settings-reference.md:4858:### `appendPlugins`
+settings-reference.md:4878:## MCP
+settings-reference.md:4882:### `allowAllClaudeAiMcps`
+settings-reference.md:4900:### `allowClaudeInChromeWithManagedMcp`
+settings-reference.md:4918:### `allowedMcpServers`
+settings-reference.md:4942:### `allowManagedMcpServersOnly`
+settings-reference.md:4965:### `deniedMcpServers`
+settings-reference.md:4983:### `disableClaudeAiConnectors`
+settings-reference.md:5002:### `disabledMcpjsonServers`
+settings-reference.md:5018:### `enableAllProjectMcpServers`
+settings-reference.md:5036:### `enabledMcpjsonServers`
+settings-reference.md:5054:### `managedMcpServers`
+settings-reference.md:5077:## Agents, sessions, and worktrees
+settings-reference.md:5081:### `agent`
+settings-reference.md:5098:### `crossSessionInbound`
+settings-reference.md:5121:### `disableAgentView`
+settings-reference.md:5138:### `isolatePeerMachines`
+settings-reference.md:5156:### `processWrapper`
+settings-reference.md:5173:### `teammateMode`
+settings-reference.md:5194:### `worktree`
+settings-reference.md:5215:### `worktree.baseRef`
+settings-reference.md:5235:### `worktree.symlinkDirectories`
+settings-reference.md:5253:### `worktree.sparsePaths`
+settings-reference.md:5273:### `worktree.bgIsolation`
+settings-reference.md:5293:### `worktree.location`
+settings-reference.md:5313:## Remote, desktop, and notifications
+settings-reference.md:5317:### `agentPushNotifEnabled`
+settings-reference.md:5335:### `awaySummaryEnabled`
+settings-reference.md:5354:### `disableArtifact`
+settings-reference.md:5377:### `disableDeepLinkRegistration`
+settings-reference.md:5391:### `disableDesktopLocalSessions`
+settings-reference.md:5411:### `disableRemoteControl`
+settings-reference.md:5427:### `enableArtifact`
+settings-reference.md:5445:### `inputNeededNotifEnabled`
+settings-reference.md:5463:### `preferredNotifChannel`
+settings-reference.md:5486:### `remote.defaultEnvironmentId`
+settings-reference.md:5505:### `remoteControlAtStartup`
+settings-reference.md:5524:### `sshConfigs`
+settings-reference.md:5546:### `sshHostAllowlist`
+settings-reference.md:5568:## Authentication and providers
+settings-reference.md:5572:### `allowedProviders`
+settings-reference.md:5613:### `apiKeyHelper`
+settings-reference.md:5637:### `awsAuthRefresh`
+settings-reference.md:5655:### `awsCredentialExport`
+settings-reference.md:5671:### `forceLoginMethod`
+settings-reference.md:5692:### `forceLoginGatewayUrl`
+settings-reference.md:5710:### `forceLoginOrgUUID`
+settings-reference.md:5730:### `gatewayInternalNetworks`
+settings-reference.md:5750:### `gcpAuthRefresh`
+settings-reference.md:5768:### `otelHeadersHelper`
+settings-reference.md:5784:## Updates and versioning
+settings-reference.md:5788:### `autoUpdatesChannel`
+settings-reference.md:5806:### `minimumVersion`
+settings-reference.md:5825:### `requiredMaximumVersion`
+settings-reference.md:5841:### `requiredMinimumVersion`
+settings-reference.md:5857:## Tools
+settings-reference.md:5861:### `browserExternalPageTools`
+settings-reference.md:5877:### `disableBrowserExternalNavigation`
+settings-reference.md:5895:### `disableMobileSimulatorTools`
+settings-reference.md:5915:## Privacy and telemetry
+settings-reference.md:5919:### `cleanupPeriodDays`
+settings-reference.md:5935:### `desktopSessionCleanupPeriodDays`
+settings-reference.md:5949:### `feedbackDrafts`
+settings-reference.md:5969:### `feedbackSurveyRate`
+settings-reference.md:5986:### `skipWebFetchPreflight`
+settings-reference.md:6006:## Enterprise and managed settings
+settings-reference.md:6010:### `disableSideloadFlags`
+settings-reference.md:6037:### `forceRemoteSettingsRefresh`
+settings-reference.md:6057:### `managedSourcesBehavior`
+settings-reference.md:6101:### `parentSettingsBehavior`
+settings-reference.md:6121:### `policyHelper`
+settings-reference.md:6185:### `policyHelper.path`
+settings-reference.md:6201:### `policyHelper.timeoutMs`
+settings-reference.md:6218:### `policyHelper.refreshIntervalMs`
+settings-reference.md:6237:### `wslInheritsWindowsSettings`
+settings-reference.md:6257:## Global config settings
+settings-reference.md:6261:### `autoConnectIde`
+settings-reference.md:6280:### `autoInstallIdeExtension`
+settings-reference.md:6299:### `claudeInChromeDefaultEnabled`
+settings-reference.md:6320:### `copyFullResponse`
+settings-reference.md:6338:### `copyOnSelect`
+settings-reference.md:6356:### `defaultToAgentsView`
+settings-reference.md:6374:### `diffTool`
+settings-reference.md:6392:### `externalEditorContext`
+settings-reference.md:6411:# ─── Claude's last response (for reference; removed on save) ───
+settings-reference.md:6412:# I added the retry loop to fetchUser in src/api.ts and a test
+settings-reference.md:6413:# for the timeout case. Want me to wire the same retry into
+settings-reference.md:6414:# fetchOrders?
+settings-reference.md:6415:# ─── Write your reply below this line ──────────────────────────
+settings-reference.md:6424:### `leftArrowOpensAgents`
+settings-reference.md:6442:### `permissionExplainerEnabled`
+settings-reference.md:6454:### `prStatusFooterEnabled`
+settings-reference.md:6472:### `teammateDefaultModel`
+settings-reference.md:6484:## See also
+settings.md:5:# Settings files and precedence
+settings.md:399:## Settings files and who they affect
+settings.md:416:### Compare the scope of each settings file
+settings.md:431:### Find or create your settings files
+settings.md:445:### Share settings with your team
+settings.md:459:### Keep personal settings out of a repository
+settings.md:498:### Check what your organization enforces
+settings.md:512:## Change a setting
+settings.md:520:### Use the /config menu
+settings.md:534:### Edit a settings file
+settings.md:562:### Change a setting for one session
+settings.md:582:### When edits take effect
+settings.md:597:### Confirm what loaded
+settings.md:603:### Fix a broken settings file
+settings.md:624:## Settings precedence
+settings.md:642:### Lists merge instead of overriding
+settings.md:653:### Precedence examples
+settings.md:689:### Troubleshoot a setting that doesn't apply
+settings.md:730:### Exceptions to managed settings precedence
+settings.md:750:## Settings in cloud sessions
+settings.md:761:## What's next
+statusline.md:5:# Customize your status line
+statusline.md:28:## Set up a status line
+statusline.md:32:### Use the /statusline command
+statusline.md:42:### Manually configure a status line
+statusline.md:73:### Disable the status line
+statusline.md:77:## Build a status line step by step
+statusline.md:135:## How status lines work
+statusline.md:141:### When the status line updates
+statusline.md:158:### What your script can output
+statusline.md:166:### Size output to the terminal
+statusline.md:170:## Available data
+statusline.md:356:### Context window fields
+statusline.md:378:### Spend limit fields
+statusline.md:387:### Prompt cache fields
+statusline.md:425:## Examples
+statusline.md:435:### Context window usage
+statusline.md:502:### Git status with colors
+statusline.md:596:### Cost and duration tracking
+statusline.md:657:### Display multiple lines
+statusline.md:764:### Clickable links
+statusline.md:844:### Rate limit usage
+statusline.md:931:### Cache expensive operations
+statusline.md:1065:### Windows configuration
+statusline.md:1120:## Subagent status lines
+statusline.md:1139:### Task fields
+statusline.md:1160:## Tips
+statusline.md:1168:## Troubleshooting
+statusline.md:1172:### Status line not appearing
+statusline.md:1185:### Status line shows `--` or empty values
+statusline.md:1189:### Context percentage shows unexpected values
+statusline.md:1193:### OSC 8 links not clickable
+statusline.md:1217:### Display glitches with escape sequences
+statusline.md:1223:### Workspace trust required
+statusline.md:1229:### Script errors or hangs
+statusline.md:1238:### Notifications share the status line row

@@ -1,0 +1,179 @@
+plugins__mods__admin 5:# Manage mods for your organization
+plugins__mods__admin 24:## Stop user-installed mods from loading
+plugins__mods__admin 53:## Know what happens by default
+plugins__mods__admin 71:### Know which controls still apply
+plugins__mods__admin 94:## Decide whether to leave mods on
+plugins__mods__admin 110:### Review what a mod can do
+plugins__mods__admin 143:## Choose how much to allow
+plugins__mods__admin 166:### Allow only your organization's mods
+plugins__mods__admin 202:### Apply your plugin controls to mods
+plugins__mods__admin 213:### Set options on the built-in guard
+plugins__mods__admin 233:## Run your organization's own mods
+plugins__mods__admin 316:### Enforce a policy with a mod of your own
+plugins__mods__admin 403:## Next steps
+plugins__mods__api 5:# Use the mods API
+plugins__mods__api 13:## Add a command or a tool
+plugins__mods__api 17:### Add a command
+plugins__mods__api 41:### Add a tool
+plugins__mods__api 72:## Call a model
+plugins__mods__api 90:### Send one prompt
+plugins__mods__api 119:### Use prompt caching
+plugins__mods__api 174:### What a `model.complete` hook receives
+plugins__mods__api 184:## Run work in the background
+plugins__mods__api 205:### Show something without starting a turn
+plugins__mods__api 217:### Start a turn from a background job
+plugins__mods__api 221:### Stop background work
+plugins__mods__api 225:## Send and receive messages between sessions
+plugins__mods__api 263:## Reach files, processes, and the network
+plugins__mods__api 292:## Next steps
+plugins__mods__create 5:# Create a mod
+plugins__mods__create 20:## Ask Claude for a mod
+plugins__mods__create 53:### Use the mod in other sessions
+plugins__mods__create 70:## Write a mod yourself
+plugins__mods__create 236:### How the example mod works
+plugins__mods__create 252:## Keep working on a mod
+plugins__mods__create 256:### Change a mod with Claude
+plugins__mods__create 288:### Check what Claude Code reads from your mod
+plugins__mods__create 318:### Test the mod
+plugins__mods__create 360:## Share your mod
+plugins__mods__create 373:## Next steps
+plugins__mods__events 5:# React to events with a mod
+plugins__mods__events 13:## How a hook handles an event
+plugins__mods__events 17:### Observe an event
+plugins__mods__events 47:### Rewrite an event
+plugins__mods__events 60:### Answer an event
+plugins__mods__events 73:### Filter which events a hook handles
+plugins__mods__events 94:## Hook what Claude is doing
+plugins__mods__events 98:### Guard or change a tool call
+plugins__mods__events 210:### Rewrite or add to a prompt
+plugins__mods__events 240:### Follow a turn
+plugins__mods__events 291:## Run alongside other mods
+plugins__mods__events 295:### The order mods run in
+plugins__mods__events 317:### Handle a hook that fails
+plugins__mods__events 354:## Next steps
+plugins__mods__gallery 5:# Interface gallery for mods
+plugins__mods__gallery 13:## Try a sample
+plugins__mods__gallery 93:## Pick an element
+plugins__mods__gallery 103:## Show text
+plugins__mods__gallery 107:### `Text`
+plugins__mods__gallery 134:### `Markdown`
+plugins__mods__gallery 150:### `Link`
+plugins__mods__gallery 164:## Show code and changes
+plugins__mods__gallery 168:### `Code`
+plugins__mods__gallery 186:### `Code` as a diff
+plugins__mods__gallery 203:## Arrange elements
+plugins__mods__gallery 205:### `Box`
+plugins__mods__gallery 234:## Take input
+plugins__mods__gallery 240:### `Button`
+plugins__mods__gallery 265:### `Input`
+plugins__mods__gallery 298:### `Select`
+plugins__mods__gallery 336:## Draw pictures
+plugins__mods__gallery 338:### `Raster`
+plugins__mods__gallery 360:### `Svg`
+plugins__mods__gallery 376:### `Image` and `Client`
+plugins__mods__gallery 388:## See where a mod can draw
+plugins__mods__gallery 397:## Next steps
+plugins__mods__interface 5:# Draw in the interface with a mod
+plugins__mods__interface 25:## Build a pane with tabs
+plugins__mods__interface 186:## Pick where to draw
+plugins__mods__interface 210:### Change what Claude Code already draws
+plugins__mods__interface 296:### Open a pane at the right time
+plugins__mods__interface 349:### Draw in the VS Code extension
+plugins__mods__interface 364:## Build a tree from elements
+plugins__mods__interface 477:### Draw a grid of colored cells
+plugins__mods__interface 521:## Respond to presses and typing
+plugins__mods__interface 580:### Take typed input and draw a row for each item
+plugins__mods__interface 684:### When Claude Code redraws without being asked
+plugins__mods__interface 688:### Redraw when your data changes
+plugins__mods__interface 721:### Redraw on a timer
+plugins__mods__interface 735:### How often a site can redraw
+plugins__mods__interface 741:## Keep state
+plugins__mods__interface 753:### Keep a value in `$.state`
+plugins__mods__interface 859:### Save from more than one session
+plugins__mods__interface 882:## Next steps
+plugins__mods__overview 5:# Mods overview
+plugins__mods__overview 15:## What a mod can do
+plugins__mods__overview 27:## Get a mod
+plugins__mods__overview 35:### Install or update a mod
+plugins__mods__overview 50:### Try a sample mod
+plugins__mods__overview 64:## Decide whether to trust a mod
+plugins__mods__overview 68:### What a mod can reach
+plugins__mods__overview 85:### List what a mod does before you install one
+plugins__mods__overview 95:## Turn mods on or off
+plugins__mods__overview 118:### See which mods a session loaded
+plugins__mods__overview 122:## How a mod works
+plugins__mods__overview 177:### What a hook can do with an event
+plugins__mods__overview 189:### Where mods run
+plugins__mods__overview 205:## Control mods for your organization
+plugins__mods__overview 209:## Compare mods, settings hooks, skills, and MCP servers
+plugins__mods__overview 223:## Mods built into Claude Code
+plugins__mods__overview 240:### Read the source of built-in mods
+plugins__mods__overview 249:## Next steps
+plugins__mods__reference 5:# Mods reference
+plugins__mods__reference 15:## Files
+plugins__mods__reference 29:## The hook function
+plugins__mods__reference 46:## Events
+plugins__mods__reference 52:### Tools
+plugins__mods__reference 71:### Prompts and what Claude reads
+plugins__mods__reference 107:### Commands and configuration
+plugins__mods__reference 118:### Turns
+plugins__mods__reference 144:### Subagents
+plugins__mods__reference 155:### Interface
+plugins__mods__reference 169:### Other mods
+plugins__mods__reference 180:### Telemetry
+plugins__mods__reference 188:### Settings hook events
+plugins__mods__reference 192:### Mods API calls
+plugins__mods__reference 196:## Mods API methods
+plugins__mods__reference 224:## Render sites
+plugins__mods__reference 256:## Elements
+plugins__mods__reference 347:## Limits
+plugins__mods__reference 376:## Settings and environment variables
+plugins__mods__reference 394:## Commands
+plugins__mods__test 5:# Test a mod
+plugins__mods__test 11:## Write a test
+plugins__mods__test 57:### Stub what Claude Code would answer
+plugins__mods__test 116:### Follow the test kit's rules
+plugins__mods__test 166:### Look up what a stub returns
+plugins__mods__test 200:## Test a timer
+plugins__mods__test 259:## Test a drawing
+plugins__mods__test 412:## Next steps
+plugins__mods__troubleshoot 5:# Troubleshoot a mod
+plugins__mods__troubleshoot 11:## Find out why a mod does nothing
+plugins__mods__troubleshoot 21:## Check whether mods can load
+plugins__mods__troubleshoot 34:## The mod doesn't load
+plugins__mods__troubleshoot 38:### Your version is too old
+plugins__mods__troubleshoot 42:### The `mods active` line doesn't name the mod
+plugins__mods__troubleshoot 50:### A `claude -p` run prints `hooks module not loaded`
+plugins__mods__troubleshoot 56:### Refusal messages
+plugins__mods__troubleshoot 69:### Messages from the built-in guard
+plugins__mods__troubleshoot 79:### `validate` passes and lists no `hooks` line
+plugins__mods__troubleshoot 85:### `hooks module did not load`
+plugins__mods__troubleshoot 91:### `options do not fit plugin.json userConfig`
+plugins__mods__troubleshoot 97:### `code nested too deep to scan: more than 2000 scopes`
+plugins__mods__troubleshoot 103:### No mod loads in a directory you opened for the first time
+plugins__mods__troubleshoot 109:### No installed plugin loads at all
+plugins__mods__troubleshoot 115:### Claude Code stops asking to enable hot reloading
+plugins__mods__troubleshoot 121:## A hook is skipped or a mod is unloaded
+plugins__mods__troubleshoot 125:### `hook skipped`
+plugins__mods__troubleshoot 131:### `no command.run hook answered it`
+plugins__mods__troubleshoot 140:### `it crashed the hooks worker`
+plugins__mods__troubleshoot 146:### `its session.start ran again in a fresh copy`
+plugins__mods__troubleshoot 154:### `$.agent.register refused: the hooks module that made the call is no longer loaded`
+plugins__mods__troubleshoot 160:### `mods that run in the hooks worker are off for this session`
+plugins__mods__troubleshoot 166:## A tool call is denied
+plugins__mods__troubleshoot 170:### `a hook changed this call's input after the model wrote it`
+plugins__mods__troubleshoot 176:### A message about the deny rules in your settings
+plugins__mods__troubleshoot 182:## A drawing doesn't appear or respond
+plugins__mods__troubleshoot 199:### A pane or band is empty or shows Claude Code's usual content
+plugins__mods__troubleshoot 205:### A `ui.render` line says `threw while drawn`
+plugins__mods__troubleshoot 213:### `the module failed without a message`
+plugins__mods__troubleshoot 221:### `$.ui.open` runs and no pane appears
+plugins__mods__troubleshoot 227:### A toast doesn't appear
+plugins__mods__troubleshoot 239:### Hotkeys do nothing
+plugins__mods__troubleshoot 246:### A drawing works in the terminal and not in the Desktop app or VS Code
+plugins__mods__troubleshoot 254:## An edit or a value is lost
+plugins__mods__troubleshoot 258:### Your edits don't take effect
+plugins__mods__troubleshoot 264:### A value resets when the module reloads
+plugins__mods__troubleshoot 270:### A value resets after `/clear`, `/resume`, or `/branch`
+plugins__mods__troubleshoot 276:## Read the debug log
+plugins__mods__troubleshoot 300:## Next steps

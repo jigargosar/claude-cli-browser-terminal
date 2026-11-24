@@ -1,0 +1,43 @@
+23:This example binds `Ctrl+E` to open an external editor in the chat context, and unbinds `Ctrl+S`:
+25:```json theme={null}
+34:        "ctrl+s": null
+113:| `chat:cycleMode` | Shift+Tab\* | Cycle permission modes |
+134:| `autocomplete:accept` | Tab | Accept suggestion |
+135:| `autocomplete:dismiss` | Escape | Dismiss menu |
+136:| `autocomplete:previous` | Up | Previous suggestion |
+137:| `autocomplete:next` | Down | Next suggestion |
+152:| `confirm:cycleMode` | Shift+Tab\* | On a file permission prompt, closes an open [comment field](/docs/en/permissions#add-a-comment-when-you-answer-a-permission-prompt); with no field open, selects the option that a
+164:```json theme={null}
+213:The `historySearch:next`, `historySearch:accept`, `historySearch:cancel`, and `historySearch:execute` defaults apply to the inline history search in the classic renderer, which always searches prompts from all projec
+246:| `tabs:previous` | Shift+Tab, Left | Previous tab |
+280:`Chat` bindings on keys the `Footer` context doesn't bind, such as `Shift+Tab` for `chat:cycleMode`, keep working while an item is selected.
+288:```json theme={null}
+409:| `abovePrompt:previous` | Shift+Tab | Focus the previous control |
+440:The `Pane` context also binds Tab, Shift+Tab, Enter, and Escape to the same [above-prompt actions](#above-prompt-actions) as the band, and a pane's input fields and selects use the `AbovePromptInput` and `AbovePrompt
+520:```text theme={null}
+522:shift+tab       Shift + Tab
+544:```text theme={null}
+554:* `tab` - Tab key
+562:## Unbind default shortcuts
+564:Set an action to `null` to unbind a default shortcut:
+566:```json theme={null}
+572:        "ctrl+s": null
+579:This also works for chord bindings. Unbinding every chord that shares a prefix frees that prefix for use as a single-key binding. A chord in any active context keeps its prefix reserved, so you must unbind each chord
+591:To reclaim `ctrl+x` itself as a single-key binding, unbind all of them:
+593:```json theme={null}
+599:        "ctrl+x ctrl+b": null
+605:        "ctrl+x b": null
+611:        "ctrl+x left": null,
+612:        "ctrl+x right": null,
+613:        "ctrl+x up": null,
+614:        "ctrl+x down": null,
+615:        "ctrl+x x": null
+621:        "ctrl+x x": null
+627:        "ctrl+x ctrl+k": null,
+628:        "ctrl+x ctrl+e": null,
+629:        "ctrl+x enter": null,
+630:        "ctrl+x ctrl+a": null,
+631:        "ctrl+x ctrl+s": null,
+632:        "ctrl+x tab": null,
+640:If you unbind some but not all chords on a prefix, pressing the prefix still enters chord-wait mode for the remaining bindings.
+697:* Invalid action values, such as an action that isn't a string or `null`

@@ -1,0 +1,7 @@
+hooks.md:1023:### HTTP response handling
+hooks.md:1097:# Notification hook: ping the desktop when Claude Code needs attention.
+hooks.md:2073:### PermissionRequest
+hooks.md:2399:### PermissionDenied
+hooks.md:2447:### Notification
+hooks.md:3588:### Elicitation
+hooks.md:3788:### ElicitationResult
