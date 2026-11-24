@@ -112,3 +112,6 @@
 - [ ] when running commands intermediate actions are not visible in the page.
 - [ ] cleanup permissions
 - [ ] Quick notes (QN), the `quick-notes-v2` project: the secondary aim in `CLAUDE.md`. It has a handful of major issues.
+- [ ] pressing popup buttons, required another keystores friction; 
+- [ ] The system prompt rule at `server.mjs:54-57` reads "every file reference is written as `path:line` or `path:start-end`". Change it so a file reference always includes a line number, even when the whole file is meant.
+- [ ] A pointer to a numbered item, such as "chunk 4" or "the second difference", either links to its file location or restates the item inline. Add this rule to the system prompt at `server.mjs:54-57`.
