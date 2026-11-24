@@ -104,8 +104,12 @@
 - [.] Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
     - Idea: the page shows its version number, and the changelog with Unreleased.
     - Idea: known issues go in the changelog too, so I don't hunt for a bug that is already known.
-- [.] Pain: a sentence like "Fix 3 is live now" points back by a number, so I can't tell what it means, or reply to it alone.
-    - Idea: one more line in the system prompt in `server.mjs`. Every sentence names the thing it talks about.
+- [.] Pain: Referencing to some point in prev or other response, causes friction, lack of context.
+    - Solution: the system prompt at `server.mjs:54-57` becomes:
+    - every file reference is written as `path:line` or `path:start-end`, and a whole file as `path:1`
+    - every line number matches the file as it is now
+    - every reference resolves on its own: a file reference, or the referenced content carried forward inline
+        - this covers removed content, content of a previous reply, a numbered item, and the subject of every sentence
 - [.] need to be able distinguish which session/project I am working on. the project name and color in terminal doesnt help, we need something in UI.
 - [ ] close button should be at bottom too. for collapsible.  
 - [ ] approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise.
@@ -113,5 +117,5 @@
 - [ ] cleanup permissions
 - [ ] Quick notes (QN), the `quick-notes-v2` project: the secondary aim in `CLAUDE.md`. It has a handful of major issues.
 - [ ] pressing popup buttons, required another keystores friction; 
-- [ ] The system prompt rule at `server.mjs:54-57` reads "every file reference is written as `path:line` or `path:start-end`". Change it so a file reference always includes a line number, even when the whole file is meant.
-- [ ] A pointer to a numbered item, such as "chunk 4" or "the second difference", either links to its file location or restates the item inline. Add this rule to the system prompt at `server.mjs:54-57`.
+- [ ] the inline code blocks are terrible to read, blue + b/w
+- in code blocks file reference are not navigatable. including the selection color.
