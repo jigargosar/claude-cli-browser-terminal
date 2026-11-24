@@ -123,3 +123,4 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - in code blocks file reference are not navigatable. including the selection color.
 - [ ] users responces should behave same as your response, i.e. f for hilighting a sentense, and ability to response
 egronomic way to handle both panels.
+- why file links are so slow and show terminal in between.
