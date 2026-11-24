@@ -122,3 +122,4 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] the inline code blocks are terrible to read, blue + b/w
 - in code blocks file reference are not navigatable. including the selection color.
 - [ ] users responces should behave same as your response, i.e. f for hilighting a sentense, and ability to response
+egronomic way to handle both panels.
