@@ -111,3 +111,4 @@
 - [ ] approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise.
 - [ ] when running commands intermediate actions are not visible in the page.
 - [ ] cleanup permissions
+- [ ] Quick notes (QN), the `quick-notes-v2` project: the secondary aim in `CLAUDE.md`. It has a handful of major issues.
