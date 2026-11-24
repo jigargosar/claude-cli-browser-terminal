@@ -4,9 +4,8 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 
 1. New tasks are appended at the end of the file. Unformatted is fine.
 2. Never ever start implementing before its task has a `Pain:` line.
-3. Meta tasks are the exception to the workflow rules.
 4. Weeding runs regularly. It is the Impact and Cleanup of "Closing a task", done across tasks and across the project.
-    - It merges duplicates and drops ticked or stale tasks.
+    - It merges duplicates and drops ticked or stale tasks. (identifying duplactes might require clarification of its pain point)
     - Ticked tasks stay on the list until weeding, for that reason.
 
 ## Before implementing
@@ -48,15 +47,8 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - Parallel work in worktrees. Conflicts with this workflow get resolved as they come up.
 - Worktree tasks are marked as such. How a task links to its worktree is not worked out yet.
 
-## Meta, in progress
 
-- Reorganize tasks and docs, as agreed 2026-11-10.
-    - Pain: things seem spread out. Plan, task, reference, spike and mockups. Thier notes, reference, plan etc. causing confusion.
-    - Apply the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file.
-    - Move research docs into `docs/research/`, flat, with an index of one-line summaries.
-    - Then, separately: remove doc references from code comments, and add the comments rule to CLAUDE.md.
-    - use google z tool to create a markdown file with code and comments so we know exactly what we are up to. without things being spread out.
-- Extract a skill that handles our process in other projects.
+
 
 # Task List
 
@@ -102,7 +94,9 @@ When I ask or you think that rules need to be broken, simply list them and wait 
     - Not decided: how to find the modified files and their diff. Git inside the project. Outside it, perhaps chezmoi.
     - Idea: the server finds the writes in the transcript, since it reads every line. Writes outside the project matter most.
 - [ ] Figure out usage patterns, specifically when working on projects.
-- [ ] `docs/mods/raw/` holds all of the Claude Code docs, the CLI reference included, so a path to a general doc reads as a mods doc.
+- [.] Pain: `docs/mods/raw/` holds all of the Claude Code docs, the CLI reference included, so a path to a general doc reads as a mods doc.
+    - Done: moved to `docs/vendor-library-documentation/`, committed, with a `README.md` and a line in `CLAUDE.md`.
+    - Open: `docs/mods/mods-research.md:5` still names the old path.
 - [.] Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
     - Idea: the page shows its version number, and the changelog with Unreleased.
     - Idea: known issues go in the changelog too, so I don't hunt for a bug that is already known.
@@ -124,3 +118,4 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] users responces should behave same as your response, i.e. f for hilighting a sentense, and ability to response
 egronomic way to handle both panels.
 - why file links are so slow and show terminal in between.
+- Apply the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file.

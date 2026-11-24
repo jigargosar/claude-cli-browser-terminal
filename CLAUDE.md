@@ -35,7 +35,8 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - `docs/fvp-list.md`: workflow, tasks, releasing.
 - `docs/mockups/`: HTML mockups, approved before the page implements them.
 - `docs/spikes/`: spikes, inactive, kept for reuse.
-- `docs/mods/`: how to use mods in Claude Code. Research, plan and design notes, with the Claude Code docs downloaded on 2026-10-18 and 2026-11-10 in `raw/`, which is gitignored.
+- `docs/mods/`: how to use mods in Claude Code. Research, plan and design notes.
+- `docs/vendor-library-documentation/`: docs written by others, downloaded for reference.
 - `CHANGELOG.md`: the only release notes, no GitHub Release.
 
 # Rules
