@@ -120,3 +120,4 @@ egronomic way to handle both panels.
 - why file links are so slow and show terminal in between.
 - Apply the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file.
 - [ ] Pain: unsent comments are lost whenever a new turn starts from the terminal: a dialog answer, or typed text and Enter. Seen 2026-11-24 after "No" on a permission prompt. Related: comments are page based, in the task "go back to a previous reply".
+    - Plan: `docs/tasks/comments-every-page/plan.md`.
