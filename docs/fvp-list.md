@@ -1,5 +1,7 @@
 # How we work
 
+When I ask or you think that rules need to be broken, simply list them and wait for approval.
+
 1. New tasks are appended at the end of the file. Unformatted is fine.
 2. Never ever start implementing before its task has a `Pain:` line.
 3. Meta tasks are the exception to the workflow rules.
@@ -119,3 +121,4 @@
 - [ ] pressing popup buttons, required another keystores friction; 
 - [ ] the inline code blocks are terrible to read, blue + b/w
 - in code blocks file reference are not navigatable. including the selection color.
+- [ ] users responces should behave same as your response, i.e. f for hilighting a sentense, and ability to response
