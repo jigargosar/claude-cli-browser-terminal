@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- ccw asks Claude to make every reference resolve on its own: a file reference, or the referenced content repeated inline. A whole file is written as `path:1`.
+
 ### Fixed
 - A file reference to a committed file opens when ccw runs in a subfolder of a git repository. Before, the file view showed an error.
 
