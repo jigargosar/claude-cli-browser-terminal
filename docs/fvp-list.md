@@ -59,8 +59,8 @@
 # Task List
 
 - [ ] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay.
-    - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
-    - [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
+- [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
+- [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis. We have beeing calling our project as ccw. will have to think about it.
 - [ ] markdown pane UX sucks. need better UX.
 - [ ] format response and show images.
@@ -104,10 +104,10 @@
 - [.] Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
     - Idea: the page shows its version number, and the changelog with Unreleased.
     - Idea: known issues go in the changelog too, so I don't hunt for a bug that is already known.
-- [ ] Pain: a sentence like "Fix 3 is live now" points back by a number, so I can't tell what it means, or reply to it alone.
+- [.] Pain: a sentence like "Fix 3 is live now" points back by a number, so I can't tell what it means, or reply to it alone.
     - Idea: one more line in the system prompt in `server.mjs`. Every sentence names the thing it talks about.
 - [.] need to be able distinguish which session/project I am working on. the project name and color in terminal doesnt help, we need something in UI.
 - [ ] close button should be at bottom too. for collapsible.  
 - [ ] approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise.
 - [ ] when running commands intermediate actions are not visible in the page.
-- cleanup permissions
+- [ ] cleanup permissions
