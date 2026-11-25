@@ -125,6 +125,7 @@ egronomic way to handle both panels.
     - Plan: `docs/tasks/comments-every-page/plan.md`.
 - [.] Weeding.
 - [ ] add why in workflow steps
-- [ ] kbs + sfit == submit
+- [ ] Pain triggering a quick comment button cant send response, requires extra click.
 - [ ] move workflow to seperate file. 
 - [ ] view diff in app
+- [ ] Pain: we are not recording which popills we are using, and missing.
