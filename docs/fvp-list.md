@@ -93,29 +93,27 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [x] Pain: impossible to view/review line number content when referenced in your reply.
     - Plan: `docs/tasks/file-refs/plan.md`. Closed on 2026-11-22.
 - [ ] File peek, left over from the file references task: the list under "Left over" in `docs/tasks/file-refs/plan.md`. The diff, a transition, a click on a line to open the editor, and space after the last line.
-- [.] Pain: three or four files get modified, and I can't tell which ones or what changed.
+- [ ] Pain: three or four files get modified, and I can't tell which ones or what changed.
     - Solution: each reply ends with a list of the files modified, outside the project first, in red, then inside the project. Each one links like a file reference.
     - Not decided: how to find the modified files and their diff. Git inside the project. Outside it, perhaps chezmoi.
     - Idea: the server finds the writes in the transcript, since it reads every line. Writes outside the project matter most.
-- [ ] Figure out usage patterns, specifically when working on projects.
-- [.] Pain: `docs/mods/raw/` holds all of the Claude Code docs, the CLI reference included, so a path to a general doc reads as a mods doc.
+- [ ] Pain: `docs/mods/raw/` holds all of the Claude Code docs, the CLI reference included, so a path to a general doc reads as a mods doc.
     - Done: moved to `docs/vendor-library-documentation/`, committed, with a `README.md` and a line in `CLAUDE.md`.
     - Open: `docs/mods/mods-research.md:5` still names the old path.
-- [.] Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
+- [ ] Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
     - Idea: the page shows its version number, and the changelog with Unreleased.
     - Idea: known issues go in the changelog too, so I don't hunt for a bug that is already known.
-- [.] Pain: Referencing to some point in prev or other response, causes friction, lack of context.
+- [ ] Pain: Referencing to some point in prev or other response, causes friction, lack of context.
     - Solution: the system prompt at `server.mjs:54-57` becomes:
     - every file reference is written as `path:line` or `path:start-end`, and a whole file as `path:1`
     - every line number matches the file as it is now
     - every reference resolves on its own: a file reference, or the referenced content carried forward inline
         - this covers removed content, content of a previous reply, a numbered item, and the subject of every sentence
-- [.] need to be able distinguish which session/project I am working on. the project name and color in terminal doesnt help, we need something in UI.
-- [ ] close button should be at bottom too. for collapsible.  
-- [ ] approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise.
+- [ ] need to be able distinguish which session/project I am working on. the project name and color in terminal doesnt help, we need something in UI.
+- [ ] Pain: closing the expanded internal details is very cumbersome. 
+- [ ] Pain: approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise.
 - [ ] when running commands intermediate actions are not visible in the page.
-- [ ] cleanup permissions
-- [ ] Quick notes (QN), the `quick-notes-v2` project: the secondary aim in `CLAUDE.md`. It has a handful of major issues.
+- [ ] Pain: Quick notes (QN): Why is progress blocked? and what is the state of backups, can it be trusted?, the `quick-notes-v2` project: the secondary aim in `CLAUDE.md`.
 - [ ] pressing popup buttons, required another keystores friction; 
 - [ ] the inline code blocks are terrible to read, blue + b/w
 - in code blocks file reference are not navigatable. including the selection color.
