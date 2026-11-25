@@ -10,3 +10,9 @@ Once upon a time in a far far future some of them were surprisingly alive.
 - Rewind from the reply page itself: go back to an earlier turn from the markdown page, without the terminal.
 - Replace the xterm terminal with our own interface, one piece at a time. More and more time is then spent in the markdown page. Each problem met in the terminal decides the next piece to migrate. A lot of migration in total, but no big switch.
 - One place to read everything: the reply as markdown, earlier replies, the terminal shown or hidden, and a document brought up. Comment on a file's lines the same way as on a reply, so we talk inside the file as we do in the response.
+
+pin as chapter in conversation, our best bet is to have a conversational flow, because all the artifacts are being edited side by side in other chat apps. we need something more powerful, no we dont we just need to ensure that we have what we need. other interfaces are still crappy regardless.
+
+the bookmarks appear in interface on side, and are nicely ticked based on which part of page/conversation we are looking at.
+
+attachments, i just got a pdf chat history, sitting in downloads/drive
