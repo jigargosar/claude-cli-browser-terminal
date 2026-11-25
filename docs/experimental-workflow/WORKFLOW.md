@@ -30,7 +30,7 @@
 1. Weeding is the Impact and Cleanup of "Closing a task", done across tasks and across the project.
 2. It merges duplicates.
 3. It drops ticked and stale tasks, together with their Details block.
-4. Ticked tasks stay in the list until weeding, for that reason.
+4. Ticked tasks stay in the list until weeding, so weeding can review them.
 
 ## Working on a task
 
@@ -39,12 +39,11 @@
     - The chain starts at the first task not done. Going down the list, each task wanted more than the last dot gets a dot.
     - When the dots no longer fit, they are cleared and the chain starts again.
     - The last dotted task is the one worked on.
-    - After a task, scan only the tasks after it, against the previous dot.
-    - A task worked on but not finished moves to the end of the list, with its sub-bullets and id. That includes Inbox processing and Weeding. The scan continues from where it was.
-    - An urgent item skips the Inbox. It goes to the end of the Task List with its `Pain:` line.
+    - partially done tasks move at the end of task list.
+    - After a task, the scan continues from that task's old place, against the previous dot.
+    - An urgent item goes to the end of the Task List with its `Pain:` line.
 2. Claude may suggest a dot. The user dots.
-    - A task whose solution is already approved goes straight to Implementing.
-3. Claude and the user get the pain clear. It may be an XY problem.
+3. A task whose solution is already approved goes straight to Implementing. Otherwise, Claude and the user get the pain clear. It may be an XY problem.
 4. Claude proposes the solution. The user's solution ideas are input, not the spec.
     - The plan lives as sub-bullets under its task.
 5. The user approves the solution. Then Claude implements.
@@ -58,12 +57,13 @@
 ## Closing a task
 
 1. Impact: Claude lists what the task changed, what it found that isn't written down yet, and its open issues.
-2. Knowledge gained goes to a reference folder. The user and Claude pick which one.
-3. Sub-tasks it spawned go to the Inbox.
-4. Files only the task used are moved or deleted.
-    - A plan file with open items goes to the Inbox. It is deleted only when nothing in it is still needed.
+2. Cleanup: every item from the Impact list gets a place.
+    - Knowledge gained goes to a reference folder. The user and Claude pick which one.
+    - Sub-tasks it spawned go to the Inbox.
+    - Files only the task used are moved or deleted.
+    - A plan file's open items go to the Inbox. The plan file is deleted only when nothing in it is still needed.
     - Mockups are never deleted. Each one in `docs/mockups/` gets a line in `docs/mockups/README.md`: what it shows, and where it went.
-5. The user approves. Claude ticks the task, adds a line under Unreleased in `CHANGELOG.md`, and commits.
+3. The user approves. Claude ticks the task, adds a line under Unreleased in `CHANGELOG.md`, and commits.
 
 ## Releasing
 
