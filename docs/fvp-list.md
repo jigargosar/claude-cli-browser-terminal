@@ -117,6 +117,10 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Weeding (exempt from pain point)
 - [.] Pain: urgent. The file peek hides the popup, so I can't see what is being typed.
     - Solution: the popup and the comment box sit above the peek. `.comment-float` goes from z-index 7 to 9, the peek is 8.
+    - Pain: F is both jump (find mode) and "Fix it". With the grid open, an F meant to jump presses "Fix it".
+        - Solution A: F stays jump. "Fix it" moves to I. I is free in the grid.
+        - Solution B: while the popup is open, F does not jump. To jump, close the popup first, then press F. This matches the code today, `web/views/comments.js:207-218`.
+        - Not decided which one is better.
 
 
 
