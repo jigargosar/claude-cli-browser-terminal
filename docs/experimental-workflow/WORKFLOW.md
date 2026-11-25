@@ -2,7 +2,7 @@
 
 1. Before any delete, check for info and consult the user.
 2. When a rule needs to be broken, Claude lists it and waits for approval.
-3. The task file is `docs/experimental-workflow/tasks.md`. It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
+3. The task file is `FVP-LIST.md`, in the same folder as this file. It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
 
 ## Inbox
 
