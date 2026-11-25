@@ -5,8 +5,10 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 
 1. New tasks are appended at the end of the file. Unformatted is fine.
 2. Never ever start implementing before its task has a `Pain:` line.
-4. Weeding runs regularly. It is the Impact and Cleanup of "Closing a task", done across tasks and across the project.
-    - It merges duplicates and drops ticked or stale tasks. (identifying duplactes might require clarification of its pain point)
+4. Weeding runs regularly. 
+    - It is the Impact and Cleanup of "Closing a task", done across tasks and across the project.
+    - It merges duplicates. Identifying duplactes might require, adding pain points of all tasks.
+    - drops ticked or stale tasks.
     - Ticked tasks stay on the list until weeding, for that reason.
 
 ## Before implementing
@@ -32,6 +34,7 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 1. Impact: Claude lists what the task changed, what it found that isn't written down yet, and its open issues.
 2. Cleanup: every item gets a place. Open issues become new tasks. Files only the task used are moved or deleted.
     - A plan file with open items goes to a new task. It is deleted only when nothing in it is still needed.
+    - Mockups are never deleted. Each one in `docs/mockups/` gets a line in `docs/mockups/README.md`: what it shows, and where it went.
 3. The user approves. Claude ticks the task and commits.
 
 
