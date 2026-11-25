@@ -127,3 +127,5 @@ egronomic way to handle both panels.
     - Plan: `docs/tasks/comments-every-page/plan.md`.
 - [ ] Weeding.
 - [.] add why in workflow steps
+- [ ] kbs + sfit == submit
+- [ ] move workflow to seperate file. 

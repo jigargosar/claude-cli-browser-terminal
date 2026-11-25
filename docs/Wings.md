@@ -16,3 +16,17 @@ pin as chapter in conversation, our best bet is to have a conversational flow, b
 the bookmarks appear in interface on side, and are nicely ticked based on which part of page/conversation we are looking at.
 
 attachments, i just got a pdf chat history, sitting in downloads/drive
+
+- External diff: review Claude's edits in a real diff tool.
+    - Tools:
+        - WinMerge compares any two files or folders: `winmergeu <left> <right>`.
+        - `gitk` shows commits and their diffs, for example `gitk HEAD~1..HEAD`.
+        - `git gui` shows uncommitted changes, and stages a hunk or a line.
+        - diffai is a terminal diff viewer that saves line comments for Claude. Windows support is not confirmed. https://www.joshfinnie.com/blog/introducing-diffai/
+    - Options, separate, can be combined:
+        1. Workflow line: after its edits, Claude launches `git gui`.
+        2. `Stop` hook: `git gui` opens on its own when a turn ends with uncommitted changes.
+        3. ccw page: the modified files show as links, and a click opens the diff. Related task: "three or four files get modified" in `docs/fvp-list.md`.
+    - Known:
+        - Claude Code's own `diffTool` setting opens only VS Code or JetBrains.
+        - `git difftool --dir-diff` fails here with symlinks, because `core.symlinks` is true in the system gitconfig. `--no-symlinks` avoids it.
