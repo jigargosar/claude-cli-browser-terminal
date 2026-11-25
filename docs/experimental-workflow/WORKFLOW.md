@@ -2,19 +2,22 @@
 
 1. Before any delete, check for info and consult the user.
 2. When a rule needs to be broken, Claude lists it and waits for approval.
+3. The task file has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
 
 ## Inbox
 
 1. Anything new goes to the Inbox as a rough line, wherever we are in the workflow. No pain, no checkbox.
-2. Processing: Claude drafts the item's `Pain:` line and shows its closest match in the Task List.
-3. The user picks: merge into that task, move to the Task List, or delete.
+2. Processing is a standing task in the Task List, like Weeding. It comes up through dotting.
+3. Processing: Claude drafts each item's `Pain:` line and shows its closest match in the Task List.
+4. The user picks: merge into that task, move to the Task List, or delete.
 
 ## Task List
 
 1. Every task starts with `Pain:`. The pain can be a paragraph.
 2. Blank is waiting, dot is chosen, x is done.
 3. Nothing is implemented from the Inbox.
-4. One Weeding task is always in the list, as its last item. It links to the Weeding section of this file.
+4. Two standing tasks are always in the list: Inbox processing and Weeding. Each links to its section of this file.
+5. When a standing task is done, it goes back to the end of the list.
 
 ## Details
 
