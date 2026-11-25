@@ -27,6 +27,7 @@ attachments, i just got a pdf chat history, sitting in downloads/drive
         1. Workflow line: after its edits, Claude launches `git gui`.
         2. `Stop` hook: `git gui` opens on its own when a turn ends with uncommitted changes.
         3. ccw page: the modified files show as links, and a click opens the diff. Related task: "three or four files get modified" in `docs/fvp-list.md`.
+        4. ccw page: while Claude writes a file, or a permission prompt for the edit waits with no option picked yet, the diff shows in the page.
     - Known:
         - Claude Code's own `diffTool` setting opens only VS Code or JetBrains.
         - `git difftool --dir-diff` fails here with symlinks, because `core.symlinks` is true in the system gitconfig. `--no-symlinks` avoids it.

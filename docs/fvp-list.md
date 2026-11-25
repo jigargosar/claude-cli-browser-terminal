@@ -64,7 +64,7 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] format response and show images.
 - [ ] move divider with keyboard
 - [ ] switching between panes is still clumsy. Happens unintentionally by using trackpad.
-    - The first click in the other pane should only move the focus. It should not also run what is under the mouse.
+    - The first click in the other pane also runs what is under the mouse.
     - A click on the file peek's scrollbar moves the focus to the left pane.
 - [ ] Mark dead turns after a rewind.
     - Decided: dead turns stay, since they are part of the transcript. The page makes it obvious which turns are dead.
@@ -100,32 +100,35 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Pain: `docs/mods/raw/` holds all of the Claude Code docs, the CLI reference included, so a path to a general doc reads as a mods doc.
     - Done: moved to `docs/vendor-library-documentation/`, committed, with a `README.md` and a line in `CLAUDE.md`.
     - Open: `docs/mods/mods-research.md:5` still names the old path.
-- [ ] Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
-    - Idea: the page shows its version number, and the changelog with Unreleased.
-    - Idea: known issues go in the changelog too, so I don't hunt for a bug that is already known.
+- [ ] Static app info, written into the code at release: version, changelog with Unreleased, known issues, and help such as the keyboard shortcuts.
+    - Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
+- [ ] Dynamic info about the running session: where it runs, the project, and the session details the statusline shows.
+    - need to be able distinguish which session/project I am working on. the project name and color in terminal doesnt help, we need something in UI.
 - [ ] Pain: Referencing to some point in prev or other response, causes friction, lack of context.
     - Solution: the system prompt at `server.mjs:54-57` becomes:
     - every file reference is written as `path:line` or `path:start-end`, and a whole file as `path:1`
     - every line number matches the file as it is now
     - every reference resolves on its own: a file reference, or the referenced content carried forward inline
         - this covers removed content, content of a previous reply, a numbered item, and the subject of every sentence
-- [ ] need to be able distinguish which session/project I am working on. the project name and color in terminal doesnt help, we need something in UI.
 - [ ] Pain: closing the expanded internal details is very cumbersome. 
 - [ ] Pain: approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise.
 - [ ] when running commands intermediate actions are not visible in the page.
 - [ ] Pain: Quick notes (QN): Why is progress blocked? and what is the state of backups, can it be trusted?, the `quick-notes-v2` project: the secondary aim in `CLAUDE.md`.
-- [ ] Pain: Last comment shortcut should also send.
 - [ ] The markdown code blocks are horrible.
 - [ ] in code blocks file reference are not navigatable. including the selection color.
 - [ ] users responces should behave same as your response, i.e. f for hilighting a sentense, and ability to response
-egronomic way to handle both panels.
 - [ ] why file links are so slow and show terminal in between.
 - [ ] Pain: do we need it? quick read and update. Apply the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file.
 - [ ] Pain: unsent comments are lost whenever a new turn starts from the terminal: a dialog answer, or typed text and Enter. Seen 2026-11-24 after "No" on a permission prompt. Related: comments are page based, in the task "go back to a previous reply".
     - Plan: `docs/tasks/comments-every-page/plan.md`.
 - [.] Weeding.
 - [ ] add why in workflow steps
-- [ ] Pain triggering a quick comment button cant send response, requires extra click.
+- [ ] Pain: when we want to end and send response, if we use quick response, then we have to press another button / click. unlike popup shortcut to save and send.
 - [ ] move workflow to seperate file. 
-- [ ] view diff in app
 - [ ] Pain: we are not recording which popills we are using, and missing.
+- [ ] Pain: edit at line seen in peek is cumbersome.
+- [ ] Pain: No vim bindings in peek or pane, very inconvinent. (can code mirror help)
+- [ ] Pain: question, are we writing too much custom stuff that codemirror already solves
+- [ ] Pain: Response formatting is poor.
+- [ ] The intermideate claude processing might take some time to complete. Meanwhile I want to see, thinking blocks clearly. UX Friendly
+- [ ] we need to come up with a glossary, `docs/glossary.md`. Example: "other pane" is not a name. There is only one pane/page, markdown by default.
