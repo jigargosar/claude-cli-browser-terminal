@@ -12,7 +12,7 @@
 
 ## Task List
 
-1. Every task starts with `Pain:`. The pain can be a paragraph.
+1. Every task starts with `Pain:`, except the two standing tasks. The pain can be a paragraph.
 2. Blank is waiting, dot is preselected, x is done.
 3. Nothing is implemented from the Inbox.
 4. Two standing tasks are always in the list: Inbox processing and Weeding. Each links to its section of this workflow file.
@@ -40,9 +40,10 @@
     - When the dots no longer fit, they are cleared and the chain starts again.
     - The last dotted task is the one worked on.
     - After a task, scan only the tasks after it, against the previous dot.
-    - A task worked on but not finished is re-entered at the end of the list. That includes Inbox processing and Weeding.
+    - A task worked on but not finished moves to the end of the list, with its sub-bullets and id. That includes Inbox processing and Weeding. The scan continues from where it was.
     - An urgent item skips the Inbox. It goes to the end of the Task List with its `Pain:` line.
 2. Claude may suggest a dot. The user dots.
+    - A task whose solution is already approved goes straight to Implementing.
 3. Claude and the user get the pain clear. It may be an XY problem.
 4. Claude proposes the solution. The user's solution ideas are input, not the spec.
     - The plan lives as sub-bullets under its task.
