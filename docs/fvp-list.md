@@ -56,11 +56,11 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 
 # Task List
 
-- [ ] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay.
+- [.] Pain: comment window too small to read or right
 - [ ] Typed text lost: while reading in Ctrl+O mode, the focus was not on the text box, and everything typed was lost.
-- [ ] Clearing a comment's text and then saving deletes the comment with no guard, because an empty save is treated as an edit.
 - [ ] Rename the project from `claude-cli-browser-terminal` to `dx-claude-cli`. Do impact analysis. We have beeing calling our project as ccw. will have to think about it.
-- [ ] markdown pane UX sucks. need better UX.
+- [ ] Pain: pane top navigate elements not visible mixes with stuff, the sticky header not sure if its needed, and it doesnt even do proper show hide. Too much clutter. 
+    - Keep only imp stuff or toggle in advance settings
 - [ ] format response and show images.
 - [ ] move divider with keyboard
 - [ ] switching between panes is still clumsy. Happens unintentionally by using trackpad.
@@ -78,7 +78,7 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Pain: sometimes I want to go back to a previous reply and send information from it. On older pages, click and F do nothing. They work on the latest page only. Same for my response.
     - Solution: not decided. Direction: commenting works on older pages the same as on the latest page. Claude's reading of the user's note, to confirm: comments are collected across pages.
     - Since comments are page based, they clear as page changes. Moved from the popup journal task.
-- [ ] Pain: the reading pane reshapes the transcript, so I can't tell what is really going on. Where is the thinking? It says Running when it is waiting.
+- [ ] Pain: cleanup this tasks, too much Pain. :P Pain: the reading pane reshapes the transcript, so I can't tell what is really going on. Where is the thinking? It says Running when it is waiting.
     - Plan: `docs/tasks/response-info/plan.md`.
       - Solution: prompts and Claude's text are always open, never closed or hidden. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/tasks/response-info/transcript-inventory.md`
     - multiple housekeeping tasks are grouped together, that is good, but are they shown in proper chrono order? even some other stufff appears then goes. Pain: dont know what is going on, and our algo to collect stuff.
@@ -125,7 +125,8 @@ egronomic way to handle both panels.
 - Apply the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file.
 - [ ] Pain: unsent comments are lost whenever a new turn starts from the terminal: a dialog answer, or typed text and Enter. Seen 2026-11-24 after "No" on a permission prompt. Related: comments are page based, in the task "go back to a previous reply".
     - Plan: `docs/tasks/comments-every-page/plan.md`.
-- [ ] Weeding.
-- [.] add why in workflow steps
+- [.] Weeding.
+- [ ] add why in workflow steps
 - [ ] kbs + sfit == submit
 - [ ] move workflow to seperate file. 
+- [ ] view diff in app

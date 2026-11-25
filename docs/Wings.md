@@ -30,3 +30,5 @@ attachments, i just got a pdf chat history, sitting in downloads/drive
     - Known:
         - Claude Code's own `diffTool` setting opens only VS Code or JetBrains.
         - `git difftool --dir-diff` fails here with symlinks, because `core.symlinks` is true in the system gitconfig. `--no-symlinks` avoids it.
+
+- [ ] full history of all popups changes like a journal, and ability to undo redo, across open/close, comments stay.
