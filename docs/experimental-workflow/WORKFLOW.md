@@ -2,30 +2,28 @@
 
 1. Before any delete, check for info and consult the user.
 2. When a rule needs to be broken, Claude lists it and waits for approval.
-3. The task file has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
+3. The task file is `docs/experimental-workflow/tasks.md`. It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
 
 ## Inbox
 
 1. Anything new goes to the Inbox as a rough line, wherever we are in the workflow. No pain, no checkbox.
-2. Processing is a standing task in the Task List, like Weeding. It comes up through dotting.
-3. Processing: Claude drafts each item's `Pain:` line and shows its closest match in the Task List.
-4. The user picks: merge into that task, move to the Task List, or delete.
+2. Processing: Claude drafts each item's `Pain:` line and shows its closest match in the Task List.
+3. The user picks: merge into that task, move to the Task List, or delete.
 
 ## Task List
 
 1. Every task starts with `Pain:`. The pain can be a paragraph.
-2. Blank is waiting, dot is chosen, x is done.
+2. Blank is waiting, dot is preselected, x is done.
 3. Nothing is implemented from the Inbox.
-4. Two standing tasks are always in the list: Inbox processing and Weeding. Each links to its section of this file.
-5. When a standing task is done, it goes back to the end of the list.
+4. Two standing tasks are always in the list: Inbox processing and Weeding. Each links to its section of this workflow file.
 
 ## Details
 
 1. When a task grows too long to read, it gets an id after its pain paragraph: `[#id](#id)`.
 2. The user judges the length. Claude may advise.
-3. Everything after the pain paragraph moves to `## #id` under Details, at the end of the file.
+3. Everything after the pain paragraph moves to `## #id` under Details, at the end of the task file.
 4. The id is a short name for the pain.
-5. A plan file is the last resort, when a Details block outgrows the file.
+5. A plan file is the last resort, when a Details block outgrows the task file.
 
 ## Weeding
 
@@ -33,12 +31,18 @@
 2. It merges duplicates.
 3. It drops ticked and stale tasks, together with their Details block.
 4. Ticked tasks stay in the list until weeding, for that reason.
-5. After weeding, the Weeding task goes back to the end of the list.
 
 ## Working on a task
 
-1. Tasks are dotted the FVP way, Mark Forster's Final Version Perfected. The last dotted task is the one worked on.
-2. Claude may suggest which task to dot.
+1. Tasks are dotted the FVP way, Mark Forster's Final Version Perfected.
+    - A dot means preselected. Several tasks can carry dots at once, as a chain.
+    - The chain starts at the first task not done. Going down the list, each task wanted more than the last dot gets a dot.
+    - When the dots no longer fit, they are cleared and the chain starts again.
+    - The last dotted task is the one worked on.
+    - After a task, scan only the tasks after it, against the previous dot.
+    - A task worked on but not finished is re-entered at the end of the list. That includes Inbox processing and Weeding.
+    - An urgent item skips the Inbox. It goes to the end of the Task List with its `Pain:` line.
+2. Claude may suggest a dot. The user dots.
 3. Claude and the user get the pain clear. It may be an XY problem.
 4. Claude proposes the solution. The user's solution ideas are input, not the spec.
     - The plan lives as sub-bullets under its task.
