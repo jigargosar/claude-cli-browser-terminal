@@ -11,6 +11,13 @@ When I ask or you think that rules need to be broken, simply list them and wait 
     - drops ticked or stale tasks.
     - Ticked tasks stay on the list until weeding, for that reason.
 
+## Inbox
+
+1. Anything new goes to the Inbox as a rough line, wherever we are in the workflow. No pain, no checkbox.
+2. Processing: Claude drafts each item's `Pain:` line and shows its closest match in the Task List.
+    - Then Claude finds duplicates by comparing the pains, against the other Inbox items and every Task List task, sub-bullets included.
+3. The user picks: merge into that task, move to the Task List, or delete.
+
 ## Before implementing
 
 1. Claude suggests the task to dot.
@@ -106,7 +113,7 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Pain: No vim bindings in peek or pane, very inconvinent. (can code mirror help)
 - [ ] Pain: question, are we writing too much custom stuff that codemirror already solves
 - [ ] Pain: Response formatting is poor.
-- [ ] Inbox Prossing (exempt from pain poiny)
+- [.] Inbox Prossing (exempt from pain poiny)
 - [ ] Weeding (exempt from pain point)
 
 
