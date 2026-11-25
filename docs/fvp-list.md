@@ -114,13 +114,13 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Pain: approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise.
 - [ ] when running commands intermediate actions are not visible in the page.
 - [ ] Pain: Quick notes (QN): Why is progress blocked? and what is the state of backups, can it be trusted?, the `quick-notes-v2` project: the secondary aim in `CLAUDE.md`.
-- [ ] pressing popup buttons, required another keystores friction; 
-- [ ] the inline code blocks are terrible to read, blue + b/w
-- in code blocks file reference are not navigatable. including the selection color.
+- [ ] Pain: Last comment shortcut should also send.
+- [ ] The markdown code blocks are horrible.
+- [ ] in code blocks file reference are not navigatable. including the selection color.
 - [ ] users responces should behave same as your response, i.e. f for hilighting a sentense, and ability to response
 egronomic way to handle both panels.
-- why file links are so slow and show terminal in between.
-- Apply the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file.
+- [ ] why file links are so slow and show terminal in between.
+- [ ] Pain: do we need it? quick read and update. Apply the collaboration plan, `docs/tasks/collaboration/plan.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file.
 - [ ] Pain: unsent comments are lost whenever a new turn starts from the terminal: a dialog answer, or typed text and Enter. Seen 2026-11-24 after "No" on a permission prompt. Related: comments are page based, in the task "go back to a previous reply".
     - Plan: `docs/tasks/comments-every-page/plan.md`.
 - [.] Weeding.
