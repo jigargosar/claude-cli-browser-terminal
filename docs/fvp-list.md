@@ -115,6 +115,8 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Pain: Response formatting is poor.
 - [.] Inbox Prossing (exempt from pain poiny)
 - [ ] Weeding (exempt from pain point)
+- [.] Pain: urgent. The file peek hides the popup, so I can't see what is being typed.
+    - Solution: the popup and the comment box sit above the peek. `.comment-float` goes from z-index 7 to 9, the peek is 8.
 
 
 
@@ -145,3 +147,5 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - we need to come up with a glossary, `docs/glossary.md`. Example: "other pane" is not a name. There is only one pane/page, markdown by default.
 - Static app info, written into the code at release: version, changelog with Unreleased, known issues, and help such as the keyboard shortcuts.
     - Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
+- In replies, Claude wrote "You approve it, then Claude implements." The workflow says "the user approves". No "you" for me.
+- add tldr popup pills.

@@ -125,8 +125,9 @@ body[data-focus="none"] #focus-mark {
 ::highlight(comment) { background: var(--comment); }
 /* A sentence a single click picked, or a selection, before it has a comment. */
 ::highlight(picked) { background: var(--selection); color: var(--ink); }
-/* Above the focus arrow (6): shift() can push the popup and the box over the divider. */
-.comment-float { position: fixed; top: 0; left: 0; z-index: 7; }
+/* Above the focus arrow (6) and the file peek (8): shift() can push the popup and the box over the divider, onto the
+   terminal pane, where the peek may be open. */
+.comment-float { position: fixed; top: 0; left: 0; z-index: 9; }
 .comment-float[hidden], #comment-submit[hidden] { display: none; }
 /* The peek at a file reference (web/refs.js): a CodeMirror view of the file. It covers the whole terminal pane, so it
    is always in the same place, as tall as the window. The view scrolls inside, so nothing outside scrolls. */
