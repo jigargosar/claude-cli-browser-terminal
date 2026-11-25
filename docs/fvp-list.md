@@ -132,3 +132,8 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Pain: Response formatting is poor.
 - [ ] The intermideate claude processing might take some time to complete. Meanwhile I want to see, thinking blocks clearly. UX Friendly
 - [ ] we need to come up with a glossary, `docs/glossary.md`. Example: "other pane" is not a name. There is only one pane/page, markdown by default.
+
+
+
+# Inbox
+- cleanup toplevel docs files
