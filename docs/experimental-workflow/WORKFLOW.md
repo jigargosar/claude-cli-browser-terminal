@@ -1,30 +1,37 @@
 # Workflow
 
-1. Before any delete, check for info and consult the user.
-2. When a rule needs to be broken, Claude lists it and waits for approval.
+## Principles: Design of Workflow
+
+- Workflow should be deleberatily simple, not carving out every single case.
+- We assume that we are smart enough to figure things out as we work.
+
+## Tracking File
 3. The task file is `FVP-LIST.md`, in the same folder as this file. It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
 
 ## Inbox
 
-1. Anything new goes to the Inbox as a rough line, wherever we are in the workflow. No pain, no checkbox.
-2. Processing: Claude drafts each item's `Pain:` line and shows its closest match in the Task List.
-    - Then Claude finds duplicates by comparing the pains, against the other Inbox items and every Task List task, sub-bullets included.
-3. The user picks: merge into that task, move to the Task List, or delete.
+1. New items get appended to `Inbox`
 
-## Task List
+### Processing Inbox
 
-1. Every task starts with `Pain:`, except the two standing tasks. The pain can be a paragraph.
-2. Blank is waiting, dot is preselected, x is done.
-3. Nothing is implemented from the Inbox.
-4. Two standing tasks are always in the list: Inbox processing and Weeding. Each links to its section of this workflow file.
+1. Pick any item, likely first.
+2. Challange why it is needed. 
+   1. Is it a XY problem. 
+   2. What `Pain` is it causing
+   3. Delete otherwise.
+3. Reword the item as a `Task`
 
-## Details
+> - [ ] Pain: <desc>
 
-1. When a task grows too long to read, it gets an id after its pain paragraph: `[#id](#id)`.
-2. The user judges the length. Claude may advise.
-3. Everything after the pain paragraph moves to `## #id` under Details, at the end of the task file.
-4. The id is a short name for the pain.
-5. A plan file is the last resort, when a Details block outgrows the task file.
+4. Determine if this task can be merged, deleted with existing task in `Task List`
+5. Repeat for next `Inbox` item.
+
+
+## Task
+
+> - [ ] Pain: <desc>
+> - [.] Pain: <desc>
+> - [x] Pain: <desc>
 
 ## Weeding
 
