@@ -5,8 +5,10 @@
 - Workflow should be deliberately simple, not carving out every single case.
 - We assume that we are smart enough to figure things out as we work.
 - Claude fixes typos in next commit without announcing it.
+- This is collaborative workflow. And who does what is not always necessary.
 
 ## Tracking File
+
 - The file is named `FVP-LIST.md` and usually stored in same folder as this file.
 - It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
 
@@ -17,15 +19,15 @@
 ### Processing Inbox
 
 - Pick any item, likely first.
-- Challenge why it is needed. 
+- Challenge why it is needed.
     - Is it an XY problem?
-    - What `Pain` is it causing
+    - What `Pain` is it causing?
     - Delete otherwise.
 - Reword the item as a `Task`
 
 > - [ ] Pain: <desc>
 
-- Determine if this task can be merged, deleted with existing task in `Task List`
+- Check what this task changes in the existing `Task List`, and act on it.
 - Repeat for next `Inbox` item.
 
 
