@@ -183,4 +183,5 @@ When I ask or you think that rules need to be broken, simply list them and wait 
         - The id is a short name for the pain.
         - A plan file is the last resort, when a Details block outgrows the task file.
     - The draft now keeps plans as sub-bullets under their task, at `docs/experimental-workflow/WORKFLOW.md:43`.
+    - Details shows up in both files. The workflow gets a section with the instructions for it. The tracking file gets `# Details` with the content.
 - Pain: xterm displays the file write diff, which adds too much friction, especially I have to keep resizing it. 
