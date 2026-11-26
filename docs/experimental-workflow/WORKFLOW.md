@@ -2,8 +2,9 @@
 
 ## Principles: Design of Workflow
 
-- Workflow should be deleberatily simple, not carving out every single case.
+- Workflow should be deliberately simple, not carving out every single case.
 - We assume that we are smart enough to figure things out as we work.
+- Claude fixes typos in next commit without announcing it.
 
 ## Tracking File
 - The task file is `FVP-LIST.md`, in the same folder as this file. It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
@@ -15,7 +16,7 @@
 ### Processing Inbox
 
 - Pick any item, likely first.
-- Challange why it is needed. 
+- Challenge why it is needed. 
     - Is it a XY problem. 
     - What `Pain` is it causing
     - Delete otherwise.
