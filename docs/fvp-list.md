@@ -108,7 +108,7 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Pain: unsent comments are lost whenever a new turn starts from the terminal: a dialog answer, or typed text and Enter. Seen 2026-11-24 after "No" on a permission prompt. Related: comments are page based, in the task "go back to a previous reply".
     - Plan: `docs/tasks/comments-every-page/plan.md`.
 - [ ] Pain: when we want to end and send response, if we use quick response, then we have to press another button / click. unlike popup shortcut to save and send.
-- [ ] Pain: we are not recording which popills we are using, and missing.
+- [ ] Pain: we are not recording which popup pills we are using, and missing.
 - [ ] Pain: edit at line seen in peek is cumbersome.
 - [ ] Pain: No vim bindings in peek or pane, very inconvinent. (can code mirror help)
 - [ ] Pain: question, are we writing too much custom stuff that codemirror already solves
@@ -117,10 +117,7 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Weeding (exempt from pain point)
 - [.] Pain: urgent. The file peek hides the popup, so I can't see what is being typed.
     - Solution: the popup and the comment box sit above the peek. `.comment-float` goes from z-index 7 to 9, the peek is 8.
-    - Pain: F is both jump (find mode) and "Fix it". With the grid open, an F meant to jump presses "Fix it".
-        - Solution A: F stays jump. "Fix it" moves to I. I is free in the grid.
-        - Solution B: while the popup is open, F does not jump. To jump, close the popup first, then press F. This matches the code today, `web/views/comments.js:207-218`.
-        - Not decided which one is better.
+- [ ] Pain: F is both jump (find mode) and "Fix it". With the grid open, an F meant to jump presses "Fix it".
 
 
 
