@@ -175,3 +175,12 @@ When I ask or you think that rules need to be broken, simply list them and wait 
     - Rejected: "no judgment on the user's content". Too general, it would block a review the user asks for.
     - Open: merged or separate lines. Separate lines may conflict.
     - Open: "no citing of the instruction broken" conflicts with the global rule "When a request or action breaks a rule here, name the exact violation in a few words and carry on."
+- Experimental workflow: decide what `# Details` is for. `docs/experimental-workflow/WORKFLOW.md:13` still lists it as the third section of the tracking file.
+    - Commit `1fccfa6`, 2026-11-26, removed this Details section from the draft:
+        - When a task grows too long to read, it gets an id after its pain paragraph: `[#id](#id)`.
+        - The user judges the length. Claude may advise.
+        - Everything after the pain paragraph moves to `## #id` under Details, at the end of the task file.
+        - The id is a short name for the pain.
+        - A plan file is the last resort, when a Details block outgrows the task file.
+    - The draft now keeps plans as sub-bullets under their task, at `docs/experimental-workflow/WORKFLOW.md:43`.
+- Pain: xterm displays the file write diff, which adds too much friction, especially I have to keep resizing it. 
