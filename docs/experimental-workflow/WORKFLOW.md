@@ -50,14 +50,11 @@
 
 ## Closing a task
 
-- Impact: Claude lists what the task changed, what it found that isn't written down yet, and its open issues.
-- Cleanup: every item from the Impact list gets a place.
-    - Knowledge gained goes to a reference folder. The user and Claude pick which one.
-    - Sub-tasks it spawned go to the Inbox.
-    - Files only the task used are moved or deleted.
-    - A plan file's open items go to the Inbox. The plan file is deleted only when nothing in it is still needed.
-    - Mockups are never deleted. Each one in `docs/mockups/` gets a line in `docs/mockups/README.md`: what it shows, and where it went.
-- The user approves. Claude ticks the task, adds a line under Unreleased in `CHANGELOG.md`, and commits.
+- Claude looks back at what changed, what we learned and what is still open.
+- We discuss each remaining item and decide where it goes.
+- What changed gets a line under Unreleased in `CHANGELOG.md`, following the changelog rules in Releasing.
+- A partly done task can close for the part that is done. Each open part goes to the Inbox and gets processed like any new item.
+- Once approved, tick the task and commit.
 
 ## Weeding
 
