@@ -7,7 +7,8 @@
 - Claude fixes typos in next commit without announcing it.
 
 ## Tracking File
-- The task file is `FVP-LIST.md`, in the same folder as this file. It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
+- The file is named `FVP-LIST.md` and usually stored in same folder as this file.
+- It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
 
 ## Inbox
 
@@ -17,7 +18,7 @@
 
 - Pick any item, likely first.
 - Challenge why it is needed. 
-    - Is it a XY problem. 
+    - Is it an XY problem?
     - What `Pain` is it causing
     - Delete otherwise.
 - Reword the item as a `Task`
@@ -28,18 +29,11 @@
 - Repeat for next `Inbox` item.
 
 
-## Task
+## Task List
 
 > - [ ] Pain: <desc>
 > - [.] Pain: <desc>
 > - [x] Pain: <desc>
-
-## Weeding
-
-- Weeding is the Impact and Cleanup of "Closing a task", done across tasks and across the project.
-- It merges duplicates.
-- It drops ticked and stale tasks, together with their Details block.
-- Ticked tasks stay in the list until weeding, so weeding can review them.
 
 ## Working on a task
 
@@ -73,6 +67,13 @@
     - A plan file's open items go to the Inbox. The plan file is deleted only when nothing in it is still needed.
     - Mockups are never deleted. Each one in `docs/mockups/` gets a line in `docs/mockups/README.md`: what it shows, and where it went.
 - The user approves. Claude ticks the task, adds a line under Unreleased in `CHANGELOG.md`, and commits.
+
+## Weeding
+
+- Weeding is the Impact and Cleanup of "Closing a task", done across tasks and across the project.
+- It merges duplicates.
+- It drops ticked and stale tasks, together with their Details block.
+- Ticked tasks stay in the list until weeding, so weeding can review them.
 
 ## Releasing
 
