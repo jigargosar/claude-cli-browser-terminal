@@ -44,9 +44,9 @@
 
 ## Implementing
 
-- While implementing, Claude makes WIP commits regularly.
-- Claude self-reviews until every issue is fixed.
-- Claude presents a list for manual checking. The user tests.
+- Make WIP commits regularly.
+- Claude tests as much as it can, then writes a manual test plan.
+    - Claude does the prep and every step in between. The user does only the steps Claude can't.
 
 ## Closing a task
 
