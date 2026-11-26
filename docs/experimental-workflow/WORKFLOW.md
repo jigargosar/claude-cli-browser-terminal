@@ -34,6 +34,12 @@
 
 - `[ ]` open, `[.]` dotted, `[x]` done.
 
+## Details
+
+- An item too long to read at a glance gets a short id: `[#id](#id)`.
+- Its body moves to `## #id` under `# Details`.
+- This works the same for Inbox items and tasks.
+
 ## Working on a task
 
 - Dot tasks the FVP way, Mark Forster's Final Version Perfected.

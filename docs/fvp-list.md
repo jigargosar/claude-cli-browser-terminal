@@ -150,38 +150,49 @@ When I ask or you think that rules need to be broken, simply list them and wait 
     - Pain: in another project I can't tell whether its ccw copy is stale, or what it is missing.
 - In replies, Claude wrote "You approve it, then Claude implements." The workflow says "the user approves". No "you" for me.
 - add tldr popup pills.
-- Pain: when a reply isn't self-sufficient, I have to assemble the picture myself before I can respond.
-    - Found 2026-11-26, while asking why replies wrote bare "line 19" instead of `path:line`.
-    - Not decided: replace the pain line of the task at `docs/fvp-list.md:98` with this one, and drop its stale Solution lines. Or keep both.
-    - Not split on purpose. A partial solution leaves the task partly done.
-    - Levels found so far:
-        - The reply is self-sufficient.
-        - The information inside the reply flows well.
-        - Pieces needed together sit together. Failure: distance, across files, replies, or parts of one reply.
-        - Pieces are the right size. Failure: too coarse, the change drowns. Too fine, it can't be placed.
-    - Two kinds of context:
-        - Needed: what must be seen together to answer, such as a before next to its after.
-        - Surrounding: what places the change. Needed only when the focus isn't clear.
-    - Poor rendering is a third problem: a code block in the pane wraps, and its buttons cover the text.
-    - Done: `server.mjs:54-61` now says "every mention of a file or a line", with a Bad and Good example.
-    - Not verified that it works. Pending: restart the server, then watch replies for bare line numbers.
-    - Open: the third rule of that prompt, "every reference resolves on its own: a file reference, or the referenced content carried forward inline". Its "or" lets quoted content replace the link. Drafts were rejected as confusing.
-- Pain: Claude adds unasked connections to other items, and when naming a mistake it adds reasons and conclusions.
-    - Seen 2026-11-26: a reply tied the code block rendering to an Inbox item, and explained why a line was noise. The explanation was itself wrong and added more noise.
-    - Draft for `~/.claude/CLAUDE.md`:
-        - No unasked connections to other items.
-        - When naming a mistake, name it only. No reason, no conclusion, and no citing of the instruction broken.
-    - "No unasked connections to other items" is the load-bearing part. It names a mistake seen over and over across conversations.
-    - Rejected: "no judgment on the user's content". Too general, it would block a review the user asks for.
-    - Open: merged or separate lines. Separate lines may conflict.
-    - Open: "no citing of the instruction broken" conflicts with the global rule "When a request or action breaks a rule here, name the exact violation in a few words and carry on."
-- Experimental workflow: decide what `# Details` is for. `docs/experimental-workflow/WORKFLOW.md:13` still lists it as the third section of the tracking file.
-    - Commit `1fccfa6`, 2026-11-26, removed this Details section from the draft:
-        - When a task grows too long to read, it gets an id after its pain paragraph: `[#id](#id)`.
-        - The user judges the length. Claude may advise.
-        - Everything after the pain paragraph moves to `## #id` under Details, at the end of the task file.
-        - The id is a short name for the pain.
-        - A plan file is the last resort, when a Details block outgrows the task file.
-    - The draft now keeps plans as sub-bullets under their task, at `docs/experimental-workflow/WORKFLOW.md:43`.
-    - Details shows up in both files. The workflow gets a section with the instructions for it. The tracking file gets `# Details` with the content.
+- Pain: when a reply isn't self-sufficient, I have to assemble the picture myself before I can respond. [#self-sufficient-replies](#self-sufficient-replies)
+- Pain: Claude adds unasked connections to other items, and when naming a mistake it adds reasons and conclusions. [#unasked-connections](#unasked-connections)
+- Experimental workflow: decide what `# Details` is for. `docs/experimental-workflow/WORKFLOW.md:13` still lists it as the third section of the tracking file. [#details-purpose](#details-purpose)
 - Pain: xterm displays the file write diff, which adds too much friction, especially I have to keep resizing it. 
+
+# Details
+
+## #self-sufficient-replies
+
+- Found 2026-11-26, while asking why replies wrote bare "line 19" instead of `path:line`.
+- Not decided: replace the pain line of the task at `docs/fvp-list.md:98` with this one, and drop its stale Solution lines. Or keep both.
+- Not split on purpose. A partial solution leaves the task partly done.
+- Levels found so far:
+    - The reply is self-sufficient.
+    - The information inside the reply flows well.
+    - Pieces needed together sit together. Failure: distance, across files, replies, or parts of one reply.
+    - Pieces are the right size. Failure: too coarse, the change drowns. Too fine, it can't be placed.
+- Two kinds of context:
+    - Needed: what must be seen together to answer, such as a before next to its after.
+    - Surrounding: what places the change. Needed only when the focus isn't clear.
+- Poor rendering is a third problem: a code block in the pane wraps, and its buttons cover the text.
+- Done: `server.mjs:54-61` now says "every mention of a file or a line", with a Bad and Good example.
+- Not verified that it works. Pending: restart the server, then watch replies for bare line numbers.
+- Open: the third rule of that prompt, "every reference resolves on its own: a file reference, or the referenced content carried forward inline". Its "or" lets quoted content replace the link. Drafts were rejected as confusing.
+
+## #unasked-connections
+
+- Seen 2026-11-26: a reply tied the code block rendering to an Inbox item, and explained why a line was noise. The explanation was itself wrong and added more noise.
+- Draft for `~/.claude/CLAUDE.md`:
+    - No unasked connections to other items.
+    - When naming a mistake, name it only. No reason, no conclusion, and no citing of the instruction broken.
+- "No unasked connections to other items" is the load-bearing part. It names a mistake seen over and over across conversations.
+- Rejected: "no judgment on the user's content". Too general, it would block a review the user asks for.
+- Open: merged or separate lines. Separate lines may conflict.
+- Open: "no citing of the instruction broken" conflicts with the global rule "When a request or action breaks a rule here, name the exact violation in a few words and carry on."
+
+## #details-purpose
+
+- Commit `1fccfa6`, 2026-11-26, removed this Details section from the draft:
+    - When a task grows too long to read, it gets an id after its pain paragraph: `[#id](#id)`.
+    - The user judges the length. Claude may advise.
+    - Everything after the pain paragraph moves to `## #id` under Details, at the end of the task file.
+    - The id is a short name for the pain.
+    - A plan file is the last resort, when a Details block outgrows the task file.
+- The draft now keeps plans as sub-bullets under their task, at `docs/experimental-workflow/WORKFLOW.md:49`.
+- Details shows up in both files. The workflow gets a section with the instructions for it. The tracking file gets `# Details` with the content.
