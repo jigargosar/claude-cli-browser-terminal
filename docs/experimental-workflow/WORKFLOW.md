@@ -30,28 +30,17 @@
 - Check what this task changes in the existing `Task List`, and act on it.
 - Repeat for next `Inbox` item.
 
-
 ## Task List
 
-> - [ ] Pain: <desc>
-> - [.] Pain: <desc>
-> - [x] Pain: <desc>
+- `[ ]` open, `[.]` dotted, `[x]` done.
 
 ## Working on a task
 
-- Tasks are dotted the FVP way, Mark Forster's Final Version Perfected.
-    - A dot means preselected. Several tasks can carry dots at once, as a chain.
-    - The chain starts at the first task not done. Going down the list, each task wanted more than the last dot gets a dot.
-    - When the dots no longer fit, they are cleared and the chain starts again.
-    - The last dotted task is the one worked on.
-    - partially done tasks move at the end of task list.
-    - After a task, the scan continues from that task's old place, against the previous dot.
-    - An urgent item goes to the end of the Task List with its `Pain:` line.
-- Claude may suggest a dot. The user dots.
-- A task whose solution is already approved goes straight to Implementing. Otherwise, Claude and the user get the pain clear. It may be an XY problem.
-- Claude proposes the solution. The user's solution ideas are input, not the spec.
-    - The plan lives as sub-bullets under its task.
-- The user approves the solution. Then Claude implements.
+- Dot tasks the FVP way, Mark Forster's Final Version Perfected.
+    - Dot the first open task. Going down, dot each task wanted more than the last dot.
+    - Work on the last dot. Then continue the scan below it, against the previous dot.
+    - A partly done task moves to the end, as `[ ]`.
+- Agree on the solution, then implement. The plan lives as sub-bullets under its task.
 
 ## Implementing
 
