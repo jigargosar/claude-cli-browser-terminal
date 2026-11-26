@@ -54,23 +54,20 @@
 - We discuss each remaining item and decide where it goes.
 - What changed gets a line under Unreleased in `CHANGELOG.md`, following the changelog rules in Releasing.
 - A partly done task can close for the part that is done. Each open part goes to the Inbox and gets processed like any new item.
-- Once approved, tick the task and commit.
+- Once approved, tick the task and commit. The ticked task stays in the Task List, so weeding has its context.
 
 ## Weeding
 
-- Weeding is the Impact and Cleanup of "Closing a task", done across tasks and across the project.
-- It merges duplicates.
-- It drops ticked and stale tasks, together with their Details block.
-- Ticked tasks stay in the list until weeding, so weeding can review them.
+- Weeding has no schedule. It runs whenever it seems needed.
+- It reviews the whole Task List and project, the way Closing a task reviews one task.
+- It merges duplicates, and drops ticked and stale tasks.
 
 ## Releasing
 
-- If Unreleased has lines, propose `pnpm release` with AskUserQuestion. Claude never runs it unasked.
+- If Unreleased has lines, propose `pnpm release`.
 - Changelog format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), with Added, Changed, Fixed, Removed.
-- Before a release, open the Unreleased link at the bottom of `CHANGELOG.md`. It lists every commit since the last tag.
-- `pnpm release` builds, runs `kacl prerelease` (fails if Unreleased is empty), bumps the patch, stamps the changelog, updates the README install command, packs, commits, tags and pushes.
+- Before a release, check Unreleased against the commits since the last tag.
 
 ## Experiment
 
-- Parallel work in worktrees. Conflicts with this workflow get resolved as they come up.
-- Worktree tasks are marked as such. How a task links to its worktree is not worked out yet.
+- Independent tasks run in parallel worktrees, with a process still taking shape.
