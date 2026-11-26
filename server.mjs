@@ -51,11 +51,14 @@ const HOOK_SETTINGS = JSON.stringify({
 // Usage: node server.mjs [claude args]. All args pass through to claude as is.
 // Port: CC_WEB_PORT if set (pnpm test uses 7682), else a free one.
 // Tells claude how to write references, so each one resolves on its own, and the page can link every file reference to its lines (web/refs.js).
-const REPLY_PROMPT = `In your responses:
-- every file reference is written as \`path:line\` or \`path:start-end\`, and a whole file as \`path:1\`
+const REPLY_PROMPT = `<critical-rule-you-must-always-follow>
+In your responses:
+- every mention of a file or a line is written as \`path:line\` or \`path:start-end\`, and a whole file as \`path:1\`
+  - Bad: "line 19 could go". Good: "\`docs/a.md:19\` could go".
 - every line number matches the file as it is now
 - every reference resolves on its own: a file reference, or the referenced content carried forward inline
-  - this covers removed content, content of a previous reply, a numbered item, and the subject of every sentence`;
+  - this covers removed content, content of a previous reply, a numbered item, and the subject of every sentence
+</critical-rule-you-must-always-follow>`;
 const claudeArgs = ["--settings", HOOK_SETTINGS, "--append-system-prompt", REPLY_PROMPT, ...process.argv.slice(2)];
 const fixedPort = process.env.CC_WEB_PORT ? Number(process.env.CC_WEB_PORT) : null;
 

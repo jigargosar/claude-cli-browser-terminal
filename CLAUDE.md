@@ -1,13 +1,3 @@
-<system-prompt>
-<critical-rule-you-must-always-follow>
-In your responses:
-- every file reference is written as `path:line` or `path:start-end`, and a whole file as `path:1`
-- every line number matches the file as it is now
-- every reference resolves on its own: a file reference, or the referenced content carried forward inline
-  - this covers removed content, content of a previous reply, a numbered item, and the subject of every sentence
-</critical-rule-you-must-always-follow>
-</system-prompt>
-
 # claude-cli-browser-terminal
 
 Run Claude Code in a browser tab: the terminal on the left, Claude's last reply on the right as readable markdown.
