@@ -8,6 +8,7 @@ import { unifiedMergeView } from "@codemirror/merge";
 import { EditorSelection, EditorState, RangeSetBuilder, Text } from "@codemirror/state";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { Decoration, EditorView, lineNumbers } from "@codemirror/view";
+import * as tasklist from "./tasklist.js";
 
 // A path with an extension, with an optional drive, ./ or ~/ start, then an optional line or range: `:83`, `:83-90`,
 // `#L83`, `#L83-L90`. Not inside a longer word or a URL.
@@ -167,6 +168,14 @@ reply.addEventListener("click", (event) => {
   // A drag that ends on a reference selects text. Only a plain click opens.
   if (!span || event.detail !== 1 || !getSelection().isCollapsed) return;
   clearTimeout(pendingPeek);
+  // The tracking file opens in the task list view, editable, instead of the read-only peek.
+  if (span.dataset.path === tasklist.PATH) {
+    pendingPeek = setTimeout(() => {
+      closePeek();
+      tasklist.show(Number(span.dataset.line) || 0);
+    }, DOUBLE_CLICK_MS);
+    return;
+  }
   if (span === shownFor) return closePeek();
   pendingPeek = setTimeout(() => openPeek(span), DOUBLE_CLICK_MS);
 });

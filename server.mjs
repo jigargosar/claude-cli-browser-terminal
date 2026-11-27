@@ -319,6 +319,16 @@ const readBody = async (req) => {
   return JSON.parse(body);
 };
 
+// The task list view (web/tasklist.js) edits the tracking file. A version is the hash of the file's text. A save names
+// the version it started from, and a file changed on disk since then answers 409 with the disk text, so neither side's
+// edit is lost. Every change on disk, Claude's or the page's own, tells the page to check. Plan:
+// docs/tasks/task-list-view/plan.md.
+const TASK_LIST = path.join(ROOT, "docs/fvp-list.md");
+const versionOf = (text) => createHash("sha1").update(text).digest("hex");
+chokidar
+  .watch(TASK_LIST, { ignoreInitial: true, awaitWriteFinish: { stabilityThreshold: 50 } })
+  .on("all", () => broadcast(JSON.stringify({ t: "tasklist" })));
+
 const server = http.createServer(async (req, res) => {
   if (req.method === "POST" && req.url === sessionPath) {
     let body = "";
@@ -340,6 +350,24 @@ const server = http.createServer(async (req, res) => {
       const text = await readFile(refPath(rel), "utf8");
       const head = await headText(rel);
       res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ text, head }));
+    });
+  }
+  if (req.method === "GET" && req.url === "/tasklist") {
+    return refsRequest(res, async () => {
+      const text = await readFile(TASK_LIST, "utf8");
+      res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ text, version: versionOf(text) }));
+    });
+  }
+  if (req.method === "PUT" && req.url === "/tasklist") {
+    return refsRequest(res, async () => {
+      const { text, base } = await readBody(req);
+      const disk = await readFile(TASK_LIST, "utf8");
+      if (versionOf(disk) !== base) {
+        res.writeHead(409, { "content-type": "application/json" }).end(JSON.stringify({ text: disk, version: versionOf(disk) }));
+        return;
+      }
+      await writeFileAtomic(TASK_LIST, text);
+      res.writeHead(200, { "content-type": "application/json" }).end(JSON.stringify({ version: versionOf(text) }));
     });
   }
   // Opens the file at the line in the editor that launch-editor finds running, or $LAUNCH_EDITOR. A missing editor is

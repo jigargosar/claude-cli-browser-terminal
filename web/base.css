@@ -138,6 +138,20 @@ body[data-focus="none"] #focus-mark {
 .ref-peek .cm-editor { flex: 1; min-width: 0; font-size: 13px; }
 .ref-peek .cm-scroller { font-family: var(--mono); scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
 .ref-peek .cm-ref-line { background: rgb(255 216 107 / 0.16); }
+/* The task list view (web/tasklist.js): the tracking file, editable, where the peek opens. Before the peek in the pane,
+   so a peek opened from a reply shows on top. It fades, and stays laid out while hidden, so the editor keeps its sizes. */
+.task-list {
+  position: absolute; inset: 0; z-index: 8; display: flex; flex-direction: column; overflow: hidden; background: #282c34;
+  opacity: 0; visibility: hidden; transition: opacity 120ms ease, visibility 120ms;
+}
+.task-list.open { opacity: 1; visibility: visible; }
+.task-list-head { flex: none; padding: 6px 10px; font: 12px/1.4 var(--sans); color: #8b949e; border-bottom: 1px solid #3a3f4b; }
+.task-list-banner { flex: none; display: flex; gap: 8px; align-items: center; padding: 6px 10px; font: 12px/1.4 var(--sans); color: #282c34; background: #e5c07b; }
+.task-list-banner[hidden], .task-list-banner button[hidden] { display: none; }
+.task-list-banner span { flex: 1; }
+.task-list-body { flex: 1 1 auto; min-height: 0; display: flex; overflow: hidden; }
+.task-list .cm-editor { flex: 1; min-width: 0; font-size: 13px; }
+.task-list .cm-scroller { font-family: var(--mono); scrollbar-width: thin; scrollbar-color: #3a3f4b transparent; }
 /* Ink on paper, flipped, so the popup stands out from the sepia reply. */
 /* The phrase grid: 2 rows of icons, 6 then 5, each its own raised ink button with its key tiny at the bottom right. */
 #comment-pick:not([hidden]) { display: grid; grid-template-columns: repeat(6, 34px); gap: 4px; }

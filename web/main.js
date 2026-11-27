@@ -7,9 +7,13 @@ import "./reader.js";
 import * as settings from "./settings.js";
 import * as last from "./views/last.js";
 import * as comments from "./views/comments.js";
+import * as tasklist from "./tasklist.js";
 import { tabbable } from "tabbable";
 
 const status = document.getElementById("reply-status");
+// The task list view covers the terminal while open, so the terminal pane's focus goes to it.
+const focusTerminalPane = () => (tasklist.isOpen() ? tasklist.focus() : terminal.focus());
+tasklist.init({ focusTerminal: terminal.focus });
 
 initDivider({ onDragEnd: terminal.refit });
 
@@ -48,6 +52,7 @@ const server = connect({
     }
   },
   onWaiting: last.setWaiting,
+  onTaskList: tasklist.refresh,
   onReload: () => {
     if (midTurn()) {
       reloadPending = true;
@@ -70,7 +75,7 @@ comments.init({
   send: (text) => {
     terminal.paste(text);
     server.input("\r");
-    terminal.focus();
+    focusTerminalPane();
   },
 });
 // An older page is read-only. The latest page, and its comments, wait hidden until the reader steps back to it.
@@ -89,7 +94,7 @@ document.addEventListener(
     if (!(e.altKey && !e.ctrlKey && !e.shiftKey && e.code === "Backquote")) return;
     e.preventDefault();
     e.stopPropagation();
-    if (!terminalPane.contains(document.activeElement)) terminal.focus();
+    if (!terminalPane.contains(document.activeElement)) focusTerminalPane();
     else (tabbable(replyPane)[0] ?? reply).focus();
   },
   true,
@@ -138,6 +143,6 @@ document.addEventListener("focusout", () =>
   setTimeout(() => {
     if (document.activeElement !== document.body) return;
     if (lastPane === "reply") reply.focus({ preventScroll: true });
-    else terminal.focus();
+    else focusTerminalPane();
   }),
 );
