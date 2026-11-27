@@ -118,6 +118,8 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [.] Pain: urgent. The file peek hides the popup, so I can't see what is being typed.
     - Solution: the popup and the comment box sit above the peek. `.comment-float` goes from z-index 7 to 9, the peek is 8.
 - [ ] Pain: F is both jump (find mode) and "Fix it". With the grid open, an F meant to jump presses "Fix it".
+- [.] Pain: details are everywhere, and the IDE can't fold, search or edit the tracking file without friction.
+    - Plan: `docs/tasks/task-list-view/plan.md`.
 
 
 
