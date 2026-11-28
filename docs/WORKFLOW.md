@@ -11,11 +11,12 @@
 ## Tracking File
 
 - The file is `docs/fvp-list.md`.
-- It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
+- It has two sections, in order: `# Task List`, `# Inbox`.
 
 ## Inbox
 
-- New items get appended to `Inbox`
+- New items get appended to `Inbox`.
+- Adding or processing an item can create its details file in `docs/tasks/`.
 
 ### Processing Inbox
 
@@ -26,7 +27,7 @@
     - Delete otherwise.
 - Reword the item as a `Task`
 
-> - [ ] Pain: <desc>
+> - [ ] Pain: <desc> [#<number>](tasks/<number>-<name>.md)
 
 - Check what this task changes in the existing `Task List`, and act on it.
 - Repeat for next `Inbox` item.
@@ -37,9 +38,10 @@
 
 ## Details
 
-- An item too long to read at a glance gets a short id: `[#id](#id)`.
-- Its body moves to `## #id` under `# Details`.
-- This works the same for Inbox items and tasks.
+- Each item is one Pain line.
+- Details go in `docs/tasks/<number>-<name>.md`, such as `12-task-list-view.md`, linked from that line.
+- Before an item is changed, merged, split or deleted, Claude presents any issues and the affected files. Once the user approves, Claude updates the list and the details together.
+- Claude checks for drift between an item's line, its file name and its details, and reports it.
 
 ## Working on a task
 
@@ -47,7 +49,7 @@
     - Dot the first open task. Going down, dot each task wanted more than the last dot.
     - Work on the last dot. Then continue the scan below it, against the previous dot.
     - A partly done task moves to the end, as `[ ]`.
-- Agree on the solution, then implement. The plan lives as sub-bullets under its task.
+- Agree on the solution, then implement. The plan lives in its details file.
 
 ## Implementing
 
