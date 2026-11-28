@@ -15,19 +15,20 @@
 
 ## Inbox
 
-- New items get appended to `Inbox`.
-- Adding or processing an item can create its details file in `docs/tasks/`.
+- The Inbox is a dump. An item goes in as written, with no format, and waits for processing.
 
 ### Processing Inbox
 
 - Pick any item, likely first.
-- Challenge why it is needed.
-    - Is it an XY problem?
-    - What `Pain` is it causing?
-    - Delete otherwise.
-- Reword the item as a `Task`
+- Find the real pain together.
+    - Claude pushes back smartly, without being adversarial. It may be an XY problem, or a different problem than the one stated.
+    - No pain, delete the item.
+- Once the pain is agreed, Claude takes over.
+    - It gives the task the next id and a short name.
+    - It moves everything except the pain to the task's details file.
+    - It writes the task in the Task List.
 
-> - [ ] Pain: <desc> [#<number>](tasks/<number>-<name>.md)
+> - [ ] Pain: <desc> [#<id>](tasks/<id>-<name>.md)
 
 - Check what this task changes in the existing `Task List`, and act on it.
 - Repeat for next `Inbox` item.
@@ -35,15 +36,15 @@
 ## Task List
 
 - `[ ]` open, `[.]` dotted, `[x]` done.
+- Each task is one Pain line.
 
 ## Details
 
-- Each item is one Pain line.
-- Details go in `docs/tasks/<number>-<name>.md`, such as `012-task-list-view.md`, linked from that line.
-- The details file starts with the same Pain line.
-- Before an item is changed, merged, split or deleted, Claude presents any issues and the affected files. Once the user approves, Claude updates the list and the details together.
-- Claude checks for drift between an item's line, its file name and its details, and reports it.
-- Both Pain lines stay identical. A change to one goes to both.
+- Each task has a details file, `docs/tasks/<id>-<name>.md`, such as `012-task-list-view.md`.
+- The id is the next unused three-digit number.
+- The file starts with the task's Pain line. Both copies stay identical.
+- Before a task is changed, merged, split or deleted, Claude presents any issues and the affected files. Once the user approves, Claude updates the list and the details together.
+- Claude checks for drift between a task's line, its file name and its details, and reports it.
 
 ## Working on a task
 
