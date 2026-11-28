@@ -1,58 +1,30 @@
 # Task List
 
-- [.] Pain: comment window too small to read or right
-- [ ] Pain: pane top navigate elements not visible mixes with stuff, the sticky header not sure if its needed, and it doesnt even do proper show hide. Too much clutter. 
-    - Keep only imp stuff or toggle in advance settings
-- [x] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them.
-    - Solution: a one-minute animated walkthrough, mocked, not a screen recording. Eight scenes from the README draft: the pain, the page, click to reply, one key, keyboard only, send all, the tagline.
-    - Source and render steps: `docs/mockups/showcase-video/`. Output: `docs/media/ccw-showcase.gif` and `.mp4`, shown at the top of `README.md`.
-    - Decided by Claude on "do whatever you like", for the user to accept or undo: one full-length GIF with a link to the video, and the draft `docs/README-004.md` replaces `README.md`.
-    - Readme: issues. video link doesnt wrk because of huge file size.
-- [ ] Pain: sometimes I want to go back to a previous reply and send information from it. On older pages, click and F do nothing. They work on the latest page only. Same for my response.
-    - Solution: not decided. Direction: commenting works on older pages the same as on the latest page. Claude's reading of the user's note, to confirm: comments are collected across pages.
-    - Since comments are page based, they clear as page changes. Moved from the popup journal task.
+- [.] Pain: comment window too small to read or right [#008](tasks/008-comment-window-size.md)
+- [ ] Pain: pane top navigate elements not visible mixes with stuff, the sticky header not sure if its needed, and it doesnt even do proper show hide. Too much clutter. [#009](tasks/009-pane-top-clutter.md)
+- [x] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them. [#010](tasks/010-showcase.md)
+- [ ] Pain: sometimes I want to go back to a previous reply and send information from it. On older pages, click and F do nothing. They work on the latest page only. Same for my response. [#011](tasks/011-older-pages-comments.md)
 - [ ] Pain: cleanup this tasks, too much Pain. :P Pain: the reading pane reshapes the transcript, so I can't tell what is really going on. Where is the thinking? It says Running when it is waiting. [#001](tasks/001-response-info.md)
-    - Solution: prompts and Claude's text are always open, never closed or hidden. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/reference/transcript-inventory.md`
-    - multiple housekeeping tasks are grouped together, that is good, but are they shown in proper chrono order? even some other stufff appears then goes. Pain: dont know what is going on, and our algo to collect stuff.
-    - I figure out what is more important, currently thinking block is important rest can as Also, a quick navigation where we basically get back to reading my ask and your response. Also, a smooth way to compress all everything. Basically, compress all yeah. And the third thing is a lot of noise, but that doesn't get any, it just stays hidden unless I press it. So by noise, I mean the miscellaneous or some section that we have, I think it's called housekeeping. So we also need to figure out stuff about how to handle drinking, housekeeping, and bash and tool calls and stuff like that
-    - How should we group info in reading pane.
-    - remvoe noise from my response.
-    - Open issue: thinking is the most important part, and the solution puts it inside the one closed group. Decide which.
-- [ ] Parallel? Pain: the page learns about each conversation row by tailing the transcript file. Is a mod's `session.append` hook faster?
-    - Solution: a spike. One process receives the mod's POST and tails the transcript, so both arrival times share one clock. Code and results: `docs/spikes/mods-vs-tail/`.
-    - Result, 2026-11-18: one hook, `session.append`. The mod leads by a median 165 ms, p95 462 ms, over 138 rows. Rows arrive one by one, not in bursts. No slowdown seen in 4 noisy runs. Measured with `claude -p` only, not in a pty, and without subagents. Same `uuid` as the transcript line. Assistant and tool result content match. Prompts and attachments differ in shape. The mod gives 4 fields per row against about 35 in the transcript, and misses the lines without a `uuid`.
-    - Next, not started: map each JSONL line and field the page uses to the mod event that gives it, then decide mod only, hybrid, or tail only.
+- [ ] Parallel? Pain: the page learns about each conversation row by tailing the transcript file. Is a mod's `session.append` hook faster? [#012](tasks/012-mods-vs-tail.md)
 - [x] Pain: impossible to view/review line number content when referenced in your reply. [#002](tasks/002-file-refs.md)
-    - Closed on 2026-11-22.
-- [ ] Pain: three or four files get modified, and I can't tell which ones or what changed.
-    - Solution: each reply ends with a list of the files modified, outside the project first, in red, then inside the project. Each one links like a file reference.
-    - Not decided: how to find the modified files and their diff. Git inside the project. Outside it, perhaps chezmoi.
-    - Idea: the server finds the writes in the transcript, since it reads every line. Writes outside the project matter most.
-- [ ] Pain: `docs/mods/raw/` holds all of the Claude Code docs, the CLI reference included, so a path to a general doc reads as a mods doc.
-    - Done: moved to `docs/vendor-library-documentation/`, committed, with a `README.md` and a line in `CLAUDE.md`.
-    - Open: `docs/mods/mods-research.md:5` still names the old path.
-- [ ] Pain: Referencing to some point in prev or other response, causes friction, lack of context.
-    - Solution: the system prompt at `server.mjs:54-57` becomes:
-    - every file reference is written as `path:line` or `path:start-end`, and a whole file as `path:1`
-    - every line number matches the file as it is now
-    - every reference resolves on its own: a file reference, or the referenced content carried forward inline
-        - this covers removed content, content of a previous reply, a numbered item, and the subject of every sentence
-- [ ] Pain: closing the expanded internal details is very cumbersome. 
-- [ ] Pain: approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise.
-- [ ] Pain: Quick notes (QN): Why is progress blocked? and what is the state of backups, can it be trusted?, the `quick-notes-v2` project: the secondary aim in `CLAUDE.md`.
+- [ ] Pain: three or four files get modified, and I can't tell which ones or what changed. [#013](tasks/013-modified-files-list.md)
+- [ ] Pain: `docs/mods/raw/` holds all of the Claude Code docs, the CLI reference included, so a path to a general doc reads as a mods doc. [#014](tasks/014-mods-raw-docs.md)
+- [ ] Pain: Referencing to some point in prev or other response, causes friction, lack of context. [#015](tasks/015-reference-context.md)
+- [ ] Pain: closing the expanded internal details is very cumbersome. [#016](tasks/016-close-expanded-details.md)
+- [ ] Pain: approving destructive actions, even when claude asks multiple times because fatigue, claude producing verbose output which hides signal into noise. [#017](tasks/017-approval-fatigue.md)
+- [ ] Pain: Quick notes (QN): Why is progress blocked? and what is the state of backups, can it be trusted?, the `quick-notes-v2` project: the secondary aim in `CLAUDE.md`. [#018](tasks/018-qn-progress.md)
 - [ ] Pain: do we need it? quick read and update. Apply the collaboration plan, `docs/tasks/003-collaboration.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file. [#003](tasks/003-collaboration.md)
 - [ ] Pain: unsent comments are lost whenever a new turn starts from the terminal: a dialog answer, or typed text and Enter. Seen 2026-11-24 after "No" on a permission prompt. Related: comments are page based, in the task "go back to a previous reply". [#004](tasks/004-comments-every-page.md)
-- [ ] Pain: when we want to end and send response, if we use quick response, then we have to press another button / click. unlike popup shortcut to save and send.
-- [ ] Pain: we are not recording which popup pills we are using, and missing.
-- [ ] Pain: edit at line seen in peek is cumbersome.
-- [ ] Pain: No vim bindings in peek or pane, very inconvinent. (can code mirror help)
-- [ ] Pain: question, are we writing too much custom stuff that codemirror already solves
-- [ ] Pain: Response formatting is poor.
+- [ ] Pain: when we want to end and send response, if we use quick response, then we have to press another button / click. unlike popup shortcut to save and send. [#019](tasks/019-quick-response-send.md)
+- [ ] Pain: we are not recording which popup pills we are using, and missing. [#020](tasks/020-popup-pill-usage.md)
+- [ ] Pain: edit at line seen in peek is cumbersome. [#021](tasks/021-edit-in-peek.md)
+- [ ] Pain: No vim bindings in peek or pane, very inconvinent. (can code mirror help) [#022](tasks/022-vim-bindings.md)
+- [ ] Pain: question, are we writing too much custom stuff that codemirror already solves [#023](tasks/023-codemirror-reuse.md)
+- [ ] Pain: Response formatting is poor. [#024](tasks/024-response-formatting.md)
 - [.] Inbox Prossing (exempt from pain poiny)
 - [ ] Weeding (exempt from pain point)
-- [.] Pain: urgent. The file peek hides the popup, so I can't see what is being typed.
-    - Solution: the popup and the comment box sit above the peek. `.comment-float` goes from z-index 7 to 9, the peek is 8.
-- [ ] Pain: F is both jump (find mode) and "Fix it". With the grid open, an F meant to jump presses "Fix it".
+- [.] Pain: urgent. The file peek hides the popup, so I can't see what is being typed. [#025](tasks/025-peek-hides-popup.md)
+- [ ] Pain: F is both jump (find mode) and "Fix it". With the grid open, an F meant to jump presses "Fix it". [#026](tasks/026-f-key-conflict.md)
 - [.] Pain: details are everywhere, and the IDE can't fold, search or edit the tracking file without friction. [#005](tasks/005-task-list-view.md)
 
 

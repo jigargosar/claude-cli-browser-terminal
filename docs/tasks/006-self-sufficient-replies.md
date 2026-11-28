@@ -3,7 +3,7 @@
 Pain: when a reply isn't self-sufficient, I have to assemble the picture myself before I can respond.
 
 - Found 2026-11-26, while asking why replies wrote bare "line 19" instead of `path:line`.
-- Not decided: replace the pain line of the task at `docs/fvp-list.md:34` with this one, and drop its stale Solution lines. Or keep both.
+- Not decided: replace the pain line of task [#015](015-reference-context.md) with this one, and drop its stale Solution lines. Or keep both.
 - Not split on purpose. A partial solution leaves the task partly done.
 - Levels found so far:
     - The reply is self-sufficient.

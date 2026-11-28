@@ -49,3 +49,12 @@ Now: weed out noise, while "All" still shows everything. Later: coalesce related
 8. Done. Strip the pasted-content tags from the prompt shown on the page.
 9. Run the investigations.
 10. Review, then a test checklist for the user, then the tick.
+
+## From the task list
+
+- Solution: prompts and Claude's text are always open, never closed or hidden. Between them, one closed group with every event as its own collapsed row, in arrival order. `web/entry-types.js` lists every entry type with an active flag. Inactive types are skipped, and unknown types show, labelled. Research: `docs/reference/transcript-inventory.md`
+- multiple housekeeping tasks are grouped together, that is good, but are they shown in proper chrono order? even some other stufff appears then goes. Pain: dont know what is going on, and our algo to collect stuff.
+- I figure out what is more important, currently thinking block is important rest can as Also, a quick navigation where we basically get back to reading my ask and your response. Also, a smooth way to compress all everything. Basically, compress all yeah. And the third thing is a lot of noise, but that doesn't get any, it just stays hidden unless I press it. So by noise, I mean the miscellaneous or some section that we have, I think it's called housekeeping. So we also need to figure out stuff about how to handle drinking, housekeeping, and bash and tool calls and stuff like that
+- How should we group info in reading pane.
+- remvoe noise from my response.
+- Open issue: thinking is the most important part, and the solution puts it inside the one closed group. Decide which.

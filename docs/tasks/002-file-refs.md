@@ -77,3 +77,7 @@ Not part of the closed task. One undotted task in `docs/fvp-list.md` points here
 6. The peek covers the terminal and stays there while the reply scrolls.
 7. Esc or a click outside closes it.
 8. A sentence with no reference still gets picked for a comment.
+
+## From the task list
+
+- Closed on 2026-11-22.
