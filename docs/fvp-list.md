@@ -25,7 +25,7 @@
 - [ ] Weeding (exempt from pain point)
 - [ ] Pain: urgent. The file peek hides the popup, so I can't see what is being typed. [#025](tasks/025-peek-hides-popup.md)
 - [ ] Pain: F is both jump (find mode) and "Fix it". With the grid open, an F meant to jump presses "Fix it". [#026](tasks/026-f-key-conflict.md)
-- [ ] Pain: details are everywhere, and the IDE can't fold, search or edit the tracking file without friction. [#005](tasks/005-task-list-view.md)
+- [x] Pain: details are everywhere, and the IDE can't fold, search or edit the tracking file without friction. [#005](tasks/005-task-list-view.md)
 
 
 
