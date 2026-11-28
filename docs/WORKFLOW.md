@@ -6,10 +6,11 @@
 - We assume that we are smart enough to figure things out as we work.
 - Claude fixes typos in next commit without announcing it.
 - This is collaborative workflow. And who does what is not always necessary.
+- Before any delete, check for info and consult the user.
 
 ## Tracking File
 
-- The file is named `FVP-LIST.md` and usually stored in same folder as this file.
+- The file is `docs/fvp-list.md`.
 - It has three sections, in order: `# Inbox`, `# Task List`, `# Details`.
 
 ## Inbox

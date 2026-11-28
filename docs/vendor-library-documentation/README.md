@@ -7,6 +7,7 @@ Each `llms.txt` lists all of the about 264 pages.
 |:-------------------------------|:------|:------------------------------------------------------------------------------------------------|
 | `claude-code-docs-2026-10-18/` | 81    | Hooks, plugins and mods, Agent SDK, settings, permissions, modes. Plus download and grep files. |
 | `claude-code-docs-2026-11-10/` | 17    | Agents, sessions, worktrees, checkpointing. Plus newer copies of 8 hooks and mods pages.        |
+| `fvp/`                         | 8     | Mark Forster's FVP and Random methods, as MHTML. Not Claude Code docs. Its `README.md` lists URLs. |
 
 ## Two kinds of hooks
 

@@ -22,8 +22,8 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 
 - `server.mjs`: runs claude in a pseudo-terminal and sends what claude prints to the one browser tab.
 - `web/`: the page.
-- `docs/fvp-list.md`: workflow, tasks, releasing.
-- `docs/experimental-workflow/`: a draft of a new workflow, not complete and not in use. The workflow in `docs/fvp-list.md` stays in force.
+- `docs/WORKFLOW.md`: workflow, releasing.
+- `docs/fvp-list.md`: tasks.
 - `docs/mockups/`: HTML mockups, approved before the page implements them.
 - `docs/spikes/`: spikes, inactive, kept for reuse.
 - `docs/mods/`: how to use mods in Claude Code. Research, plan and design notes.

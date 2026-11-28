@@ -1,66 +1,3 @@
-# How we work
-
-Core Principle: Before ANY delete check for info and consult with user
-When I ask or you think that rules need to be broken, simply list them and wait for approval.
-
-1. New tasks are appended at the end of the file. Unformatted is fine.
-2. Never ever start implementing before its task has a `Pain:` line.
-4. Weeding runs regularly. 
-    - It is the Impact and Cleanup of "Closing a task", done across tasks and across the project.
-    - It merges duplicates. Identifying duplactes might require, adding pain points of all tasks.
-    - drops ticked or stale tasks.
-    - Ticked tasks stay on the list until weeding, for that reason.
-
-## Inbox
-
-1. Anything new goes to the Inbox as a rough line, wherever we are in the workflow. No pain, no checkbox.
-2. Processing: Claude drafts each item's `Pain:` line and shows its closest match in the Task List.
-    - Then Claude finds duplicates by comparing the pains, against the other Inbox items and every Task List task, sub-bullets included.
-3. The user picks: merge into that task, move to the Task List, or delete.
-
-## Before implementing
-
-1. Claude suggests the task to dot.
-2. Claude and the user get its pain clear, and it is written as the task's `Pain:` line. It may be an XY problem.
-3. Claude proposes the solution. The user's solution ideas are input, not the spec.
-    - The plan lives as sub-bullets under its task.
-    - A plan file is the last resort, when the plan outgrows the list.
-4. The user approves the solution. Then Claude implements.
->    - [.] Pain: <the problem, in the user's words>
->       - Solution: <the plan, in a few lines>
-
-
-## Implementing
-
-1. While implementing, regularly perform WIP commits.
-2. Self-review until you fixed all issues.
-3. Present a list, for manual checking.
-
-## Closing a task
-
-1. Impact: Claude lists what the task changed, what it found that isn't written down yet, and its open issues.
-2. Cleanup: every item gets a place. Open issues become new tasks. Files only the task used are moved or deleted.
-    - A plan file with open items goes to a new task. It is deleted only when nothing in it is still needed.
-    - Mockups are never deleted. Each one in `docs/mockups/` gets a line in `docs/mockups/README.md`: what it shows, and where it went.
-3. The user approves. Claude ticks the task and commits.
-
-
-## Changelog: Releasing
-
-1. Add a line under Unreleased in `CHANGELOG.md`.
-2. If Unreleased has lines, propose `pnpm release` with AskUserQuestion. Claude never runs it unasked.
-3. Changelog format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), with Added, Changed, Fixed, Removed.
-4. Before a release, open the Unreleased link at the bottom of `CHANGELOG.md`. It lists every commit since the last tag.
-5. `pnpm release` builds, runs `kacl prerelease` (fails if Unreleased is empty), bumps the patch, stamps the changelog, updates the README install command, packs, commits, tags and pushes.
-
-## Experiment
-
-- Parallel work in worktrees. Conflicts with this workflow get resolved as they come up.
-- Worktree tasks are marked as such. How a task links to its worktree is not worked out yet.
-
-
-
-
 # Task List
 
 - [.] Pain: comment window too small to read or right
@@ -154,7 +91,7 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - add tldr popup pills.
 - Pain: when a reply isn't self-sufficient, I have to assemble the picture myself before I can respond. [#self-sufficient-replies](#self-sufficient-replies)
 - Pain: Claude adds unasked connections to other items, and when naming a mistake it adds reasons and conclusions. [#unasked-connections](#unasked-connections)
-- Experimental workflow: decide what `# Details` is for. `docs/experimental-workflow/WORKFLOW.md:13` still lists it as the third section of the tracking file. [#details-purpose](#details-purpose)
+- Experimental workflow: decide what `# Details` is for. `docs/WORKFLOW.md:14` still lists it as the third section of the tracking file. [#details-purpose](#details-purpose)
 - Pain: xterm displays the file write diff, which adds too much friction, especially I have to keep resizing it. 
 
 # Details
@@ -196,5 +133,5 @@ When I ask or you think that rules need to be broken, simply list them and wait 
     - Everything after the pain paragraph moves to `## #id` under Details, at the end of the task file.
     - The id is a short name for the pain.
     - A plan file is the last resort, when a Details block outgrows the task file.
-- The draft now keeps plans as sub-bullets under their task, at `docs/experimental-workflow/WORKFLOW.md:49`.
+- The draft now keeps plans as sub-bullets under their task, at `docs/WORKFLOW.md:50`.
 - Details shows up in both files. The workflow gets a section with the instructions for it. The tracking file gets `# Details` with the content.
