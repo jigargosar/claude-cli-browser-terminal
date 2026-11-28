@@ -49,3 +49,6 @@ The spike tests whether editing the list inside ccw removes that pain.
     - In the narrow left pane, items wrap to 2-4 rows, folded or not.
     - There are two CodeMirror setups: the read-only peek and the editable task list.
     - Editing in CodeMirror, with proper vim config, is a much bigger job than expected. There is no spec for it.
+- Layout ideas, not decided:
+    - The left pane shows one document, or none. The terminal opens as a popup over it. The user sets the width. No tabs.
+    - Risk: Claude asks for permission inside the terminal, so a closed popup could hide the question.
