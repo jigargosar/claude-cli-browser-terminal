@@ -24,7 +24,7 @@ const DIST_DIR = `${import.meta.dirname}/dist`;
 const HTML_PATH = `${DIST_DIR}/index.html`;
 // Hooks of our claude only, passed with --settings so they run in any directory. See CLAUDE.md.
 // Each POSTs the session ID and transcript path; the server reads the conversation from that file.
-// Three hooks cover every switch of file. See docs/tasks/transcript-following/research.md.
+// Three hooks cover every switch of file. See docs/reference/transcript-following.md.
 // - SessionStart: startup, /clear, /resume, fork, compact.
 // - UserPromptSubmit: /cd moves the file and fires no hook; the next prompt carries the new path.
 // - PostToolUse on EnterWorktree and ExitWorktree: they move the file mid-turn.
@@ -101,7 +101,7 @@ const sessionPath = `/session/${randomUUID()}`;
 // The conversation: items made from the transcript (one JSON line per event), in file order. Every line makes at least
 // one item. Kinds: prompt (text), reply (text), thinking (text), tool_use (name, input), tool_result (results, allowed),
 // api (model, usage of one API call), hook, mode (permission mode), cost (session totals), turn_end (durationMs), and
-// raw (any other line, its JSON clipped). Inventory of line types: docs/tasks/response-info/transcript-inventory.md.
+// raw (any other line, its JSON clipped). Inventory of line types: docs/reference/transcript-inventory.md.
 // The page gets the whole list on connect and each new item after that.
 const TOOL_RESULT_MAX = 2000;
 let items = [];
