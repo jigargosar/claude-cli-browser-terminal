@@ -1,5 +1,7 @@
 # Comments on every page
 
+Pain: unsent comments are lost whenever a new turn starts from the terminal: a dialog answer, or typed text and Enter. Seen 2026-11-24 after "No" on a permission prompt. Related: comments are page based, in the task "go back to a previous reply".
+
 Task in `docs/fvp-list.md`: "Pain: unsent comments are lost whenever a new turn starts from the terminal".
 
 Written in the quick notes session and approved by the user on 2026-11-24.

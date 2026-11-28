@@ -24,6 +24,8 @@ Scope: developer experience (DX) when working with AI tools. That covers the too
 - `web/`: the page.
 - `docs/WORKFLOW.md`: workflow, releasing.
 - `docs/fvp-list.md`: tasks.
+- `docs/tasks/`: details files, one per item, `<number>-<name>.md`.
+- `docs/reference/`: research kept for reference, not tied to a task.
 - `docs/mockups/`: HTML mockups, approved before the page implements them.
 - `docs/spikes/`: spikes, inactive, kept for reuse.
 - `docs/mods/`: how to use mods in Claude Code. Research, plan and design notes.

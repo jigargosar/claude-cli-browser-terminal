@@ -39,9 +39,11 @@
 ## Details
 
 - Each item is one Pain line.
-- Details go in `docs/tasks/<number>-<name>.md`, such as `12-task-list-view.md`, linked from that line.
+- Details go in `docs/tasks/<number>-<name>.md`, such as `012-task-list-view.md`, linked from that line.
+- The details file starts with the same Pain line.
 - Before an item is changed, merged, split or deleted, Claude presents any issues and the affected files. Once the user approves, Claude updates the list and the details together.
 - Claude checks for drift between an item's line, its file name and its details, and reports it.
+- Both Pain lines stay identical. A change to one goes to both.
 
 ## Working on a task
 

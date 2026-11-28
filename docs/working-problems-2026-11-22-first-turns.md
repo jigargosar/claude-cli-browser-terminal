@@ -108,7 +108,7 @@ Claude, 10:48
 
 ## This session
 
-Thirty minutes of meta, no task touched. The active task is file refs, one step from solving its pain (`docs/tasks/file-refs/plan.md:25-33`, the system prompt awaiting your confirmation).
+Thirty minutes of meta, no task touched. The active task is file refs, one step from solving its pain (`docs/tasks/002-file-refs.md:25-33`, the system prompt awaiting your confirmation).
 
 ## Why the rules are not working
 
@@ -116,7 +116,7 @@ Thirty minutes of meta, no task touched. The active task is file refs, one step 
 - No task has a done condition. File refs has 19 sub-items and 5 ticked, and its pain needs one more.
 - Releasing waits for a task to close (`docs/fvp-list.md:34`), and no task closes.
 - Almost every rule polices how Claude replies. Two lines govern what gets worked on.
-- Rules sit in five places, and two are unapplied drafts (`docs/tasks/collaboration/plan.md`, `skills/global-claude-md/pending.md`). Rule-writing is itself the documentation sink.
+- Rules sit in five places, and two are unapplied drafts (`docs/tasks/003-collaboration.md`, `skills/global-claude-md/pending.md`). Rule-writing is itself the documentation sink.
 
 ## The goal
 

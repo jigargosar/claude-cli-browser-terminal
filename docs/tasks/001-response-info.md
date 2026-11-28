@@ -1,6 +1,8 @@
 # Plan: choose which entry types show in comment pane
 
-Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the transcript". Research: `transcript-inventory.md`, next to this file. Mockup: `docs/mockups/entry-filter.html`, reviewed 2026-11-18.
+Pain: cleanup this tasks, too much Pain. :P Pain: the reading pane reshapes the transcript, so I can't tell what is really going on. Where is the thinking? It says Running when it is waiting.
+
+Task: the last dotted task in `docs/fvp-list.md`, "the reading pane reshapes the transcript". Research: `docs/reference/transcript-inventory.md`. Mockup: `docs/mockups/entry-filter.html`, reviewed 2026-11-18.
 
 ## Decided
 

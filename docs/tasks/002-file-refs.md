@@ -1,5 +1,7 @@
 # File references in replies
 
+Pain: impossible to view/review line number content when referenced in your reply.
+
 Task in `docs/fvp-list.md`: "Pain: impossible to view/review line number content when referenced in your reply."
 
 Primary goal: when a reply mentions a file, I see the exact lines it means, in one click.

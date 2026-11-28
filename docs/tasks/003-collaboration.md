@@ -1,5 +1,7 @@
 # Collaboration: plan
 
+Pain: do we need it? quick read and update. Apply the collaboration plan, `docs/tasks/003-collaboration.md`, the ideas of 2026-11-10 on how the user and Claude work together. Then delete its file.
+
 Ideas from the session of 2026-11-10 on how the user and Claude work together. Each item says where it lives, what it does, and when it is done.
 
 ## 1. Permission rule
@@ -57,4 +59,4 @@ Ideas from the session of 2026-11-10 on how the user and Claude work together. E
 
 - Where: this project, a script with a README.
 - What: starts `claude` in a scratch folder with the `CLAUDE*` variables stripped, and a hook that logs every event except `WorktreeCreate`, which would replace git's own worktree creation. A driver types the steps from a file and dumps the screen. One command runs a scenario such as `/cd` or a worktree move.
-- Done when: the `/cd` and worktree probes of 2026-11-10 rerun with one command each. See `docs/tasks/transcript-following/research.md`.
+- Done when: the `/cd` and worktree probes of 2026-11-10 rerun with one command each. See `docs/reference/transcript-following.md`.

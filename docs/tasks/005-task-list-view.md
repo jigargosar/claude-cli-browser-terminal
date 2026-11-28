@@ -1,5 +1,7 @@
 # Task list view
 
+Pain: details are everywhere, and the IDE can't fold, search or edit the tracking file without friction.
+
 ## Pain
 
 - Long details sit under Inbox items and tasks, and the list becomes hard to read.

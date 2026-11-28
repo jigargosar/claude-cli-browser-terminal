@@ -144,7 +144,7 @@ const openPeek = async (span) => {
         language ?? [],
         line ? markLines(doc, line, end) : [],
         // Off until the diff is readable: a heavily changed file shows as one wall of green. Task in
-        // docs/tasks/file-refs/plan.md.
+        // docs/tasks/002-file-refs.md.
         // changed ? unifiedMergeView({ original, mergeControls: false }) : [],
       ],
     }),
