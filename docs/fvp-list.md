@@ -61,3 +61,4 @@
 - Pain: when a reply isn't self-sufficient, I have to assemble the picture myself before I can respond. [#006](tasks/006-self-sufficient-replies.md)
 - Pain: Claude adds unasked connections to other items, and when naming a mistake it adds reasons and conclusions. [#007](tasks/007-unasked-connections.md)
 - Pain: xterm displays the file write diff, which adds too much friction, especially I have to keep resizing it. 
+- Clicking a markdown link in the peek view should open that file and location in the peek view. Navigation is critical for my workflow.

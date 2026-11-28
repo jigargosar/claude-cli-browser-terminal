@@ -40,3 +40,12 @@ The spike tests whether editing the list inside ccw removes that pain.
 5. Edit a line in the editor. Close and reopen the editor, then reload the page. The edit should be there both times.
 6. Ask Claude to add a task to the Inbox. Then check the editor. The line should be there.
 7. Use vim keys for a minute of real weeding. Judge whether it is fast and free of friction.
+
+## Outcome, 2026-11-28
+
+- The spike was dropped. Its branch `worktree-task-list-view` stays on the remote at `1c51d0f`, for reference only.
+- Spike findings:
+    - The left pane stacks three views: terminal, task list editor, file peek. Focus between them and the reply pane has many small edge cases.
+    - In the narrow left pane, items wrap to 2-4 rows, folded or not.
+    - There are two CodeMirror setups: the read-only peek and the editable task list.
+    - Editing in CodeMirror, with proper vim config, is a much bigger job than expected. There is no spec for it.
