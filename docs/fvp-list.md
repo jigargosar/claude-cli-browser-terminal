@@ -120,6 +120,7 @@ When I ask or you think that rules need to be broken, simply list them and wait 
 - [ ] Pain: F is both jump (find mode) and "Fix it". With the grid open, an F meant to jump presses "Fix it".
 - [.] Pain: details are everywhere, and the IDE can't fold, search or edit the tracking file without friction.
     - Plan: `docs/tasks/task-list-view/plan.md`.
+- [ ] tab doesnt convert any line into task
 
 
 
