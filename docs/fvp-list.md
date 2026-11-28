@@ -1,6 +1,6 @@
 # Task List
 
-- [.] Pain: comment window too small to read or right [#008](tasks/008-comment-window-size.md)
+- [ ] Pain: comment window too small to read or right [#008](tasks/008-comment-window-size.md)
 - [ ] Pain: pane top navigate elements not visible mixes with stuff, the sticky header not sure if its needed, and it doesnt even do proper show hide. Too much clutter. [#009](tasks/009-pane-top-clutter.md)
 - [x] Pain: nothing shows the project's strengths at a glance. Plain screenshots and GIFs are boring, and I close them. [#010](tasks/010-showcase.md)
 - [ ] Pain: sometimes I want to go back to a previous reply and send information from it. On older pages, click and F do nothing. They work on the latest page only. Same for my response. [#011](tasks/011-older-pages-comments.md)
@@ -21,11 +21,11 @@
 - [ ] Pain: No vim bindings in peek or pane, very inconvinent. (can code mirror help) [#022](tasks/022-vim-bindings.md)
 - [ ] Pain: question, are we writing too much custom stuff that codemirror already solves [#023](tasks/023-codemirror-reuse.md)
 - [ ] Pain: Response formatting is poor. [#024](tasks/024-response-formatting.md)
-- [.] Inbox Prossing (exempt from pain poiny)
+- [ ] Inbox Prossing (exempt from pain poiny)
 - [ ] Weeding (exempt from pain point)
-- [.] Pain: urgent. The file peek hides the popup, so I can't see what is being typed. [#025](tasks/025-peek-hides-popup.md)
+- [ ] Pain: urgent. The file peek hides the popup, so I can't see what is being typed. [#025](tasks/025-peek-hides-popup.md)
 - [ ] Pain: F is both jump (find mode) and "Fix it". With the grid open, an F meant to jump presses "Fix it". [#026](tasks/026-f-key-conflict.md)
-- [.] Pain: details are everywhere, and the IDE can't fold, search or edit the tracking file without friction. [#005](tasks/005-task-list-view.md)
+- [ ] Pain: details are everywhere, and the IDE can't fold, search or edit the tracking file without friction. [#005](tasks/005-task-list-view.md)
 
 
 
